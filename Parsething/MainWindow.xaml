@@ -26,7 +26,7 @@
                 Foreground="#BD1414" 
                 FontWeight="Normal" 
                 FontStyle="Normal" 
-                FontFamily="Mustica Pro"/>
+                FontFamily="./Fonts/#Mustica Pro"/>
             <Label 
                 Margin="40,0,0,0"
                 Content="Логин" 
@@ -36,7 +36,7 @@
                 Foreground="#000000" 
                 FontWeight="Normal" 
                 FontStyle="Normal" 
-                FontFamily="Bahnschrift"/>
+                FontFamily="./Fonts/#Mustica Pro"/>
             <TextBox 
                 Style="{DynamicResource TextBoxMainStyle}" 
                 x:Name="login" 
@@ -55,7 +55,7 @@
                 Foreground="#000000" 
                 FontWeight="Normal" 
                 FontStyle="Normal" 
-                FontFamily="Bahnschrift"/>
+                FontFamily="./Fonts/#Mustica Pro"/>
             <Grid
                 Margin="25,0"
                 Width="350">
@@ -104,7 +104,7 @@
                 Width="250"
                 FontSize="25" 
                 Foreground="White" 
-                FontFamily="Bahnschrift"/>
+                FontFamily="./Fonts/#Mustica Pro"/>
         </StackPanel>
     </Grid>
 </Window>
