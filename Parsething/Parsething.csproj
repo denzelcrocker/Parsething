@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="closedEye.png" />
+    <None Remove="Fonts\MusticaproSemibold.otf" />
+    <None Remove="openEye.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\MusticaproSemibold.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="ImagesAuthorization\closedEye.png" />
+    <Resource Include="ImagesAuthorization\openEye.png" />
+  </ItemGroup>
+
+</Project>
