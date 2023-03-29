@@ -1,12 +1,14 @@
-﻿<Application x:Class="Parsething.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Parsething"
-             StartupUri="MainWindow.xaml">
+﻿<Application x:Class="Parsething.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" StartupUri="/Windows/AutorizationWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="/Resources/Brushes.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/ButtonTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/CheckBoxTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/LabelTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/PasswordBoxTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/TextBoxTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/WindowTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
