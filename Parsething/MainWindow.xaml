@@ -20,25 +20,21 @@
             <Border x:Name="InfoBar" Background="{DynamicResource WindowBase.Static.BorderBrush}" CornerRadius="40" Grid.Row="1" Margin="15">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" >
-                        <Button
+                        <Button Style="{DynamicResource ButtonProfile}"
                             x:Name="ProfilePreview"
-                            ToolTipService.InitialShowDelay="0"
-                            Margin="0,0,30,0"
-                            Width="80"
-                            Height="60"
-                            Background="#01000000">
+                            ToolTipService.InitialShowDelay="0">
                             <Button.Content>
                                 <StackPanel 
                                     Orientation="Horizontal">
                                     <Image 
-                                        Source="Resources/Images/user.png"
+                                        Source="Resources/Images/UserPhoto.png"
                                         Stretch="Uniform" />
                                     <Path 
                                         x:Name="BtnArrowSort"
                                         Margin="4" 
                                         VerticalAlignment="Center"
                                         Width="10" 
-                                        Fill="#FF527DB5" 
+                                        Fill="White" 
                                         Stretch="Uniform"
                                         HorizontalAlignment="Right" 
                                         Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z "/>

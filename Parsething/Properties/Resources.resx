@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>Persist Security Info=False;User ID=ParsethingSolution;Password=PassSolution;Initial Catalog=Parsething;Data Source=176.112.98.217, 1433;TrustServerCertificate=true</value>
+  </data>
 </root>

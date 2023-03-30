@@ -88,8 +88,8 @@ public partial class ParsethingContext : DbContext
     public virtual DbSet<WarrantyState> WarrantyStates { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Persist Security Info=False;User ID=ParsethingSolution;Password=PassSolution;Initial Catalog=Parsething;Data Source=176.112.98.217, 1433;TrustServerCertificate=true");
+
+        => optionsBuilder.UseSqlServer(Properties.Resources.ConnectionString);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
