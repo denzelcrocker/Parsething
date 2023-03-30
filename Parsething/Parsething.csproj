@@ -12,6 +12,7 @@
     <None Remove="closedEye.png" />
     <None Remove="openEye.png" />
     <None Remove="Resources\Fonts\Mustica Pro.otf" />
+    <None Remove="user.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\Mustica Pro.otf" />
+    <Resource Include="Resources\Images\user.png" />
   </ItemGroup>
 
   <ItemGroup>

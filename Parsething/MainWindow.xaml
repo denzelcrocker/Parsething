@@ -1,5 +1,61 @@
-﻿<Window x:Class="Parsething.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" Title="MainWindow" Width="200" Height="200">
+﻿<Window x:Class="Parsething.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" Title="MainWindow" Style="{DynamicResource MainWindow}" SizeChanged="Window_SizeChanged">
+    
     <Grid>
-        
+        <Frame NavigationUIVisibility='Hidden' Name="MainFrame"></Frame>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="110"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
+                        <Button x:Name="MaximizeAction" Content="&#xE922;" Style="{DynamicResource TitleBarAction}" Click="ChromeMaximize_Click" Cursor="Hand"/>
+                        <Button x:Name="CloseAction" Content="&#xE8BB;" Style="{DynamicResource TitleBarAction}" Click="CloseAction_Click" Cursor="Hand"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Border x:Name="InfoBar" Background="{DynamicResource WindowBase.Static.BorderBrush}" CornerRadius="40" Grid.Row="1" Margin="15">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" >
+                        <Button
+                            x:Name="ProfilePreview"
+                            ToolTipService.InitialShowDelay="0"
+                            Margin="0,0,30,0"
+                            Width="80"
+                            Height="60"
+                            Background="#01000000">
+                            <Button.Content>
+                                <StackPanel 
+                                    Orientation="Horizontal">
+                                    <Image 
+                                        Source="Resources/Images/user.png"
+                                        Stretch="Uniform" />
+                                    <Path 
+                                        x:Name="BtnArrowSort"
+                                        Margin="4" 
+                                        VerticalAlignment="Center"
+                                        Width="10" 
+                                        Fill="#FF527DB5" 
+                                        Stretch="Uniform"
+                                        HorizontalAlignment="Right" 
+                                        Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z "/>
+                                </StackPanel>
+                            </Button.Content>
+                            <Button.ToolTip>
+                                <ToolTip Width="200" Height="150">
+                                    <StackPanel>
+                                        
+                                     
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

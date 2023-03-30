@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Shapes;
+
+
 
 namespace Parsething
 {
@@ -23,6 +26,47 @@ namespace Parsething
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ChromeMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            switch (WindowState)
+            {
+                case WindowState.Normal:
+                    WindowState = WindowState.Maximized;
+                    break;
+                case WindowState.Maximized:
+                    WindowState = WindowState.Normal;
+                    break;
+            }
+        }
+
+        private void MinimizeAction_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void CloseAction_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            WindowState = WindowState.Normal;
+            DragMove();
+        }
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            switch (WindowState)
+            {
+                case WindowState.Normal:
+                    MaximizeAction.Content = "";
+                    break;
+                case WindowState.Maximized:
+                    MaximizeAction.Content = "";
+                    break;
+            }
         }
     }
 }
