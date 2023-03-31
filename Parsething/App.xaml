@@ -9,7 +9,6 @@
                 <ResourceDictionary Source="/Resources/Templates/PasswordBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/TextBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/WindowTemplates.xaml"/>
-                <ResourceDictionary Source="/Resources/Templates/ButtonProfileTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

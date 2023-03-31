@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Parsething.Properties {
+namespace DatabaseLibrary.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Parsething.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Parsething.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DatabaseLibrary.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,12 +61,11 @@ namespace Parsething.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to Password=PassSolution;Persist Security Info=True;User ID=ParsethingSolution;Initial Catalog=Parsething;Data Source=176.112.98.217, 1433;Trust Server Certificate=True.
         /// </summary>
-        internal static byte[] PlaceholderEmployeePhotoPreview {
+        internal static string ConnectionString {
             get {
-                object obj = ResourceManager.GetObject("PlaceholderEmployeePhotoPreview", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("ConnectionString", resourceCulture);
             }
         }
     }

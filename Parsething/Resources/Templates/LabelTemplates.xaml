@@ -15,4 +15,13 @@
         <Setter Property="Margin" Value="10,10,0,0"/>
         <Setter Property="FontSize" Value="25"/>
     </Style>
+    <SolidColorBrush x:Key="Icon.Foreground" Color="#FFF"/>
+    <Style x:Key="Icon" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="{StaticResource Icon.Foreground}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="4,0"/>
+        <Setter Property="FontFamily" Value="Segoe Fluent Icons"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
 </ResourceDictionary>

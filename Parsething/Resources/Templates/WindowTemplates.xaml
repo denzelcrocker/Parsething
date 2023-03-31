@@ -29,9 +29,10 @@
         <Setter Property="Height" Value="500"/>
         <Setter Property="ResizeMode" Value="NoResize"/>
     </Style>
-    <Style x:Key="MainWindow" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
+    <Style x:Key="Main" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
         <Setter Property="Width" Value="1600"/>
         <Setter Property="Height" Value="900"/>
         <Setter Property="WindowState" Value="Maximized"/>
+        <Setter Property="ResizeMode" Value="CanResize"/>
     </Style>
 </ResourceDictionary>

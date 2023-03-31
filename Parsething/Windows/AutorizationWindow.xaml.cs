@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using DatabaseLibrary.Functions;
+using Parsething.Resources;
 
 namespace Parsething.Windows;
 
@@ -8,6 +9,8 @@ public partial class AutorizationWindow : Window
     {
         InitializeComponent();
     }
+
+    private Window? MainWindow { get; set; }
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
@@ -41,29 +44,17 @@ public partial class AutorizationWindow : Window
 
     private void EnterButton_Click(object sender, RoutedEventArgs e)
     {
+        MainWindow = new();
 
-        string userName = UserName.Text;
-        string password = Password.Password;
-        string visiblePassword = VisiblePassword.Text;
-        int countOfEmployees = db.Employees.Count();
-        bool checkAuthorization = false;
-        employees = db.Employees.ToList();
-        for(int i = 0; i < countOfEmployees; i++)
+        Managment.CurrentEmployee = GET.Employee(UserName.Text, Password.Password);
+
+        if (Managment.CurrentEmployee != null)
         {
-
-            if (employees[i].UserName == userName && employees[i].Password==password)
-            {
-                employee = employees[i];
-                checkAuthorization= true;
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                Close();
-            }
-
+            MainWindow.Show();
         }
-        if(checkAuthorization==false)
+        else
         {
-            MessageBox.Show("Вы ввели неверный пароль!");
+            MessageBox.Show("Вы ввели неверные данные!");
         }
 
     }

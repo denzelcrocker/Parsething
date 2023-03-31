@@ -9,25 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="closedEye.png" />
-    <None Remove="openEye.png" />
-    <None Remove="Resources\Fonts\Mustica Pro.otf" />
-    <None Remove="user.png" />
-    <None Remove="UserPhoto.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <ProjectReference Include="..\DatabaseLibrary\DatabaseLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\Mustica Pro.otf" />
-    <Resource Include="Resources\Images\UserPhoto.png" />
+    <Resource Include="Resources\Images\PlaceholderEmployeePhotoPreview.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="DatabaseLibrary" />
+    <Using Include="DatabaseLibrary.Entities.EmployeeMuchToMany" />
     <Using Include="System.Windows" />
     <Using Include="System.Windows.Input" />
   </ItemGroup>
