@@ -9,11 +9,23 @@
 
             try
             {
-                employee = db.Employees.Where(e => e.UserName == userName).Where(e => e.Password == password).First();
+                employee = db.Employees.Where(e => e.UserName == userName).Where(e => e.Password == password).Include(r => r.Position).First();
             }
             catch { }
 
             return employee;
+        }
+        public static int CountOfParsed()
+        {
+            int count = 0;
+            using ParsethingContext db = new();
+            try
+            {
+                count = db.Procurements.Include(r => r.ProcurementState).Where(e => e.ProcurementState.Kind == null).Count();
+            }
+            catch { }
+
+            return count;
         }
     }
 }

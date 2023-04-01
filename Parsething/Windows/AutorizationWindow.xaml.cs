@@ -10,7 +10,7 @@ public partial class AutorizationWindow : Window
         InitializeComponent();
     }
 
-    private Window? MainWindow { get; set; }
+    
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
@@ -44,13 +44,12 @@ public partial class AutorizationWindow : Window
 
     private void EnterButton_Click(object sender, RoutedEventArgs e)
     {
-        MainWindow = new();
-
         Managment.CurrentEmployee = GET.Employee(UserName.Text, Password.Password);
-
+        MainWindow mainWindow = new(Managment.CurrentEmployee);
         if (Managment.CurrentEmployee != null)
         {
-            MainWindow.Show();
+            Close();
+            mainWindow.Show();
         }
         else
         {

@@ -9,11 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\Noah-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DatabaseLibrary\DatabaseLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\Mustica Pro.otf" />
+    <Resource Include="Resources\Fonts\Noah-Regular.ttf" />
     <Resource Include="Resources\Images\PlaceholderEmployeePhotoPreview.png" />
   </ItemGroup>
 
