@@ -1,7 +1,4 @@
-﻿using DatabaseLibrary.Functions;
-using Parsething.Resources;
-
-namespace Parsething.Windows;
+﻿namespace Parsething.Windows;
 
 public partial class AutorizationWindow : Window
 {
@@ -9,8 +6,6 @@ public partial class AutorizationWindow : Window
     {
         InitializeComponent();
     }
-
-    
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
@@ -32,7 +27,7 @@ public partial class AutorizationWindow : Window
         Password.Visibility = Visibility.Hidden;
         VisiblePassword.Visibility = Visibility.Visible;
         VisiblePassword.Text = Password.Password;
-        
+
     }
 
     private void PasswordVisibility_Unchecked(object sender, RoutedEventArgs e)
@@ -44,18 +39,17 @@ public partial class AutorizationWindow : Window
 
     private void EnterButton_Click(object sender, RoutedEventArgs e)
     {
-        Managment.CurrentEmployee = GET.Employee(UserName.Text, Password.Password);
-        MainWindow mainWindow = new(Managment.CurrentEmployee);
-        if (Managment.CurrentEmployee != null)
+        Employee? employee = GET.Employee(UserName.Text, Password.Password);
+        if (employee != null)
         {
-            Close();
+            MainWindow mainWindow = new() { DataContext = employee };
             mainWindow.Show();
+            Close();
         }
         else
         {
-            MessageBox.Show("Вы ввели неверные данные!");
+            _ = MessageBox.Show("Вы ввели неверные данные!");
         }
-
     }
 
     private void Password_TextInput(object sender, TextCompositionEventArgs e)
@@ -63,7 +57,7 @@ public partial class AutorizationWindow : Window
         VisiblePassword.Text = Password.Password;
     }
 
-    private void VisiblePassword_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    private void VisiblePassword_TextChanged(object sender, TextChangedEventArgs e)
     {
         Password.Password = VisiblePassword.Text;
     }

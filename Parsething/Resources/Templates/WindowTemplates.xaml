@@ -32,7 +32,8 @@
     <Style x:Key="Main" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
         <Setter Property="Width" Value="1600"/>
         <Setter Property="Height" Value="900"/>
-        <Setter Property="WindowState" Value="Maximized"/>
         <Setter Property="Background" Value="#0000"/>
+        <Setter Property="WindowState" Value="Maximized"/>
+        <Setter Property="Padding" Value="8"/>
     </Style>
 </ResourceDictionary>

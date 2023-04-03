@@ -40,7 +40,9 @@
   <ItemGroup>
     <Using Include="DatabaseLibrary" />
     <Using Include="DatabaseLibrary.Entities.EmployeeMuchToMany" />
+    <Using Include="DatabaseLibrary.Functions" />
     <Using Include="System.Windows" />
+    <Using Include="System.Windows.Controls" />
     <Using Include="System.Windows.Input" />
   </ItemGroup>
 

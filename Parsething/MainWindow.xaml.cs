@@ -2,11 +2,21 @@
 
 public partial class MainWindow : Window
 {
-    public Employee mainEmployee;
-    public MainWindow(Employee employee)
+    public MainWindow()
     {
         InitializeComponent();
-        mainEmployee = employee;
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (((Employee)DataContext).Position.Kind == "Администратор")
+        {
+            _ = MainFrame.Navigate(new Pages.AdministratorPage());
+        }
+        else
+        {
+
+        }
     }
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -54,17 +64,5 @@ public partial class MainWindow : Window
     private void ProfilePreview_Click(object sender, RoutedEventArgs e)
     {
 
-    }
-
-    private void Window_Loaded(object sender, RoutedEventArgs e)
-    {
-        if (mainEmployee.Position.Kind == "Администратор")
-        {
-            MainFrame.Navigate(new Pages.AdministratorPage(mainEmployee));
-        }
-        else
-        {
-
-        }
     }
 }

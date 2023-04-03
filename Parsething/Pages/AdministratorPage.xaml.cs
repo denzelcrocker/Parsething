@@ -1,39 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿namespace Parsething.Pages;
 
-namespace Parsething.Pages
+public partial class AdministratorPage : Page
 {
-    /// <summary>
-    /// Логика взаимодействия для AdministratorPage.xaml
-    /// </summary>
-    public partial class AdministratorPage : Page
+    private Frame MainFrame { get; set; } = null!;
+
+    public AdministratorPage()
     {
-        private Frame MainFrame { get; set; } = null;
+        InitializeComponent();
 
-        public AdministratorPage(Employee? mainEmployee)
-        {
-            InitializeComponent();
-            using ParsethingContext db = new();
-            Parsed.Text = Convert.ToString(DatabaseLibrary.Functions.GET.CountOfParsed());
-        }
+        using ParsethingContext db = new();
+        Parsed.Text = Convert.ToString(GET.CountOfParsed());
+    }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+    private void Page_Loaded(object sender, RoutedEventArgs e)
+    {
+        try
         {
             MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
         }
-
+        catch (Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message, "лешаgей");
+        }
     }
 }
 //DatabaseLibrary.Entities.ProcurementProperties.Procurement procurementUpdate = new DatabaseLibrary.Entities.ProcurementProperties.Procurement();

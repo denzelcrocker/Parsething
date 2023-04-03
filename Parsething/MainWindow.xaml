@@ -9,7 +9,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" Padding="8,0" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
@@ -22,7 +22,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button x:Name="ProfilePreview" Style="{DynamicResource Profile}" Click="ProfilePreview_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Image x:Name="EmployeePhoto" Stretch="Uniform" Source="/Resources/Images/PlaceholderEmployeePhoto.png"/>
+                            <Image x:Name="EmployeePhoto" Stretch="Uniform" Source="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
                             <Label x:Name="StockDown" Content="&#xEB11;" Style="{DynamicResource Icon}"/>
                         </StackPanel>
                     </Button>
