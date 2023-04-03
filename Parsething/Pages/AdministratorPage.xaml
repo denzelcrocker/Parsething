@@ -8,12 +8,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
             <Border.Effect>
-                <DropShadowEffect 
-                    BlurRadius="30"
-                    ShadowDepth="1"
-                    Direction="270"
-                    Color="Black"
-                    Opacity="0.5"/>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
             </Border.Effect>
             <Grid Width="1800" Height="820">
                 <Grid.ColumnDefinitions>
