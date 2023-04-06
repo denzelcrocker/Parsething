@@ -24,4 +24,10 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="TextTrimming" Value="None"/>
     </Style>
+    <Style x:Key="TextBlock.Single2" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextTrimming" Value="None"/>
+    </Style>
 </ResourceDictionary>
