@@ -13,7 +13,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DatabaseLibrary\DatabaseLibrary.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DatabaseLibrary">
+      <HintPath>..\SolutionItems\DatabaseLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -39,8 +51,15 @@
 
   <ItemGroup>
     <Using Include="DatabaseLibrary" />
-    <Using Include="DatabaseLibrary.Entities.EmployeeMuchToMany" />
     <Using Include="DatabaseLibrary.Functions" />
+    <Using Include="DatabaseLibrary.Entities" />
+    <Using Include="DatabaseLibrary.Entities.Actions" />
+    <Using Include="DatabaseLibrary.Entities.ComponentCalculationProperties" />
+    <Using Include="DatabaseLibrary.Entities.DocumentMuchToMany" />
+    <Using Include="DatabaseLibrary.Entities.EmployeeMuchToMany" />
+    <Using Include="DatabaseLibrary.Entities.NoRelationship" />
+    <Using Include="DatabaseLibrary.Entities.PreferenceMuchToMany" />
+    <Using Include="DatabaseLibrary.Entities.ProcurementProperties" />
     <Using Include="System.Windows" />
     <Using Include="System.Windows.Controls" />
     <Using Include="System.Windows.Input" />
