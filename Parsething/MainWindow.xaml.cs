@@ -13,6 +13,34 @@ public partial class MainWindow : Window
         {
             _ = MainFrame.Navigate(new Pages.AdministratorPage());
         }
+        else if (((Employee)DataContext).Position.Kind == "Руководитель отдела расчетов" || ((Employee)DataContext).Position.Kind == "Заместитель руководителя отдела расчетов")
+        {
+            _ = MainFrame.Navigate(new Pages.HeadsOfCalculatorsPage());
+        }
+        else if (((Employee)DataContext).Position.Kind == "Специалист отдела расчетов")
+        {
+            _ = MainFrame.Navigate(new Pages.CalculatorPage());
+        }
+        else if (((Employee)DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
+        {
+            _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
+        }
+        else if (((Employee)DataContext).Position.Kind == "Специалист по работе с электронными площадками")
+        {
+            _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
+        }
+        else if (((Employee)DataContext).Position.Kind == "Специалист тендерного отдела")
+        {
+            _ = MainFrame.Navigate(new Pages.ManagerPage());
+        }
+        else if (((Employee)DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)DataContext).Position.Kind == "Специалист по производству")
+        {
+            _ = MainFrame.Navigate(new Pages.AssemblyPage());
+        }
+        else if (((Employee)DataContext).Position.Kind == "Юрист")
+        {
+            _ = MainFrame.Navigate(new Pages.LawyerPage());
+        }
         else
         {
 

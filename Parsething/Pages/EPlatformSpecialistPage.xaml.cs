@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Parsething.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для HeadOfCalculationPage.xaml
+    /// Логика взаимодействия для EPlatformSpecialistPage.xaml
     /// </summary>
-    public partial class HeadOfCalculationPage : Page
+    public partial class EPlatformSpecialistPage : Page
     {
-        public HeadOfCalculationPage()
+        public EPlatformSpecialistPage()
         {
             InitializeComponent();
         }
