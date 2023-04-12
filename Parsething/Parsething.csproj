@@ -51,7 +51,6 @@
 
   <ItemGroup>
     <Using Include="DatabaseLibrary" />
-    <Using Include="DatabaseLibrary.Functions" />
     <Using Include="DatabaseLibrary.Entities" />
     <Using Include="DatabaseLibrary.Entities.Actions" />
     <Using Include="DatabaseLibrary.Entities.ComponentCalculationProperties" />
@@ -60,6 +59,7 @@
     <Using Include="DatabaseLibrary.Entities.NoRelationship" />
     <Using Include="DatabaseLibrary.Entities.PreferenceMuchToMany" />
     <Using Include="DatabaseLibrary.Entities.ProcurementProperties" />
+    <Using Include="DatabaseLibrary.Queries" />
     <Using Include="System.Windows" />
     <Using Include="System.Windows.Controls" />
     <Using Include="System.Windows.Input" />

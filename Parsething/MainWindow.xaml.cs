@@ -1,14 +1,34 @@
-﻿namespace Parsething;
+﻿using Parsething.Windows;
+using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+namespace Parsething;
 
 public partial class MainWindow : Window
 {
     public MainWindow()
     {
+        AutorizationWindow autorization = new();
+        if (autorization.ShowDialog() == true)
+            DataContext = autorization.Employee;
+        else Application.Current.Shutdown();
         InitializeComponent();
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
+        string? s = ((Employee)DataContext).Photo;
+        if (s != null)
+        {
+            byte[] bytes = Convert.FromBase64String(s);
+            BitmapImage bitmap = new();
+            bitmap.BeginInit();
+            bitmap.StreamSource = new MemoryStream(bytes);
+            bitmap.EndInit();
+            EmployeePhoto.Fill = new ImageBrush { ImageSource = bitmap };
+        }
+
         if (((Employee)DataContext).Position.Kind == "Администратор")
         {
             _ = MainFrame.Navigate(new Pages.AdministratorPage());

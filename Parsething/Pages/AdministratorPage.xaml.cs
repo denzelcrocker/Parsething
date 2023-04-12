@@ -1,4 +1,5 @@
-﻿
+﻿using DatabaseLibrary.Queries;
+
 namespace Parsething.Pages;
 
 public partial class AdministratorPage : Page
@@ -10,7 +11,7 @@ public partial class AdministratorPage : Page
         InitializeComponent();
 
         ParsethingContext db = new();
-        Parsed.Text = Convert.ToString(GET.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState));
+        Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState));
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -22,7 +22,11 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button x:Name="ProfilePreview" Style="{DynamicResource Profile}" Click="ProfilePreview_Click">
                         <StackPanel Orientation="Horizontal">
-                            <Image x:Name="EmployeePhoto" Stretch="Uniform" Source="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
+                            <Ellipse x:Name="EmployeePhoto" Width="50" Height="50">
+                                <Ellipse.Fill>
+                                    <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
                             <Label x:Name="StockDown" Content="&#xEB11;" Style="{DynamicResource Icon}"/>
                         </StackPanel>
                     </Button>
