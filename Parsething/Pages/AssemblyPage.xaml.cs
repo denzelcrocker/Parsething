@@ -20,9 +20,19 @@ namespace Parsething.Pages
     /// </summary>
     public partial class AssemblyPage : Page
     {
+        private Frame MainFrame { get; set; } = null!;
+
         public AssemblyPage()
         {
             InitializeComponent();
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
+            }
+            catch { }
         }
     }
 }

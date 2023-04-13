@@ -20,9 +20,18 @@ namespace Parsething.Pages
     /// </summary>
     public partial class EPlatformSpecialistPage : Page
     {
+        private Frame MainFrame { get; set; } = null!;
         public EPlatformSpecialistPage()
         {
             InitializeComponent();
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
+            }
+            catch { }
         }
     }
 }

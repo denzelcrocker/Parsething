@@ -49,13 +49,11 @@
                         <Label Content="Спаршены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Parsed" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
                         <Label Content="Неразобранные:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
-                        <Label Content="Отбой (сг / вч):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Grid.Row="2" Text="0"/>
-                        <Label Content="/" Style="{DynamicResource DivisionMainFrame}" Grid.Column="2" Grid.Row="2"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Grid.Row="2" Text="0"/>
+                        <TextBlock x:Name="Unsorted" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
+                        <Label Content="Отбой:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
+                        <TextBlock x:Name="Retreat" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2"/>
                         <Label Content="Очередь расчета:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="3"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
+                        <TextBlock x:Name="CalculationQueue" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
                     </Grid>
                     <Label Content="Торги" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}"  Grid.RowSpan="2" Height="2"/>
@@ -80,31 +78,23 @@
                             <RowDefinition Height="65"/>
                         </Grid.RowDefinitions>
                         <Label Content="Отправлены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
+                        <TextBlock x:Name="Sended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
-                        <Label Content="Торги (сг / зв):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Grid.Row="2" Text="0"/>
-                        <Label Content="/" Style="{DynamicResource DivisionMainFrame}" Grid.Column="2" Grid.Row="2"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Grid.Row="2" Text="0"/>
+                        <Label Content="Торги:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
+                        <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Label Content="Котировки (итоги):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="3"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
+                        <TextBlock x:Name="Quotes" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
                         <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
+                        <TextBlock x:Name="Overdue" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                        <Label Content="Отмена (сг / вч):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Grid.Row="6" Text="0"/>
-                        <Label Content="/" Style="{DynamicResource DivisionMainFrame}" Grid.Column="2" Grid.Row="6"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Grid.Row="6" Text="0"/>
+                        <Label Content="Отмена:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
+                        <TextBlock x:Name="Cancellation" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
-                        <Label Content="Отклонен (сг / вч):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Grid.Row="8" Text="0"/>
-                        <Label Content="/" Style="{DynamicResource DivisionMainFrame}" Grid.Column="2" Grid.Row="8"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Grid.Row="8" Text="0"/>
+                        <Label Content="Отклонен:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
+                        <TextBlock x:Name="Rejected" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Grid.Row="9"/>
-                        <Label Content="Проигран (сг / вч):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="10"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Grid.Row="10" Text="0"/>
-                        <Label Content="/" Style="{DynamicResource DivisionMainFrame}" Grid.Column="2" Grid.Row="10"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Grid.Row="10" Text="0"/>
+                        <Label Content="Проигран:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="10"/>
+                        <TextBlock x:Name="Lost" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
                     </Grid>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Margin="10">
@@ -132,40 +122,37 @@
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="62"/>
-                            <RowDefinition Height="61.5"/>
-                            <RowDefinition Height="61"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
                             <RowDefinition Height="2"/>
                         </Grid.RowDefinitions>
                         <Label Content="Новый:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
+                        <TextBlock x:Name="New" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
                         <Label Content="Посчитан:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Text="0"/>
+                        <TextBlock x:Name="Calculated" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
                         <Label Content="Расчёт:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
                         <Label Content="Отбой:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Text="0"/>
+                        <TextBlock x:Name="RetreatCalculate" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
                         <Label Content="Оформить:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Text="0"/>
+                        <TextBlock x:Name ="DrawUp"  Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="9"/>
                         <Label Content="Оформление:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="10"/>
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
                         <Label Content="Оформлен:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="12" Text="0"/>
+                        <TextBlock  x:Name="Issued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="12" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="13"/>
                         <Label Content="К отправке:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="14"/>
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="14" Text="0"/>
-                        <Label Content="сг / зв:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="15"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Grid.Row="15" Text="0"/>
-                        <Label Content="/" Style="{DynamicResource DivisionMainFrame}" Grid.Column="2" Grid.Row="15"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Grid.Row="15" Text="0"/>
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="15"/>
                         <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="16"/>
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="16" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="17"/>

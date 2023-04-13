@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parsething.Pages"
       mc:Ignorable="d" 
-      Title="LawyerPage">
+      Title="LawyerPage" Loaded="Page_Loaded">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
             <Border.Effect>

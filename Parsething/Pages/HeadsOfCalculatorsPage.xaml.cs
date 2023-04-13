@@ -20,9 +20,18 @@ namespace Parsething.Pages
     /// </summary>
     public partial class HeadsOfCalculatorsPage : Page
     {
+        private Frame MainFrame { get; set; } = null!;
         public HeadsOfCalculatorsPage()
         {
             InitializeComponent();
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
+            }
+            catch { }
         }
     }
 }

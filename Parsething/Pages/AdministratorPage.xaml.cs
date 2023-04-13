@@ -9,9 +9,19 @@ public partial class AdministratorPage : Page
     public AdministratorPage()
     {
         InitializeComponent();
-
-        ParsethingContext db = new();
         Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState));
+        Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState));
+        Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState));
+        //CalculationQueue
+        Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState));
+        Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState));
+        Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState));
+        Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState));
+        New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState));
+        Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState));
+        RetreatCalculate.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой Расчет", GET.KindOf.ProcurementState));
+        DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState));
+        Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState));
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -20,11 +30,9 @@ public partial class AdministratorPage : Page
         {
             MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
         }
-        catch (Exception ex)
-        {
-            _ = MessageBox.Show(ex.Message, "лешаgей");
-        }
+        catch { }
     }
+
 }
 //DatabaseLibrary.Entities.ProcurementProperties.Procurement procurementUpdate = new DatabaseLibrary.Entities.ProcurementProperties.Procurement();
 //procurementUpdate.RequestUri = "https://zakupki.gov.ru/epz/order/notice/notice223/common-info.html?noticeInfoId=15080229";
