@@ -29,6 +29,9 @@ public partial class MainWindow : Window
             EmployeePhoto.Fill = new ImageBrush { ImageSource = bitmap };
         }
 
+        FullName.Content = ((Employee)DataContext).FullName;
+        Position.Content = ((Employee)DataContext).Position?.Kind;
+
         if (((Employee)DataContext).Position.Kind == "Администратор")
         {
             _ = MainFrame.Navigate(new Pages.AdministratorPage());
@@ -86,10 +89,8 @@ public partial class MainWindow : Window
         DragMove();
     }
 
-    private void MinimizeAction_Click(object sender, RoutedEventArgs e)
-    {
+    private void MinimizeAction_Click(object sender, RoutedEventArgs e) =>
         WindowState = WindowState.Minimized;
-    }
 
     private void MaximizeAction_Click(object sender, RoutedEventArgs e)
     {
@@ -104,13 +105,15 @@ public partial class MainWindow : Window
         }
     }
 
-    private void CloseAction_Click(object sender, RoutedEventArgs e)
-    {
+    private void CloseAction_Click(object sender, RoutedEventArgs e) =>
         Application.Current.Shutdown();
-    }
 
-    private void ProfilePreview_Click(object sender, RoutedEventArgs e)
+    private void SwitchUser_Click(object sender, RoutedEventArgs e)
     {
-
+        Visibility = Visibility.Collapsed;
+        MainWindow mainWindow = new();
+        Close();
+        mainWindow.Show();
+        Application.Current.MainWindow = mainWindow;
     }
 }

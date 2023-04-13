@@ -65,4 +65,15 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="20"/>
     </Style>
+    <SolidColorBrush x:Key="ProfilePreview.Entry.Foreground" Color="#FFF"/>
+    <Style x:Key="ProfilePreview.Entry" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="{StaticResource ProfilePreview.Entry.Foreground}"/>
+        <Setter Property="Margin" Value="0,4"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource ProfilePreview.Entry.Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

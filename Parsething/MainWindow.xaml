@@ -20,16 +20,31 @@
             </Border>
             <Border x:Name="InfoBar" Background="{DynamicResource InfoBar.Background}" Grid.Row="1" Margin="15" Padding="40,12.5" CornerRadius="40">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button x:Name="ProfilePreview" Style="{DynamicResource Profile}" Click="ProfilePreview_Click">
+                    <StackPanel x:Name="ProfilePreview">
                         <StackPanel Orientation="Horizontal">
                             <Ellipse x:Name="EmployeePhoto" Width="50" Height="50">
                                 <Ellipse.Fill>
                                     <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <Label x:Name="StockDown" Content="&#xEB11;" Style="{DynamicResource Icon}"/>
+                            <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemBase}" Style="{DynamicResource ComboBoxBase}">
+                                <ComboBoxItem IsEnabled="False">
+                                    <Label x:Name="FullName" Style="{DynamicResource ProfilePreview.Entry}"/>
+                                </ComboBoxItem>
+                                <ComboBoxItem IsEnabled="False">
+                                    <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry}"/>
+                                </ComboBoxItem>
+                                <ComboBoxItem>
+                                    <Button x:Name="SwitchUser" Style="{DynamicResource Profile}" Click="SwitchUser_Click">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Foreground="#FFF" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="32" FontWeight="Bold" Content="&#xE748;"/>
+                                            <Label Foreground="#FFF" VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="32" FontWeight="Bold" Content="Выход"/>
+                                        </StackPanel>
+                                    </Button>
+                                </ComboBoxItem>
+                            </ComboBox>
                         </StackPanel>
-                    </Button>
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Frame Name="MainFrame" Grid.Row="2" NavigationUIVisibility="Hidden"/>

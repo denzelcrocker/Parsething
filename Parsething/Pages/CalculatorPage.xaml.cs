@@ -2,37 +2,33 @@
 
 public partial class CalculatorPage : Page
 {
-    private Frame MainFrame { get; set; } = null!;
-    public CalculatorPage()
-    {
+    public CalculatorPage() =>
         InitializeComponent();
-    }
-    List<ProcurementsEmployee>? procurementsEmployeesNew;
-    List<ProcurementsEmployee>? procurementsEmployeesCalculated;
-    List<ProcurementsEmployee>? procurementsEmployeesDrawUp;
+
+    private Frame MainFrame { get; set; } = null!;
+
+    private List<ProcurementsEmployee>? ProcurementsEmployeesNew { get; set; }
+    private List<ProcurementsEmployee>? ProcurementsEmployeesCalculated { get; set; }
+    private List<ProcurementsEmployee>? ProcurementsEmployeesDrawUp { get; set; }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
-        }
+        try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
         catch { }
-        procurementsEmployeesNew = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый");
-        if (procurementsEmployeesNew != null)
+
+        ProcurementsEmployeesNew = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый");
+        if (ProcurementsEmployeesNew != null)
         {
-            View.ItemsSource = procurementsEmployeesNew;
-            NewCount.Text = procurementsEmployeesNew.Count.ToString();
+            View.ItemsSource = ProcurementsEmployeesNew;
+            NewCount.Text = ProcurementsEmployeesNew.Count.ToString();
         }
-        procurementsEmployeesCalculated = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан");
-        if (procurementsEmployeesCalculated != null)
-        {
-            Calculated.Text = procurementsEmployeesCalculated.Count.ToString();
-        }
-        procurementsEmployeesDrawUp = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить");
-        if (procurementsEmployeesDrawUp != null)
-        {
-            DrawUp.Text = procurementsEmployeesDrawUp.Count.ToString();
-        }
+
+        ProcurementsEmployeesCalculated = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан");
+        if (ProcurementsEmployeesCalculated != null)
+            Calculated.Text = ProcurementsEmployeesCalculated.Count.ToString();
+
+        ProcurementsEmployeesDrawUp = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить");
+        if (ProcurementsEmployeesDrawUp != null)
+            DrawUp.Text = ProcurementsEmployeesDrawUp.Count.ToString();
     }
 }
