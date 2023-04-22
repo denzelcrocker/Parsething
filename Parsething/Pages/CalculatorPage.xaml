@@ -60,13 +60,134 @@
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" Text="0"/>
                     </Grid>
                 </StackPanel>
-                <DataGrid x:Name="View" Grid.Column="2" Margin="16" AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Path=Procurement.Id}" Header="ФИО"/>
-                        <DataGridTextColumn Binding="{Binding Path=Procurement.Number}" Header="Должность"/>
-                        <DataGridTextColumn Binding="{Binding Path=Procurement.ProcurementState.Kind}" Header="Учетная запись"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DockPanel Grid.Column="2" VerticalAlignment="Top">
+                    <TextBlock Text="№" FontSize="20"/>
+                </DockPanel>
+                <ListView 
+                    DockPanel.Dock="Top"   
+                    Grid.Column="2"
+                    x:Name="View"
+                    Cursor="Hand"
+                    BorderThickness="0">
+                    <ListView.ItemContainerStyle>
+                        <Style 
+                            TargetType="ListViewItem">
+                            <Setter 
+                                Property="HorizontalContentAlignment"
+                                Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate >
+                        <DataTemplate>
+                            <Border 
+                                BorderThickness="1"
+                                BorderBrush="Black"
+                                CornerRadius="15">
+                                <Grid HorizontalAlignment="Stretch" Height="60">
+                                    <Grid.ToolTip>
+                                        <ToolTip>
+                                            Перейти
+                                        </ToolTip>
+                                    </Grid.ToolTip>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="170"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="210"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="430"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock 
+                                        Text="{Binding Path=Procurement.Id}"
+                                        HorizontalAlignment="Center"
+                                        Name="ServiceId"
+                                        FontFamily="../Fonts/#Mustica Pro"
+                                        FontSize="20"
+                                        VerticalAlignment="Center"/>
+                                    <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Grid.Column="2"
+                                        Text="{Binding Path=Procurement.Law.Number}"
+                                        FontFamily="../Fonts/#Mustica Pro"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
+                                    <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Grid.Column="4"
+                                        Text="{Binding Path=Procurement.Number}"
+                                        FontFamily="../Fonts/#Mustica Pro"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
+                                    <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Grid.Column="6"
+                                        Text="{Binding Path=Procurement.Deadline}"
+                                        HorizontalAlignment="Center"
+                                        FontFamily="../Fonts/#Mustica Pro"
+                                        FontSize="15"
+                                         VerticalAlignment="Center"
+                                        Margin="10"/>
+                                    <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Grid.Column="8"
+                                        Text="{Binding Path=Procurement.InitialPrice, StringFormat={}{0:N2} р.}"
+                                        FontFamily="../Fonts/#Mustica Pro"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="10"/>
+                                    <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Grid.Column="10"
+                                        Text="{Binding Path=Procurement.ProcurementState.Kind}"
+                                        FontFamily="Bahnschrift"
+                                        FontSize="20"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="10"/>
+                                    <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <DockPanel Grid.Column="12" HorizontalAlignment="Right">
+                                        <Button                                
+                                            x:Name="PrintButton"
+                                            HorizontalAlignment="Right"
+                                            Background="#00ffffff"
+                                            BorderBrush="#00ffffff"
+                                            Width="50" 
+                                            Height="50">
+                                            <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/Images/PhotoCoatOfArmsOfRussia.png" Stretch="Uniform" Height="60"/>
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button 
+                                        HorizontalAlignment="Right"
+                                        Margin="10,0,0,0"
+                                        Width="50" 
+                                        Background="#00ffffff"
+                                        BorderBrush="#00ffffff"
+                                        Height="50" Opacity="1">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="50"/>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </DockPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </Border>
     </ScrollViewer>

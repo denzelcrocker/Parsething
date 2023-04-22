@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pages\gear.png" />
+    <None Remove="Pages\PhotoCoatOfArmsOfRussia.png" />
     <None Remove="Resources\Fonts\Noah-Regular.ttf" />
   </ItemGroup>
 
@@ -29,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\gear.png" />
     <Resource Include="Resources\Fonts\Mustica Pro.otf" />
     <Resource Include="Resources\Fonts\Noah-Regular.ttf" />
     <Resource Include="Resources\Images\PlaceholderEmployeePhotoPreview.png" />

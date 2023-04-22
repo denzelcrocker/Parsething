@@ -315,7 +315,7 @@
                     </Grid>
                     <Label Content="Логистика" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Button Content="Логистика" Style="{DynamicResource SumbitAction}"/>
+                    <Button Content="Логистика" Style="{DynamicResource SumbitAction}" Cursor="Hand"/>
                 </StackPanel>
             </Grid>
         </Border>
