@@ -63,20 +63,7 @@
                 <DockPanel Grid.Column="2" VerticalAlignment="Top">
                     <TextBlock Text="№" FontSize="20"/>
                 </DockPanel>
-                <ListView 
-                    DockPanel.Dock="Top"   
-                    Grid.Column="2"
-                    x:Name="View"
-                    Cursor="Hand"
-                    BorderThickness="0">
-                    <ListView.ItemContainerStyle>
-                        <Style 
-                            TargetType="ListViewItem">
-                            <Setter 
-                                Property="HorizontalContentAlignment"
-                                Value="Stretch"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
+                <ListView x:Name="View" Height="50" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}">
                     <ListView.ItemTemplate >
                         <DataTemplate>
                             <Border 

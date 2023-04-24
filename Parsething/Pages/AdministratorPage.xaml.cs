@@ -1,10 +1,14 @@
-﻿using DatabaseLibrary.Queries;
-
-namespace Parsething.Pages;
+﻿namespace Parsething.Pages;
 
 public partial class AdministratorPage : Page
 {
     private Frame MainFrame { get; set; } = null!;
+
+    private class Piski
+    {
+        public string FullName { get; set; } = null!;
+        public int Count { get; set; }
+    }
 
     public AdministratorPage()
     {
@@ -22,6 +26,13 @@ public partial class AdministratorPage : Page
         RetreatCalculate.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой Расчет", GET.KindOf.ProcurementState));
         DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState));
         Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState));
+
+        List<Piski> piskis = new()
+        {
+            new() { FullName = "piskaodin", Count = 1 },
+            new() { FullName = "piskadva", Count = 2 }
+        };
+        piskie.ItemsSource = piskis;
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)

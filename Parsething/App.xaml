@@ -7,7 +7,9 @@
                 <ResourceDictionary Source="/Resources/Templates/CheckBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ComboBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/LabelTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/ListView.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/PasswordBoxTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/Scrolling.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/TextBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/WindowTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/TextBlockTemplates.xaml"/>
