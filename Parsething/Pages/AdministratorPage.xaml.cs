@@ -3,36 +3,52 @@
 public partial class AdministratorPage : Page
 {
     private Frame MainFrame { get; set; } = null!;
+    private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesGroupings { get; set; }
 
-    private class Piski
-    {
-        public string FullName { get; set; } = null!;
-        public int Count { get; set; }
-    }
 
     public AdministratorPage()
     {
-        InitializeComponent();
-        Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState));
-        Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState));
-        Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState));
-        //CalculationQueue
-        Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState));
-        Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState));
-        Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState));
-        Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState));
-        New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState));
-        Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState));
-        RetreatCalculate.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой Расчет", GET.KindOf.ProcurementState));
-        DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState));
-        Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState));
 
-        List<Piski> piskis = new()
+        InitializeComponent();
+
+        int countOfCalculations = 0;
+
+        Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState));
+
+        Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState));
+
+        Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState));
+
+        //CalculationQueue
+
+        Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState));
+
+        Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState));
+
+        Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState));
+
+        Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState));
+
+        New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState));
+
+        Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState));
+
+        ProcurementsEmployeesGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов");
+        foreach (var item in ProcurementsEmployeesGroupings)
         {
-            new() { FullName = "piskaodin", Count = 1 },
-            new() { FullName = "piskadva", Count = 2 }
-        };
-        piskie.ItemsSource = piskis;
+            countOfCalculations += item.CountOfProcurements;
+        }
+        CalculationsOverAll.Text = countOfCalculations.ToString();
+        foreach (var item in ProcurementsEmployeesGroupings)
+        {
+            Calculations.Items.Add(item);
+        }
+
+        RetreatCalculate.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState));
+
+        DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState));
+
+        Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState));
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)

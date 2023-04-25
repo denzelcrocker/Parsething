@@ -27,7 +27,7 @@
                                     <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemBase}" Style="{DynamicResource ComboBoxBase}">
+                            <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemBase}" Style="{DynamicResource ComboBoxBase}" Cursor="Hand">
                                 <ComboBoxItem IsEnabled="False">
                                     <Label x:Name="FullName" Style="{DynamicResource ProfilePreview.Entry}"/>
                                 </ComboBoxItem>
