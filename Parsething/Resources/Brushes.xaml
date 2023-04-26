@@ -8,4 +8,5 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="WindowPresenter.Background" Color="#FFF"/>
     <SolidColorBrush x:Key="MainFrame.Background" Color="White"/>
+    <SolidColorBrush x:Key="Highlight" Color="Red"/>
 </ResourceDictionary>
