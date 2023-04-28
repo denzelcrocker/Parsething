@@ -37,11 +37,11 @@ public partial class AdministratorPage : Page
 
         Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
 
-        Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен" , false)); // Торги
+        Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен" , false, GET.KindOf.Deadline)); // Торги
 
         // Котировки
 
-        OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true)); // Просрочены
+        OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.Deadline)); // Просрочены
 
         Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState)); // Отменены
 
@@ -72,9 +72,9 @@ public partial class AdministratorPage : Page
 
         Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState)); // Оформллены
 
-        // К отправке
+        ForSend.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", false, GET.KindOf.StartDate));  // К отправке
 
-        OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true));// Просрочены
+        OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true, GET.KindOf.StartDate));// Просрочены
 
         ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками");
         foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
@@ -136,15 +136,15 @@ public partial class AdministratorPage : Page
 
         // На исправлении
 
-        // Не оплачены
+        NotPaidOnTime.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(false)); // В срок
 
-        // В срок
+        NotPaidDelay.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(true));// Просрочка
 
-        // Просрочка
+        NotPaid.Text = (GET.Aggregate.ProcurementsCountBy(true) + GET.Aggregate.ProcurementsCountBy(false)).ToString(); // Не оплачены
 
-        // Суд
+        Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
-        // ФАС
+        FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
     }
     
 
