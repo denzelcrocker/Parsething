@@ -204,12 +204,13 @@
                                     </Button>
                                     <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button 
+                                        x:Name="EditProcurement"
                                         Grid.Column="16"
                                         HorizontalAlignment="Center"
                                         Width="50" 
                                         Background="#00ffffff"
                                         BorderBrush="#00ffffff"
-                                        Height="50" Opacity="1">
+                                        Height="50" Opacity="1" Click="EditProcurement_Click">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="45"/>

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Windows.Media;
 
 namespace Parsething.Pages;
 
@@ -46,14 +47,10 @@ public partial class CalculatorPage : Page
 
     private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
     {
-        
-        //ListView listView = View;
-        //foreach (Procurement item in listView.SelectedItems)
-        //{
-        //    Process.Start(item.RequestUri);
-
-        //}
-
+        ListView myListView = this.FindName("View") as ListView;
+        ProcurementsEmployee procurement = myListView.SelectedItem as ProcurementsEmployee;
+        string url = procurement.Procurement.RequestUri;
+        //Process.Start(url);
     }
 
     private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -70,5 +67,13 @@ public partial class CalculatorPage : Page
     {
         View.ItemsSource = ProcurementsEmployeesDrawUp;
 
+    }
+
+    private void EditProcurement_Click(object sender, RoutedEventArgs e)
+    {
+        ListView myListView = this.FindName("View") as ListView;
+        ProcurementsEmployee procurement = myListView.SelectedItem as ProcurementsEmployee;
+        if(procurement != null)
+        _ = MainFrame.Navigate(new CardOfProcurement(procurement));
     }
 }

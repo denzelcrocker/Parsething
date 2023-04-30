@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="/Resources/Templates/TextBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/WindowTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/TextBlockTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/ComboBoxCard Templates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

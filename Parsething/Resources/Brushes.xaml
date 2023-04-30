@@ -9,4 +9,7 @@
     <SolidColorBrush x:Key="WindowPresenter.Background" Color="#FFF"/>
     <SolidColorBrush x:Key="MainFrame.Background" Color="White"/>
     <SolidColorBrush x:Key="Highlight" Color="Red"/>
+    <SolidColorBrush x:Key="Text.Foreground" Color="#535353"/>
+    <SolidColorBrush x:Key="Text.Background" Color="#D9D9D9"/>
+    <SolidColorBrush x:Key="MainText.Foreground" Color="#BD1414"/>
 </ResourceDictionary>

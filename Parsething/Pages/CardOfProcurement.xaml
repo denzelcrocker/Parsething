@@ -5,10 +5,45 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parsething.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="CardOfProcurement">
-
-    <Grid>
+      Title="CardOfProcurement" Loaded="Page_Loaded">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Width="1810" Height="900">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1300"/>
+                <ColumnDefinition Width="510"/>
+            </Grid.ColumnDefinitions>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15"  CornerRadius="45">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="2"/>
+                        <ColumnDefinition Width="948"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="2"/>
+                        <RowDefinition Height="818"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource Text.Background}" CornerRadius="30" Width="150" Margin="40,0,0,0">
+                        <TextBlock x:Name="Id" Text="000000" Foreground="{DynamicResource Text.Foreground}" FontSize="30" Padding="15,10" HorizontalAlignment="Center"/>
+                    </Border>
+                    <ComboBox x:Name="ProcurementState" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" Margin="50,0" Width="150" Style="{DynamicResource ComboBoxBase.Card}" Height="60"  StaysOpenOnEdit="True" DisplayMemberPath="Kind">
+                        
+                    </ComboBox>
+                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1" Margin="20,0"/>
+                    <Button x:Name="SaveButton" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Сохранить" FontSize="25" Click="SaveButton_Click"/>
+                </Grid>
+            </Border>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
+                </Border.Effect>
+            </Border>
+            
+        </Grid>
         
-    </Grid>
+    </ScrollViewer>
 </Page>
