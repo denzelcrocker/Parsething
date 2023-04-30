@@ -32,13 +32,17 @@
                                     <Label x:Name="FullName" Style="{DynamicResource ProfilePreview.Entry}"/>
                                 </ComboBoxItem>
                                 <ComboBoxItem IsEnabled="False">
-                                    <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry}"/>
+                                    <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry.2}"/>
+                                </ComboBoxItem>
+                                <ComboBoxItem IsEnabled="False">
+                                    <!--<Polygon Fill="White" Points="0,3,210,3" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="1" Stroke="#C6BDBF" />-->
+                                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2" Width="300"/>
                                 </ComboBoxItem>
                                 <ComboBoxItem>
                                     <Button x:Name="SwitchUser" Style="{DynamicResource Profile}" Click="SwitchUser_Click">
                                         <StackPanel Orientation="Horizontal">
-                                            <Label Foreground="#FFF" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="32" FontWeight="Bold" Content="&#xE748;"/>
-                                            <Label Foreground="#FFF" VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="32" FontWeight="Bold" Content="Выход"/>
+                                            <Label Foreground="#BD1414" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="30" Content="&#xE748;"/>
+                                            <Label VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="30" Content="Выход"/>
                                         </StackPanel>
                                     </Button>
                                 </ComboBoxItem>

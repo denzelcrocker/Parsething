@@ -71,4 +71,9 @@ public partial class CalculatorPage : Page
         View.ItemsSource = ProcurementsEmployeesDrawUp;
 
     }
+
+    private void ServiceId_PreviewStylusSystemGesture(object sender, StylusSystemGestureEventArgs e)
+    {
+
+    }
 }

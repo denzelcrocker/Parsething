@@ -3,6 +3,9 @@
     <Style x:Key="TextBlockBase" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="../Fonts/#Mustica Pro"/>
     </Style>
+    <Style x:Key="TextBlockBase.2" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="Noah"/>
+    </Style>
     <Style x:Key="TextBlock.Single" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
         <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="FontSize" Value="25"/>
@@ -30,4 +33,19 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="TextTrimming" Value="None"/>
     </Style>
+    <Style x:Key="ComboBox.Entry" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
+        <Setter Property="Margin" Value="13,13"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="Foreground" Value="#000"/>
+        <Setter Property="FontFamily" Value="Noah"/>
+    </Style>
+
+    <Style x:Key="TableElements" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase.2}">
+        <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Noah"/>
+    </Style>
+    
 </ResourceDictionary>
