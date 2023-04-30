@@ -136,11 +136,13 @@
                         <TextBlock x:Name="Calculated" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
                         <ComboBox x:Name="CalculationsCombobox" Style="{DynamicResource InfoBox}" Text="Расчёт:" Grid.Column="0" Grid.Row="4" Margin="10,0,0,0">
+                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="4" Margin="90,0,0,0"/>
+                        <ComboBox x:Name="CalculationsCombobox" Style="{DynamicResource InfoBox}" Text="Расчёт: " Grid.Column="0" Grid.Row="4">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Path=Id}" Margin="0,0,16,0" Width="250" FontSize="25" Foreground="#000"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}" FontSize="25" Foreground="#000"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="250" HorizontalAlignment="Left"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -165,12 +167,13 @@
                         <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="16"/>
                         <TextBlock x:Name="OverdueIssued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="16" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="17"/>
-                        <ComboBox x:Name="SendingCombobox" Style="{DynamicResource InfoBox}" Text="Отправка: " Grid.Column="0" Grid.Row="18" Margin="10,0,0,0">
+                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;"  Grid.Column="0" Grid.Row="18" Margin="120,0,0,0"/>
+                        <ComboBox x:Name="SendingCombobox" Style="{DynamicResource InfoBox}" Text="Отправка:" Grid.Column="0" Grid.Row="18">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Path=Id}" Margin="0,0,16,0" Width="250" FontSize="25" Foreground="#000"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}" FontSize="25" Foreground="#000"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="250" HorizontalAlignment="Left"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -209,12 +212,13 @@
                         <Label Content="Выиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <TextBlock x:Name="WonByOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                        <ComboBox x:Name="ManagersCombobox" Style="{DynamicResource InfoBox}" Text="Распределение: " Grid.Column="0" Grid.Row="6" Margin="10,0,0,0">
+                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="6" Margin="185,0,0,0"/>
+                        <ComboBox x:Name="ManagersCombobox" Style="{DynamicResource InfoBox}" Text="Распределение: " Grid.Column="0" Grid.Row="6">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Path=Id}" Margin="0,0,16,0" Width="250" FontSize="25" Foreground="#000"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}" FontSize="25" Foreground="#000"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Width="250" Text="{Binding Path=Id}"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>

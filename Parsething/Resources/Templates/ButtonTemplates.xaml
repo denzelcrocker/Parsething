@@ -1,4 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
     <Style x:Key="ButtonBase" TargetType="{x:Type Button}">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -6,6 +7,7 @@
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
     </Style>
+    
     <Style x:Key="ImagePresenter" TargetType="{x:Type Button}">
         <Setter Property="IsEnabled" Value="False"/>
         <Setter Property="Template">
@@ -51,6 +53,7 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="SumbitAction.Static.BorderBrush" Color="#0000"/>
     <SolidColorBrush x:Key="SumbitAction.Static.Foreground" Color="#FFF"/>
+    
     <Style x:Key="SumbitAction" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource SumbitAction.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource SumbitAction.Static.BorderBrush}"/>
@@ -79,6 +82,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="StatisticsButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource SumbitAction.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource SumbitAction.Static.BorderBrush}"/>
@@ -107,13 +111,15 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <SolidColorBrush x:Key="Profile.Static.Background" Color="#0000"/>
     <SolidColorBrush x:Key="Profile.Static.Border" Color="#0000"/>
     <Style x:Key="Profile" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
         <Setter Property="Background" Value="{StaticResource Profile.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Profile.Static.Border}"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-        <Setter Property="Margin" Value="8,4"/>
+        <Setter Property="Margin" Value="30,5"/>
+        <Setter Property="Width" Value="250"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>

@@ -76,4 +76,9 @@ public partial class CalculatorPage : Page
         if(procurement != null)
         _ = MainFrame.Navigate(new CardOfProcurement(procurement));
     }
+
+    private void ServiceId_PreviewStylusSystemGesture(object sender, StylusSystemGestureEventArgs e)
+    {
+
+    }
 }
