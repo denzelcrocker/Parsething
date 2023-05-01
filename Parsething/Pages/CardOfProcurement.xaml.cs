@@ -29,15 +29,17 @@ namespace Parsething.Pages
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
         }
+
         public CardOfProcurement(ProcurementsEmployee procurementsEmployee)
         {
             InitializeComponent();
-            ProcurementStates = GET.View.ProcurementStates();
+            ProcurementStates = GET.View.DistributionOfProcurementStates(((Employee)Application.Current.MainWindow.DataContext).Position.Kind);
             ProcurementState.ItemsSource = ProcurementStates;
             Procurement = procurementsEmployee.Procurement;
 
             if (Procurement != null && ProcurementState != null)
             {
+
                 Id.Text = Procurement.Id.ToString();
                 foreach (ProcurementState procurementState in ProcurementState.ItemsSource)
                     if (procurementState.Id == Procurement.ProcurementStateId)

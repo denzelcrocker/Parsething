@@ -20,9 +20,68 @@ namespace Parsething.Pages
     /// </summary>
     public partial class PurchaserPage : Page
     {
-        public PurchaserPage()
-        {
+        private Frame MainFrame { get; set; } = null!;
+        private List<Procurement>? ProcurementsWonPartOne { get; set; }
+        private List<Procurement>? ProcurementsWonPartTwo { get; set; }
+        private List<Procurement>? ProcurementsAcceptance { get; set; }
+        private List<Procurement>? ProcurementsThisWeek { get; set; }
+        private List<Procurement>? ProcurementsNextWeek { get; set; }
+
+
+        public PurchaserPage() =>
             InitializeComponent();
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
+            catch { }
+
+            ProcurementsWonPartOne = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState);
+            if (ProcurementsWonPartOne != null)
+                WonPartOne.Text = ProcurementsWonPartOne.Count.ToString();
+
+            ProcurementsWonPartTwo = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
+            if (ProcurementsWonPartTwo != null)
+                WonPartTwo.Text = ProcurementsWonPartTwo.Count.ToString();
+
+            ProcurementsAcceptance = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState);
+            if (ProcurementsAcceptance != null)
+                Acceptance.Text = ProcurementsAcceptance.Count.ToString();
+
+            ProcurementsThisWeek = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane);
+            if (ProcurementsThisWeek != null)
+            {
+                View.ItemsSource = ProcurementsThisWeek;
+                ThisWeek.Text = ProcurementsThisWeek.Count.ToString();
+            }
+
+            ProcurementsNextWeek = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane);
+            if (ProcurementsNextWeek != null)
+                NextWeek.Text = ProcurementsNextWeek.Count.ToString();
+        }
+
+        private void NextWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = ProcurementsNextWeek;
+        }
+
+        private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = ProcurementsThisWeek;
+        }
+
+        private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = ProcurementsAcceptance;
+        }
+
+        private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = ProcurementsWonPartTwo;
+        }
+
+        private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = ProcurementsWonPartOne;
         }
     }
 }

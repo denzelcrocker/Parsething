@@ -35,7 +35,6 @@
                                     <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry.2}"/>
                                 </ComboBoxItem>
                                 <ComboBoxItem IsEnabled="False">
-                                    <!--<Polygon Fill="White" Points="0,3,210,3" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="1" Stroke="#C6BDBF" />-->
                                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2" Width="300"/>
                                 </ComboBoxItem>
                                 <ComboBoxItem>

@@ -13,11 +13,17 @@ public partial class AdministratorPage : Page
 
 
 
-    public AdministratorPage()
-    {
-
+    public AdministratorPage() =>
         InitializeComponent();
+    
 
+    private void Page_Loaded(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
+        }
+        catch { }
         int countOfCalculations = 0;
         int countOfSended = 0;
         int countOfManagers = 0;
@@ -32,12 +38,12 @@ public partial class AdministratorPage : Page
         //{
         //    CalculationQueue.Foreground = Brushes.Red;
         //}
-        
+
         // Очередь расчета
 
         Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
 
-        Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен" , false, GET.KindOf.Deadline)); // Торги
+        Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.Deadline)); // Торги
 
         // Котировки
 
@@ -54,7 +60,7 @@ public partial class AdministratorPage : Page
         Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState)); // Посчитан
 
         ProcurementsEmployeesCalculatorsGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов");
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupings) 
+        foreach (var item in ProcurementsEmployeesCalculatorsGroupings)
         {
             countOfCalculations += item.CountOfProcurements;
         }
@@ -145,16 +151,6 @@ public partial class AdministratorPage : Page
         Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
         FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
-    }
-    
-
-    private void Page_Loaded(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
-        }
-        catch { }
     }
 
 }

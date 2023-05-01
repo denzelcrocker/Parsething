@@ -5,10 +5,249 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parsething.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="PurchaserPage">
+      Title="PurchaserPage" Loaded="Page_Loaded">
 
-    <Grid>
-        
-    </Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
+            </Border.Effect>
+            <Grid Width="1810" Height="820">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="360"/>
+                    <ColumnDefinition Width="2"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
+                <StackPanel Grid.Column="0" Margin="10" Grid.RowSpan="2">
+                    <Label Content="Закупка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
+                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="48" />
+                            <ColumnDefinition Width="172"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Выигран 1ч:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.ColumnSpan="2" Margin="6,0,0,0"/>
+                        <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Text="0" />
+                        <Button x:Name="WonPartOneButton" Grid.ColumnSpan="5" Grid.Row="0" Opacity="0" Cursor="Hand" Click="WonPartOneButton_Click"/>
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="1"/>
+                        <Label Content="Выигран 2ч:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="6,0,0,0"/>
+                        <TextBlock x:Name="WonPartTwo" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="2" Text="0"/>
+                        <Button x:Name="WonPartTwoButton" Grid.ColumnSpan="5" Grid.Row="2" Opacity="0" Cursor="Hand" Click="WonPartTwoButton_Click"/>
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="3"/>
+                        <Label Content="Примемка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="6,0,0,0"/>
+                        <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="4" Text="0"/>
+                        <Button x:Name="AcceptanceButton" Grid.ColumnSpan="5" Grid.Row="4" Opacity="0" Cursor="Hand" Click="AcceptanceButton_Click"/>
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="5"/>
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="7"/>
+                    </Grid>
+                    <Label Content="Поставка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
+                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="6"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Проблема:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
+                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
+                        <Label Content="В работе:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
+                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
+                        <Label Content="Согласовано:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
+                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
+                        <Label Content="План отгрузки:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
+                        <Label Content="Текущая неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="7"/>
+                        <TextBlock x:Name="ThisWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="7" />
+                        <Button x:Name="ThisWeekButton" Grid.ColumnSpan="5" Grid.Row="7" Opacity="0" Cursor="Hand" Click="ThisWeekButton_Click"/>
+                        <Label Content="След. неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="8"/>
+                        <TextBlock x:Name="NextWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
+                        <Button x:Name="NextWeekButton" Grid.ColumnSpan="5" Grid.Row="8" Opacity="0" Cursor="Hand" Click="NextWeekButton_Click"/>
+                    </Grid>
+                </StackPanel>
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="210"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="160"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Style="{DynamicResource ColumnNames}" Content="Id" Grid.Column="0" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Закон" Grid.Column="1" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Номер закупки" Grid.Column="2" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Max дата поставки" Grid.Column="3" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Максимальная цена" Grid.Column="4" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Статус тендера" Grid.Column="5" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Статус тендера" Grid.Column="5" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Закупка" Grid.Column="6" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="ЕИС" Grid.Column="7" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Редактировать" Grid.Column="8" />
+                </Grid>
+                <ListView x:Name="View" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border 
+                                BorderThickness="1"
+                                BorderBrush="#C6BDBF"
+                                CornerRadius="15">
+                                <Grid HorizontalAlignment="Stretch" Height="60">
+                                    <Grid.ToolTip>
+                                        <ToolTip>
+                                            Перейти
+                                        </ToolTip>
+                                    </Grid.ToolTip>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="170"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="210"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="140"/>
+                                        <ColumnDefinition Width="2"/>
+                                        <ColumnDefinition Width="140"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Text="{Binding Path=Id}"
+                                        HorizontalAlignment="Center"
+                                        Name="ServiceId"
+                                        FontSize="20"
+                                        VerticalAlignment="Center"/>
+                                    <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="2"
+                                        Text="{Binding Path=Law.Number}"
+                                        FontSize="20"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
+                                    <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="4"
+                                        Text="{Binding Path=Number}"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
+                                    <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="6"
+                                        Text="{Binding Path=ActualDeliveryDate}"
+                                        HorizontalAlignment="Center"
+                                        FontSize="15"
+                                         VerticalAlignment="Center"
+                                        Margin="10"/>
+                                    <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="8"
+                                        Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
+                                        FontSize="20"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="10"/>
+                                    <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="10"
+                                        Text="{Binding Path=ProcurementState.Kind}"
+                                        FontSize="20"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="10"/>
+                                    <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Button   
+                                            Grid.Column="12"
+                                            x:Name="PrintButton"
+                                            HorizontalAlignment="Center"
+                                            Background="#00ffffff"
+                                            BorderBrush="#00ffffff"
+                                            Width="50" 
+                                            Height="50">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="45"/>
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Button 
+                                        x:Name="NavigateToProcurementURL"
+                                        Grid.Column="14"
+                                        HorizontalAlignment="Center"
+                                        Width="50" 
+                                        Background="#00ffffff"
+                                        BorderBrush="#00ffffff"
+                                        Height="50" Opacity="1">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="45"/>
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Button 
+                                        x:Name="EditProcurement"
+                                        Grid.Column="16"
+                                        HorizontalAlignment="Center"
+                                        Width="50" 
+                                        Background="#00ffffff"
+                                        BorderBrush="#00ffffff"
+                                        Height="50" Opacity="1" >
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="45"/>
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
+    </ScrollViewer>
 </Page>

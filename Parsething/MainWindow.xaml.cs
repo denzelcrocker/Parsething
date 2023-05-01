@@ -56,6 +56,10 @@ public partial class MainWindow : Window
         {
             _ = MainFrame.Navigate(new Pages.ManagerPage());
         }
+        else if (((Employee)DataContext).Position.Kind == "Руководитель отдела закупки" || ((Employee)DataContext).Position.Kind == "Заместитель руководителя отдела закупок" || ((Employee)DataContext).Position.Kind == "Специалист закупки")
+        {
+            _ = MainFrame.Navigate(new Pages.PurchaserPage());
+        }
         else if (((Employee)DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)DataContext).Position.Kind == "Специалист по производству")
         {
             _ = MainFrame.Navigate(new Pages.AssemblyPage());

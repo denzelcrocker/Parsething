@@ -66,7 +66,6 @@ public partial class CalculatorPage : Page
     private void DrawUpButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = ProcurementsEmployeesDrawUp;
-
     }
 
     private void EditProcurement_Click(object sender, RoutedEventArgs e)
