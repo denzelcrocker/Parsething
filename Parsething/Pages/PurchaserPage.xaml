@@ -235,7 +235,7 @@
                                         Width="50" 
                                         Background="#00ffffff"
                                         BorderBrush="#00ffffff"
-                                        Height="50" Opacity="1" >
+                                        Height="50" Opacity="1" Click="EditProcurement_Click" >
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="45"/>

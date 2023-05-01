@@ -73,7 +73,7 @@ public partial class CalculatorPage : Page
         ListView myListView = this.FindName("View") as ListView;
         ProcurementsEmployee procurement = myListView.SelectedItem as ProcurementsEmployee;
         if(procurement != null)
-        _ = MainFrame.Navigate(new CardOfProcurement(procurement));
+        _ = MainFrame.Navigate(new CardOfProcurement(procurement,null));
     }
 
     private void ServiceId_PreviewStylusSystemGesture(object sender, StylusSystemGestureEventArgs e)

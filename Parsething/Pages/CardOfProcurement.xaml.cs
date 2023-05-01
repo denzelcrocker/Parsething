@@ -30,12 +30,15 @@ namespace Parsething.Pages
             catch { }
         }
 
-        public CardOfProcurement(ProcurementsEmployee procurementsEmployee)
+        public CardOfProcurement(ProcurementsEmployee procurementsEmployee,Procurement procurement)
         {
             InitializeComponent();
             ProcurementStates = GET.View.DistributionOfProcurementStates(((Employee)Application.Current.MainWindow.DataContext).Position.Kind);
             ProcurementState.ItemsSource = ProcurementStates;
-            Procurement = procurementsEmployee.Procurement;
+            if (procurementsEmployee != null)
+                Procurement = procurementsEmployee.Procurement;
+            else
+                Procurement = procurement;
 
             if (Procurement != null && ProcurementState != null)
             {
@@ -55,7 +58,7 @@ namespace Parsething.Pages
             Procurement.Id = Convert.ToInt32(Id.Text);
             Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
             PULL.Procurement(Procurement);
-            _ = MainFrame.Navigate(new CalculatorPage());
+            MainFrame.GoBack();
         }
     }
 }

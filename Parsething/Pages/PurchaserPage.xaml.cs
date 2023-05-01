@@ -26,6 +26,8 @@ namespace Parsething.Pages
         private List<Procurement>? ProcurementsAcceptance { get; set; }
         private List<Procurement>? ProcurementsThisWeek { get; set; }
         private List<Procurement>? ProcurementsNextWeek { get; set; }
+        private List<ProcurementsEmployee>? procurementsEmployee { get; set; }
+
 
 
         public PurchaserPage() =>
@@ -82,6 +84,14 @@ namespace Parsething.Pages
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsWonPartOne;
+        }
+
+        private void EditProcurement_Click(object sender, RoutedEventArgs e)
+        {
+            ListView myListView = this.FindName("View") as ListView;
+            Procurement procurement = myListView.SelectedItem as Procurement;
+            if (procurement != null)
+                _ = MainFrame.Navigate(new CardOfProcurement(null,procurement));
         }
     }
 }
