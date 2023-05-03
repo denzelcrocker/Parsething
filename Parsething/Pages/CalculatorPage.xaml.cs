@@ -71,9 +71,12 @@ public partial class CalculatorPage : Page
     private void EditProcurement_Click(object sender, RoutedEventArgs e)
     {
         ListView myListView = this.FindName("View") as ListView;
-        ProcurementsEmployee procurement = myListView.SelectedItem as ProcurementsEmployee;
-        if(procurement != null)
-        _ = MainFrame.Navigate(new CardOfProcurement(procurement,null));
+        ProcurementsEmployee procurementsEmployee = myListView.SelectedItem as ProcurementsEmployee;
+        if (procurementsEmployee != null)
+        {
+            Procurement procurement = procurementsEmployee.Procurement;
+            _ = MainFrame.Navigate(new CardOfProcurement(procurement));
+        }
     }
 
     private void ServiceId_PreviewStylusSystemGesture(object sender, StylusSystemGestureEventArgs e)

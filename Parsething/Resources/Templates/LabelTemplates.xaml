@@ -97,4 +97,10 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <Style x:Key="Title.CardOfProcurement" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="{StaticResource Text.Foreground}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+    </Style>
 </ResourceDictionary>

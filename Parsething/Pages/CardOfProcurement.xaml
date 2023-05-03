@@ -33,16 +33,74 @@
                     <ComboBox x:Name="ProcurementState" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" Margin="50,0" Width="150" Style="{DynamicResource ComboBoxBase.Card}" Height="60"  StaysOpenOnEdit="True" DisplayMemberPath="Kind"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1" Margin="20,0"/>
                     <Button x:Name="SaveButton" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Сохранить" FontSize="25" Click="SaveButton_Click"/>
-                    <!--<ListView Grid.Column="2" Grid.Row="2">
-                        <Button Content="Лешагей" FontSize="160"/>
-                        <Button Content="Лешагей" FontSize="160"/>
-                        <Button Content="Лешагей" FontSize="160"/>
-                        <Button Content="Лешагей" FontSize="160"/>
-                        <Button Content="Лешагей" FontSize="160"/>
-                        <Button Content="Лешагей" FontSize="160"/>
-                        <Button Content="Лешагей" FontSize="160"/>
-
-                    </ListView>-->
+                    <Grid Grid.Row="2" Grid.Column="0" Margin="30">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                        </Grid.RowDefinitions>
+                        <Label x:Name="ProcurementInfoLabel" Content="Данные закупки" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="0"/>
+                        <Rectangle x:Name="ProcurementInfoUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="1"/>
+                        <Button x:Name="ProcurementInfo" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="0" Click="ProcurementInfo_Click"/>
+                        <Label x:Name="ContractInfoLabel" Content="Данные контракта" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="2" />
+                        <Rectangle x:Name="ContractInfoUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="3"/>
+                        <Button x:Name="ContractInfo" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="2" Click="ContractInfo_Click"/>
+                        <Label x:Name="ContractNuancesLabel" Content="Нюансы контракта" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="4" />
+                        <Rectangle x:Name="ContractNuancesUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="5"/>
+                        <Button x:Name="ContractNuances" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="4" Click="ContractNuances_Click"/>
+                        <Label x:Name="CalculatingLabel" Content="Расчет" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="6" />
+                        <Rectangle x:Name="CalculatingUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="7"/>
+                        <Button x:Name="Calculating" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="6" Click="Calculating_Click"/>
+                        <Label x:Name="SendingLabel" Content="Подача" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="8" />
+                        <Rectangle x:Name="SendingUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="9"/>
+                        <Button x:Name="Sending" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="8" Click="Sending_Click"/>
+                        <Label x:Name="BargainingLabel" Content="Торги" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="10" />
+                        <Rectangle x:Name="BargainingUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="11"/>
+                        <Button x:Name="Bargaining" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="10" Click="Bargaining_Click"/>
+                        <Label x:Name="SupplyLabel" Content="Поставка" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="12" />
+                        <Rectangle x:Name="SupplyUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="13"/>
+                        <Button x:Name="Supply" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="12" Click="Supply_Click"/>
+                        <Label x:Name="PaymentLabel" Content="Оплата" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="14" />
+                        <Rectangle x:Name="PaymentUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="15"/>
+                        <Button x:Name="Payment" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="14" Click="Payment_Click"/>
+                    </Grid>
+                    <ListView x:Name="ProcurementInfoLV" Grid.Column="2" Grid.Row="2">
+                        <Button Content="Данные закупки" FontSize="100"/>
+                    </ListView>
+                    <ListView x:Name="ContractInfoLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden">
+                        <Button Content="Данные контракта" FontSize="100"/>
+                    </ListView>
+                    <ListView x:Name="ContractNuancesLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden">
+                        <Button Content="Нюансы контракта" FontSize="100"/>
+                    </ListView>
+                    <ListView x:Name="CalculatingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden">
+                        <Button Content="Расчет" FontSize="100"/>
+                    </ListView>
+                    <ListView x:Name="SendingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden">
+                        <Button Content="Подача" FontSize="100"/>
+                    </ListView>
+                    <ListView x:Name="BargainingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden">
+                        <Button Content="Торги" FontSize="100"/>
+                    </ListView>
+                    <ListView x:Name="SupplyLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden">
+                        <Button Content="Поставка" FontSize="100"/>
+                    </ListView>
+                    <ListView x:Name="PaymentLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden">
+                        <Button Content="Оплата" FontSize="100"/>
+                    </ListView>
                 </Grid>
             </Border>
             <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45">
@@ -50,8 +108,6 @@
                     <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
                 </Border.Effect>
             </Border>
-            
         </Grid>
-        
     </ScrollViewer>
 </Page>

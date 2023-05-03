@@ -10,8 +10,9 @@ public partial class AdministratorPage : Page
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupings { get; set; }
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesEPSpecialistGroupings { get; set; }
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesManagersGroupings { get; set; }
-
-
+    private List<ComponentCalculation>? ComponentCalculationsProblem { get; set; }
+    private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
+    private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
 
     public AdministratorPage() =>
         InitializeComponent();
@@ -113,12 +114,17 @@ public partial class AdministratorPage : Page
         }// Менеджеры выпадающий список
 
         // Контракт
+        ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
+        if (ComponentCalculationsProblem != null)
+                Problem.Text = ComponentCalculationsProblem.Count.ToString();
 
-        // Проблема
+            ComponentCalculationsInWork = GET.View.ComponentCalculationsBy("ТО: Обработка").Distinct(new Functions.MyClassComparer()).ToList(); // В работе
+        if (ComponentCalculationsInWork != null)
+                InWork.Text = ComponentCalculationsInWork.Count.ToString();
 
-        // В работе
-
-        // Согласовано
+            ComponentCalculationsAgreed = GET.View.ComponentCalculationsBy("ТО: Согласовано").Distinct(new Functions.MyClassComparer()).ToList(); // Согласовано
+        if (ComponentCalculationsAgreed != null)
+                Agreed.Text = ComponentCalculationsAgreed.Count.ToString();
 
         ThisWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Текущая", GET.KindOf.ShipmentPlane));// Текущая неделя отгрузки
 
