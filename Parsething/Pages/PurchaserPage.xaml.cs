@@ -81,6 +81,7 @@ namespace Parsething.Pages
             ProcurementsAWeekLater = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
             if (ProcurementsAWeekLater != null)
                 AWeekLater.Text = ProcurementsAWeekLater.Count.ToString();
+            
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
