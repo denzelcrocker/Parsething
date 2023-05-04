@@ -244,6 +244,13 @@ namespace Parsething.Pages
                     break;
                 }
         }
+        private void Distance_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!Char.IsDigit(e.Text, 0))
+            {
+                e.Handled = true;
+            }
+        }
         private void History_Click(object sender, RoutedEventArgs e)
         {
 
