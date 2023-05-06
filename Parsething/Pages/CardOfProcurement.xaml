@@ -195,7 +195,7 @@
                             </TextBox>
                         </Grid>
                     </ListView>
-                    <ListView x:Name="ContractInfoLV" Grid.Column="2" Grid.Row="2" Visibility="Visible" Margin="30,30,30,80" Style="{DynamicResource ListView}">
+                    <ListView x:Name="ContractInfoLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Margin="30,30,30,80" Style="{DynamicResource ListView}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -226,9 +226,69 @@
                             <TextBox x:Name="DeliveryDetails" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap"/>
                         </Grid>
                     </ListView>
-                    <ListView x:Name="ContractNuancesLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Margin="30,30,30,80" Style="{DynamicResource ListView}">
-                        <Button Content="Нюансы контракта" FontSize="100"/>
+                    <ListView x:Name="ContractNuancesLV" Grid.Column="2" Grid.Row="2" Visibility="Visible" Margin="30,30,30,80" Style="{DynamicResource ListView}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="500"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Преференции" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <Label Content="Выбранные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
+                            <Label Content="Доступные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"/>
+                            <ListView x:Name="ProcurementPreferencesSelectedLV" Grid.Column="0" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="0,0,10,0" MouseDoubleClick="ProcurementPreferencesSelectedLV_MouseDoubleClick">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <Grid HorizontalAlignment="Stretch" Height="60">
+                                                <Grid.ToolTip>
+                                                    <ToolTip>
+                                                        Нажмите дважды, чтобы удалить выбранный элемент из списка
+                                                    </ToolTip>
+                                                </Grid.ToolTip>
+                                                <TextBlock 
+                                                    Style="{DynamicResource TableElements}"
+                                                    Text="{Binding Path=Kind}"
+                                                    Margin="15,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    Name="ServiceId"
+                                                    FontSize="25"
+                                                    VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <ListView x:Name="ProcurementPreferencesNotSelectedLV" Grid.Column="1" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="10,0,0,0" MouseDoubleClick="ProcurementPreferencesNotSelectedLV_MouseDoubleClick">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <Grid HorizontalAlignment="Stretch" Height="60">
+                                                <Grid.ToolTip>
+                                                    <ToolTip>
+                                                        Нажмите дважды, чтобы удалить выбранный элемент из списка
+                                                    </ToolTip>
+                                                </Grid.ToolTip>
+                                                <TextBlock 
+                                                    Style="{DynamicResource TableElements}"
+                                                    Text="{Binding Path=Kind}"
+                                                    Margin="15,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    Name="ServiceId"
+                                                    FontSize="25"
+                                                    VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
                     </ListView>
+                    
                     <ListView x:Name="CalculatingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}">
                         <Button Content="Расчет" FontSize="100"/>
                     </ListView>
