@@ -24,7 +24,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="VisiblePassword" Grid.ColumnSpan="2" Style="{DynamicResource SingleLineInput}" TextChanged="VisiblePassword_TextChanged"/>
                 <PasswordBox x:Name="Password" Grid.ColumnSpan="2" Padding="8,8,64,8" Style="{DynamicResource PasswordBoxBase}" TextInput="Password_TextInput"/>
-                <CheckBox x:Name="PasswordVisibility" Grid.Column="1" Style="{DynamicResource PasswordVisibility}" Checked="PasswordVisibility_Checked" Unchecked="PasswordVisibility_Unchecked"/>
+                <CheckBox x:Name="PasswordVisibility" Grid.Column="1" Style="{DynamicResource PasswordVisibility}" Checked="PasswordVisibility_Checked" Unchecked="PasswordVisibility_Unchecked" Cursor="Hand"/>
             </Grid>
             <Button x:Name="EnterButton" Content="Войти" IsDefault="True" Style="{DynamicResource SumbitAction}" Click="EnterButton_Click"/>
         </StackPanel>

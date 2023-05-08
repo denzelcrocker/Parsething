@@ -28,4 +28,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="Checkbox.Base" TargetType="{x:Type CheckBox}">
+        <Setter Property="Background" Value="{StaticResource PasswordVisibility.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PasswordVisibility.Static.Border}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Border x:Name="checkBoxBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <Label x:Name="mark" Foreground="{StaticResource PasswordVisibility.Static.Glyph}" Content="&#xe739;" FontFamily="Segoe Fluent Icons" FontSize="32"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Content" TargetName="mark" Value="&#xe73a;"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Content" TargetName="mark" Value="&#xe739;"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

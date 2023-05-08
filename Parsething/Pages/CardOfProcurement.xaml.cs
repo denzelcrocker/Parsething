@@ -21,12 +21,14 @@ namespace Parsething.Pages
     public partial class CardOfProcurement : Page
     {
         private Frame MainFrame { get; set; } = null!;
+
         private List<ProcurementState>? ProcurementStates { get; set; }
+        private List<RepresentativeType>? RepresentativeTypes { get; set; }
+        private List<CommisioningWork>? CommissioningWorks { get; set; }
+
         private List<Region>? ProcurementRegions { get; set; }
-        
+       
         private List<ProcurementsPreference>? ProcurementPreferencesSelected { get; set; }
-        private List<ProcurementsPreference>? ProcurementPreferencesNotSelected { get; set; }
-        private List<Preference> Preferences { get; set; }
         private List<Preference> PreferencesSelected = new List<Preference>();
         private List<Preference>? PreferencesNotSelected { get; set; }
 
@@ -72,6 +74,12 @@ namespace Parsething.Pages
 
             ProcurementStates = GET.View.DistributionOfProcurementStates(((Employee)Application.Current.MainWindow.DataContext).Position.Kind);
             ProcurementState.ItemsSource = ProcurementStates;
+
+            RepresentativeTypes = GET.View.RepresentativeTypes();
+            RepresentativeType.ItemsSource = RepresentativeTypes;
+
+            CommissioningWorks = GET.View.CommisioningWorks();
+            CommissioningWork.ItemsSource = CommissioningWorks;
 
             ProcurementRegions = GET.View.Regions();
             Regions.ItemsSource = ProcurementRegions;
@@ -148,7 +156,33 @@ namespace Parsething.Pages
                 ContactPerson.Text = Procurement.ContactPerson;
                 ContactPhone.Text = Procurement.ContactPhone;
                 DeliveryDetails.Text = Procurement.DeliveryDetails;
-
+                DeadlineAndType.Text = Procurement.DeadlineAndType;
+                DeliveryDeadline.Text = Procurement.DeliveryDeadline;
+                AcceptanceDeadline.Text = Procurement.AcceptanceDeadline;
+                ContractDeadline.Text = Procurement.ContractDeadline;
+                Indefinitely.IsChecked = Procurement.Indefinitely;
+                AnotherDeadline.Text = Procurement.AnotherDeadline;
+                DeadlineAndOrder.Text = Procurement.DeadlineAndOrder;
+                foreach (RepresentativeType representativeType in RepresentativeType.ItemsSource)
+                    if (representativeType.Id == Procurement.RepresentativeTypeId)
+                    {
+                        RepresentativeType.SelectedItem = representativeType;
+                        break;
+                    }
+                foreach (CommisioningWork commisioningWork in CommissioningWork.ItemsSource)
+                    if (commisioningWork.Id == Procurement.CommissioningWorksId)
+                    {
+                        CommissioningWork.SelectedItem = commisioningWork;
+                        break;
+                    }
+                PlaceCount.Text = Procurement.PlaceCount.ToString();
+                FinesAndPennies.Text = Procurement.FinesAndPennies;
+                PenniesPerDay.Text = Procurement.PenniesPerDay;
+                TerminationConditions.Text = Procurement.TerminationConditions;
+                EliminationDeadline.Text = Procurement.EliminationDeadline;
+                GuaranteePeriod.Text = Procurement.GuaranteePeriod;
+                INN.Text = Procurement.Inn;
+                ContractNumber.Text = Procurement.ContractNumber;
             }
         }
 
@@ -206,6 +240,26 @@ namespace Parsething.Pages
             Procurement.ContactPerson = ContactPerson.Text;
             Procurement.ContactPhone = ContactPhone.Text;
             Procurement.DeliveryDetails = DeliveryDetails.Text;
+            Procurement.DeadlineAndType = DeadlineAndType.Text;
+            Procurement.DeliveryDeadline = DeliveryDeadline.Text;
+            Procurement.AcceptanceDeadline = AcceptanceDeadline.Text;
+            Procurement.ContractDeadline = ContractDeadline.Text;
+            Procurement.Indefinitely = Indefinitely.IsChecked;
+            Procurement.AnotherDeadline = AnotherDeadline.Text;
+            Procurement.DeadlineAndOrder = DeadlineAndOrder.Text;
+            if (RepresentativeType.SelectedItem != null)
+                Procurement.RepresentativeTypeId = ((RepresentativeType)RepresentativeType.SelectedItem).Id;
+            if (CommissioningWork.SelectedItem != null)
+                Procurement.CommissioningWorksId = ((CommisioningWork)CommissioningWork.SelectedItem).Id;
+            if (PlaceCount.Text != "")
+            Procurement.PlaceCount = Convert.ToInt32(PlaceCount.Text);
+            Procurement.FinesAndPennies = FinesAndPennies.Text;
+            Procurement.PenniesPerDay = PenniesPerDay.Text;
+            Procurement.TerminationConditions = TerminationConditions.Text;
+            Procurement.EliminationDeadline = EliminationDeadline.Text;
+            Procurement.GuaranteePeriod = GuaranteePeriod.Text;
+            Procurement.Inn = INN.Text;
+            Procurement.ContractNumber = ContractNumber.Text;
             PULL.Procurement(Procurement);
 
             if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
@@ -252,58 +306,61 @@ namespace Parsething.Pages
 
         private void ProcurementPreferencesSelectedLV_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //Preference preferenceItem = ((ListView)sender).SelectedItem as Preference;
-            //if (preferenceItem != null)
-            //{
-            //    ProcurementsPreference procurementsPreferenceToRemove = new ProcurementsPreference { Procurement = Procurement, Preference = preferenceItem };
-            //    DELETE.ProcurementPreference(procurementsPreferenceToRemove);
-            //    ProcurementPreferencesSelectedLV.ItemsSource = null;
-            //    ProcurementPreferencesNotSelectedLV.ItemsSource = null;
-            //    ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(Procurement.Id);
-            //    PreferencesNotSelected = GET.View.Preferences();
+            Preference preferenceItem = ((ListView)sender).SelectedItem as Preference;
+            if (preferenceItem != null)
+            {
+                ProcurementsPreference procurementsPreferenceToRemove = new ProcurementsPreference { Procurement = Procurement, Preference = preferenceItem, PreferenceId = preferenceItem.Id, ProcurementId = Procurement.Id};
+                DELETE.ProcurementPreference(procurementsPreferenceToRemove);
+                ProcurementPreferencesSelectedLV.ItemsSource = null;
+                ProcurementPreferencesNotSelectedLV.ItemsSource = null;
+                PreferencesSelected.Clear();
+                ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(Procurement.Id);
+                PreferencesNotSelected = GET.View.Preferences();
 
-            //    foreach (ProcurementsPreference procurementsPreference in ProcurementPreferencesSelected)
-            //        PreferencesSelected.Add(procurementsPreference.Preference);
+                foreach (ProcurementsPreference procurementsPreference in ProcurementPreferencesSelected)
+                    PreferencesSelected.Add(procurementsPreference.Preference);
 
-            //    foreach (Preference preference in PreferencesSelected)
-            //    {
-            //        Preference preferenceToRemove = PreferencesNotSelected.FirstOrDefault(p => p.Id == preference.Id);
-            //        if (preferenceToRemove != null)
-            //        {
-            //            PreferencesNotSelected.Remove(preferenceToRemove);
-            //        }
-            //    }
-            //    ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
-            //    ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
-            //}
+                foreach (Preference preference in PreferencesSelected)
+                {
+                    Preference preferenceToRemove = PreferencesNotSelected.FirstOrDefault(p => p.Id == preference.Id);
+                    if (preferenceToRemove != null)
+                    {
+                        PreferencesNotSelected.Remove(preferenceToRemove);
+                    }
+                }
+                ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
+                ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
+            }
 
         }
+        
         private void ProcurementPreferencesNotSelectedLV_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //Preference preferenceItem = ((ListView)sender).SelectedItem as Preference;
-            //if (preferenceItem != null)
-            //{
-            //    ProcurementsPreference procurementsPreferenceToAdd = new ProcurementsPreference { Procurement = Procurement, Preference = preferenceItem };
-            //    PUT.ProcurementsPreferences(procurementsPreferenceToAdd);
-            //    ProcurementPreferencesSelectedLV.ItemsSource = null;
-            //    ProcurementPreferencesNotSelectedLV.ItemsSource = null;
-            //    ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(Procurement.Id);
-            //    PreferencesNotSelected = GET.View.Preferences();
+            Preference preferenceItem = ((ListView)sender).SelectedItem as Preference;
+            if (preferenceItem != null)
+            {
+                ProcurementsPreference procurementsPreferenceToAdd = new ProcurementsPreference { Procurement = Procurement, Preference = preferenceItem };
+                PUT.ProcurementsPreferences(procurementsPreferenceToAdd);
+                ProcurementPreferencesSelectedLV.ItemsSource = null;
+                ProcurementPreferencesNotSelectedLV.ItemsSource = null;
+                PreferencesSelected.Clear();
+                ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(Procurement.Id);
+                PreferencesNotSelected = GET.View.Preferences();
 
-            //    foreach (ProcurementsPreference procurementsPreference in ProcurementPreferencesSelected)
-            //        PreferencesSelected.Add(procurementsPreference.Preference);
+                foreach (ProcurementsPreference procurementsPreference in ProcurementPreferencesSelected)
+                    PreferencesSelected.Add(procurementsPreference.Preference);
 
-            //    foreach (Preference preference in PreferencesSelected)
-            //    {
-            //        Preference preferenceToRemove = PreferencesNotSelected.FirstOrDefault(p => p.Id == preference.Id);
-            //        if (preferenceToRemove != null)
-            //        {
-            //            PreferencesNotSelected.Remove(preferenceToRemove);
-            //        }
-            //    }
-            //    ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
-            //    ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
-            //}
+                foreach (Preference preference in PreferencesSelected)
+                {
+                    Preference preferenceToRemove = PreferencesNotSelected.FirstOrDefault(p => p.Id == preference.Id);
+                    if (preferenceToRemove != null)
+                    {
+                        PreferencesNotSelected.Remove(preferenceToRemove);
+                    }
+                }
+                ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
+                ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
+            }
         }
 
         private void Regions_KeyDown(object sender, KeyEventArgs e)

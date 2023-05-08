@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -153,22 +154,42 @@ namespace Parsething.Pages
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
-            ListView myListView = this.FindName("View") as ListView;
-            Procurement procurement = myListView.SelectedItem as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement));
         }
 
         private void EditProcurementComponent_Click(object sender, RoutedEventArgs e)
         {
-            ListView myListView = this.FindName("ViewComponents") as ListView;
-            ComponentCalculation componentCalculation = myListView.SelectedItem as ComponentCalculation;
+            ComponentCalculation componentCalculation = (sender as Button)?.DataContext as ComponentCalculation;
             if (componentCalculation != null)
             { 
                 Procurement procurement = componentCalculation.Procurement;
             _ = MainFrame.Navigate(new CardOfProcurement(procurement));
             }
             
+        }
+
+        private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+            {
+                string url = procurement.RequestUri.ToString();
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+                
+        }
+
+        private void NavigateToProcurementComponentURL_Click(object sender, RoutedEventArgs e)
+        {
+            ComponentCalculation componentCalculation = (sender as Button)?.DataContext as ComponentCalculation;
+            if (componentCalculation != null)
+            {
+                Procurement procurement = componentCalculation.Procurement;
+                string url = procurement.RequestUri.ToString();
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
         }
     }
     

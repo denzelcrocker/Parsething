@@ -287,8 +287,102 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                         </Grid>
+                        <Grid Margin="0,15,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="565"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                            </Grid.RowDefinitions>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0">
+                                <TextBlock TextWrapping="Wrap">
+                                    Срок и вид предупреждения заказчика о поставке
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="DeadlineAndType" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="0" TextWrapping="Wrap"/>
+                            <Label Content="Срок поставки товара" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
+                            <TextBox x:Name="DeliveryDeadline" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="1" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2">
+                                <TextBlock TextWrapping="Wrap">
+                                    Срок приемки товара Заказчиком
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="AcceptanceDeadline" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="2" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3">
+                                <TextBlock TextWrapping="Wrap">
+                                    Срок действия контракта
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="ContractDeadline" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="3" TextWrapping="Wrap"/>
+                            <Label Content="Бессрочно" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="4"/>
+                            <CheckBox x:Name="Indefinitely" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                            <Label Content="Или" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="5"/>
+                            <TextBox x:Name="AnotherDeadline" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="5" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6">
+                                <TextBlock TextWrapping="Wrap">
+                                    Срок и порядок оплаты контракта Заказчиком
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="DeadlineAndOrder" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="6" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7">
+                                <TextBlock TextWrapping="Wrap">
+                                    Представитель или Системный администратор
+                                </TextBlock>
+                            </Label>
+                            <ComboBox x:Name="RepresentativeType" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8">
+                                <TextBlock TextWrapping="Wrap">
+                                    Пусконаладочные работы
+                                </TextBlock>
+                            </Label>
+                            <ComboBox x:Name="CommissioningWork" Grid.Row="8" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <Label Content="Количество мест" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="9"/>
+                            <TextBox x:Name="PlaceCount" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="9" TextWrapping="Wrap" PreviewTextInput="Distance_PreviewTextInput"/>
+                            <TextBox x:Name="FinesAndPennies" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="10" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="10">
+                                <TextBlock TextWrapping="Wrap">
+                                    Размеры штрафов и пеней (Выдержка из контракта)
+                                </TextBlock>
+                            </Label>
+                            <Label Content="Пени в день" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="11"/>
+                            <TextBox x:Name="PenniesPerDay" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="11" TextWrapping="Wrap"/>
+                            <TextBox x:Name="TerminationConditions" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="12" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="12">
+                                <TextBlock TextWrapping="Wrap">
+                                    Условия расторжения контракта (Выдержка из контракта)
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="EliminationDeadline" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="13" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="13">
+                                <TextBlock TextWrapping="Wrap">
+                                    Срок устранения недостатков (Выдержка из контракта)
+                                </TextBlock>
+                            </Label>
+                            <Label Content="Срок гарантии" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="14"/>
+                            <TextBox x:Name="GuaranteePeriod" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="14" TextWrapping="Wrap"/>
+                            <Label Content="ИНН Заказчика" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="15"/>
+                            <TextBox x:Name="INN" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="15" TextWrapping="Wrap"/>
+                            <Label Content="Номер контракта" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="16"/>
+                            <TextBox x:Name="ContractNumber" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="16" TextWrapping="Wrap"/>
+                        </Grid>
                     </ListView>
-                    
                     <ListView x:Name="CalculatingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}">
                         <Button Content="Расчет" FontSize="100"/>
                     </ListView>
