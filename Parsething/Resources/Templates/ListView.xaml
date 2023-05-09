@@ -20,6 +20,11 @@
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
         </Style.Resources>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+        </Style.Triggers>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -40,7 +45,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="#C6BDBF" CornerRadius="15" BorderThickness="1" SnapsToDevicePixels="True">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="#C6BDBF" CornerRadius="16" BorderThickness="1" SnapsToDevicePixels="True">
                         <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}" Style="{DynamicResource ScrollViewer}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </ScrollViewer>

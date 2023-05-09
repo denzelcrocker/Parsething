@@ -176,11 +176,7 @@
                                     <Button   
                                             Grid.Column="12"
                                             x:Name="PrintButton"
-                                            HorizontalAlignment="Center"
-                                            Background="#00ffffff"
-                                            BorderBrush="#00ffffff"
-                                            Width="50" 
-                                            Height="50">
+                                            Style="{DynamicResource ButtonWithIcon}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="45"/>
@@ -191,11 +187,8 @@
                                     <Button 
                                         x:Name="NavigateToProcurementURL"
                                         Grid.Column="14"
-                                        HorizontalAlignment="Center"
-                                        Width="50" 
-                                        Background="#00ffffff"
-                                        BorderBrush="#00ffffff"
-                                        Height="50" Opacity="1" Click="NavigateToProcurementURL_Click">
+                                        Click="NavigateToProcurementURL_Click"
+                                        Style="{DynamicResource ButtonWithIcon}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="45"/>
@@ -206,11 +199,8 @@
                                     <Button 
                                         x:Name="EditProcurement"
                                         Grid.Column="16"
-                                        HorizontalAlignment="Center"
-                                        Width="50" 
-                                        Background="#00ffffff"
-                                        BorderBrush="#00ffffff"
-                                        Height="50" Opacity="1" Click="EditProcurement_Click">
+                                        Click="EditProcurement_Click"
+                                        Style="{DynamicResource ButtonWithIcon}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="45"/>

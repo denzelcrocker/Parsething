@@ -22,6 +22,17 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <StackPanel x:Name="ProfilePreview">
                         <StackPanel Orientation="Horizontal">
+                            <Button 
+                                        x:Name="GoHome"
+                                        Margin="0,0,1340,0"
+                                        HorizontalAlignment="Left"
+                                        Style="{DynamicResource ButtonWithIcon}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/Images/home.png" Stretch="Uniform" Height="45"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
                             <Ellipse x:Name="EmployeePhoto" Width="50" Height="50">
                                 <Ellipse.Fill>
                                     <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>

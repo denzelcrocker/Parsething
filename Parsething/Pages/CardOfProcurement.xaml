@@ -33,16 +33,17 @@
                             <ColumnDefinition Width="275"/>
                             <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource Text.Background}" CornerRadius="30" Width="150" Margin="40,0,0,0">
+                            <TextBlock x:Name="Id" Text="000000" Foreground="{DynamicResource Text.Foreground}" Style="{DynamicResource TextBlock.Number}" Padding="15,10"/>
+                        </Border>
                         <Label Content="Статус" Style="{DynamicResource Label.CardOfProcurement}" HorizontalAlignment="Right"/>
                         <ComboBox x:Name="ProcurementState" VerticalAlignment="Center" Grid.Column="1"  Width="150" Style="{DynamicResource ComboBoxBase.Card}" Height="60"  StaysOpenOnEdit="True" DisplayMemberPath="Kind"/>
                         <Button 
                             x:Name="History"
                             Grid.Column="16"
                             HorizontalAlignment="Left"
-                            Width="55" 
-                            Background="#00ffffff"
-                            BorderBrush="#00ffffff"
-                            Height="55" Opacity="1" Click="History_Click" >
+                            Style="{DynamicResource ButtonWithIcon}"
+                            Click="History_Click" >
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Resources/Images/History.png" Stretch="Uniform" Height="50"/>
@@ -50,9 +51,18 @@
                             </Button.Content>
                         </Button>
                     </Grid>
-                    <Border Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource Text.Background}" CornerRadius="30" Width="150" Margin="40,0,0,0">
-                        <TextBlock x:Name="Id" Text="000000" Foreground="{DynamicResource Text.Foreground}" FontSize="30" Padding="15,10" HorizontalAlignment="Center"/>
-                    </Border>
+                    <Button   
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Margin="30"
+                        x:Name="GoBackButton"
+                        Style="{DynamicResource ButtonWithIcon}">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/back.png" Stretch="Uniform" Height="45"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1" Margin="20,0"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="0,20,0,65"/>
                     <Grid Grid.Row="2" Grid.Column="0" Margin="30">
@@ -73,7 +83,7 @@
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="150"/>
                         </Grid.RowDefinitions>
                         <Label x:Name="ProcurementInfoLabel" Content="Данные закупки" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="0"/>
                         <Rectangle x:Name="ProcurementInfoUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="1"/>
@@ -99,7 +109,7 @@
                         <Label x:Name="PaymentLabel" Content="Оплата" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="14" />
                         <Rectangle x:Name="PaymentUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="15"/>
                         <Button x:Name="Payment" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="14" Click="Payment_Click"/>
-                        <Button x:Name="SaveButton" Grid.Row="16"  VerticalAlignment="Center" HorizontalAlignment="Center" Content="Сохранить" FontSize="25" Click="SaveButton_Click"/>
+                        <Button x:Name="SaveButton" Grid.Row="16" Style="{DynamicResource SumbitAction}" Content="Сохранить" Click="SaveButton_Click"/>
                     </Grid>
                     <ListView x:Name="ProcurementInfoLV" Grid.Column="2" Grid.Row="2" Margin="30,30,30,80" Style="{DynamicResource ListView}" Visibility="Hidden">
                         <Grid>
@@ -240,7 +250,7 @@
                             <Label Content="Преференции" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
                             <Label Content="Выбранные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
                             <Label Content="Доступные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"/>
-                            <ListView x:Name="ProcurementPreferencesSelectedLV" Grid.Column="0" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="0,0,10,0" MouseDoubleClick="ProcurementPreferencesSelectedLV_MouseDoubleClick">
+                            <ListView x:Name="ProcurementPreferencesSelectedLV" Grid.Column="0" Cursor="Hand" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="0,0,10,0" MouseDoubleClick="ProcurementPreferencesSelectedLV_MouseDoubleClick">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border>
@@ -263,13 +273,13 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                            <ListView x:Name="ProcurementPreferencesNotSelectedLV" Grid.Column="1" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="10,0,0,0" MouseDoubleClick="ProcurementPreferencesNotSelectedLV_MouseDoubleClick">
+                            <ListView x:Name="ProcurementPreferencesNotSelectedLV" Cursor="Hand"  Grid.Column="1" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="10,0,0,0" MouseDoubleClick="ProcurementPreferencesNotSelectedLV_MouseDoubleClick">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border>
                                             <Grid HorizontalAlignment="Stretch" Height="60">
-                                                <Grid.ToolTip>
-                                                    <ToolTip>
+                                                <Grid.ToolTip ToolTipService.InitialShowDelay="0">
+                                                    <ToolTip >
                                                         Нажмите дважды, чтобы удалить выбранный элемент из списка
                                                     </ToolTip>
                                                 </Grid.ToolTip>
@@ -404,6 +414,36 @@
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
                 </Border.Effect>
+                <StackPanel Margin="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="540"/>
+                            <RowDefinition Height="170"/>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Комментарии" Style="{DynamicResource Label.CardOfProcurement}"/>
+                        <ListView x:Name="CommentsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,15"></ListView>
+                        <TextBox x:Name="CommentsTextBox" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" MaxHeight="170" TextWrapping="Wrap"/>
+                        <Button
+                            Margin="10"
+                        Grid.Column="1"
+                        Grid.Row="3"    
+                        HorizontalAlignment="Right"
+                        x:Name="SendButton"
+                        Style="{DynamicResource ButtonWithIcon}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Resources/Images/right-arrow.png" Stretch="Uniform" Height="45"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </StackPanel>
             </Border>
         </Grid>
     </ScrollViewer>

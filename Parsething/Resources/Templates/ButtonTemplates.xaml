@@ -45,6 +45,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <LinearGradientBrush x:Key="SumbitAction.Static.Background">
         <LinearGradientBrush.GradientStops>
             <GradientStop Color="#930C0C" Offset="0.4"/>
@@ -53,12 +54,12 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="SumbitAction.Static.BorderBrush" Color="#0000"/>
     <SolidColorBrush x:Key="SumbitAction.Static.Foreground" Color="#FFF"/>
-    
     <Style x:Key="SumbitAction" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource SumbitAction.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource SumbitAction.Static.BorderBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource SumbitAction.Static.Foreground}"/>
         <Setter Property="Width" Value="250"/>
+        <Setter Property="Height" Value="70"/>
         <Setter Property="Margin" Value="0,40,0,0"/>
         <Setter Property="Padding" Value="0,16"/>
         <Setter Property="FontFamily" Value="../Fonts/#Mustica Pro"/>
@@ -118,12 +119,31 @@
         <Setter Property="Background" Value="{StaticResource Profile.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Profile.Static.Border}"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-        <Setter Property="Margin" Value="30,5"/>
-        <Setter Property="Width" Value="250"/>
+        <Setter Property="Padding" Value="30,5"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ButtonWithIcon" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
+        <Setter Property="Background" Value="{StaticResource Profile.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Profile.Static.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Opacity" Value="1"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">

@@ -13,6 +13,13 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="TextTrimming" Value="None"/>
     </Style>
+    <Style x:Key="TextBlock.Number" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextTrimming" Value="None"/>
+    </Style>
     <Style x:Key="TextBlock.ComboFirst" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
         <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="FontSize" Value="25"/>
@@ -47,5 +54,5 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="Noah"/>
     </Style>
-    
+
 </ResourceDictionary>
