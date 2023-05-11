@@ -23,13 +23,24 @@
                     <StackPanel x:Name="ProfilePreview">
                         <StackPanel Orientation="Horizontal">
                             <Button 
-                                        x:Name="GoHome"
-                                        Margin="0,0,1340,0"
-                                        HorizontalAlignment="Left"
-                                        Style="{DynamicResource ButtonWithIcon}">
+                                x:Name="GoHome"
+                                Margin="0,0,1580,0"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource ButtonWithIcon}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Resources/Images/home.png" Stretch="Uniform" Height="45"/>
+                                        <Image Source="/Resources/Images/Home.png" Stretch="Uniform" Height="45"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button 
+                                x:Name="Search"
+                                Margin="0,0,15,0"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource ButtonWithIcon}">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/Images/Search.png" Stretch="Uniform" Height="40"/>
                                     </StackPanel>
                                 </Button.Content>
                             </Button>

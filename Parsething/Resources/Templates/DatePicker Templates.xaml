@@ -4,11 +4,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DatePicker">
-                    <Border Background="Gray" CornerRadius="10">
-                        <DatePicker FontSize="25" />
+                    <Border Background="Gray" CornerRadius="15">
+                        <DatePicker FontSize="25" Background="Gray"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    
 </ResourceDictionary>

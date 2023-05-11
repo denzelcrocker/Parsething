@@ -40,7 +40,7 @@
                         <ComboBox x:Name="ProcurementState" VerticalAlignment="Center" Grid.Column="1"  Width="150" Style="{DynamicResource ComboBoxBase.Card}" Height="60"  StaysOpenOnEdit="True" DisplayMemberPath="Kind"/>
                         <Button 
                             x:Name="History"
-                            Grid.Column="16"
+                            Grid.Column="2"
                             HorizontalAlignment="Left"
                             Style="{DynamicResource ButtonWithIcon}"
                             Click="History_Click" >
@@ -59,7 +59,7 @@
                         Style="{DynamicResource ButtonWithIcon}">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="/Resources/Images/back.png" Stretch="Uniform" Height="45"/>
+                                <Image Source="/Resources/Images/Back.png" Stretch="Uniform" Height="45"/>
                             </StackPanel>
                         </Button.Content>
                     </Button>
@@ -236,7 +236,7 @@
                             <TextBox x:Name="DeliveryDetails" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap"/>
                         </Grid>
                     </ListView>
-                    <ListView x:Name="ContractNuancesLV" Grid.Column="2" Grid.Row="2" Visibility="Visible" Margin="30,30,30,80" Style="{DynamicResource ListView}">
+                    <ListView x:Name="ContractNuancesLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Margin="30,30,30,80" Style="{DynamicResource ListView}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -265,7 +265,6 @@
                                                     Text="{Binding Path=Kind}"
                                                     Margin="15,0,0,0"
                                                     HorizontalAlignment="Left"
-                                                    Name="ServiceId"
                                                     FontSize="25"
                                                     VerticalAlignment="Center"/>
                                             </Grid>
@@ -278,7 +277,7 @@
                                     <DataTemplate>
                                         <Border>
                                             <Grid HorizontalAlignment="Stretch" Height="60">
-                                                <Grid.ToolTip ToolTipService.InitialShowDelay="0">
+                                                <Grid.ToolTip>
                                                     <ToolTip >
                                                         Нажмите дважды, чтобы удалить выбранный элемент из списка
                                                     </ToolTip>
@@ -288,7 +287,6 @@
                                                     Text="{Binding Path=Kind}"
                                                     Margin="15,0,0,0"
                                                     HorizontalAlignment="Left"
-                                                    Name="ServiceId"
                                                     FontSize="25"
                                                     VerticalAlignment="Center"/>
                                             </Grid>
@@ -393,20 +391,318 @@
                             <TextBox x:Name="ContractNumber" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="16" TextWrapping="Wrap"/>
                         </Grid>
                     </ListView>
-                    <ListView x:Name="CalculatingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}">
-                        <Button Content="Расчет" FontSize="100"/>
+                    <ListView x:Name="CalculatingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="565"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="65"/>
+                                <RowDefinition Height="65"/>
+                                <RowDefinition Height="65"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="Calculator" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="FullName" SelectionChanged="Calculator_SelectionChanged"/>
+                            <Label Content="Расчетчик" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
+                            <CheckBox x:Name="AssemblyNeed" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                            <Label Content="Сборка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
+                            <ComboBox x:Name="Minopttorg" Grid.Row="2" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Name"/>
+                            <Label Content="Минпромторг" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2"/>
+                        </Grid>
                     </ListView>
-                    <ListView x:Name="SendingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}">
-                        <Button Content="Подача" FontSize="100"/>
+                    <ListView x:Name="SendingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="565"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="65"/>
+                                <RowDefinition Height="65"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="LegalEntity" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Name"/>
+                            <Label Content="Юридическое лицо" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
+                            <CheckBox x:Name="Applications" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                            <Label Content="По заявкам" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
+                            <ComboBox x:Name="Sender" Grid.Row="2" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="FullName" SelectionChanged="Sender_SelectionChanged" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8">
+                                <TextBlock TextWrapping="Wrap">
+                                    Сп-т по работе с эл-ми площадками
+                                </TextBlock>
+                            </Label>
+                        </Grid>
                     </ListView>
-                    <ListView x:Name="BargainingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}">
-                        <Button Content="Торги" FontSize="100"/>
+                    <ListView x:Name="BargainingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="565"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Ставка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
+                            <TextBox x:Name="Bet" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="0" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1">
+                                <TextBlock TextWrapping="Wrap">
+                                    Минимальная цена торгов
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="MinimalPrice" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="60" Grid.Row="1" TextWrapping="Wrap"/>
+                            <Label Content="Сумма контракта" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2"/>
+                            <TextBox x:Name="ContractAmount" Style="{DynamicResource SingleLineInput.CardOfProcurement}"  Grid.Column="1" Grid.Row="2" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3">
+                                <TextBlock TextWrapping="Wrap">
+                                    Измененная сумма контракта
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="ReserveContractAmount" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="60" Grid.Row="3" TextWrapping="Wrap"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="4">
+                                <TextBlock TextWrapping="Wrap">
+                                    Дата протокола подведения итогов
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="ProtocolDate" Grid.Row="4" Grid.Column="1"  Height="60" />
+                        </Grid>
                     </ListView>
-                    <ListView x:Name="SupplyLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}">
-                        <Button Content="Поставка" FontSize="100"/>
+                    <ListView x:Name="SupplyLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="565"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="65"/>
+                                <RowDefinition Height="65"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="Manager" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="FullName" SelectionChanged="Manager_SelectionChanged"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0">
+                                <TextBlock TextWrapping="Wrap">
+                                    Менеджер тендерного отдела
+                                </TextBlock>
+                            </Label>
+                            <ComboBox x:Name="Purchaser" Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="FullName" SelectionChanged="Purchaser_SelectionChanged"/>
+                            <Label Content="Закупка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
+                            <ComboBox x:Name="ShipmentPlan" Grid.Row="2" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <Label Content="План отгрузки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2"/>
+                            <CheckBox x:Name="WaitingList" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                            <Label Content="Лист ожиданий" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3"/>
+                            <Label Content="Ответственные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="4" Grid.RowSpan="2"/>
+                            <Label Content="Расчет" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="4"/>
+                            <CheckBox x:Name="CalculatingCB" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                            <Label Content="Закупка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="5"/>
+                            <CheckBox x:Name="PurchasingCB" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                            <ComboBox x:Name="ExecutionState" Grid.Row="6" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6">
+                                <TextBlock TextWrapping="Wrap">
+                                    Статус оформления обеспечения для Исполнения контракта
+                                </TextBlock>
+                            </Label>
+                            <ComboBox x:Name="WarrantyState" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7">
+                                <TextBlock TextWrapping="Wrap">
+                                    Статус оформления обеспечения для Гарантийных обяз-в
+                                </TextBlock>
+                            </Label>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8">
+                                <TextBlock TextWrapping="Wrap">
+                                    Срок подписания контракта
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="SigningDeadline" Grid.Row="8" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="9">
+                                <TextBlock TextWrapping="Wrap">
+                                    Дата подписания контракта нами 
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="SigningDate" Grid.Row="9" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="10">
+                                <TextBlock TextWrapping="Wrap">
+                                    Дата заключения контракта Заказчиком
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="ConclusionDate" Grid.Row="10" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="11">
+                                <TextBlock TextWrapping="Wrap">
+                                    Максимальная дата поставки по договору
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="ActualDeliveryDate" Grid.Row="11" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="12">
+                                <TextBlock TextWrapping="Wrap">
+                                    Дата фактической отправки
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="DepartureDate" Grid.Row="12" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="13">
+                                <TextBlock TextWrapping="Wrap">
+                                    Дата фактической поставки
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="DeliveryDate" Grid.Row="13" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="14">
+                                <TextBlock TextWrapping="Wrap">
+                                    Максимальная дата окончания приемки
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="MaxAcceptanceDate" Grid.Row="14" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="15">
+                                <TextBlock TextWrapping="Wrap">
+                                    Максимальная дата окончания исправления недостатков
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="CorrectionDate" Grid.Row="15" Grid.Column="1"  Height="55" />
+                        </Grid>
                     </ListView>
-                    <ListView x:Name="PaymentLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}">
-                        <Button Content="Оплата" FontSize="100"/>
+                    <ListView x:Name="PaymentLV" Grid.Column="2" Grid.Row="2" Visibility="Visible" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="565"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                            </Grid.RowDefinitions>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0">
+                                <TextBlock TextWrapping="Wrap">
+                                    Дата подисания акта приемки
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="ActDate" Grid.Row="0" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1">
+                                <TextBlock TextWrapping="Wrap">
+                                    Максимальная дата оплаты
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="MaxDueDate" Grid.Row="1" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2">
+                                <TextBlock TextWrapping="Wrap">
+                                    Срок закрытия контракта
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="ClosingDate" Grid.Row="2" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3">
+                                <TextBlock TextWrapping="Wrap">
+                                    Дата оплаты
+                                </TextBlock>
+                            </Label>
+                            <DatePicker x:Name="RealDueDate" Grid.Row="3" Grid.Column="1"  Height="55" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="4">
+                                <TextBlock TextWrapping="Wrap">
+                                    Оплаченная сумма
+                                </TextBlock>
+                            </Label>
+                            <TextBox x:Name="Amount" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="60" Grid.Row="4" TextWrapping="Wrap"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="500"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Документы" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+                            <Label Content="Выбранные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
+                            <Label Content="Доступные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"/>
+                            <ListView x:Name="ProcurementDocumentsSelectedLV" Grid.Column="0" Cursor="Hand" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="0,0,10,0" MouseDoubleClick="ProcurementDocumentsSelectedLV_MouseDoubleClick" >
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <Grid HorizontalAlignment="Stretch" Height="60">
+                                                <Grid.ToolTip>
+                                                    <ToolTip>
+                                                        Нажмите дважды, чтобы удалить выбранный элемент из списка
+                                                    </ToolTip>
+                                                </Grid.ToolTip>
+                                                <TextBlock 
+                                                    Style="{DynamicResource TableElements}"
+                                                    Text="{Binding Path=Title}"
+                                                    Margin="15,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    FontSize="25"
+                                                    VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <ListView x:Name="ProcurementDocumentsNotSelectedLV" Cursor="Hand"  Grid.Column="1" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="10,0,0,0" MouseDoubleClick="ProcurementDocumentsNotSelectedLV_MouseDoubleClick"  >
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <Grid HorizontalAlignment="Stretch" Height="60">
+                                                <Grid.ToolTip>
+                                                    <ToolTip >
+                                                        Нажмите дважды, чтобы удалить выбранный элемент из списка
+                                                    </ToolTip>
+                                                </Grid.ToolTip>
+                                                <TextBlock 
+                                                    Style="{DynamicResource TableElements}"
+                                                    Text="{Binding Path=Title}"
+                                                    Margin="15,0,0,0"
+                                                    HorizontalAlignment="Left"
+                                                    FontSize="25"
+                                                    VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="565"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                            </Grid.RowDefinitions>
+                            <ComboBox x:Name="SignedOriginal" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0">
+                                <TextBlock TextWrapping="Wrap">
+                                    Подписанные оригиналы документов
+                                </TextBlock>
+                            </Label>
+                            <ComboBox x:Name="Lawyer" Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="FullName" SelectionChanged="Lawyer_SelectionChanged" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1">
+                                <TextBlock TextWrapping="Wrap">
+                                    Юрист
+                                </TextBlock>
+                            </Label>
+                            <Label Content="Суд" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2"/>
+                            <CheckBox x:Name="Judgment" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                            <Label Content="ФАС" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3"/>
+                            <CheckBox x:Name="FAS" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
+                        </Grid>
                     </ListView>
                 </Grid>
             </Border>
@@ -430,7 +726,7 @@
                         <ListView x:Name="CommentsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,15"></ListView>
                         <TextBox x:Name="CommentsTextBox" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" MaxHeight="170" TextWrapping="Wrap"/>
                         <Button
-                            Margin="10"
+                        Margin="10"
                         Grid.Column="1"
                         Grid.Row="3"    
                         HorizontalAlignment="Right"
@@ -438,7 +734,7 @@
                         Style="{DynamicResource ButtonWithIcon}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Resources/Images/right-arrow.png" Stretch="Uniform" Height="45"/>
+                                    <Image Source="/Resources/Images/Send.png" Stretch="Uniform" Height="45"/>
                                 </StackPanel>
                             </Button.Content>
                         </Button>

@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Back.png" />
+    <None Remove="Home.png" />
     <None Remove="Pages\Calculator.png" />
     <None Remove="Pages\CoatOfArms.png" />
     <None Remove="Pages\gear.png" />
@@ -16,6 +18,8 @@
     <None Remove="Pages\PhotoCoatOfArmsOfRussia.png" />
     <None Remove="Pages\Purchase.png" />
     <None Remove="Resources\Fonts\Noah-Regular.ttf" />
+    <None Remove="Search.png" />
+    <None Remove="Send.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Back.png" />
+    <Resource Include="Resources\Images\Home.png" />
     <Resource Include="Resources\Images\History.png" />
     <Resource Include="Resources\Images\Purchase.png" />
     <Resource Include="Resources\Images\Calculator.png" />
@@ -43,6 +49,8 @@
     <Resource Include="Resources\Fonts\Mustica Pro.otf" />
     <Resource Include="Resources\Fonts\Noah-Regular.ttf" />
     <Resource Include="Resources\Images\PlaceholderEmployeePhotoPreview.png" />
+    <Resource Include="Resources\Images\Search.png" />
+    <Resource Include="Resources\Images\Send.png" />
   </ItemGroup>
 
   <ItemGroup>

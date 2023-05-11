@@ -27,10 +27,41 @@ namespace Parsething.Pages
         private List<CommisioningWork>? CommissioningWorks { get; set; }
 
         private List<Region>? ProcurementRegions { get; set; }
-       
+
+        private List<Employee>? Calculators { get; set; }
+        private ProcurementsEmployee? ProcurementsEmployeeCalculators = new ProcurementsEmployee();
+
+        private List<Minopttorg>? Minopttorgs { get; set; }
+
         private List<ProcurementsPreference>? ProcurementPreferencesSelected { get; set; }
         private List<Preference> PreferencesSelected = new List<Preference>();
         private List<Preference>? PreferencesNotSelected { get; set; }
+
+        private List<LegalEntity>? LegalEntities { get; set; }
+
+        private List<Employee>? Senders { get; set; }
+        private ProcurementsEmployee? ProcurementsEmployeeSenders = new ProcurementsEmployee();
+
+        private List<Employee>? Managers { get; set; }
+        private ProcurementsEmployee? ProcurementsEmployeeManagers = new ProcurementsEmployee();
+
+        private List<Employee>? Purchasers { get; set; }
+        private ProcurementsEmployee? ProcurementsEmployeePurchasers = new ProcurementsEmployee();
+
+        private List<ShipmentPlan>? ShipmentPlans { get; set; }
+
+        private List<ExecutionState>? ExecutionStates { get; set; }
+
+        private List<WarrantyState>? WarrantyStates { get; set; }
+
+        private List<ProcurementsDocument>? ProcurementDocumentsSelected { get; set; }
+        private List<Document> DocumentsSelected = new List<Document>();
+        private List<Document>? DocumentsNotSelected { get; set; }
+
+        private List<SignedOriginal>? SignedOriginals { get; set; }
+
+        private List<Employee>? Lawyers { get; set; }
+        private ProcurementsEmployee? ProcurementsEmployeeLawyers = new ProcurementsEmployee();
 
         private Procurement? Procurement { get; set; }
 
@@ -72,13 +103,14 @@ namespace Parsething.Pages
             PaymentUL.Fill = Gray;
             PaymentLV.Visibility = Visibility.Hidden;
 
+
             ProcurementStates = GET.View.DistributionOfProcurementStates(((Employee)Application.Current.MainWindow.DataContext).Position.Kind);
             ProcurementState.ItemsSource = ProcurementStates;
 
             RepresentativeTypes = GET.View.RepresentativeTypes();
             RepresentativeType.ItemsSource = RepresentativeTypes;
 
-            CommissioningWorks = GET.View.CommisioningWorks();
+            CommissioningWorks = GET.View.CommissioningWorks();
             CommissioningWork.ItemsSource = CommissioningWorks;
 
             ProcurementRegions = GET.View.Regions();
@@ -101,6 +133,62 @@ namespace Parsething.Pages
 
             ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
             ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
+
+            ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(procurement.Id);
+            DocumentsNotSelected = GET.View.Documents();
+
+            foreach (ProcurementsDocument procurementsDocument in ProcurementDocumentsSelected)
+                DocumentsSelected.Add(procurementsDocument.Document);
+
+            foreach (Document document in DocumentsSelected)
+            {
+                Document documentToRemove = DocumentsNotSelected.FirstOrDefault(p => p.Id == document.Id);
+                if (documentToRemove != null)
+                {
+                    DocumentsNotSelected.Remove(documentToRemove);
+                }
+            }
+
+            ProcurementDocumentsSelectedLV.ItemsSource = DocumentsSelected;
+            ProcurementDocumentsNotSelectedLV.ItemsSource = DocumentsNotSelected;
+
+            Calculators = GET.View.EmployeesBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
+            Calculator.ItemsSource = Calculators;
+            ProcurementsEmployeeCalculators = GET.View.ProcurementsEmployeesBy(procurement, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
+
+            Minopttorgs = GET.View.Minopttorgs();
+            Minopttorg.ItemsSource = Minopttorgs;
+
+            LegalEntities = GET.View.LegalEntities();
+            LegalEntity.ItemsSource = LegalEntities;
+
+            Senders = GET.View.EmployeesBy("Специалист по работе с электронными площадками", "", "");
+            Sender.ItemsSource = Senders;
+            ProcurementsEmployeeSenders = GET.View.ProcurementsEmployeesBy(procurement, "Специалист по работе с электронными площадками", "", "");
+
+            Managers = GET.View.EmployeesBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела");
+            Manager.ItemsSource = Managers;
+            ProcurementsEmployeeManagers = GET.View.ProcurementsEmployeesBy(procurement, "Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела");
+
+            Purchasers = GET.View.EmployeesBy("Руководитель отдела закупки", "Заместитель руководителя отдела закупок", "Специалист закупки");
+            Purchaser.ItemsSource = Purchasers;
+            ProcurementsEmployeePurchasers = GET.View.ProcurementsEmployeesBy(procurement, "Руководитель отдела закупки", "Заместитель руководителя отдела закупок", "Специалист закупки");
+
+            ShipmentPlans = GET.View.ShipmentPlans();
+            ShipmentPlan.ItemsSource = ShipmentPlans;
+
+            ExecutionStates = GET.View.ExecutionStates();
+            ExecutionState.ItemsSource = ExecutionStates;
+
+            WarrantyStates = GET.View.WarrantyStates();
+            WarrantyState.ItemsSource = WarrantyStates;
+
+            SignedOriginals = GET.View.SignedOriginals();
+            SignedOriginal.ItemsSource = SignedOriginals;
+
+            Lawyers = GET.View.EmployeesBy("Юрист", "", "");
+            Lawyer.ItemsSource = Lawyers;
+            ProcurementsEmployeeLawyers = GET.View.ProcurementsEmployeesBy(procurement, "Юрист", "", "");
 
             Procurement = procurement;
             if (Procurement != null && ProcurementState != null)
@@ -183,6 +271,102 @@ namespace Parsething.Pages
                 GuaranteePeriod.Text = Procurement.GuaranteePeriod;
                 INN.Text = Procurement.Inn;
                 ContractNumber.Text = Procurement.ContractNumber;
+                foreach (Employee employee in Calculator.ItemsSource)
+                    if(ProcurementsEmployeeCalculators != null)
+                    if (employee.Id == ProcurementsEmployeeCalculators.EmployeeId)
+                    {
+                        Calculator.SelectedItem = employee;
+                        break;
+                    }
+                AssemblyNeed.IsChecked = Procurement.AssemblyNeed;
+                foreach (Minopttorg minopttorg in Minopttorg.ItemsSource)
+                    if (minopttorg.Id == Procurement.MinopttorgId)
+                    {
+                        Minopttorg.SelectedItem = minopttorg;
+                        break;
+                    }
+                foreach (LegalEntity legalEntity in LegalEntity.ItemsSource)
+                    if (legalEntity.Id == Procurement.LegalEntityId)
+                    {
+                        LegalEntity.SelectedItem = legalEntity;
+                        break;
+                    }
+                Applications.IsChecked = Procurement.Applications;
+                foreach (Employee employee in Sender.ItemsSource)
+                    if (ProcurementsEmployeeSenders != null)
+                        if (employee.Id == ProcurementsEmployeeSenders.EmployeeId)
+                        {
+                            Sender.SelectedItem = employee;
+                            break;
+                        }
+                Bet.Text = Procurement.Bet.ToString();
+                MinimalPrice.Text = Procurement.MinimalPrice.ToString();
+                ContractAmount.Text = Procurement.ContractAmount.ToString();
+                ReserveContractAmount.Text = Procurement.ReserveContractAmount.ToString();
+                ProtocolDate.SelectedDate = Procurement.ProtocolDate;
+                foreach (Employee employee in Manager.ItemsSource)
+                    if (ProcurementsEmployeeManagers != null)
+                        if (employee.Id == ProcurementsEmployeeManagers.EmployeeId)
+                        {
+                            Manager.SelectedItem = employee;
+                            break;
+                        }
+                foreach (Employee employee in Purchaser.ItemsSource)
+                    if (ProcurementsEmployeePurchasers != null)
+                        if (employee.Id == ProcurementsEmployeePurchasers.EmployeeId)
+                        {
+                            Purchaser.SelectedItem = employee;
+                            break;
+                        }
+                foreach (ShipmentPlan shipmentPlan in ShipmentPlan.ItemsSource)
+                    if (shipmentPlan.Id == Procurement.ShipmentPlanId)
+                    {
+                        ShipmentPlan.SelectedItem = shipmentPlan;
+                        break;
+                    }
+                WaitingList.IsChecked = Procurement.WaitingList;
+                CalculatingCB.IsChecked = Procurement.Calculating;
+                PurchasingCB.IsChecked = Procurement.Purchase;
+                foreach (ExecutionState executionState in ExecutionState.ItemsSource)
+                    if (executionState.Id == Procurement.ExecutionStateId)
+                    {
+                        ExecutionState.SelectedItem = executionState;
+                        break;
+                    }
+                foreach (WarrantyState warrantyState in WarrantyState.ItemsSource)
+                    if (warrantyState.Id == Procurement.WarrantyStateId)
+                    {
+                        WarrantyState.SelectedItem = warrantyState;
+                        break;
+                    }
+                SigningDeadline.SelectedDate = Procurement.SigningDeadline;
+                SigningDate.SelectedDate = Procurement.SigningDate;
+                ConclusionDate.SelectedDate = Procurement.ConclusionDate;
+                ActualDeliveryDate.SelectedDate = Procurement.ActualDeliveryDate;
+                DepartureDate.SelectedDate = Procurement.DepartureDate;
+                DeliveryDate.SelectedDate = Procurement.DeliveryDate;
+                MaxAcceptanceDate.SelectedDate = Procurement.MaxAcceptanceDate;
+                CorrectionDate.SelectedDate = Procurement.CorrectionDate;
+                ActDate.SelectedDate = Procurement.ActDate;
+                MaxDueDate.SelectedDate = Procurement.MaxDueDate;
+                ClosingDate.SelectedDate = Procurement.ClosingDate;
+                RealDueDate.SelectedDate = Procurement.RealDueDate;
+                Amount.Text = Procurement.Amount.ToString();
+                foreach (SignedOriginal signedOriginal in SignedOriginal.ItemsSource)
+                    if (signedOriginal.Id == Procurement.SignedOriginalId)
+                    {
+                        SignedOriginal.SelectedItem = signedOriginal;
+                        break;
+                    }
+                foreach (Employee employee in Lawyer.ItemsSource)
+                    if (ProcurementsEmployeeLawyers != null)
+                        if (employee.Id == ProcurementsEmployeeLawyers.EmployeeId)
+                        {
+                            Lawyer.SelectedItem = employee;
+                            break;
+                        }
+                Judgment.IsChecked = Procurement.Judgment;
+                FAS.IsChecked = Procurement.Fas;
             }
         }
 
@@ -212,6 +396,8 @@ namespace Parsething.Pages
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            string warningMessage = null;
+
             bool isRegionExists = false;
             List<Region> ProcurementRegion = new List<Region> { new Region() };
             Procurement.Id = Convert.ToInt32(Id.Text);
@@ -260,6 +446,114 @@ namespace Parsething.Pages
             Procurement.GuaranteePeriod = GuaranteePeriod.Text;
             Procurement.Inn = INN.Text;
             Procurement.ContractNumber = ContractNumber.Text;
+            Procurement.AssemblyNeed = AssemblyNeed.IsChecked;
+            if (Minopttorg.SelectedItem != null)
+                Procurement.MinopttorgId = ((Minopttorg)Minopttorg.SelectedItem).Id;
+            if (LegalEntity.SelectedItem != null)
+                Procurement.LegalEntityId = ((LegalEntity)LegalEntity.SelectedItem).Id;
+            Procurement.Applications = Applications.IsChecked;
+            if (Bet.Text != "")
+            {
+                decimal BetDecimal;
+                if (decimal.TryParse(Bet.Text, out BetDecimal))
+                {
+                    Procurement.Bet = BetDecimal;
+                }
+                else
+                {
+                    warningMessage += " Ставка";
+                }
+            }
+            else
+                Procurement.Bet = null;
+            if (MinimalPrice.Text != "")
+            {
+                decimal MinimalPriceDecimal;
+                if (decimal.TryParse(MinimalPrice.Text, out MinimalPriceDecimal))
+                {
+                    Procurement.MinimalPrice = MinimalPriceDecimal;
+                }
+                else
+                {
+                    warningMessage += " Минимальная цена";
+                }
+            }
+            else
+                Procurement.MinimalPrice = null;
+            if (ContractAmount.Text != "")
+            {
+                decimal ContractAmountDecimal;
+                if (decimal.TryParse(ContractAmount.Text, out ContractAmountDecimal))
+                {
+                    Procurement.ContractAmount = ContractAmountDecimal;
+                }
+                else
+                {
+                    warningMessage += " Сумма контракта";
+                }
+            }
+            else
+                Procurement.ContractAmount = null;
+            if (ReserveContractAmount.Text != "")
+            {
+                decimal ReserveContractAmountDecimal;
+                if (decimal.TryParse(ReserveContractAmount.Text, out ReserveContractAmountDecimal))
+                {
+                    Procurement.ReserveContractAmount = ReserveContractAmountDecimal;
+                }
+                else
+                {
+                    warningMessage += " Измененная сумма контракта";
+                }
+            }
+            else
+                Procurement.ReserveContractAmount = null;
+            Procurement.ProtocolDate = ProtocolDate.SelectedDate;
+            if (ShipmentPlan.SelectedItem != null)
+                Procurement.ShipmentPlanId = ((ShipmentPlan)ShipmentPlan.SelectedItem).Id;
+            Procurement.WaitingList = WaitingList.IsChecked;
+            Procurement.Calculating = CalculatingCB.IsChecked;
+            Procurement.Purchase = PurchasingCB.IsChecked;
+            if (ExecutionState.SelectedItem != null)
+                Procurement.ExecutionStateId = ((ExecutionState)ExecutionState.SelectedItem).Id;
+            if (WarrantyState.SelectedItem != null)
+                Procurement.WarrantyStateId = ((WarrantyState)WarrantyState.SelectedItem).Id;
+            Procurement.SigningDeadline = SigningDeadline.SelectedDate;
+            Procurement.SigningDate = SigningDate.SelectedDate;
+            Procurement.ConclusionDate = ConclusionDate.SelectedDate;
+            Procurement.ActualDeliveryDate = ActualDeliveryDate.SelectedDate;
+            Procurement.DepartureDate = DepartureDate.SelectedDate;
+            Procurement.DeliveryDate = DeliveryDate.SelectedDate;
+            Procurement.MaxAcceptanceDate = MaxAcceptanceDate.SelectedDate;
+            Procurement.CorrectionDate = CorrectionDate.SelectedDate;
+            Procurement.ActDate = ActDate.SelectedDate;
+            Procurement.MaxDueDate = MaxDueDate.SelectedDate;
+            Procurement.ClosingDate = ClosingDate.SelectedDate;
+            Procurement.RealDueDate = RealDueDate.SelectedDate;
+            if (Amount.Text != "")
+            {
+                decimal AmountDecimal;
+                if (decimal.TryParse(Amount.Text, out AmountDecimal))
+                {
+                    Procurement.Amount = AmountDecimal;
+                }
+                else
+                {
+                    warningMessage += " Оплаченная сумма";
+                }
+            }
+            else
+                Procurement.Amount = null;
+            if (SignedOriginal.SelectedItem != null)
+                Procurement.SignedOriginalId = ((SignedOriginal)SignedOriginal.SelectedItem).Id;
+            Procurement.Judgment = Judgment.IsChecked;
+            Procurement.Fas = FAS.IsChecked;
+
+            if (warningMessage != null)
+            {
+                MessageBox.Show($"Неверный формат полей: {warningMessage}");
+                return;
+            }
             PULL.Procurement(Procurement);
 
             if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
@@ -302,6 +596,44 @@ namespace Parsething.Pages
             {
 
             }
+        }
+
+        private void Sender_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+            procurementsEmployee.ProcurementId = Procurement.Id;
+            procurementsEmployee.EmployeeId = ((Employee)Sender.SelectedItem).Id;
+            PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист по работе с электронными площадками", "", "");
+        }
+
+        private void Calculator_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+            procurementsEmployee.ProcurementId = Procurement.Id;
+            procurementsEmployee.EmployeeId = ((Employee)Calculator.SelectedItem).Id;
+            PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
+        }
+        private void Manager_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+            procurementsEmployee.ProcurementId = Procurement.Id;
+            procurementsEmployee.EmployeeId = ((Employee)Manager.SelectedItem).Id;
+            PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела");
+        }
+        private void Purchaser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+            procurementsEmployee.ProcurementId = Procurement.Id;
+            procurementsEmployee.EmployeeId = ((Employee)Purchaser.SelectedItem).Id;
+            PUT.ProcurementsEmployeesBy(procurementsEmployee, "Руководитель отдела закупки", "Заместитель руководителя отдела закупок", "Специалист закупки");
+        }
+
+        private void Lawyer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+            procurementsEmployee.ProcurementId = Procurement.Id;
+            procurementsEmployee.EmployeeId = ((Employee)Lawyer.SelectedItem).Id;
+            PUT.ProcurementsEmployeesBy(procurementsEmployee, "Юрист", "", "");
         }
 
         private void ProcurementPreferencesSelectedLV_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -360,6 +692,64 @@ namespace Parsething.Pages
                 }
                 ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
                 ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
+            }
+        }
+
+        private void ProcurementDocumentsSelectedLV_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Document documentItem = ((ListView)sender).SelectedItem as Document;
+            if (documentItem != null)
+            {
+                ProcurementsDocument procurementsDocumentsToRemove = new ProcurementsDocument { Procurement = Procurement, Document = documentItem, DocumentId = documentItem.Id, ProcurementId = Procurement.Id };
+                DELETE.ProcurementDocument(procurementsDocumentsToRemove);
+                ProcurementDocumentsSelectedLV.ItemsSource = null;
+                ProcurementDocumentsNotSelectedLV.ItemsSource = null;
+                DocumentsSelected.Clear();
+                ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(Procurement.Id);
+                DocumentsNotSelected = GET.View.Documents();
+
+                foreach (ProcurementsDocument procurementsDocument in ProcurementDocumentsSelected)
+                    DocumentsSelected.Add(procurementsDocument.Document);
+
+                foreach (Document document in DocumentsSelected)
+                {
+                    Document documentToRemove = DocumentsNotSelected.FirstOrDefault(p => p.Id == document.Id);
+                    if (documentToRemove != null)
+                    {
+                        DocumentsNotSelected.Remove(documentToRemove);
+                    }
+                }
+                ProcurementDocumentsSelectedLV.ItemsSource = DocumentsSelected;
+                ProcurementDocumentsNotSelectedLV.ItemsSource = DocumentsNotSelected;
+            }
+        }
+
+        private void ProcurementDocumentsNotSelectedLV_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Document documentItem = ((ListView)sender).SelectedItem as Document;
+            if (documentItem != null)
+            {
+                ProcurementsDocument procurementsDocumentsToAdd = new ProcurementsDocument { Procurement = Procurement, Document = documentItem, DocumentId = documentItem.Id, ProcurementId = Procurement.Id };
+                PUT.ProcurementsDocuments(procurementsDocumentsToAdd);
+                ProcurementDocumentsSelectedLV.ItemsSource = null;
+                ProcurementDocumentsNotSelectedLV.ItemsSource = null;
+                DocumentsSelected.Clear();
+                ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(Procurement.Id);
+                DocumentsNotSelected = GET.View.Documents();
+
+                foreach (ProcurementsDocument procurementsDocument in ProcurementDocumentsSelected)
+                    DocumentsSelected.Add(procurementsDocument.Document);
+
+                foreach (Document document in DocumentsSelected)
+                {
+                    Document documentToRemove = DocumentsNotSelected.FirstOrDefault(p => p.Id == document.Id);
+                    if (documentToRemove != null)
+                    {
+                        DocumentsNotSelected.Remove(documentToRemove);
+                    }
+                }
+                ProcurementDocumentsSelectedLV.ItemsSource = DocumentsSelected;
+                ProcurementDocumentsNotSelectedLV.ItemsSource = DocumentsNotSelected;
             }
         }
 
