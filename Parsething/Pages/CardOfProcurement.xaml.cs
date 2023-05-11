@@ -63,6 +63,11 @@ namespace Parsething.Pages
         private List<Employee>? Lawyers { get; set; }
         private ProcurementsEmployee? ProcurementsEmployeeLawyers = new ProcurementsEmployee();
 
+        private List<Comment>? Comments = new List<Comment>();
+
+        private List<History>? Histories = new List<History>();
+        private string Historylog;
+
         private Procurement? Procurement { get; set; }
 
         SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
@@ -189,6 +194,11 @@ namespace Parsething.Pages
             Lawyers = GET.View.EmployeesBy("Юрист", "", "");
             Lawyer.ItemsSource = Lawyers;
             ProcurementsEmployeeLawyers = GET.View.ProcurementsEmployeesBy(procurement, "Юрист", "", "");
+
+            Comments = GET.View.CommentsBy(procurement.Id);
+            CommentsListView.ItemsSource = Comments;
+
+            
 
             Procurement = procurement;
             if (Procurement != null && ProcurementState != null)
@@ -368,6 +378,8 @@ namespace Parsething.Pages
                 Judgment.IsChecked = Procurement.Judgment;
                 FAS.IsChecked = Procurement.Fas;
             }
+
+            Historylog = ProcurementState.Text;
         }
 
         private void Method_ToolTipOpening(object sender, ToolTipEventArgs e)
@@ -555,47 +567,17 @@ namespace Parsething.Pages
                 return;
             }
             PULL.Procurement(Procurement);
-
-            if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
+            if (ProcurementState.Text != Historylog)
             {
-                _ = MainFrame.Navigate(new Pages.AdministratorPage());
+                History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = ProcurementState.Text };
+                PUT.History(history);
+                HistoryListView.ItemsSource = null;
+                Histories.Clear();
+                Histories = GET.View.HistoriesBy(Procurement.Id);
+                HistoryListView.ItemsSource = Histories;
+                Historylog = ProcurementState.Text;
             }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела расчетов" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела расчетов")
-            {
-                _ = MainFrame.Navigate(new Pages.HeadsOfCalculatorsPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист отдела расчетов")
-            {
-                _ = MainFrame.Navigate(new Pages.CalculatorPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
-            {
-                _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по работе с электронными площадками")
-            {
-                _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист тендерного отдела")
-            {
-                _ = MainFrame.Navigate(new Pages.ManagerPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела закупки" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела закупок" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист закупки")
-            {
-                _ = MainFrame.Navigate(new Pages.PurchaserPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по производству")
-            {
-                _ = MainFrame.Navigate(new Pages.AssemblyPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Юрист")
-            {
-                _ = MainFrame.Navigate(new Pages.LawyerPage());
-            }
-            else
-            {
-
-            }
+            
         }
 
         private void Sender_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -753,6 +735,21 @@ namespace Parsething.Pages
             }
         }
 
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (CommentsTextBox.Text != null)
+            {
+                Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = CommentsTextBox.Text };
+                CommentsTextBox.Clear();
+                PUT.Comment(comment);
+                CommentsListView.ItemsSource = null;
+                Comments.Clear();
+                Comments = GET.View.CommentsBy(Procurement.Id);
+                CommentsListView.ItemsSource = Comments;
+                
+            }
+        }
+
         private void Regions_KeyDown(object sender, KeyEventArgs e)
         {
             foreach (Region region in Regions.ItemsSource)
@@ -788,7 +785,61 @@ namespace Parsething.Pages
 
         private void History_Click(object sender, RoutedEventArgs e)
         {
+            Histories = GET.View.HistoriesBy(Procurement.Id);
+            HistoryListView.ItemsSource = Histories;
+            HistoryPopUp.IsOpen = !HistoryPopUp.IsOpen;
+        }
 
+        private void GoBackButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно выйти? Не забудьте СОХРАНИТЬ результат", "Выход без сохранения", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
+                {
+                    _ = MainFrame.Navigate(new Pages.AdministratorPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела расчетов" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела расчетов")
+                {
+                    _ = MainFrame.Navigate(new Pages.HeadsOfCalculatorsPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист отдела расчетов")
+                {
+                    _ = MainFrame.Navigate(new Pages.CalculatorPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
+                {
+                    _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по работе с электронными площадками")
+                {
+                    _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист тендерного отдела")
+                {
+                    _ = MainFrame.Navigate(new Pages.ManagerPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела закупки" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела закупок" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист закупки")
+                {
+                    _ = MainFrame.Navigate(new Pages.PurchaserPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по производству")
+                {
+                    _ = MainFrame.Navigate(new Pages.AssemblyPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Юрист")
+                {
+                    _ = MainFrame.Navigate(new Pages.LawyerPage());
+                }
+                else
+                {
+
+                }
+            }
+            else if (messageBoxResult == MessageBoxResult.Yes)
+            {
+
+            }
         }
 
         private void ProcurementInfo_Click(object sender, RoutedEventArgs e)

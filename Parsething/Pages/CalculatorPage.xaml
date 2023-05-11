@@ -149,7 +149,7 @@
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="6"
-                                        Text="{Binding Path=Procurement.Deadline}"
+                                        Text="{Binding Path=Procurement.Deadline, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
                                         HorizontalAlignment="Center"
                                         FontSize="15"
                                          VerticalAlignment="Center"

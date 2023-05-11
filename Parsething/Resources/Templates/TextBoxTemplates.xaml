@@ -68,4 +68,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="SingleLineInput.Search" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
+        <Setter Property="FontFamily" Value="Noah"/>
+        <Setter Property="FontSize" Value="20"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" CornerRadius="15" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="True"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

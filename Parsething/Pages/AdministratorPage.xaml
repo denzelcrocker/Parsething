@@ -229,7 +229,7 @@
                     </Grid>
                     <Label Content="Статистика" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Button Content="По месяцам" Style="{DynamicResource StatisticsButton}"/>
+                    <Button Content="По месяцам" Style="{DynamicResource StatisticsButton}" Cursor="Hand"/>
                     <Button Content="Отчёты" Style="{DynamicResource StatisticsButton}"/>
                     <Button Content="Журнал" Style="{DynamicResource StatisticsButton}"/>
                 </StackPanel>

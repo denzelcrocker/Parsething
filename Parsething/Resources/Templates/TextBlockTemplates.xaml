@@ -54,5 +54,4 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="Noah"/>
     </Style>
-
 </ResourceDictionary>

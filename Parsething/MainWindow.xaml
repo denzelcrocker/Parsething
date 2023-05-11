@@ -26,7 +26,7 @@
                                 x:Name="GoHome"
                                 Margin="0,0,1580,0"
                                 HorizontalAlignment="Left"
-                                Style="{DynamicResource ButtonWithIcon}">
+                                Style="{DynamicResource ButtonWithIcon}" Click="GoHome_Click" Cursor="Hand">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="/Resources/Images/Home.png" Stretch="Uniform" Height="45"/>
@@ -37,7 +37,7 @@
                                 x:Name="Search"
                                 Margin="0,0,15,0"
                                 HorizontalAlignment="Left"
-                                Style="{DynamicResource ButtonWithIcon}">
+                                Style="{DynamicResource ButtonWithIcon}" Click="Search_Click" >
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="/Resources/Images/Search.png" Stretch="Uniform" Height="40"/>

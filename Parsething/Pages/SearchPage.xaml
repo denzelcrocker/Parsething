@@ -1,0 +1,263 @@
+﻿<Page x:Class="Parsething.Pages.SearchPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Parsething.Pages"
+      mc:Ignorable="d" 
+      Title="SearchPage"
+      Loaded="Page_Loaded">
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Width="1810" Height="900">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1500"/>
+                <ColumnDefinition Width="310"/>
+            </Grid.ColumnDefinitions>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15"  CornerRadius="45">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
+                </Border.Effect>
+                <Grid Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="170"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="145"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Id" Grid.Column="0" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Закон" Grid.Column="1" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Номер закупки" Grid.Column="2" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Дата подачи заявок" Grid.Column="3" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Максимальная цена" Grid.Column="4" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Статус тендера" Grid.Column="5" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Дата подписания" Grid.Column="6" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Дата заключения" Grid.Column="7" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Дата поставки" Grid.Column="8" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="9" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="10" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="ЕИС" Grid.Column="11" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Редактировать" Grid.Column="12" />
+                    </Grid>
+                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border 
+                                BorderThickness="1"
+                                BorderBrush="#C6BDBF"
+                                CornerRadius="15">
+                                    <Grid HorizontalAlignment="Stretch" Height="50">
+                                        <Grid.ToolTip>
+                                            <ToolTip>
+                                                Перейти
+                                            </ToolTip>
+                                        </Grid.ToolTip>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="160"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="140"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="130"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="110"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="115"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="110"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Text="{Binding Path=Id}"
+                                        HorizontalAlignment="Center"
+                                        Name="ServiceId"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"/>
+                                        <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="2"
+                                        Text="{Binding Path=Law.Number}"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
+                                        <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="4"
+                                        Text="{Binding Path=Number}"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
+                                        <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="6"
+                                        Text="{Binding Path=Deadline, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
+                                        HorizontalAlignment="Center"
+                                        FontSize="15"
+                                         VerticalAlignment="Center"
+                                        Margin="10"/>
+                                        <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="8"
+                                        Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="10"/>
+                                        <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="10"
+                                        Text="{Binding Path=ProcurementState.Kind}"
+                                        FontSize="15"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="10"/>
+                                        <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="12"
+                                        Text="{Binding Path=SigningDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                        FontSize="15"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="10"/>
+                                        <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="14"
+                                        Text="{Binding Path=ConclusionDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                        FontSize="15"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="10"/>
+                                        <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="16"
+                                        Text="{Binding Path=DeliveryDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                        FontSize="15"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="10"/>
+                                        <Rectangle Grid.Column="17" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Button   
+                                            Grid.Column="18"
+                                            x:Name="Purchase"
+                                            Style="{DynamicResource ButtonWithIcon}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="45"/>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Rectangle Grid.Column="19" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Button   
+                                            Grid.Column="20"
+                                            x:Name="Calculating"
+                                            Style="{DynamicResource ButtonWithIcon}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="35"/>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Rectangle Grid.Column="21" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Button 
+                                        x:Name="NavigateToProcurementURL"
+                                        Grid.Column="22"
+                                        Click="NavigateToProcurementURL_Click"
+                                        Style="{DynamicResource ButtonWithIcon}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="35"/>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Rectangle Grid.Column="23" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Button 
+                                        x:Name="EditProcurement"
+                                        Grid.Column="24"
+                                        Click="EditProcurement_Click"
+                                        Style="{DynamicResource ButtonWithIcon}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="35"/>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="30,15,0,15" CornerRadius="45">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
+                </Border.Effect>
+                <Grid Margin="10,30,10,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="SearchBar" Grid.Column="2" Grid.Row="0" Visibility="Visible" Style="{DynamicResource ListView}" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="260"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                            <Label Content="Id тендера" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
+                            <TextBox x:Name="SearchId" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="1" PreviewTextInput="Search_PreviewTextInput" />
+                            <Label Content="Номер закупки" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"/>
+                            <TextBox x:Name="SearchNumber" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="3" PreviewTextInput="Search_PreviewTextInput" />
+                            <Label Content="Закон" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"/>
+                            <ComboBox x:Name="Law" Grid.Row="5" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Card}" Height="40" DisplayMemberPath="Number" FontSize="17"/>
+                        </Grid>
+                    </ListView>
+                    <Button x:Name="SearchButton" Content="Поиск" Style="{DynamicResource StatisticsButton}" Cursor="Hand" Grid.Row="1" Click="SearchButton_Click" />
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page>

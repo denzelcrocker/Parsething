@@ -185,7 +185,7 @@
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="6"
-                                        Text="{Binding Path=ActualDeliveryDate}"
+                                        Text="{Binding Path=ActualDeliveryDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
                                         HorizontalAlignment="Center"
                                         FontSize="15"
                                          VerticalAlignment="Center"
@@ -307,7 +307,7 @@
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="6"
-                                        Text="{Binding Path=Procurement.ActualDeliveryDate}"
+                                        Text="{Binding Path=Procurement.ActualDeliveryDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
                                         HorizontalAlignment="Center"
                                         FontSize="15"
                                          VerticalAlignment="Center"
