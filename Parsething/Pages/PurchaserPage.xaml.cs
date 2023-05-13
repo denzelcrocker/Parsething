@@ -191,6 +191,23 @@ namespace Parsething.Pages
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
         }
+
+        private void Purchase_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false));
+        }
+
+        private void ComponentPurchase_Click(object sender, RoutedEventArgs e)
+        {
+            ComponentCalculation componentCalculation = (sender as Button)?.DataContext as ComponentCalculation;
+            if (componentCalculation != null)
+            {
+                Procurement procurement = componentCalculation.Procurement;
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false));
+            }
+        }
     }
     
 }

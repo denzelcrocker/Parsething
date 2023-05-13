@@ -54,4 +54,17 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="Noah"/>
     </Style>
+    <Style x:Key="TableElements.ComponentCalculations" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="TextBlock.AddEditComponent" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="FontSize" Value="35"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="#BD1414"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
 </ResourceDictionary>

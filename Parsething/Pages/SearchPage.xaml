@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       Title="SearchPage"
       Loaded="Page_Loaded">
-    
+
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Width="1810" Height="900">
             <Grid.ColumnDefinitions>
@@ -174,7 +174,7 @@
                                         <Button   
                                             Grid.Column="18"
                                             x:Name="Purchase"
-                                            Style="{DynamicResource ButtonWithIcon}">
+                                            Style="{DynamicResource ButtonWithIcon}" Click="Purchase_Click">
                                             <Button.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="45"/>
@@ -185,7 +185,7 @@
                                         <Button   
                                             Grid.Column="20"
                                             x:Name="Calculating"
-                                            Style="{DynamicResource ButtonWithIcon}">
+                                            Style="{DynamicResource ButtonWithIcon}" Click="Calculating_Click" >
                                             <Button.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="35"/>

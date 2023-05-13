@@ -175,8 +175,8 @@
                                     <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button   
                                             Grid.Column="12"
-                                            x:Name="PrintButton"
-                                            Style="{DynamicResource ButtonWithIcon}">
+                                            x:Name="Calculating"
+                                            Style="{DynamicResource ButtonWithIcon}" Click="Calculating_Click" >
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="45"/>

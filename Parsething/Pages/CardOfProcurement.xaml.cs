@@ -836,10 +836,7 @@ namespace Parsething.Pages
 
                 }
             }
-            else if (messageBoxResult == MessageBoxResult.Yes)
-            {
-
-            }
+            else if (messageBoxResult == MessageBoxResult.No) { }
         }
 
         private void ProcurementInfo_Click(object sender, RoutedEventArgs e)

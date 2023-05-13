@@ -267,7 +267,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource ComboBox.BorderBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ComboBox.Foreground}"/>
         <Setter Property="MinWidth" Value="256"/>
-        <Setter Property="Width" Value="256"/>
+        <Setter Property="Width" Value="555"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontFamily" Value="Noah"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -295,5 +295,23 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontFamily" Value="Noah"/>
     </Style>
-    
+    <Style x:Key="ComboBoxBase.ComponentCalculations" TargetType="{x:Type ComboBox}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Background" Value="{StaticResource ComboBox.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ComboBox.BorderBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ComboBox.Foreground}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="MinWidth" Value="265"/>
+        <Setter Property="Width" Value="555"/>
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource ComboBoxItemBase}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
+    </Style>
 </ResourceDictionary>

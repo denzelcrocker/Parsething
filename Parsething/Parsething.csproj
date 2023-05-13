@@ -11,10 +11,12 @@
   <ItemGroup>
     <None Remove="Back.png" />
     <None Remove="Home.png" />
+    <None Remove="Pages\Assembly.png" />
     <None Remove="Pages\Calculator.png" />
     <None Remove="Pages\CoatOfArms.png" />
     <None Remove="Pages\gear.png" />
     <None Remove="Pages\History.png" />
+    <None Remove="Pages\Info.png" />
     <None Remove="Pages\PhotoCoatOfArmsOfRussia.png" />
     <None Remove="Pages\Purchase.png" />
     <None Remove="Resources\Fonts\Noah-Regular.ttf" />
@@ -39,6 +41,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Assembly.png" />
+    <Resource Include="Resources\Images\Info.png" />
     <Resource Include="Resources\Images\Back.png" />
     <Resource Include="Resources\Images\Home.png" />
     <Resource Include="Resources\Images\History.png" />

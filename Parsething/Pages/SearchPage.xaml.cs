@@ -110,5 +110,20 @@ namespace Parsething.Pages
                 e.Handled = true;
             }
         }
+
+        private void Calculating_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true));
+        }
+
+        private void Purchase_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false));
+        }
+
     }
 }

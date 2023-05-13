@@ -82,8 +82,13 @@ public partial class CalculatorPage : Page
         }
     }
 
-    private void ServiceId_PreviewStylusSystemGesture(object sender, StylusSystemGestureEventArgs e)
+    private void Calculating_Click(object sender, RoutedEventArgs e)
     {
-
+        ProcurementsEmployee procurementsEmployee = (sender as Button)?.DataContext as ProcurementsEmployee;
+        if (procurementsEmployee != null)
+        {
+            Procurement procurement = procurementsEmployee.Procurement;
+            _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true));
+        }
     }
 }
