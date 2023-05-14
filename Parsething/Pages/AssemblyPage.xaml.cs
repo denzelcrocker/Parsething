@@ -34,5 +34,10 @@ namespace Parsething.Pages
             }
             catch { }
         }
+
+        private void ProblemButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

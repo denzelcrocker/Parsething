@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>ParsethingLogo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
     <None Remove="Resources\Fonts\Noah-Regular.ttf" />
     <None Remove="Search.png" />
     <None Remove="Send.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ParsethingLogo.ico" />
   </ItemGroup>
 
   <ItemGroup>

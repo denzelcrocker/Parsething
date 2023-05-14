@@ -34,5 +34,30 @@ namespace Parsething.Pages
             }
             catch { }
         }
+
+        private void NotPaidButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void JudgementButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FASButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
