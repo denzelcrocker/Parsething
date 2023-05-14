@@ -7,12 +7,23 @@ namespace Parsething.Pages;
 public partial class AdministratorPage : Page
 {
     private Frame MainFrame { get; set; } = null!;
-    private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupings { get; set; }
+
+    private List<Procurement>? Procurements = new List<Procurement>();
+
+
+
+    private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsNew { get; set; }
+    private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsDrawUp { get; set; }
+
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesEPSpecialistGroupings { get; set; }
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesManagersGroupings { get; set; }
+    private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
+
     private List<ComponentCalculation>? ComponentCalculationsProblem { get; set; }
     private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
     private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
+
+
 
     public AdministratorPage() =>
         InitializeComponent();
@@ -25,7 +36,9 @@ public partial class AdministratorPage : Page
             MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
         }
         catch { }
-        int countOfCalculations = 0;
+        int countOfCalculationsNew = 0;
+        int countOfCalculationsDrawUp = 0;
+        int countOfMethods = 0;
         int countOfSended = 0;
         int countOfManagers = 0;
 
@@ -35,18 +48,22 @@ public partial class AdministratorPage : Page
 
         Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState)); // Отбой
 
-        //if (CalculationQueue.Text == "0")
-        //{
-        //    CalculationQueue.Foreground = Brushes.Red;
-        //}
-
         // Очередь расчета
 
         Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
 
         Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.Deadline)); // Торги
 
-        // Котировки
+        ProcurementsMethodsGroupings = GET.View.ProcurementsGroupByMethod();
+        foreach (var item in ProcurementsMethodsGroupings)
+        {
+            countOfMethods += item.CountOfProcurements;
+        }
+        Quotes.Text = countOfMethods.ToString(); // Котировки (общее количество)
+        foreach (var item in ProcurementsMethodsGroupings)
+        {
+            QuotesCombobox.Items.Add(item); // Котировки (по методам)
+        }// Котировки
 
         OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.Deadline)); // Просрочены
 
@@ -60,22 +77,29 @@ public partial class AdministratorPage : Page
 
         Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState)); // Посчитан
 
-        ProcurementsEmployeesCalculatorsGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов");
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupings)
+        ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый","","");
+        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
         {
-            countOfCalculations += item.CountOfProcurements;
+            countOfCalculationsNew += item.CountOfProcurements;
         }
-        CalculationsOverAll.Text = countOfCalculations.ToString(); // Расчет (общее количество)
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupings)
+        CalculationsOverAll.Text = countOfCalculationsNew.ToString(); // Расчет (общее количество)
+        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
         {
             CalculationsCombobox.Items.Add(item); // Расчет (по сотрудникам)
         }
 
-        RetreatCalculate.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState)); // Отбой
-
         DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
 
-        // Оформление Выпадающий список
+        ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить","","");
+        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
+        {
+            countOfCalculationsDrawUp += item.CountOfProcurements;
+        }
+        DrawUpOverAll.Text = countOfCalculationsDrawUp.ToString(); // Оформление (общее количество)
+        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
+        {
+            DrawUpCombobox.Items.Add(item); // Оформление (по сотрудникам)
+        }// Оформление
 
         Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState)); // Оформллены
 
@@ -83,7 +107,7 @@ public partial class AdministratorPage : Page
 
         OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true, GET.KindOf.StartDate));// Просрочены
 
-        ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками");
+        ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками","","", "Отправлен","","");
         foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
         {
             countOfSended += item.CountOfProcurements;
@@ -102,7 +126,7 @@ public partial class AdministratorPage : Page
 
         WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)).ToString(); // Выиграны всего
 
-        ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела");
+        ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка");
         foreach (var item in ProcurementsEmployeesManagersGroupings)
         {
             countOfManagers += item.CountOfProcurements;
@@ -142,7 +166,7 @@ public partial class AdministratorPage : Page
 
         // Рублей в обороте
 
-        // Приемка
+        Acceptance.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState)); // Приемка
 
         // Частичная отправка
 
@@ -159,6 +183,236 @@ public partial class AdministratorPage : Page
         FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
     }
 
+    private void UnsortedButton_Click(object sender, RoutedEventArgs e) // неразобранные 
+    {
+        Procurements = GET.View.ProcurementsBy("Неразобранный", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void RetreatButton_Click(object sender, RoutedEventArgs e) // отбой
+    {
+        Procurements = GET.View.ProcurementsBy("Отбой", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void CalculationQueueButton_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SendedButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Отправлен", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void BargainingButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.Deadline);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.Deadline);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void CancellationButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Отмена", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void RejectedButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Отклонен", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void LostButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Проигран", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void NewButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Новый", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void CalculatedButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Посчитан", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void DrawUpButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Оформить", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void IssuedButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Оформлен", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ForSendButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.StartDate);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.StartDate);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void WonByApplicationsButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("", GET.KindOf.Applications);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ProblemButton_Click(object sender, RoutedEventArgs e)
+    {
+        foreach (ComponentCalculation componentCalculation in ComponentCalculationsProblem)
+        {
+            Procurements.Add(componentCalculation.Procurement);
+        }
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void InWorkButton_Click(object sender, RoutedEventArgs e)
+    {
+        foreach (ComponentCalculation componentCalculation in ComponentCalculationsInWork)
+        {
+            Procurements.Add(componentCalculation.Procurement);
+        }
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void AgreedButton_Click(object sender, RoutedEventArgs e)
+    {
+        foreach (ComponentCalculation componentCalculation in ComponentCalculationsAgreed)
+        {
+            Procurements.Add(componentCalculation.Procurement);
+        }
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Предыдущая", GET.KindOf.ShipmentPlane);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void NextWeekButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ReceivedButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Принят", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void NotPaidButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsNotPaid();
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(false);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(true);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void JudgementButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(GET.KindOf.Judgement);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void FASButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(GET.KindOf.FAS);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
 }
 public static class StringExtensions
 {
@@ -172,76 +426,3 @@ public static class StringExtensions
         return str[..^len];
     }
 }
-//DatabaseLibrary.Entities.ProcurementProperties.Procurement procurementUpdate = new DatabaseLibrary.Entities.ProcurementProperties.Procurement();
-//procurementUpdate.RequestUri = "https://zakupki.gov.ru/epz/order/notice/notice223/common-info.html?noticeInfoId=15080229";
-//procurementUpdate.Number = "32312229220";
-//procurementUpdate.LawId = db.Laws.Where(e => e.Number == "44-ФЗ").FirstOrDefault().Id;
-//procurementUpdate.Object = "Расходные материалы для лаборатории (Урискан)";
-//procurementUpdate.InitialPrice = Convert.ToDecimal("407000,00");
-//procurementUpdate.OrganizationId = db.Organizations.Where(e => e.Name == "АДМИНИСТРАЦИЯ МИЛЬКОВСКОГО МУНИЦИПАЛЬНОГО РАЙОНА").Where(e => e.PostalAddress == "Российская Федерация, 684300, Камчатский край, Мильковский р-н, Мильково с, УЛИЦА ПОБЕДЫ, 8").FirstOrDefault().Id;
-//procurementUpdate.MethodId = db.Methods.Where(e => e.Text == "Аукцион в электронной форме").FirstOrDefault().Id;
-//procurementUpdate.PlatformId = db.Platforms.Where(e => e.Name == "ЭТП ТЭК-Торг").Where(e => e.Address == "http://www.tektorg.ru/").FirstOrDefault().Id;
-//procurementUpdate.Location = "689000, АВТОНОМНЫЙ ОКРУГ ЧУКОТСКИЙ, Г. АНАДЫРЬ, УЛ. БЕРИНГА, дом Д.7";
-//procurementUpdate.StartDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.Deadline = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.TimeZoneId = db.TimeZones.Where(e => e.Offset == "МСК+6").FirstOrDefault().Id;
-//procurementUpdate.Securing = "752,77 Российский рубль";
-//procurementUpdate.Enforcement = "7 527,71 Российский рубль (10 %)";
-//procurementUpdate.Warranty = "";
-//procurementUpdate.RegionId = db.Regions.Where(e => e.Title == "Москва").Where(e => e.Distance == 500).FirstOrDefault().Id;
-//procurementUpdate.OrganizationContractName = "Организация";
-//procurementUpdate.OrganizationContractPostalAddress = "1";
-//procurementUpdate.ContactPerson = "2";
-//procurementUpdate.ContactPhone = "3";
-//procurementUpdate.DeliveryDetails = "4";
-//procurementUpdate.DeadlineAndType = "5";
-//procurementUpdate.DeliveryDeadline = "6";
-//procurementUpdate.AcceptanceDeadline = "7";
-//procurementUpdate.ContractDeadline = "8";
-//procurementUpdate.Indefinitely = true;
-//procurementUpdate.AnotherDeadline = "9";
-//procurementUpdate.DeadlineAndOrder = "10";
-//procurementUpdate.RepresentativeTypeId = db.RepresentativeTypes.Where(e => e.Kind == "Нужен").FirstOrDefault().Id;
-//procurementUpdate.CommissioningWorksId = db.CommisioningWorks.Where(e => e.Kind == "Нужны").FirstOrDefault().Id;
-//procurementUpdate.PlaceCount = 11;
-//procurementUpdate.FinesAndPennies = "12";
-//procurementUpdate.PenniesPerDay = "13";
-//procurementUpdate.TerminationConditions = "14";
-//procurementUpdate.EliminationDeadline = "15";
-//procurementUpdate.GuaranteePeriod = "16";
-//procurementUpdate.Inn = "17";
-//procurementUpdate.ContractNumber = "18";
-////employeeId
-//procurementUpdate.AssemblyNeed = true;
-//procurementUpdate.MinopttorgId = db.Minopttorgs.Where(e => e.Name == "3logic").FirstOrDefault().Id;
-//procurementUpdate.LegalEntityId = db.LegalEntities.Where(e => e.Name == "ГРИНТЕХ").FirstOrDefault().Id;
-//procurementUpdate.Applications = false;
-//procurementUpdate.Bet = Convert.ToDecimal("407000,00");
-//procurementUpdate.MinimalPrice = Convert.ToDecimal("407000,00");
-//procurementUpdate.ContractAmount = Convert.ToDecimal("407000,00");
-//procurementUpdate.ReserveContractAmount = Convert.ToDecimal("407000,00");
-//procurementUpdate.ProtocolDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.ShipmentPlanId = db.ShipmentPlans.Where(e => e.Kind == "Текущая").FirstOrDefault().Id;
-//procurementUpdate.WaitingList = true;
-//procurementUpdate.Calculating = true;
-//procurementUpdate.Purchase = false;
-//procurementUpdate.ExecutionStateId = db.ExecutionStates.Where(e => e.Kind == "Не требуется").FirstOrDefault().Id;
-//procurementUpdate.WarrantyStateId = db.WarrantyStates.Where(e => e.Kind == "Не требуется").FirstOrDefault().Id;
-//procurementUpdate.SigningDeadline = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.SigningDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.ConclusionDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.ActualDeliveryDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.DepartureDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.DeliveryDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.MaxAcceptanceDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.CorrectionDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.ActDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.MaxDueDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.ClosingDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.RealDueDate = Convert.ToDateTime("2023-03-28 02:31:00");
-//procurementUpdate.Amount = Convert.ToDecimal("407000,00");
-//procurementUpdate.SignedOriginalId = db.SignedOriginals.Where(e => e.Kind == "ПО (Получены)").FirstOrDefault().Id;
-//procurementUpdate.Judgment = true;
-//procurementUpdate.Fas = false;
-//procurementUpdate.ProcurementStateId = db.ProcurementStates.Where(e => e.Kind == "Новый").FirstOrDefault().Id;
-//DatabaseLibrary.Functions.PULL.ProcurementUpdate(procurementUpdate);

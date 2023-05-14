@@ -25,6 +25,7 @@ namespace Parsething.Pages
         private Frame MainFrame { get; set; } = null!;
 
         private List<Law>? Laws { get; set; }
+        private List<ProcurementState>? ProcurementStates { get; set; }
 
         private List<Procurement>? FoundProcurements { get; set; }
 
@@ -38,6 +39,8 @@ namespace Parsething.Pages
             Laws = GET.View.Laws();
             Law.ItemsSource = Laws;
 
+            ProcurementStates = GET.View.ProcurementStates();
+            ProcurementState.ItemsSource = ProcurementStates;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -60,33 +63,7 @@ namespace Parsething.Pages
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
         }
-        public static List<Procurement>? ProcurementsBy(int searchId, string searchNumber, string searchLaw)
-        {
-            using ParsethingContext db = new();
-            List<Procurement>? procurements = null;
-
-            var query = db.Procurements.AsQueryable();
-
-            if (searchId != 0)
-                query = query.Where(p => p.Id == searchId);
-            if(!string.IsNullOrEmpty(searchNumber))
-                query = query.Where(p => p.Number == searchNumber);
-            if (!string.IsNullOrEmpty(searchLaw))
-                query = query.Where(p => p.Law.Number == searchLaw);
-
-            query = query.Include(p => p.ProcurementState);
-            query = query.Include(p => p.Law);
-            query = query.Include(p => p.Method);
-            query = query.Include(p => p.Platform);
-            query = query.Include(p => p.TimeZone);
-            query = query.Include(p => p.Region);
-            query = query.Include(p => p.ShipmentPlan);
-            query = query.Include(p => p.Organization);
-
-            procurements = query.ToList();
-
-            return procurements;
-        }
+        
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -98,8 +75,10 @@ namespace Parsething.Pages
             id = Convert.ToInt32(SearchId.Text);
             string number = SearchNumber.Text;
             string law = Law.Text;
-            
-            FoundProcurements =  ProcurementsBy(id, number, law);
+            string procurementState = ProcurementState.Text;
+            string inn = SearchINN.Text;
+
+            FoundProcurements =  GET.View.ProcurementsBy(id, number, law, procurementState, inn);
             SearchLV.ItemsSource = FoundProcurements;
         }
 

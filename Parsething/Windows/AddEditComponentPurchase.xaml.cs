@@ -15,15 +15,18 @@ using System.Windows.Shapes;
 namespace Parsething.Windows
 {
     /// <summary>
-    /// Логика взаимодействия для AddEditComponentCalculating.xaml
+    /// Логика взаимодействия для AddEditComponentPurchase.xaml
     /// </summary>
-    public partial class AddEditComponentCalculating : Window
+    public partial class AddEditComponentPurchase : Window
     {
         private Frame MainFrame { get; set; } = null!;
 
-        private List<Manufacturer>? Manufacturers {get; set; }
+        private List<Manufacturer>? Manufacturers { get; set; }
 
         private List<Seller>? Sellers { get; set; }
+
+        private List<ComponentState>? ComponentStates { get; set; }
+
 
         private bool IsCalculation;
 
@@ -32,16 +35,23 @@ namespace Parsething.Windows
         private ComponentCalculation ComponentCalculation;
 
         SolidColorBrush Gray = new SolidColorBrush(Color.FromRgb(0x53, 0x53, 0x53));
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
+            DragMove();
+
+        private void MinimizeAction_Click(object sender, RoutedEventArgs e) =>
+            WindowState = WindowState.Minimized;
+
+        private void CloseAction_Click(object sender, RoutedEventArgs e) =>
+            DialogResult = false;
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
         }
-        public AddEditComponentCalculating(ComponentCalculation componentCalculation, Procurement procurement, bool isCalculation, bool isPosition)
+        public AddEditComponentPurchase(ComponentCalculation componentCalculation, Procurement procurement, bool isCalculation, bool isPosition)
         {
             InitializeComponent();
-
             Procurement = procurement;
             ComponentCalculation = componentCalculation;
             IsCalculation = isCalculation;
@@ -52,13 +62,14 @@ namespace Parsething.Windows
             Sellers = GET.View.Sellers();
             Seller.ItemsSource = Sellers;
 
-            
+            ComponentStates = GET.View.ComponentStates();
+            ComponentState.ItemsSource = ComponentStates;
 
             if (componentCalculation != null)
             {
                 AddOrEdit.Text = "Редактирование";
-                AddPositionCalculating.Visibility = Visibility.Hidden;
-                EditPositionCalculating.Visibility= Visibility.Visible;
+                AddPositionPurchase.Visibility = Visibility.Hidden;
+                EditPositionPurchase.Visibility = Visibility.Visible;
                 DeletePosition.Visibility = Visibility.Visible;
 
                 PartNumber.Text = componentCalculation.PartNumber;
@@ -69,7 +80,14 @@ namespace Parsething.Windows
                         Manufacturer.SelectedItem = manufacturer;
                         break;
                     }
-                Price.Text = componentCalculation.Price.ToString();
+                foreach (ComponentState componentState in ComponentState.ItemsSource)
+                    if (componentState.Id == componentCalculation.ComponentStateId)
+                    {
+                        ComponentState.SelectedItem = componentState;
+                        break;
+                    }
+                Date.SelectedDate = componentCalculation.Date;
+                Price.Text = componentCalculation.PricePurchase.ToString();
                 foreach (Seller seller in Seller.ItemsSource)
                     if (seller.Id == componentCalculation.SellerId)
                     {
@@ -78,13 +96,13 @@ namespace Parsething.Windows
                     }
                 Count.Text = componentCalculation.Count.ToString();
                 Reserve.Text = componentCalculation.Reserve;
-                Note.Text = componentCalculation.Note;
+                Note.Text = componentCalculation.NotePurchase;
             }
             else
             {
                 AddOrEdit.Text = "Добавление";
-                AddPositionCalculating.Visibility = Visibility.Visible;
-                EditPositionCalculating.Visibility = Visibility.Hidden;
+                AddPositionPurchase.Visibility = Visibility.Visible;
+                EditPositionPurchase.Visibility = Visibility.Hidden;
                 DeletePosition.Visibility = Visibility.Hidden;
             }
             if (isPosition)
@@ -92,6 +110,8 @@ namespace Parsething.Windows
                 AddOrEdit.Text = "Позиция";
                 PartNumber.IsEnabled = false;
                 Manufacturer.IsEnabled = false;
+                ComponentStateLabel.IsEnabled = false;
+                DateLabel.IsEnabled = false;
                 Price.IsEnabled = false;
                 Count.IsEnabled = false;
                 Seller.IsEnabled = false;
@@ -100,6 +120,8 @@ namespace Parsething.Windows
 
                 PartNumberLabel.Foreground = Gray;
                 ManufacturerLabel.Foreground = Gray;
+                ComponentStateLabel.Foreground = Gray;
+                DateLabel.Foreground = Gray;
                 PriceLabel.Foreground = Gray;
                 CountLabel.Foreground = Gray;
                 SellerLabel.Foreground = Gray;
@@ -107,18 +129,18 @@ namespace Parsething.Windows
                 NoteLabel.Foreground = Gray;
             }
         }
-        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
-            DragMove();
 
-        private void MinimizeAction_Click(object sender, RoutedEventArgs e) =>
-            WindowState = WindowState.Minimized;
-
-        private void CloseAction_Click(object sender, RoutedEventArgs e) =>
-            DialogResult = false;
-
-        private void AddPositionCalculating_Click(object sender, RoutedEventArgs e)
+        private void Count_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if(ComponentName.Text != "")
+            if (!Char.IsDigit(e.Text, 0))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void AddPositionPurchase_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComponentName.Text != "")
             {
                 ComponentCalculation componentCalculation = new ComponentCalculation();
                 componentCalculation.ProcurementId = Procurement.Id;
@@ -126,12 +148,15 @@ namespace Parsething.Windows
                 componentCalculation.ComponentName = ComponentName.Text;
                 if (Manufacturer.SelectedItem != null)
                     componentCalculation.ManufacturerId = ((Manufacturer)Manufacturer.SelectedItem).Id;
+                if (ComponentState.SelectedItem != null)
+                    componentCalculation.ComponentStateId = ((ComponentState)ComponentState.SelectedItem).Id;
+                componentCalculation.Date = Date.SelectedDate;
                 if (Price.Text != "")
                 {
                     decimal PriceDecimal;
                     if (decimal.TryParse(Price.Text, out PriceDecimal))
                     {
-                        componentCalculation.Price = PriceDecimal;
+                        componentCalculation.PricePurchase = PriceDecimal;
                     }
                     else
                     {
@@ -139,12 +164,13 @@ namespace Parsething.Windows
                         return;
                     }
                 }
-                if (Seller.SelectedItem != null)
-                    componentCalculation.SellerId = ((Seller)Seller.SelectedItem).Id;
+
                 if (Count.Text != null && Count.Text != "")
                     componentCalculation.Count = Convert.ToInt32(Count.Text);
+                if (Seller.SelectedItem != null)
+                    componentCalculation.SellerId = ((Seller)Seller.SelectedItem).Id;
                 componentCalculation.Reserve = Reserve.Text;
-                componentCalculation.Note = Note.Text;
+                componentCalculation.NotePurchase = Note.Text;
                 PUT.ComponentCalculation(componentCalculation);
                 _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation));
                 DialogResult = true;
@@ -154,7 +180,16 @@ namespace Parsething.Windows
                 MessageBox.Show("Необходимо заполнить хотя бы наименование");
             }
         }
-        private void EditPositionCalculating_Click(object sender, RoutedEventArgs e)
+
+        private void DeletePosition_Click(object sender, RoutedEventArgs e)
+        {
+            if (ComponentCalculation != null)
+                DELETE.ComponentCalculation(ComponentCalculation);
+            _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation));
+            DialogResult = true;
+        }
+
+        private void EditPositionPurchase_Click(object sender, RoutedEventArgs e)
         {
             if (ComponentName.Text != "")
             {
@@ -165,12 +200,15 @@ namespace Parsething.Windows
                 componentCalculation.ComponentName = ComponentName.Text;
                 if (Manufacturer.SelectedItem != null)
                     componentCalculation.ManufacturerId = ((Manufacturer)Manufacturer.SelectedItem).Id;
+                if (ComponentState.SelectedItem != null)
+                    componentCalculation.ComponentStateId = ((ComponentState)ComponentState.SelectedItem).Id;
+                componentCalculation.Date = Date.SelectedDate;
                 if (Price.Text != "")
                 {
                     decimal PriceDecimal;
                     if (decimal.TryParse(Price.Text, out PriceDecimal))
                     {
-                        componentCalculation.Price = PriceDecimal;
+                        componentCalculation.PricePurchase = PriceDecimal;
                     }
                     else
                     {
@@ -178,12 +216,13 @@ namespace Parsething.Windows
                         return;
                     }
                 }
+                
+                if (Count.Text != null && Count.Text != "")
+                    componentCalculation.Count = Convert.ToInt32(Count.Text);
                 if (Seller.SelectedItem != null)
                     componentCalculation.SellerId = ((Seller)Seller.SelectedItem).Id;
-                if(Count.Text != null && Count.Text != "")
-                    componentCalculation.Count = Convert.ToInt32(Count.Text);
                 componentCalculation.Reserve = Reserve.Text;
-                componentCalculation.Note = Note.Text;
+                componentCalculation.NotePurchase = Note.Text;
                 PULL.ComponentCalculation(componentCalculation);
                 _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation));
                 DialogResult = true;
@@ -192,21 +231,6 @@ namespace Parsething.Windows
             {
                 MessageBox.Show("Необходимо заполнить хотя бы наименование");
             }
-        }
-        private void Count_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (!Char.IsDigit(e.Text, 0))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void DeletePosition_Click(object sender, RoutedEventArgs e)
-        {
-            if(ComponentCalculation != null)
-                DELETE.ComponentCalculation(ComponentCalculation);
-            _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation));
-            DialogResult = true;
         }
     }
 }

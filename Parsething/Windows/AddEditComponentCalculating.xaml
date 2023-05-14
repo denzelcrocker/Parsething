@@ -37,23 +37,27 @@
                 <RowDefinition Height="65"/>
             </Grid.RowDefinitions>
             <TextBlock Name="AddOrEdit" Text="Режим" Style="{DynamicResource TextBlock.AddEditComponent}" Grid.ColumnSpan="2"/>
-            <Label Content="Парт номер" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="1"/>
+            <Label Name="PartNumberLabel" Content="Парт номер" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="1"/>
             <TextBox x:Name="PartNumber" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="1"/>
-            <Label Content="Наименование" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="2"/>
-            <TextBox x:Name="ComponentName" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="2"/>
-            <Label Content="Производитель" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="3"/>
+            <Label Name="ComponentNameLabel" Content="Наименование" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="2"/>
+            <TextBox x:Name="ComponentName" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="2" />
+            <Label Name="ManufacturerLabel" Content="Производитель" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="3"/>
             <ComboBox x:Name="Manufacturer" Grid.Row="3" HorizontalAlignment="Left" Grid.Column="1"  Style="{DynamicResource ComboBoxBase.Regions}" Height="55" DisplayMemberPath="Name" StaysOpenOnEdit="True" IsEditable="True"/>
-            <Label Content="Цена" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="4"/>
+            <Label Name="PriceLabel" Content="Цена" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="4"/>
             <TextBox x:Name="Price" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="4"/>
-            <Label Content="Количество" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="5"/>
+            <Label Name="CountLabel" Content="Количество" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="5"/>
             <TextBox x:Name="Count" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="5" PreviewTextInput="Count_PreviewTextInput"/>
-            <Label Content="Продавец" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="6"/>
+            <Label Name="SellerLabel" Content="Продавец" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="6"/>
             <ComboBox x:Name="Seller" Grid.Row="6" HorizontalAlignment="Left" Grid.Column="1"  Style="{DynamicResource ComboBoxBase.Regions}" Height="55" DisplayMemberPath="Name" StaysOpenOnEdit="True" IsEditable="True"/>
-            <Label Content="№ Резерва" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="7"/>
+            <Label Name="ReserveLabel" Content="№ Резерва" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="7"/>
             <TextBox x:Name="Reserve" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="7"/>
-            <Label Content="Примечание" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="8"/>
+            <Label Name="NoteLabel" Content="Примечание" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="8"/>
             <TextBox x:Name="Note" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="8"/>
             <Button x:Name="AddPositionCalculating" Content="Добавить позицию" Style="{DynamicResource AddEditComponentCalculationsButton}" Cursor="Hand" Click="AddPositionCalculating_Click" Grid.Row="9" VerticalAlignment="Center" Grid.Column="2" Width="555"/>
+            <Button x:Name="DeletePosition" Content="Удалить строку" Style="{DynamicResource AddEditComponentCalculationsButton}" Cursor="Hand" Width="170" Click="DeletePosition_Click" Grid.Row="9" />
+
+            <Button x:Name="EditPositionCalculating" Content="Сохранить позицию" Style="{DynamicResource AddEditComponentCalculationsButton}" Cursor="Hand" Grid.Row="9" VerticalAlignment="Center" Grid.Column="2" Width="555" Click="EditPositionCalculating_Click" />
+
         </Grid>
     </Grid>
 </Window>

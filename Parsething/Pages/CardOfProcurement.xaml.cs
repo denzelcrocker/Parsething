@@ -228,10 +228,13 @@ namespace Parsething.Pages
                 if (Procurement.Deadline != null && Procurement.TimeZone != null)
                     DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";
                 InitialPrice.Text = Procurement.InitialPrice.ToString();
-                if (Procurement.Organization.Name != null)
-                    Organization.Text = Procurement.Organization.Name.ToString();
-                if (Procurement.Organization.PostalAddress != null)
-                    PostalAddress.Text = Procurement.Organization.PostalAddress.ToString();
+                if(Procurement.Organization != null)
+                {
+                    if (Procurement.Organization.Name != null)
+                        Organization.Text = Procurement.Organization.Name.ToString();
+                    if (Procurement.Organization.PostalAddress != null)
+                        PostalAddress.Text = Procurement.Organization.PostalAddress.ToString();
+                }                
                 if (Procurement.Object != null)
                     Object.Text = Procurement.Object.ToString();
                 if (Procurement.Securing != null)
@@ -746,7 +749,6 @@ namespace Parsething.Pages
                 Comments.Clear();
                 Comments = GET.View.CommentsBy(Procurement.Id);
                 CommentsListView.ItemsSource = Comments;
-                
             }
         }
 
@@ -1062,7 +1064,5 @@ namespace Parsething.Pages
             PaymentUL.Fill = Red;
             PaymentLV.Visibility = Visibility.Visible;
         }
-
-        
     }
 }

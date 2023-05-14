@@ -246,6 +246,8 @@
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="50"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
                             <Label Content="Id тендера" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
                             <TextBox x:Name="SearchId" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="1" PreviewTextInput="Search_PreviewTextInput" />
@@ -253,6 +255,10 @@
                             <TextBox x:Name="SearchNumber" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="3" PreviewTextInput="Search_PreviewTextInput" />
                             <Label Content="Закон" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"/>
                             <ComboBox x:Name="Law" Grid.Row="5" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Card}" Height="40" DisplayMemberPath="Number" FontSize="17"/>
+                            <Label Content="Статус тендера" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left"/>
+                            <ComboBox x:Name="ProcurementState" Grid.Row="7" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Card}" Height="40" DisplayMemberPath="Kind" FontSize="17"/>
+                            <Label Content="ИНН заказчика" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left"/>
+                            <TextBox x:Name="SearchINN" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="9" PreviewTextInput="Search_PreviewTextInput"/>
                         </Grid>
                     </ListView>
                     <Button x:Name="SearchButton" Content="Поиск" Style="{DynamicResource StatisticsButton}" Cursor="Hand" Grid.Row="1" Click="SearchButton_Click" />
