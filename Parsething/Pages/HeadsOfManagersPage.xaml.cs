@@ -129,5 +129,10 @@ namespace Parsething.Pages
         {
 
         }
+
+        private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
