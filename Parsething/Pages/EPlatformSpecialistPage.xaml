@@ -43,27 +43,36 @@
                             <RowDefinition Height="65"/>
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
                         </Grid.RowDefinitions>
-                        <Label Content="Новый:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
+                        <Label Content="Новые:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
+                        <TextBlock x:Name="New" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
+                        <Button x:Name="NewButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="NewButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
-                        <Label Content="Посчитан:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Text="0"/>
+                        <Label Content="Посчитаны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
+                        <TextBlock x:Name="Calculated" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Text="0"/>
+                        <Button x:Name="CalculatedButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CalculatedButton_Click"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
                         <Label Content="Отбой:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Text="0"/>
+                        <TextBlock x:Name="RetreatCalculate" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Text="0"/>
+                        <Button x:Name="RetreatCalculateButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="RetreatCalculateButton_Click"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
                         <Label Content="Оформить:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Text="0"/>
+                        <TextBlock x:Name ="DrawUp"  Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Text="0"/>
+                        <Button x:Name="DrawUpButton" Grid.Row="6" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="DrawUpButton_Click"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
-                        <Label Content="Оформлен:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Text="0"/>
+                        <Label Content="Оформлены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
+                        <TextBlock  x:Name="Issued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Text="0"/>
+                        <Button x:Name="IssuedButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="IssuedButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="9"/>
                         <Label Content="К отправке:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="10"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" Text="0"/>
-                        <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="11"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="11" Text="0"/>
+                        <TextBlock x:Name="ForSend" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" Text="0"/>
+                        <Button x:Name="ForSendButton" Grid.Row="10" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ForSendButton_Click" />
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
+                        <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
+                        <TextBlock x:Name="OverdueIssued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="12" Text="0"/>
+                        <Button x:Name="OverdueIssuedButton" Grid.Row="12" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueIssuedButton_Click" />
                     </Grid>
                     
                 </StackPanel>
@@ -87,24 +96,28 @@
                             <RowDefinition Height="65"/>
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
                         </Grid.RowDefinitions>
                         <Label Content="Торги:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="0" Text="0"/>
+                        <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="0" Text="0"/>
+                        <Button x:Name="BargainingButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="BargainingButton_Click" />
                         <Label Content="Котировки (итоги):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
+                        <TextBlock x:Name="Quotes" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
+                        <Button x:Name="QuotesButton" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="QuotesButton_Click" />
                         <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
+                        <TextBlock x:Name="OverdueSended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
+                        <Button x:Name="OverdueSendedButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueSendedButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
-                        <Label Content="Отмена:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="4" Text="0"/>
+                        <Label Content="Отменены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
+                        <TextBlock x:Name="Cancellation" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="4" Text="0"/>
+                        <Button x:Name="CancellationButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CancellationButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                        <Label Content="Отклонен:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="6" Text="0"/>
+                        <Label Content="Отклонены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
+                        <TextBlock x:Name="Rejected" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="6" Text="0"/>
+                        <Button x:Name="RejectedButton" Grid.Row="6" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="RejectedButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Grid.Row="7"/>
-                        <Label Content="Проигран:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="8"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="8" Text="0"/>
+                        <Label Content="Проиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="8"/>
+                        <TextBlock x:Name="Lost" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="8" Text="0"/>
+                        <Button x:Name="LostButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="LostButton_Click" />
                     </Grid>
                 </StackPanel>
             </Grid>

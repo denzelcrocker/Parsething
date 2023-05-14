@@ -34,5 +34,100 @@ namespace Parsething.Pages
             }
             catch { }
         }
+
+        private void ProblemButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void InWorkButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AgreedButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NextWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WonByApplicationsTwoButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ContractYesButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ContractNoButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PartialAcceptanceButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NotPaidButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void JudgementButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FASButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

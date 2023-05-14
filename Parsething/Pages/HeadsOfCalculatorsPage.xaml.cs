@@ -33,5 +33,80 @@ namespace Parsething.Pages
             }
             catch { }
         }
+
+        private void NewButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CalculatedButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CalculationsOverAllButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RetreatCalculateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DrawUpButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void IssuedButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ForSendButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UnsortedButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RetreatButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CalculationQueueButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WonByApplicationsTwoButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void WonByOverAllButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
