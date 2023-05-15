@@ -9,7 +9,7 @@ public partial class AdministratorPage : Page
     private Frame MainFrame { get; set; } = null!;
 
     private List<Procurement>? Procurements = new List<Procurement>();
-
+    private List<ProcurementsEmployee>? ProcurementsEmployees = new List<ProcurementsEmployee>();
 
 
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsNew { get; set; }
@@ -23,11 +23,8 @@ public partial class AdministratorPage : Page
     private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
     private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
 
-
-
     public AdministratorPage() =>
         InitializeComponent();
-    
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
@@ -36,6 +33,7 @@ public partial class AdministratorPage : Page
             MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
         }
         catch { }
+
         int countOfCalculationsNew = 0;
         int countOfCalculationsDrawUp = 0;
         int countOfMethods = 0;
@@ -124,7 +122,7 @@ public partial class AdministratorPage : Page
 
         WonByApplications.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)); // По заявкам
 
-        WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)).ToString(); // Выиграны всего
+        WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)).ToString(); // Выиграны всего
 
         ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка");
         foreach (var item in ProcurementsEmployeesManagersGroupings)
@@ -137,7 +135,10 @@ public partial class AdministratorPage : Page
             ManagersCombobox.Items.Add(item); // Расчет (по сотрудникам)
         }// Менеджеры выпадающий список
 
-        // Контракт
+        ContractYes.Text = GET.Aggregate.ProcurementsCountBy("", true, GET.KindOf.ContractConclusion).ToString(); // Контракт Подписан
+
+        ContractNo.Text = GET.Aggregate.ProcurementsCountBy("", false, GET.KindOf.ContractConclusion).ToString();// Контракт Не подписан
+
         ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
         if (ComponentCalculationsProblem != null)
                 Problem.Text = ComponentCalculationsProblem.Count.ToString();
@@ -150,9 +151,13 @@ public partial class AdministratorPage : Page
         if (ComponentCalculationsAgreed != null)
                 Agreed.Text = ComponentCalculationsAgreed.Count.ToString();
 
+        PreviousWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane));// Предыдущая неделя отгрузки
+
         ThisWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Текущая", GET.KindOf.ShipmentPlane));// Текущая неделя отгрузки
 
         NextWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Следующая", GET.KindOf.ShipmentPlane));// Следующая неделя отгрузки
+
+        AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
         Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
 
@@ -199,7 +204,13 @@ public partial class AdministratorPage : Page
 
     private void CalculationQueueButton_Click(object sender, RoutedEventArgs e)
     {
-
+        //ProcurementsEmployees = GET.View.ProcurementsEmployeesQueue();
+        //foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+        //{
+        //    Procurements.Add(procurementsEmployee.Procurement);
+        //}
+        //if (Procurements != null)
+        //    MainFrame.Navigate(new SearchPage(Procurements));
     }
 
     private void SendedButton_Click(object sender, RoutedEventArgs e)
@@ -410,6 +421,20 @@ public partial class AdministratorPage : Page
     private void FASButton_Click(object sender, RoutedEventArgs e)
     {
         Procurements = GET.View.ProcurementsBy(GET.KindOf.FAS);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ContractYesButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("", true, GET.KindOf.ContractConclusion);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ContractNoButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("", false, GET.KindOf.ContractConclusion);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }

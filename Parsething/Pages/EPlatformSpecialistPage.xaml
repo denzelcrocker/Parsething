@@ -98,25 +98,34 @@
                             <RowDefinition Height="65"/>
                         </Grid.RowDefinitions>
                         <Label Content="Торги:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="0" Text="0"/>
-                        <Button x:Name="BargainingButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="BargainingButton_Click" />
-                        <Label Content="Котировки (итоги):" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
+                        <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
+                        <Button x:Name="BargainingButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="BargainingButton_Click"  />
+                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="1" Margin="160,0,0,0"/>
+                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Сп-бы опр-я: " Grid.Column="0" Grid.Row="1">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="250" HorizontalAlignment="Left"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <TextBlock x:Name="Quotes" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
-                        <Button x:Name="QuotesButton" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="QuotesButton_Click" />
                         <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
                         <TextBlock x:Name="OverdueSended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
-                        <Button x:Name="OverdueSendedButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueSendedButton_Click" />
+                        <Button x:Name="OverdueSendedButton" Grid.Row="2" Grid.ColumnSpan="2" Opacity="0" Cursor="Hand" Click="OverdueSendedButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
                         <Label Content="Отменены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock x:Name="Cancellation" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="4" Text="0"/>
+                        <TextBlock x:Name="Cancellation" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Button x:Name="CancellationButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CancellationButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
                         <Label Content="Отклонены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <TextBlock x:Name="Rejected" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="6" Text="0"/>
+                        <TextBlock x:Name="Rejected" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
                         <Button x:Name="RejectedButton" Grid.Row="6" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="RejectedButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Grid.Row="7"/>
                         <Label Content="Проиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="8"/>
-                        <TextBlock x:Name="Lost" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="8" Text="0"/>
+                        <TextBlock x:Name="Lost" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
                         <Button x:Name="LostButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="LostButton_Click" />
                     </Grid>
                 </StackPanel>

@@ -57,10 +57,10 @@
                                     <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry.2}"/>
                                 </ComboBoxItem>
                                 <ComboBoxItem IsEnabled="False">
-                                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2" Width="300"/>
+                                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"  MinWidth="300" MaxWidth="500"/>
                                 </ComboBoxItem>
                                 <ComboBoxItem>
-                                    <Button x:Name="SwitchUser" Style="{DynamicResource Profile}" Click="SwitchUser_Click">
+                                    <Button x:Name="SwitchUser" Style="{DynamicResource Profile}" Click="SwitchUser_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
                                             <Label Foreground="#BD1414" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="30" Content="&#xE748;"/>
                                             <Label VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="30" Content="Выход"/>

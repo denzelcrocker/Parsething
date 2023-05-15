@@ -179,7 +179,6 @@
                                 </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                        <Image Height="100" Width="100"/>
                     </ListView>
                     <StackPanel  Orientation="Horizontal">
                         <Button   

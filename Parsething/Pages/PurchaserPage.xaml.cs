@@ -156,7 +156,7 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement));
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement,null,false));
         }
 
         private void EditProcurementComponent_Click(object sender, RoutedEventArgs e)
@@ -165,7 +165,7 @@ namespace Parsething.Pages
             if (componentCalculation != null)
             { 
                 Procurement procurement = componentCalculation.Procurement;
-            _ = MainFrame.Navigate(new CardOfProcurement(procurement));
+            _ = MainFrame.Navigate(new CardOfProcurement(procurement, null, false));
             }
             
         }
@@ -196,7 +196,7 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false));
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, null, false, false));
         }
 
         private void ComponentPurchase_Click(object sender, RoutedEventArgs e)
@@ -205,7 +205,7 @@ namespace Parsething.Pages
             if (componentCalculation != null)
             {
                 Procurement procurement = componentCalculation.Procurement;
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false));
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement,null, false, false));
             }
         }
     }

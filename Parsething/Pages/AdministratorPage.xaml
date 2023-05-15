@@ -87,8 +87,8 @@
                         <Label Content="Торги:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
                         <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Button x:Name="BargainingButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="BargainingButton_Click"  />
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="3" Margin="130,0,0,0"/>
-                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Котировки: " Grid.Column="0" Grid.Row="3">
+                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="3" Margin="160,0,0,0"/>
+                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Сп-бы опр-я: " Grid.Column="0" Grid.Row="3">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -246,8 +246,8 @@
                         <Label Content="Выиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <TextBlock x:Name="WonByOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="6" Margin="185,0,0,0"/>
-                        <ComboBox x:Name="ManagersCombobox" Style="{DynamicResource InfoBox}" Text="Распределение: " Grid.Column="0" Grid.Row="6">
+                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="6" Margin="150,0,0,0"/>
+                        <ComboBox x:Name="ManagersCombobox" Style="{DynamicResource InfoBox}" Text="Менеджеры: " Grid.Column="0" Grid.Row="6">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -260,9 +260,11 @@
                         <TextBlock x:Name="ManagersOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
                         <Label Content="Контракт Y / N:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="8" />
+                        <TextBlock x:Name="ContractYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="8" />
+                        <Button x:Name="ContractYesButton" Grid.Row="8" Grid.Column="1" Opacity="0" Cursor="Hand" Click="ContractYesButton_Click"  />
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="8" />
-                        <TextBlock Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="8" />
+                        <TextBlock x:Name="ContractNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="8" />
+                        <Button x:Name="ContractNoButton" Grid.Row="8" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ContractNoButton_Click" />
                     </Grid>
                     <Label Content="Статистика" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
