@@ -112,10 +112,10 @@ namespace Parsething.Windows
             }
             if (isPosition)
             {
-                AddOrEdit.Text = "Позиция";
+                AddOrEdit.Text = "Разделитель";
                 PartNumber.IsEnabled = false;
                 Manufacturer.IsEnabled = false;
-                ComponentStateLabel.IsEnabled = false;
+                ComponentState.IsEnabled = false;
                 DateLabel.IsEnabled = false;
                 Price.IsEnabled = false;
                 Count.IsEnabled = false;
