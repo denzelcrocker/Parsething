@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Parsething.Windows"
         mc:Ignorable="d"
-        Title="AddEditComponentCalculating" Style="{DynamicResource AddEditComponentCalculating}" Loaded="Page_Loaded">
+        Title="AddEditComponentCalculating" Style="{DynamicResource AddEditComponentCalculating}" Loaded="Page_Loaded" Width="800" Height="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
