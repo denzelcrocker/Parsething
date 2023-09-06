@@ -118,4 +118,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="SingleLineInput.PopupTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
+        <Setter Property="FontFamily" Value="Noah"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Background" Value="#ffffff"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="#D9D9D9" BorderThickness="0.5" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="True"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

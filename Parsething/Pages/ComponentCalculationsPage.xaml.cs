@@ -223,5 +223,10 @@ namespace Parsething.Pages
                 addEditComponentCalculating.ShowDialog();
             }
         }
+
+        private void Assembly_Click(object sender, RoutedEventArgs e)
+        {
+            AssemblyPopUp.IsOpen = !AssemblyPopUp.IsOpen;
+        }
     }
 }

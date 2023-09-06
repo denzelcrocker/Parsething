@@ -8,7 +8,7 @@
       Title="ComponentCalculationsPage" Loaded="Page_Loaded" >
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Width="1810" Height="900">
+        <Grid Margin="25,0,25,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1300"/>
                 <ColumnDefinition Width="510"/>
@@ -212,13 +212,17 @@
                         <Button 
                             x:Name="Assembly"
                             Style="{DynamicResource ButtonWithIcon}"
-                            Cursor="Hand" >
+                            Cursor="Hand"
+                            Click="Assembly_Click" >
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Resources/Images/Assembly.png" Stretch="Uniform" Height="50"/>
                                 </StackPanel>
                             </Button.Content>
                         </Button>
+                        <Popup x:Name="AssemblyPopUp" PlacementTarget="{Binding ElementName=Assembly}" Placement="Top" StaysOpen="True">
+                            <TextBox x:Name="AssemblyTextBox" Style="{StaticResource SingleLineInput.PopupTextBox}" MaxWidth="300" TextWrapping="Wrap"/>
+                        </Popup>
                         <Button 
                             x:Name="Passport"
                             Margin="10,0,0,0"

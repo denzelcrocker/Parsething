@@ -33,13 +33,12 @@ public partial class AdministratorPage : Page
             MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
         }
         catch { }
-
+       
         int countOfCalculationsNew = 0;
         int countOfCalculationsDrawUp = 0;
         int countOfMethods = 0;
         int countOfSended = 0;
         int countOfManagers = 0;
-
         Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState)); // Спаршены
 
         Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState)); // Неразобранные
@@ -437,6 +436,11 @@ public partial class AdministratorPage : Page
         Procurements = GET.View.ProcurementsBy("", false, GET.KindOf.ContractConclusion);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        MainFrame.Navigate(new Charts());
     }
 }
 public static class StringExtensions

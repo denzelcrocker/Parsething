@@ -53,7 +53,7 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="ЕИС" Grid.Column="11" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Редактировать" Grid.Column="12" />
                     </Grid>
-                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1">
+                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border 
@@ -73,7 +73,7 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="160"/>
                                             <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="160"/>
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="140"/>
                                             <ColumnDefinition Width="2"/>
@@ -91,7 +91,7 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
