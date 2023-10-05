@@ -2,6 +2,8 @@
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Parsething.Classes;
+
 
 namespace Parsething;
 
@@ -123,6 +125,8 @@ public partial class MainWindow : Window
 
     private void GoHome_Click(object sender, RoutedEventArgs e)
     {
+        SearchCriteria.Instance.ClearData();
+
         if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
         {
             _ = MainFrame.Navigate(new Pages.AdministratorPage());
@@ -167,6 +171,8 @@ public partial class MainWindow : Window
 
     private void Search_Click(object sender, RoutedEventArgs e)
     {
+        SearchCriteria.Instance.ClearData();
+
         _ = MainFrame.Navigate(new Pages.SearchPage(null));
     }
 }

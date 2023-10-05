@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Parsething.Classes
+{
+    internal class SearchCriteria
+    {
+        private static SearchCriteria instance;
+
+        private SearchCriteria()
+        {
+
+        }
+
+        public static SearchCriteria Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new SearchCriteria();
+                }
+                return instance;
+            }
+        }
+
+        public void ClearData()
+        {
+            ProcurementId = 0;
+            ProcurementNumber = null;
+            Law = null;
+            ProcurementState = null;
+            INN = null;
+        }
+
+        public int ProcurementId { get; set; }
+        public string? ProcurementNumber { get; set; }
+        public string? Law { get; set; }
+        public string? ProcurementState { get; set; }
+        public string? INN { get; set; }
+    }
+}

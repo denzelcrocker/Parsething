@@ -28,6 +28,7 @@ public partial class AdministratorPage : Page
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
+
         try
         {
             MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");

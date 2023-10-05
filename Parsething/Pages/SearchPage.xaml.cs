@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Parsething.Classes;
 
 namespace Parsething.Pages
 {
@@ -34,7 +35,14 @@ namespace Parsething.Pages
         public SearchPage(List<Procurement>? procurements)
         {
             InitializeComponent();
-            if (procurements != null)
+
+            if (SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementNumber != null && SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementState != null && SearchCriteria.Instance.INN != null)
+            {
+                procurements = GET.View.ProcurementsBy(SearchCriteria.Instance.ProcurementId, SearchCriteria.Instance.ProcurementNumber, SearchCriteria.Instance.Law, SearchCriteria.Instance.ProcurementState, SearchCriteria.Instance.INN);
+                SearchLV.ItemsSource = procurements;
+                
+            }
+            else if (procurements != null)
             {
                 SearchLV.ItemsSource = procurements;
             }
@@ -44,6 +52,7 @@ namespace Parsething.Pages
             ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
             Procurements = procurements;
+
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -52,14 +61,14 @@ namespace Parsething.Pages
         }
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement, Procurements,true));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
             {
                 string url = procurement.RequestUri.ToString();
@@ -69,6 +78,8 @@ namespace Parsething.Pages
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            SearchCriteria.Instance.ClearData();
+
             SearchLV.ItemsSource = null;
             if(FoundProcurements != null)
             FoundProcurements.Clear();
@@ -80,9 +91,22 @@ namespace Parsething.Pages
             string procurementState = ProcurementState.Text;
             string inn = SearchINN.Text;
 
-            FoundProcurements =  GET.View.ProcurementsBy(id, number, law, procurementState, inn);
-            SearchLV.ItemsSource = FoundProcurements;
-            Procurements = FoundProcurements;
+            if (id == 0 && number == "" && law == "" && procurementState == "" && inn == "")
+            { }
+            else
+            {
+                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn);
+                SearchLV.ItemsSource = FoundProcurements;
+                Procurements = FoundProcurements;
+            }
+
+            SearchCriteria.Instance.ProcurementId = id;
+            SearchCriteria.Instance.ProcurementNumber = number;
+            SearchCriteria.Instance.Law = law;
+            SearchCriteria.Instance.ProcurementState = procurementState;
+            SearchCriteria.Instance.INN = inn;
+
+
         }
 
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -95,14 +119,14 @@ namespace Parsething.Pages
 
         private void Calculating_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement,Procurements,true,true));
         }
 
         private void Purchase_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, false, true));
         }
