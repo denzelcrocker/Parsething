@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Parsething.Windows;
 
 namespace Parsething.Pages
 {
@@ -155,6 +156,16 @@ namespace Parsething.Pages
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, null, false, false));
+        }
+
+        private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+            { 
+                AssemblyMap assemblyMap = new AssemblyMap(procurement);
+                assemblyMap.Show();
+            }
         }
     }
 }

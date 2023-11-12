@@ -19,10 +19,13 @@
     <None Remove="Pages\History.png" />
     <None Remove="Pages\Info.png" />
     <None Remove="Pages\PhotoCoatOfArmsOfRussia.png" />
+    <None Remove="Pages\printing.png" />
     <None Remove="Pages\Purchase.png" />
     <None Remove="Resources\Fonts\Noah-Regular.ttf" />
     <None Remove="Search.png" />
     <None Remove="Send.png" />
+    <None Remove="Windows\printing %281%29.png" />
+    <None Remove="Windows\printing %282%29.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Printing.png" />
     <Resource Include="Resources\Images\Assembly.png" />
     <Resource Include="Resources\Images\Info.png" />
     <Resource Include="Resources\Images\Back.png" />
@@ -62,6 +66,7 @@
     <Resource Include="Resources\Images\PlaceholderEmployeePhotoPreview.png" />
     <Resource Include="Resources\Images\Search.png" />
     <Resource Include="Resources\Images\Send.png" />
+    <Resource Include="Resources\Images\GrayPrinting.png" />
   </ItemGroup>
 
   <ItemGroup>
