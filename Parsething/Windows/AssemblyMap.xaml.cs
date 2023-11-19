@@ -19,13 +19,16 @@ namespace Parsething.Windows
     /// </summary>
     public partial class AssemblyMap : Window
     {
-        
+        private List<ComponentCalculation>? ComponentCalculations { get; set; }
 
         public AssemblyMap(Procurement procurement)
         {
             InitializeComponent();
 
             ProcurementId.Text = procurement.Id.ToString();
+
+            ComponentCalculations = GET.View.ComponentCalculationsBy(procurement.Id);
+            ComponentCalculationsDataGrid.ItemsSource = ComponentCalculations;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
