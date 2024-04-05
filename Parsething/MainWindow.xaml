@@ -19,58 +19,58 @@
                 </DockPanel>
             </Border>
             <Border x:Name="InfoBar" Background="{DynamicResource InfoBar.Background}" Grid.Row="1" Margin="15" Padding="40,12.5" CornerRadius="40">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <StackPanel x:Name="ProfilePreview">
-                        <StackPanel Orientation="Horizontal">
-                            <Button 
-                                x:Name="GoHome"
-                                Margin="0,0,1580,0"
-                                HorizontalAlignment="Left"
-                                Style="{DynamicResource ButtonWithIcon}" Click="GoHome_Click" Cursor="Hand">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Resources/Images/Home.png" Stretch="Uniform" Height="45"/>
-                                    </StackPanel>
-                                </Button.Content>
+                <DockPanel VerticalAlignment="Center">
+                    <Button x:Name="GoHome"
+                        Margin="0,0,15,0"
+                        DockPanel.Dock="Left"
+                        Style="{DynamicResource ButtonWithIcon}" Click="GoHome_Click" Cursor="Hand">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/Home.png" Stretch="Uniform" Height="45"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemBase}" Style="{DynamicResource ComboBoxBase}" Cursor="Hand" DockPanel.Dock="Right">
+                        <ComboBoxItem IsEnabled="False">
+                            <Label x:Name="FullName" Style="{DynamicResource ProfilePreview.Entry}"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem IsEnabled="False">
+                            <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry.2}"/>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <DockPanel HorizontalAlignment="Stretch">
+                                <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"  MinWidth="300" MaxWidth="500"/>
+                            </DockPanel>
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <Button x:Name="SwitchUser" Style="{DynamicResource Profile}" Click="SwitchUser_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Foreground="#BD1414" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="30" Content="&#xE748;"/>
+                                    <Label VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="30" Content="Выход"/>
+                                </StackPanel>
                             </Button>
-                            <Button 
-                                x:Name="Search"
-                                Margin="0,0,15,0"
-                                HorizontalAlignment="Left"
-                                Style="{DynamicResource ButtonWithIcon}" Click="Search_Click" >
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Resources/Images/Search.png" Stretch="Uniform" Height="40"/>
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Ellipse x:Name="EmployeePhoto" Width="50" Height="50">
-                                <Ellipse.Fill>
-                                    <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemBase}" Style="{DynamicResource ComboBoxBase}" Cursor="Hand">
-                                <ComboBoxItem IsEnabled="False">
-                                    <Label x:Name="FullName" Style="{DynamicResource ProfilePreview.Entry}"/>
-                                </ComboBoxItem>
-                                <ComboBoxItem IsEnabled="False">
-                                    <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry.2}"/>
-                                </ComboBoxItem>
-                                <ComboBoxItem IsEnabled="False">
-                                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"  MinWidth="300" MaxWidth="500"/>
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    <Button x:Name="SwitchUser" Style="{DynamicResource Profile}" Click="SwitchUser_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Label Foreground="#BD1414" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="30" Content="&#xE748;"/>
-                                            <Label VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="30" Content="Выход"/>
-                                        </StackPanel>
-                                    </Button>
-                                </ComboBoxItem>
-                            </ComboBox>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
+                        </ComboBoxItem>
+                    </ComboBox>
+                    <Ellipse x:Name="EmployeePhoto" 
+                        Width="50" 
+                        Height="50"
+                        DockPanel.Dock="Right">
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Button x:Name="Search"
+                        Margin="0,0,15,0"
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        Style="{DynamicResource ButtonWithIcon}" Click="Search_Click" >
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/Search.png" Stretch="Uniform" Height="40"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </DockPanel>
             </Border>
             <Frame Name="MainFrame" Grid.Row="2" NavigationUIVisibility="Hidden"/>
         </Grid>
