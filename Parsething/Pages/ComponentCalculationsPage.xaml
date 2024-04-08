@@ -8,7 +8,7 @@
       Title="ComponentCalculationsPage" Loaded="Page_Loaded" >
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Margin="25,0,25,10">
+        <Grid Margin="55,0,25,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1300"/>
                 <ColumnDefinition Width="510"/>
@@ -278,6 +278,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
+                                                <ColumnDefinition Width="30"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock 
                                                 Style="{DynamicResource TableElements}"
@@ -285,7 +286,7 @@
                                                 Grid.Column="0"
                                                 Grid.Row="0"
                                                 HorizontalAlignment="Left"
-                                                FontSize="25"
+                                                FontSize="20"
                                                 VerticalAlignment="Center"/>
                                             <TextBlock 
                                                 Style="{DynamicResource TableElements}"
@@ -293,32 +294,70 @@
                                                 Grid.Column="1"
                                                 Grid.Row="0"
                                                 HorizontalAlignment="Right"
-                                                FontSize="15"
+                                                FontSize="12"
                                                 VerticalAlignment="Center"/>
-                                            <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2" Grid.Row="2" Grid.ColumnSpan="2"/>
+                                            <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2" Grid.Row="2" Grid.ColumnSpan="3"/>
                                             <TextBlock 
                                                 Style="{DynamicResource TableElements}"
                                                 Text="{Binding Path=Text}"
-                                                Grid.ColumnSpan="2"
+                                                Grid.ColumnSpan="3"
                                                 Grid.Row="1"
                                                 TextWrapping="Wrap"
                                                 Margin="0,0,0,5"
                                                 HorizontalAlignment="Stretch"
-                                                FontSize="20"
+                                                FontSize="15"
                                                 VerticalAlignment="Center"/>
+                                            <Label x:Name="arrow" 
+                                                Grid.Column="2"
+                                                Content="&#xe836;" 
+                                                FontSize="20"
+                                                FontFamily="Segoe Fluent Icons"
+                                                Foreground="{StaticResource MainText.Foreground}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                                <Label.Style>
+                                                    <Style TargetType="Label">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsTechnical}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Label.Style>
+                                            </Label>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <TextBox x:Name="CommentsTextBox" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" MaxHeight="170" TextWrapping="Wrap" VerticalContentAlignment="Top"/>
+                        <TextBox x:Name="CommentsTextBox"
+                            Style="{DynamicResource SingleLineInput.CardOfProcurement}"
+                            MinHeight="60" Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="2"
+                            MaxHeight="170"
+                            TextWrapping="Wrap"
+                            VerticalContentAlignment="Top"/>
+                        <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3">
+                            <TextBlock>
+                                Технический
+                            </TextBlock>
+                        </Label>
+                        <CheckBox x:Name="IsTechnical"
+                            Grid.Row="3" 
+                            Grid.Column="0" 
+                            HorizontalAlignment="Right" 
+                            Style="{DynamicResource Checkbox.Base}"
+                            Cursor="Hand"/>
                         <Button
-                        Margin="10"
-                        Grid.Column="1"
-                        Grid.Row="3"    
-                        HorizontalAlignment="Right"
-                        x:Name="SendButton"
-                        Style="{DynamicResource ButtonWithIcon}" Click="SendButton_Click">
+                            Margin="10"
+                            Grid.Column="1"
+                            Grid.Row="3"    
+                            HorizontalAlignment="Right"
+                            x:Name="SendButton"
+                            IsDefault = "true"
+                            Style="{DynamicResource ButtonWithIcon}" Click="SendButton_Click">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Resources/Images/Send.png" Stretch="Uniform" Height="45"/>

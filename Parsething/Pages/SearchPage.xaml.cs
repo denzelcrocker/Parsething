@@ -40,7 +40,6 @@ namespace Parsething.Pages
             {
                 procurements = GET.View.ProcurementsBy(SearchCriteria.Instance.ProcurementId, SearchCriteria.Instance.ProcurementNumber, SearchCriteria.Instance.Law, SearchCriteria.Instance.ProcurementState, SearchCriteria.Instance.INN);
                 SearchLV.ItemsSource = procurements;
-                
             }
             else if (procurements != null)
             {

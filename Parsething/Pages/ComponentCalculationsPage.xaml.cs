@@ -113,10 +113,11 @@ namespace Parsething.Pages
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CommentsTextBox.Text != null)
+            if (CommentsTextBox.Text != "")
             {
-                Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = CommentsTextBox.Text };
+                Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = CommentsTextBox.Text, IsTechnical = IsTechnical.IsChecked };
                 CommentsTextBox.Clear();
+                IsTechnical.IsChecked = false;
                 PUT.Comment(comment);
                 CommentsListView.ItemsSource = null;
                 Comments.Clear();

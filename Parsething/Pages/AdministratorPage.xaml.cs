@@ -320,30 +320,21 @@ public partial class AdministratorPage : Page
 
     private void ProblemButton_Click(object sender, RoutedEventArgs e)
     {
-        foreach (ComponentCalculation componentCalculation in ComponentCalculationsProblem)
-        {
-            Procurements.Add(componentCalculation.Procurement);
-        }
+        Procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsProblem);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }
 
     private void InWorkButton_Click(object sender, RoutedEventArgs e)
     {
-        foreach (ComponentCalculation componentCalculation in ComponentCalculationsInWork)
-        {
-            Procurements.Add(componentCalculation.Procurement);
-        }
+        Procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsInWork);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }
 
     private void AgreedButton_Click(object sender, RoutedEventArgs e)
     {
-        foreach (ComponentCalculation componentCalculation in ComponentCalculationsAgreed)
-        {
-            Procurements.Add(componentCalculation.Procurement);
-        }
+        Procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsAgreed);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }

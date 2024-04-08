@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +35,15 @@ namespace Parsething.Pages
         private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
         private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
 
+        private List<Procurement>? ProcurementsProblems { get; set; }
+
+        private List<Procurement>? ProcurementsInWork { get; set; }
+        private List<Procurement>? ProcurementsAgreed  { get; set; }
+
+
+
+
+
         public PurchaserPage() =>
             InitializeComponent();
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -50,15 +61,24 @@ namespace Parsething.Pages
 
             ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList();
             if (ComponentCalculationsProblem != null)
+            {
                 Problem.Text = ComponentCalculationsProblem.Count.ToString();
+                ProcurementsProblems = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsProblem);
+            }
 
             ComponentCalculationsInWork = GET.View.ComponentCalculationsBy("ТО: Обработка").Distinct(new Functions.MyClassComparer()).ToList();
             if (ComponentCalculationsInWork != null)
+            {
                 InWork.Text = ComponentCalculationsInWork.Count.ToString();
+                ProcurementsInWork = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsInWork);
+            }
 
             ComponentCalculationsAgreed = GET.View.ComponentCalculationsBy("ТО: Согласовано").Distinct(new Functions.MyClassComparer()).ToList();
             if (ComponentCalculationsAgreed != null)
+            {
                 Agreed.Text = ComponentCalculationsAgreed.Count.ToString();
+                ProcurementsAgreed = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsAgreed);
+            }
 
             ProcurementsAcceptance = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState);
             if (ProcurementsAcceptance != null)
@@ -82,73 +102,52 @@ namespace Parsething.Pages
             ProcurementsAWeekLater = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
             if (ProcurementsAWeekLater != null)
                 AWeekLater.Text = ProcurementsAWeekLater.Count.ToString();
-            
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Hidden;
-            View.Visibility = Visibility.Visible;
             View.ItemsSource = ProcurementsNextWeek;
         }
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Hidden;
-            View.Visibility = Visibility.Visible;
             View.ItemsSource = ProcurementsThisWeek;
         }
 
         private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Hidden;
-            View.Visibility = Visibility.Visible;
             View.ItemsSource = ProcurementsAcceptance;
         }
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Hidden;
-            View.Visibility = Visibility.Visible;
             View.ItemsSource = ProcurementsWonPartTwo;
         }
 
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Hidden;
-            View.Visibility = Visibility.Visible;
             View.ItemsSource = ProcurementsWonPartOne;
         }
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Visible;
-            View.Visibility = Visibility.Hidden;
-            ViewComponents.ItemsSource = ComponentCalculationsProblem;
+            View.ItemsSource = ProcurementsProblems;
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Visible;
-            View.Visibility = Visibility.Hidden;
-            ViewComponents.ItemsSource = ComponentCalculationsInWork;
+            View.ItemsSource = ProcurementsInWork;
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Visible;
-            View.Visibility = Visibility.Hidden;
-            ViewComponents.ItemsSource = ComponentCalculationsAgreed;
+            View.ItemsSource = ProcurementsAgreed;
         }
         private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Hidden;
-            View.Visibility = Visibility.Visible;
             View.ItemsSource = ProcurementsAWeekLater;
         }
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewComponents.Visibility = Visibility.Hidden;
-            View.Visibility = Visibility.Visible;
             View.ItemsSource = ProcurementsPreviousWeek;
         }
 
@@ -159,34 +158,11 @@ namespace Parsething.Pages
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement,null,false));
         }
 
-        private void EditProcurementComponent_Click(object sender, RoutedEventArgs e)
-        {
-            ComponentCalculation componentCalculation = (sender as Button)?.DataContext as ComponentCalculation;
-            if (componentCalculation != null)
-            { 
-                Procurement procurement = componentCalculation.Procurement;
-            _ = MainFrame.Navigate(new CardOfProcurement(procurement, null, false));
-            }
-            
-        }
-
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
             {
-                string url = procurement.RequestUri.ToString();
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-            }
-                
-        }
-
-        private void NavigateToProcurementComponentURL_Click(object sender, RoutedEventArgs e)
-        {
-            ComponentCalculation componentCalculation = (sender as Button)?.DataContext as ComponentCalculation;
-            if (componentCalculation != null)
-            {
-                Procurement procurement = componentCalculation.Procurement;
                 string url = procurement.RequestUri.ToString();
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
@@ -197,16 +173,6 @@ namespace Parsething.Pages
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, null, false, false));
-        }
-
-        private void ComponentPurchase_Click(object sender, RoutedEventArgs e)
-        {
-            ComponentCalculation componentCalculation = (sender as Button)?.DataContext as ComponentCalculation;
-            if (componentCalculation != null)
-            {
-                Procurement procurement = componentCalculation.Procurement;
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement,null, false, false));
-            }
         }
     }
     

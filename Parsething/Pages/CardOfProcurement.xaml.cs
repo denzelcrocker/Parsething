@@ -756,7 +756,6 @@ namespace Parsething.Pages
                 Comments.Clear();
                 Comments = GET.View.CommentsBy(Procurement.Id);
                 CommentsListView.ItemsSource = Comments;
-
             }
         }
 
