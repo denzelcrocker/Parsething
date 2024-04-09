@@ -3,10 +3,17 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Parsething.Pages"
+      xmlns:local="clr-namespace:Parsething.Functions"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       Title="PurchaserPage" Loaded="Page_Loaded">
-    
+    <Page.Resources>
+        <local:ProfitConverter x:Key="ProfitConverter"/>
+        <local:PercentageProfitConverter x:Key="PercentageProfitConverter"/>
+        <local:AmountConverter x:Key="AmountConverter"/>
+        <system:String x:Key="CalculatingString">Calculating</system:String>
+        <system:String x:Key="PurchaseString">Purchase</system:String>
+    </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
             <Border.Effect>
@@ -207,7 +214,7 @@
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="8"
-                                        Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
+                                        Text="{Binding Path=CalculatingAmount, StringFormat={}{0:N2} р.}"
                                         FontSize="13"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
@@ -215,11 +222,17 @@
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="8"
-                                        Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
                                         FontSize="13"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
-                                        Margin="0,18,0,0"/>
+                                        Margin="0,18,0,0">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource AmountConverter}">
+                                                <Binding Path="ContractAmount"/>
+                                                <Binding Path="ReserveContractAmount"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                     <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
@@ -271,26 +284,92 @@
                                             Foreground="{StaticResource MainText.Foreground}"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
-                                            
+                                            <Label.Style>
+                                                <Style TargetType="Label">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Purchase}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Label.Style>
                                         </Label>
                                     </DockPanel>
                                     <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                    <TextBlock 
-                                        Style="{DynamicResource TableElements}"
-                                        Grid.Column="14"
-                                        Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
-                                        FontSize="13"
-                                        Margin="0,0,0,18"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"/>
-                                    <TextBlock 
-                                        Style="{DynamicResource TableElements}"
-                                        Grid.Column="14"
-                                        Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
-                                        FontSize="13"
-                                        Margin="0,18,0,0"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"/>
+                                    <Grid Grid.Column="14" Margin="0, 5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            FontSize="13"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,0,0,0">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource ProfitConverter}">
+                                                    <Binding Path="ContractAmount"/>
+                                                    <Binding Path="ReserveContractAmount"/>
+                                                    <Binding Path="CalculatingAmount"/>
+                                                    <Binding Source="{StaticResource CalculatingString}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Row="1"
+                                            FontSize="13"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,0,0,0">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource ProfitConverter}">
+                                                    <Binding Path="ContractAmount"/>
+                                                    <Binding Path="ReserveContractAmount"/>
+                                                    <Binding Path="PurchaseAmount"/>
+                                                    <Binding Source="{StaticResource CalculatingString}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="1"
+                                            FontSize="13"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource PercentageProfitConverter}">
+                                                    <Binding Path="ContractAmount"/>
+                                                    <Binding Path="ReserveContractAmount"/>
+                                                    <Binding Path="CalculatingAmount"/>
+                                                    <Binding Source="{StaticResource CalculatingString}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="13"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource PercentageProfitConverter}">
+                                                    <Binding Path="ContractAmount"/>
+                                                    <Binding Path="ReserveContractAmount"/>
+                                                    <Binding Path="PurchaseAmount"/>
+                                                    <Binding Source="{StaticResource PurchaseString}"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
                                     <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
