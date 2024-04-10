@@ -9,6 +9,7 @@ namespace Parsething.Functions
     internal class Conversion
     {
         private static List<Procurement> procurements = new List<Procurement>();
+
         public static List<Procurement> ConponentCalculationsConversion(List<ComponentCalculation> componentCalculations)
         {
             procurements = new List<Procurement>();

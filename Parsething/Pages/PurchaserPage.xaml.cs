@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using DatabaseLibrary.Entities.ProcurementProperties;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -173,6 +174,16 @@ namespace Parsething.Pages
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, null, false, false));
+        }
+
+        private void SupplyMonitoringButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<Procurement> procurements;
+            procurements = View.ItemsSource.Cast<Procurement>().ToList();
+            if (procurements.Count != 0)
+                _ = MainFrame.Navigate(new SupplyMonitoringPage(procurements));
+            else
+                MessageBox.Show("Список тендеров пуст!");
         }
     }
     

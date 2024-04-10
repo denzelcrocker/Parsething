@@ -105,7 +105,7 @@
                                         <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,10,0,10"/>
                                         <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=ComponentName}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Margin="5" TextWrapping="Wrap"/>
                                         <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                        <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Manufacturer.Name}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Margin="5" TextWrapping="Wrap"/>
+                                        <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Manufacturer.ManufacturerName}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Margin="5" TextWrapping="Wrap"/>
                                         <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
                                         <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Price}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="6" Margin="5" TextWrapping="Wrap"/>
                                         <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
@@ -160,7 +160,7 @@
                                         <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,10,0,10"/>
                                         <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=ComponentName}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Margin="5" TextWrapping="Wrap"/>
                                         <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                        <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Manufacturer.Name}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Margin="5" TextWrapping="Wrap"/>
+                                        <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Manufacturer.ManufacturerName}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Margin="5" TextWrapping="Wrap"/>
                                         <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
                                         <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=ComponentState.Kind}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="6" Margin="5"/>
                                         <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>

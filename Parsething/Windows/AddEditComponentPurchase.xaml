@@ -44,7 +44,7 @@
             <Label Name="ComponentNameLabel" Content="Наименование" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="2"/>
             <TextBox x:Name="ComponentName" Style="{DynamicResource SingleLineInput.Calculating}" Height="60" Grid.Column="1" Grid.Row="2" />
             <Label Name="ManufacturerLabel" Content="Производитель" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="3"/>
-            <ComboBox x:Name="Manufacturer" Grid.Row="3" HorizontalAlignment="Left" Grid.Column="1"  Style="{DynamicResource ComboBoxBase.Regions}" Height="55" DisplayMemberPath="Name" StaysOpenOnEdit="True" IsEditable="True"/>
+            <ComboBox x:Name="Manufacturer" Grid.Row="3" HorizontalAlignment="Left" Grid.Column="1"  Style="{DynamicResource ComboBoxBase.Regions}" Height="55" DisplayMemberPath="ManufacturerName" StaysOpenOnEdit="True" IsEditable="True"/>
             <Label Name="ComponentStateLabel" Content="Статус" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="4"/>
             <ComboBox x:Name="ComponentState" Grid.Row="4" HorizontalAlignment="Left" Grid.Column="1"  Style="{DynamicResource ComboBoxBase.Regions}" Height="55" DisplayMemberPath="Kind" StaysOpenOnEdit="True" IsEditable="True"/>
             <Label Name="DateLabel" Content="Дата" Style="{DynamicResource Label.Calculating}" Grid.Column="0" Grid.Row="5"/>
