@@ -133,21 +133,19 @@
                             </ListView.ItemTemplate>
                         </ListView>-->
                         <ListView Grid.Row="3" x:Name="listViewSupplyMonitoring">
-                            <ListView.View>
+                            <!--<ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Supplier Name" DisplayMemberBinding="{Binding SupplierName}" />
                                     <GridViewColumn Header="Manufacturer Name" DisplayMemberBinding="{Binding ManufacturerName}" />
-                                    <!-- Добавьте остальные столбцы с привязками к свойствам вашего объекта SupplyMonitoringList -->
                                     <GridViewColumn Header="Tender Number">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <!-- Создание кнопки с номером тендера и привязкой к обработчику события -->
                                                 <Button Content="{Binding TenderNumber}" Tag="{Binding TenderNumber}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                 </GridView>
-                            </ListView.View>
+                            </ListView.View>-->
                         </ListView>
                     </Grid>
                 </Border>
