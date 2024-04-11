@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DatabaseLibrary.Queries;
 
 
 namespace Parsething.Pages
@@ -23,7 +24,7 @@ namespace Parsething.Pages
     public partial class SupplyMonitoringPage : Page
     {
         private List<Procurement> procurementsList { get; set; }
-        private List<GET.SupplyMonitoringList> supplyMonitoringListCommon { get; set; }
+        public List<GET.SupplyMonitoringList> supplyMonitoringListCommon { get; set; }
         private List<GET.SupplyMonitoringList> SupplyMonitoringListBySuppliers { get; set; }
         private List<GET.SupplyMonitoringList> supplyMonitoringListWarehouseAndReserve { get; set; }
         private List<GET.SupplyMonitoringList> supplyMonitoringListOnTheWay { get; set; }
@@ -40,12 +41,21 @@ namespace Parsething.Pages
         {
             var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
             supplyMonitoringListCommon = GET.View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
+            listViewSupplyMonitoring.ItemsSource = supplyMonitoringListCommon;
+            //var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+            //supplyMonitoringListCommon = GET.View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
+            //supplyMonitoringListCommon.Add(new GET.SupplyMonitoringList {SupplierName = "Тестовый заголовок"});
+            //SupplyMonitoringListView.ItemsSource = supplyMonitoringListCommon;
         }
 
         private void BySuppliersButton_Click(object sender, RoutedEventArgs e)
         {
-            var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
-            SupplyMonitoringListBySuppliers = GET.View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
+            //var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+            //SupplyMonitoringListBySuppliers = GET.View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
+            //var groupedData = new CollectionViewSource { Source = SupplyMonitoringListBySuppliers };
+            //groupedData.GroupDescriptions.Add(new PropertyGroupDescription("SupplierName"));
+            //supplyMonitoringListView.ItemsSource = groupedData.View;
+
         }
 
         private void WarehouseAndReserveButton_Click(object sender, RoutedEventArgs e)
