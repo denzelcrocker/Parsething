@@ -67,4 +67,12 @@
         <Setter Property="Foreground" Value="#BD1414"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
+    <Style x:Key="TextBlock.SupplyMonitoring.Header" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="#535353"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="#D9D9D9"/>
+    </Style>
 </ResourceDictionary>

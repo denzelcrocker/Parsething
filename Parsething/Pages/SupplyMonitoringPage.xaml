@@ -16,8 +16,8 @@
                     </Border.Effect>
                     <Grid Width="1810" Height="820" x:Name="MainGrid">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="55"/>
+                            <RowDefinition Height="70"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
@@ -52,101 +52,25 @@
                         </Grid>
                         <Grid Grid.Row="2" x:Name="ColumnsNamesPurchase" Visibility="Visible">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="110"/>
-                                <ColumnDefinition Width="395"/>
-                                <ColumnDefinition Width="105"/>
+                                <ColumnDefinition Width="170"/>
+                                <ColumnDefinition Width="800"/>
                                 <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="80"/>
-                                <ColumnDefinition Width="72"/>
-                                <ColumnDefinition Width="80"/>
-                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Парт Номер" Grid.Column="0" Margin="20,0,0,0"/>
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Наименование" Grid.Column="1" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Производитель" Grid.Column="2" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Статус" Grid.Column="3" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Дата" Grid.Column="4" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Цена" Grid.Column="5" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Количество" Grid.Column="6" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Продавец" Grid.Column="7" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="№ Резерва" Grid.Column="8" />
-                            <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="9" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Производитель" Grid.Column="0"/>
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Наименование" Grid.Column="1" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Статус" Grid.Column="2" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Цена/Ед" Grid.Column="3" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Количество" Grid.Column="4" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Поставщик" Grid.Column="5" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Сумма" Grid.Column="6" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Закупка" Grid.Column="7" />
                         </Grid>
-                        <!--<ListView x:Name="SupplyMonitoringListView" BorderThickness="0" Style="{DynamicResource ListView.Preferences}" Grid.Row="3" Margin="10" Cursor="Hand" Visibility="Visible" MouseDoubleClick="SupplyMonitoringListView_MouseDoubleClick" >
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border 
-                                        BorderThickness="1"
-                                        BorderBrush="#C6BDBF"
-                                        CornerRadius="15">
-                                        <Grid HorizontalAlignment="Stretch">
-                                            <Grid.ToolTip>
-                                                <ToolTip>
-                                                    Нажмите дважды для редактирования
-                                                </ToolTip>
-                                            </Grid.ToolTip>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="90"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="400"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="100"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="120"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="75"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="75"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="75"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="90"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="120"/>
-                                                <ColumnDefinition Width="2"/>
-                                                <ColumnDefinition Width="110"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=PartNumber}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Margin="10"/>
-                                            <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,10,0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=ComponentName}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Margin="5" TextWrapping="Wrap"/>
-                                            <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Manufacturer.Name}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Margin="5" TextWrapping="Wrap"/>
-                                            <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=ComponentState.Kind}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="6" Margin="5"/>
-                                            <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Date, StringFormat='{}{0:dd.MM.yyyy}'}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="8" Margin="5" TextWrapping="Wrap"/>
-                                            <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=PricePurchase}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="10" Margin="5" TextWrapping="Wrap"/>
-                                            <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Count}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="12" Margin="5" TextWrapping="Wrap"/>
-                                            <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Seller.Name}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="14" Margin="5" TextWrapping="Wrap"/>
-                                            <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=Reserve}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="16" Margin="5" TextWrapping="Wrap"/>
-                                            <Rectangle Grid.Column="17" Fill="{DynamicResource TitleBar.Background}" Margin="0,10"/>
-                                            <TextBlock Style="{DynamicResource TableElements.ComponentCalculations}" Text="{Binding Path=NotePurchase}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="18" Margin="5" TextWrapping="Wrap"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>-->
-                        <ListView Grid.Row="3" x:Name="listViewSupplyMonitoring">
-                            <!--<ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Supplier Name" DisplayMemberBinding="{Binding SupplierName}" />
-                                    <GridViewColumn Header="Manufacturer Name" DisplayMemberBinding="{Binding ManufacturerName}" />
-                                    <GridViewColumn Header="Tender Number">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Button Content="{Binding TenderNumber}" Tag="{Binding TenderNumber}" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>-->
-                        </ListView>
+                        <ListView Grid.Row="3" x:Name="listViewSupplyMonitoring"/>
                     </Grid>
                 </Border>
             </ScrollViewer>
