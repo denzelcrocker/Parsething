@@ -28,6 +28,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Button x:Name="CommonListButton"
                                 Grid.Column="0"
@@ -49,6 +50,11 @@
                                 Content="В пути"
                                 Style="{DynamicResource SupplyMonitoringButton}"
                                 Margin="10" Click="OnTheWayButton_Click"/>
+                            <Button x:Name="ExportToExcelButton"
+                                Grid.Column="4"
+                                Content="Экспорт в Excel"
+                                Style="{DynamicResource SupplyMonitoringButton}"
+                                Margin="10" Click="ExportToExcelButton_Click"/>
                         </Grid>
                         <Grid Grid.Row="2" x:Name="ColumnsNamesPurchase" Visibility="Visible">
                             <Grid.ColumnDefinitions>

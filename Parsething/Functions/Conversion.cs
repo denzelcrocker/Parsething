@@ -23,5 +23,18 @@ namespace Parsething.Functions
             }
             return procurements;
         }
+        public static List<Procurement> ProcurementsEmployeesConversion(List<ProcurementsEmployee> procurementsEmployees)
+        {
+            procurements = new List<Procurement>();
+            if (procurementsEmployees != null)
+            {
+                foreach (var procurementsEmployee in procurementsEmployees)
+                {
+                    Procurement procurement = procurementsEmployee.Procurement;
+                    procurements.Add(procurement);
+                }
+            }
+            return procurements;
+        }
     }
 }

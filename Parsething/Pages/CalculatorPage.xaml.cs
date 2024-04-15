@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Windows.Media;
 
 namespace Parsething.Pages;
@@ -10,13 +11,18 @@ public partial class CalculatorPage : Page
 
     private Frame MainFrame { get; set; } = null!;
 
-    private List<ProcurementsEmployee>? ProcurementsEmployeesQueue { get; set; }
+    private List<Procurement>? ProcurementsQueue { get; set; }
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesGroupings { get; set; }
     private List<ProcurementsEmployee>? ProcurementsEmployeesNew { get; set; }
     private List<ProcurementsEmployee>? ProcurementsEmployeesCalculated { get; set; }
     private List<ProcurementsEmployee>? ProcurementsEmployeesDrawUp { get; set; }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
+    {
+        LoadPageData();
+    }
+
+    private void LoadPageData()
     {
         try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
         catch { }
@@ -28,9 +34,10 @@ public partial class CalculatorPage : Page
             NewCount.Text = ProcurementsEmployeesNew.Count.ToString();
         }
 
-        //ProcurementsEmployeesQueue = GET.View.ProcurementsEmployeesQueue();
-        //if (ProcurementsEmployeesQueue != null)
-        //    Queue.Text = ProcurementsEmployeesQueue.Count.ToString();
+        ProcurementsQueue = GET.View.ProcurementsQueue();
+        if (ProcurementsQueue != null)
+            Queue.Text = ProcurementsQueue.Count.ToString();
+
 
         ProcurementsEmployeesGroupings = GET.View.ProcurementsEmployeesGroupBy(((Employee)Application.Current.MainWindow.DataContext).Id);
         if (ProcurementsEmployeesGroupings != null)
@@ -80,6 +87,12 @@ public partial class CalculatorPage : Page
             Procurement procurement = procurementsEmployee.Procurement;
             _ = MainFrame.Navigate(new CardOfProcurement(procurement, null, false));
         }
+    }
+
+    private void QueueButton_Click(object sender, RoutedEventArgs e)
+    {
+        PUT.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id);
+        LoadPageData();
     }
 
     private void Calculating_Click(object sender, RoutedEventArgs e)

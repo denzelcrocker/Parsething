@@ -97,9 +97,6 @@ namespace Parsething.Pages
                             textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
                         }
                         list.Items.Add(grid);
-
-
-                    
                 }
                 stackPanel.Children.Add(list);
                 stackPanels.Add(stackPanel);
@@ -397,6 +394,11 @@ namespace Parsething.Pages
             }
 
             listViewSupplyMonitoring.ItemsSource = stackPanels;
+        }
+
+        private void ExportToExcelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Functions.ExportToExcel.ExportSupplyMonitoringListToExcel(supplyMonitoringList);
         }
     }
 }

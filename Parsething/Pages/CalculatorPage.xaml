@@ -13,7 +13,7 @@
             </Border.Effect>
             <Grid Width="1810" Height="820">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="360"/>
+                    <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="2"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -63,6 +63,12 @@
                         <Label Content="Результаты:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
                         <Label Content="Расчёт:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="9"/>
                         <TextBlock x:Name="Overall" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="9" Text="0"/>
+                        <Button x:Name="SupplyMonitoringButton"
+                            Content="Тендер из очереди"
+                            Style="{DynamicResource SupplyMonitoringButton}" 
+                            Grid.Row="10"
+                            Grid.ColumnSpan="3"
+                            Click="QueueButton_Click"/>
                         <!--<Label Content="Оформление:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="10"/>
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" Text="0"/>-->
                     </Grid>

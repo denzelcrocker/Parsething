@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using Microsoft.VisualBasic;
+using System.Net;
 using System.Windows.Media;
 using System.Xml.Linq;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages;
 
@@ -433,6 +435,16 @@ public partial class AdministratorPage : Page
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         MainFrame.Navigate(new Charts());
+    }
+
+    private void GoToCalculationsButton_Click(object sender, RoutedEventArgs e)
+    {
+        var selectedGrouping = (sender as FrameworkElement)?.DataContext as ProcurementsEmployeesGrouping;
+        if (selectedGrouping != null)
+        {
+            List<Procurement> procurements = Functions.Conversion.ProcurementsEmployeesConversion(View.ProcurementsEmployeesBy(Convert.ToInt32(selectedGrouping.Id)));
+            MainFrame.Navigate(new SearchPage(procurements));
+        }
     }
 }
 public static class StringExtensions

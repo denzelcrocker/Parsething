@@ -161,6 +161,7 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="GoToCalculationsButton" Cursor="Hand" Click="GoToCalculationsButton_Click" Width="100" />
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="250" HorizontalAlignment="Left"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
                                     </StackPanel>
