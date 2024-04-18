@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Parsething.Classes;
+using Parsething.Windows;
+using DatabaseLibrary.Entities.ProcurementProperties;
 
 namespace Parsething.Pages
 {
@@ -104,8 +106,6 @@ namespace Parsething.Pages
             SearchCriteria.Instance.Law = law;
             SearchCriteria.Instance.ProcurementState = procurementState;
             SearchCriteria.Instance.INN = inn;
-
-
         }
 
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -130,5 +130,26 @@ namespace Parsething.Pages
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, false, true));
         }
 
+        private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+            {
+                AssemblyMap assemblyMap = new AssemblyMap(procurement);
+                assemblyMap.Show();
+            }
+        }
+        List<Procurement> procurements;
+        private void SupplyMonitoringButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<Procurement> procurements;
+            if (SearchLV.Items.Count > 0)
+            {
+                procurements = SearchLV.ItemsSource.Cast<Procurement>().ToList();
+                _ = MainFrame.Navigate(new SupplyMonitoringPage(procurements));
+            }
+            else
+                MessageBox.Show("Список тендеров пуст!");
+        }
     }
 }

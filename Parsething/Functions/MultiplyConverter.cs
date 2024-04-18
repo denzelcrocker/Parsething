@@ -31,7 +31,7 @@ namespace Parsething.Functions
             {
                 if (amount != null && type == "Purchase")
                     return ((decimal)reserveContractAmount - (decimal)amount).ToString("N2") + " р.";
-                else if (amount != null && type == "Calculating")
+                else if (amount != null && type == "Calculating" && contractAmount != null)
                     return ((decimal)contractAmount - (decimal)amount).ToString("N2") + " р.";
                 else
                     return DependencyProperty.UnsetValue; // Обработка случая, если amount == null
@@ -71,7 +71,7 @@ namespace Parsething.Functions
             {
                 if (amount != null && type == "Purchase")
                     return (((decimal)reserveContractAmount - (decimal)amount) / (decimal)amount * 100).ToString("N0") + "%";
-                else if (amount != null && type == "Calculating")
+                else if (amount != null && type == "Calculating" && contractAmount != null)
                     return (((decimal)contractAmount - (decimal)amount) / (decimal)amount * 100).ToString("N0") + "%";
                 return DependencyProperty.UnsetValue; // Обработка случая, если amount == null
             }

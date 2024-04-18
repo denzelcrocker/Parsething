@@ -339,7 +339,7 @@
                                                     <Binding Path="ContractAmount"/>
                                                     <Binding Path="ReserveContractAmount"/>
                                                     <Binding Path="PurchaseAmount"/>
-                                                    <Binding Source="{StaticResource CalculatingString}"/>
+                                                    <Binding Source="{StaticResource PurchaseString}"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
