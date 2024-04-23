@@ -40,7 +40,7 @@ public partial class CalculatorPage : Page
 
 
         ProcurementsEmployeesGroupings = GET.View.ProcurementsEmployeesGroupBy(((Employee)Application.Current.MainWindow.DataContext).Id);
-        if (ProcurementsEmployeesGroupings != null)
+        if (ProcurementsEmployeesGroupings.Count != 0)
             Overall.Text = ProcurementsEmployeesGroupings[0].CountOfProcurements.ToString();
 
         ProcurementsEmployeesCalculated = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан");

@@ -27,7 +27,7 @@
                         <RowDefinition Height="640"/>
                         <RowDefinition Height="100"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="1" x:Name="ColumnsNamesCalculating" Visibility="Hidden">
+                    <Grid Grid.Row="1" x:Name="ColumnsNamesCalculating" Visibility="Visible">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="110"/>
                             <ColumnDefinition Width="495"/>
@@ -47,7 +47,7 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="№ Резерва" Grid.Column="6" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="7" />
                     </Grid>
-                    <Grid Grid.Row="1" x:Name="ColumnsNamesPurchase" Visibility="Visible">
+                    <Grid Grid.Row="1" x:Name="ColumnsNamesPurchase" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="110"/>
                             <ColumnDefinition Width="395"/>
@@ -71,7 +71,7 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="№ Резерва" Grid.Column="8" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="9" />
                     </Grid>
-                    <ListView x:Name="CalculatingListView" BorderThickness="0" Style="{DynamicResource ListView.Preferences}" Grid.Row="2" Margin="10,0" Cursor="Hand" MouseDoubleClick="CalculatingListView_MouseDoubleClick" Visibility="Hidden">
+                    <!--<ListView x:Name="CalculatingListView" BorderThickness="0" Style="{DynamicResource ListView.Preferences}" Grid.Row="2" Margin="10,0" Cursor="Hand" MouseDoubleClick="CalculatingListView_MouseDoubleClick" Visibility="Hidden">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border 
@@ -121,8 +121,10 @@
                                 </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                    </ListView>
-                    <ListView x:Name="PurchaseListView" BorderThickness="0" Style="{DynamicResource ListView.Preferences}" Grid.Row="2" Margin="10,0" Cursor="Hand" Visibility="Visible" MouseDoubleClick="PurchaseListView_MouseDoubleClick" >
+                    </ListView>-->
+                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0"/>
+
+                    <!--<ListView x:Name="PurchaseListView" BorderThickness="0" Style="{DynamicResource ListView.Preferences}" Grid.Row="2" Margin="10,0" Cursor="Hand" Visibility="Visible" MouseDoubleClick="PurchaseListView_MouseDoubleClick" >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border 
@@ -179,7 +181,7 @@
                                 </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-                    </ListView>
+                    </ListView>-->
                     <StackPanel  Orientation="Horizontal">
                         <Button   
                         Grid.Column="0"

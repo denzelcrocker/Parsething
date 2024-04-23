@@ -129,7 +129,11 @@ namespace Parsething.Pages
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, false, true));
         }
-
+        
+        private void OverallInfo_Click(object sender, RoutedEventArgs e)
+        {
+            OverallInfoPopUp.IsOpen = !OverallInfoPopUp.IsOpen;
+        }
         private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
         {
             Procurement? procurement = (sender as Button)?.DataContext as Procurement;

@@ -156,7 +156,7 @@ namespace Parsething.Pages
                             grid.ColumnDefinitions.Add(columnDefinition);
                             Border border = new Border();
                             border.BorderThickness = new Thickness(1);
-                            border.BorderBrush = Brushes.Black;
+                            border.BorderBrush = (Brush)Application.Current.FindResource("Text.Foreground");
                             Grid.SetColumn(border, i);
                             grid.Children.Add(border);
                         }

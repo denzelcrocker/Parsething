@@ -435,7 +435,30 @@
                             FontFamily="Segoe Fluent Icons"
                             Style="{DynamicResource StatisticsButton}" 
                             Width="65"
-                            Cursor="Hand"/>
+                            Cursor="Hand"
+                            Click="OverallInfo_Click"/>
+                        <Popup x:Name="OverallInfoPopUp" PlacementTarget="{Binding ElementName=OverallInfoButton}" Placement="Left" StaysOpen="True" Width="300">
+                            <Grid Width="1000" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Content="Всего тендеров: "/>
+                                <Label Content="Сумма контрактов: " Grid.Row="1"/>
+                                <Label Content="Средний расчетный профит: " Grid.Row="2"/>
+                                <Label Content="Средний реальный профит: " Grid.Row="3"/>
+                                <TextBlock x:Name="OverallCount" Grid.Column="1" />
+                                <TextBlock x:Name="OverallAmount" Grid.Column="1" Grid.Row="1"/>
+                                <TextBlock x:Name="AvgCalculationProfit" Grid.Column="1" Grid.Row="2"/>
+                                <TextBlock x:Name="AvgPurchaseProfit" Grid.Column="1" Grid.Row="3"/>
+                            </Grid>
+                        </Popup>
                         <Button x:Name="SupplyMonitoringButton" 
                             Width="65"
                             Content="&#xe7bf;" 
