@@ -208,34 +208,8 @@
                         <TextBlock x:Name="ContractPrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
-                        <Button x:Name="AddPositionPurchase" Content="Позицию" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="AddPositionPurchase_Click" />
                         <Button x:Name="AddDivisionPurchase" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionPurchase_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
-                        <Button 
-                            x:Name="Assembly"
-                            Style="{DynamicResource ButtonWithIcon}"
-                            Cursor="Hand"
-                            Click="Assembly_Click" >
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Resources/Images/Assembly.png" Stretch="Uniform" Height="50"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Popup x:Name="AssemblyPopUp" PlacementTarget="{Binding ElementName=Assembly}" Placement="Top" StaysOpen="True">
-                            <TextBox x:Name="AssemblyTextBox" Style="{StaticResource SingleLineInput.PopupTextBox}" MaxWidth="300" TextWrapping="Wrap"/>
-                        </Popup>
-                        <Button 
-                            x:Name="Passport"
-                            Margin="10,0,0,0"
-                            Style="{DynamicResource ButtonWithIcon}"
-                            Cursor="Hand" >
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="50"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
                     </StackPanel>
                     <StackPanel x:Name="CalculatingPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Hidden">
                         <Label Content="Сумма: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
@@ -245,7 +219,6 @@
                         <TextBlock x:Name="MaxPrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
-                        <Button x:Name="AddPositionCalculating" Content="Позицию" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="AddPositionCalculating_Click" />
                         <Button x:Name="AddDivisionCalculating" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionCalculating_Click" />
                     </StackPanel>
                 </Grid>

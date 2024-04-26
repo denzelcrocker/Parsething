@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Parsething.Functions.ListViewInitialization;
+
 
 namespace Parsething.Pages
 {
@@ -30,19 +32,22 @@ namespace Parsething.Pages
         private List<ComponentCalculation>? ComponentCalculations = new List<ComponentCalculation>();
 
         private List<Procurement>? Procurements = new List<Procurement>();
-       
+
         private Procurement? Procurement { get; set; }
 
         private bool IsSearch;
 
-        public ComponentCalculationsPage(Procurement procurement,List<Procurement> procurements ,bool isCalculation, bool isSearch)
+        SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
+
+
+        public ComponentCalculationsPage(Procurement procurement, List<Procurement> procurements, bool isCalculation, bool isSearch)
         {
             InitializeComponent();
             IsSearch = isSearch;
             Procurements = procurements;
             decimal? calculatingAmount = 0;
             decimal? purchaseAmount = 0;
-            if(procurement != null)
+            if (procurement != null)
             {
                 Procurement = procurement;
                 Id.Text = Procurement.Id.ToString();
@@ -50,11 +55,49 @@ namespace Parsething.Pages
                 Comments = GET.View.CommentsBy(procurement.Id);
                 CommentsListView.ItemsSource = Comments;
                 ComponentCalculations = GET.View.ComponentCalculationsBy(procurement.Id);
+                if (isCalculation)
+                {
+                    PurchaseOrCalculatiing.Text = "Расчет";
+                    CalculatingPanel.Visibility = Visibility.Visible;
+                    ColumnsNamesCalculating.Visibility = Visibility.Visible;
+                    PurchasePanel.Visibility = Visibility.Hidden;
+                    ColumnsNamesPurchase.Visibility = Visibility.Hidden;
+
+
+                    foreach (ComponentCalculation componentCalculation in ComponentCalculations)
+                    {
+                        if (componentCalculation.Price != null && componentCalculation.Count != null)
+                            calculatingAmount += (componentCalculation.Price * componentCalculation.Count);
+                    }
+
+                    if (calculatingAmount > Procurement.InitialPrice)
+                        CalculationPrice.Foreground = Red;
+                    MaxPrice.Text = Procurement.InitialPrice.ToString();
+                    CalculationPrice.Text = calculatingAmount.ToString();
+                }
+                else
+                {
+                    PurchaseOrCalculatiing.Text = "Закупка";
+                    PurchasePanel.Visibility = Visibility.Visible;
+                    ColumnsNamesPurchase.Visibility = Visibility.Visible;
+                    CalculatingPanel.Visibility = Visibility.Hidden;
+                    ColumnsNamesCalculating.Visibility = Visibility.Hidden;
+                    foreach (ComponentCalculation componentCalculation in ComponentCalculations)
+                    {
+                        if (componentCalculation.PricePurchase != null && componentCalculation.Count != null)
+                            purchaseAmount += (componentCalculation.PricePurchase * componentCalculation.Count);
+                    }
+
+                    if (purchaseAmount > Procurement.ContractAmount)
+                        PurchasePrice.Foreground = Red;
+                    ContractPrice.Text = Procurement.ContractAmount.ToString();
+                    PurchasePrice.Text = purchaseAmount.ToString();
+                }
                 ListViewInitialization.ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView);
             }
         }
 
-        
+
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -128,57 +171,15 @@ namespace Parsething.Pages
             }
         }
 
-        private void AddPositionCalculating_Click(object sender, RoutedEventArgs e)
-        {
-            ComponentCalculation componentCalculation = null;
-            Windows.AddEditComponentCalculating addEditComponentCalculating = new Windows.AddEditComponentCalculating(componentCalculation, Procurement,Procurements , true, false, IsSearch);
-            addEditComponentCalculating.ShowDialog();
-        }
-
-        private void CalculatingListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ComponentCalculation componentCalculation = ((ListView)sender).SelectedItem as ComponentCalculation;
-            if (componentCalculation != null)
-            {
-                Windows.AddEditComponentCalculating addEditComponentCalculating = new Windows.AddEditComponentCalculating(componentCalculation, Procurement, Procurements, true, false, IsSearch);
-                addEditComponentCalculating.ShowDialog();
-            }
-        }
-
         private void AddDivisionCalculating_Click(object sender, RoutedEventArgs e)
         {
-            ComponentCalculation componentCalculation = null;
-            Windows.AddEditComponentCalculating addEditComponentCalculating = new Windows.AddEditComponentCalculating(componentCalculation, Procurement, Procurements, true, true, IsSearch);
-            addEditComponentCalculating.ShowDialog();
-        }
-
-        private void AddPositionPurchase_Click(object sender, RoutedEventArgs e)
-        {
-            ComponentCalculation componentCalculation = null;
-            Windows.AddEditComponentPurchase addEditComponentCalculating = new Windows.AddEditComponentPurchase(componentCalculation, Procurement, Procurements, false, false, IsSearch);
-            addEditComponentCalculating.ShowDialog();
+            ButtonAddDivision_Click(sender, e, Procurement);
         }
 
         private void AddDivisionPurchase_Click(object sender, RoutedEventArgs e)
         {
-            ComponentCalculation componentCalculation = null;
-            Windows.AddEditComponentPurchase addEditComponentCalculating = new Windows.AddEditComponentPurchase(componentCalculation, Procurement, Procurements, false, true, IsSearch);
-            addEditComponentCalculating.ShowDialog();
-        }
+            ButtonAddDivision_Click(sender, e, Procurement);
 
-        private void PurchaseListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ComponentCalculation componentCalculation = ((ListView)sender).SelectedItem as ComponentCalculation;
-            if (componentCalculation != null)
-            {
-                Windows.AddEditComponentPurchase addEditComponentCalculating = new Windows.AddEditComponentPurchase(componentCalculation, Procurement, Procurements, false, false, IsSearch);
-                addEditComponentCalculating.ShowDialog();
-            }
-        }
-
-        private void Assembly_Click(object sender, RoutedEventArgs e)
-        {
-            AssemblyPopUp.IsOpen = !AssemblyPopUp.IsOpen;
         }
     }
 }

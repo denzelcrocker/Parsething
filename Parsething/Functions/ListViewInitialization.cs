@@ -1,4 +1,5 @@
 ﻿using DatabaseLibrary.Entities.ComponentCalculationProperties;
+using DatabaseLibrary.Entities.ProcurementProperties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,11 +42,11 @@ namespace Parsething.Functions
 
                 foreach (ComponentCalculation componentCalculationHeader in componentCalculations)
                 {
-                    StackPanel stackPanel = new StackPanel { };
+                    StackPanel stackPanel = new StackPanel();
                     if (componentCalculationHeader.IsHeader == true)
                     {
-                        Grid grid = new Grid();
-                        double[] columnWidths = { 600, 400, 100 };
+                        Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader. IsAdded} };
+                        double[] columnWidths = { 600, 400, 100, 100 };
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
                             ColumnDefinition columnDefinition = new ColumnDefinition();
@@ -54,18 +55,25 @@ namespace Parsething.Functions
                         }
 
                         TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
+                        textBoxHeader.LostFocus += TextBox_LostFocus;
                         TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
+                        textBoxHeaderAssemblyMap.LostFocus += TextBox_LostFocus;
                         Button buttonAdd = new Button();
-                        buttonAdd.Click += (sender, e) => ButtonAdd_Click(sender, e, stackPanels);
+                        buttonAdd.Click += ButtonAddPosition_Click;
                         buttonAdd.Content = "+";
+                        Button buttonDelete = new Button();
+                        buttonDelete.Click += ButtonDeleteDivision_Click;
+                        buttonDelete.Content = "-";
 
                         Grid.SetColumn(textBoxHeader, 0);
                         Grid.SetColumn(textBoxHeaderAssemblyMap, 1);
                         Grid.SetColumn(buttonAdd, 2);
+                        Grid.SetColumn(buttonDelete, 3);
 
                         grid.Children.Add(textBoxHeader);
                         grid.Children.Add(textBoxHeaderAssemblyMap);
                         grid.Children.Add(buttonAdd);
+                        grid.Children.Add(buttonDelete);
                         stackPanel.Children.Add(grid);
                     }
 
@@ -76,7 +84,7 @@ namespace Parsething.Functions
                     {
                         if (componentCalculation.ParentName == componentCalculationHeader.ComponentName && componentCalculation.ParentName != null)
                         {
-                            Grid grid = new Grid();
+                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId ,componentCalculation.IsHeader, componentCalculation.ParentName } };
                             double[] columnWidths = { 60, 450, 110, 70, 50, 85, 90, 150, 150 };
 
                             for (int i = 0; i < columnWidths.Length; i++)
@@ -114,7 +122,7 @@ namespace Parsething.Functions
                             TextBox textBoxNote = new TextBox() { Text = componentCalculation.Note };
                             TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap };
                             Button buttonDelete = new Button();
-                            buttonDelete.Click += (sender, e) => ButtonAdd_Click(sender, e, stackPanels);
+                            buttonDelete.Click += ButtonDelete_Click;
                             buttonDelete.Content = "Удалить";
 
                             Grid.SetColumn(textBoxPartNumber, 0);
@@ -126,6 +134,7 @@ namespace Parsething.Functions
                             Grid.SetColumn(textBoxReserve, 6);
                             Grid.SetColumn(textBoxNote, 7);
                             Grid.SetColumn(textBoxAssemblyMap, 8);
+                            Grid.SetColumn(buttonDelete, 9);
 
                             grid.Children.Add(textBoxPartNumber);
                             grid.Children.Add(textBoxComponentName);
@@ -136,6 +145,7 @@ namespace Parsething.Functions
                             grid.Children.Add(textBoxReserve);
                             grid.Children.Add(textBoxNote);
                             grid.Children.Add(textBoxAssemblyMap);
+                            grid.Children.Add(buttonDelete);
 
                             listView.Items.Add(grid);
                         }
@@ -144,67 +154,125 @@ namespace Parsething.Functions
                     stackPanel.Children.Add(listView);
                     stackPanels.Add(stackPanel);
                 }
-                //PurchaseOrCalculatiing.Text = "Расчет";
-                //CalculatingPanel.Visibility = Visibility.Visible;
-                //ColumnsNamesCalculating.Visibility = Visibility.Visible;
-                //PurchasePanel.Visibility = Visibility.Hidden;
-                //ColumnsNamesPurchase.Visibility = Visibility.Hidden;
-
-
-                //foreach (ComponentCalculation componentCalculation in ComponentCalculations)
-                //{
-                //    if (componentCalculation.Price != null && componentCalculation.Count != null)
-                //        calculatingAmount += (componentCalculation.Price * componentCalculation.Count);
-                //}
-
-                //if (calculatingAmount > Procurement.InitialPrice)
-                //    CalculationPrice.Foreground = Red;
-                //MaxPrice.Text = Procurement.InitialPrice.ToString();
-                //CalculationPrice.Text = calculatingAmount.ToString();
-
             }
             else
             {
-                    //PurchaseOrCalculatiing.Text = "Закупка";
-                    //PurchasePanel.Visibility = Visibility.Visible;
-                    //PurchaseListView.Visibility = Visibility.Visible;
-                    //ColumnsNamesPurchase.Visibility = Visibility.Visible;
-                    //CalculatingPanel.Visibility = Visibility.Hidden;
-                    //CalculatingListView.Visibility = Visibility.Hidden;
-                    //ColumnsNamesCalculating.Visibility = Visibility.Hidden;
-                    //PurchaseListView.Items.Clear();
 
-                    //PurchaseListView.ItemsSource = ComponentCalculations;
-
-                    //foreach (ComponentCalculation componentCalculation in ComponentCalculations)
-                    //{
-                    //    if (componentCalculation.PricePurchase != null && componentCalculation.Count != null)
-                    //        purchaseAmount += (componentCalculation.PricePurchase * componentCalculation.Count);
-                    //}
-
-                    //if (purchaseAmount > Procurement.ContractAmount)
-                    //    PurchasePrice.Foreground = Red;
-                    //ContractPrice.Text = Procurement.ContractAmount.ToString();
-                    //PurchasePrice.Text = purchaseAmount.ToString();
             }
             ListView.ItemsSource = stackPanels;
         }
-        private static void ButtonAdd_Click(object sender, RoutedEventArgs e, List<StackPanel> stackPanels)
+
+        private static void ButtonDeleteDivision_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsCalculation)
+            {
+                int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
+                for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
+                {
+                    if (ComponentCalculations[i].Id == idToDelete)
+                    {
+                        ComponentCalculations.RemoveAt(i);
+                        break; // Выходим из цикла после удаления элемента
+                    }
+                }
+                DELETE.ComponentCalculation(idToDelete);
+                ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView);
+            }
+        }
+
+        private static void ButtonAddPosition_Click(object sender, RoutedEventArgs e)
         {
             StackPanel parentStackPanel = (StackPanel)((Grid)((Button)sender).Parent).Parent;
             Grid grid = (Grid)parentStackPanel.Children[0];
             ComponentCalculation newComponentCalculation = new ComponentCalculation
             {
-                ParentName = ((TextBox)grid.Children[0]).Text
+                ProcurementId = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]),
+                ParentName = ((TextBox)grid.Children[0]).Text,
+                IsAdded = IsCalculation ? false : true,
+                IsDeleted = false,
+                IsHeader = false,
             };
             ComponentCalculations.Add(newComponentCalculation);
+            PUT.ComponentCalculation(newComponentCalculation);
             ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView);
         }
-        private static void ButtonDelete_Click(object sender, RoutedEventArgs e, List<StackPanel> stackPanels)
+        private static void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            StackPanel parentStackPanel = (StackPanel)((Grid)((Button)sender).Parent).Parent;
-            Grid grid = (Grid)parentStackPanel.Children[0];
-            //ComponentCalculations.Remove((Grid)parentStackPanel.Children[0]);
+            int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
+            for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
+            {
+                if (ComponentCalculations[i].Id == idToDelete)
+                {
+                    ComponentCalculations.RemoveAt(i);
+                    break;
+                }
+            }
+            DELETE.ComponentCalculation(idToDelete);
+            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView);
+        }
+        public static void ButtonAddDivision_Click(object sender, RoutedEventArgs e, Procurement procurement)
+        {
+            if (IsCalculation)
+            {
+                ComponentCalculation newComponentCalculation = new ComponentCalculation
+                {
+                    ProcurementId = procurement.Id,
+                    IsHeader = true,
+                    IsAdded = IsCalculation ? false : true,
+                    IsDeleted = false,
+                };
+                ComponentCalculations.Add(newComponentCalculation);
+                PUT.ComponentCalculation(newComponentCalculation);
+                ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView);
+            }
+            // добавить для закупки
+        }
+        private static void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateListView();
+        }
+        private static void UpdateListView()
+        {
+            foreach (StackPanel stackPanel in ListView.Items)
+            {
+                ComponentCalculation componentCalculation = new ComponentCalculation();
+                try
+                {
+                    TextBox textBoxHeader = (TextBox)((Grid)stackPanel.Children[0]).Children[0];
+                    TextBox textBoxAssemblyMap = (TextBox)((Grid)stackPanel.Children[0]).Children[1];
+
+                    componentCalculation.Id = (int)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[1];
+                    componentCalculation.ProcurementId = (int)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[0];
+                    componentCalculation.ComponentName = textBoxHeader.Text;
+                    componentCalculation.AssemblyMap = textBoxAssemblyMap.Text;
+                    componentCalculation.IsDeleted = (bool)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[3];
+                    componentCalculation.IsAdded = (bool)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[4];
+                    componentCalculation.IsHeader = (bool)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[2]; ;
+                    PULL.ComponentCalculation(componentCalculation);
+                    ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculation.ProcurementId);
+                }
+                catch 
+                {
+
+                    //// Проверяем наличие элементов в ListView
+                    //ListView innerListView = (ListView)((StackPanel)stackPanel.Children[1]).Children[0];
+                    //if (innerListView.Items.Count > 0)
+                    //{
+                    //    // Получаем первый элемент
+                    //    Grid innerGrid = (Grid)innerListView.Items[0];
+                    //    TextBox textBoxPartNumber = (TextBox)innerGrid.Children[0];
+                    //    TextBox textBoxComponentName = (TextBox)innerGrid.Children[1];
+                    //    ComboBox comboBoxManufacturer = (ComboBox)innerGrid.Children[2];
+                    //    // Другие элементы UI внутри подзаголовка
+
+                    //    // Далее можно выполнить необходимые операции с подзаголовком, например, отправить его на сервер
+
+                    //    // Вам также нужно создать объект ComponentCalculation и заполнить его данными из подзаголовка,
+                    //    // чтобы потом его можно было отправить на сервер
+                    //}
+                }
+
+            }
             ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView);
         }
     }
