@@ -46,7 +46,7 @@
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Id" Grid.Column="0" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Закон" Grid.Column="1" />
@@ -64,7 +64,7 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="11" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="12" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="ЕИС" Grid.Column="13" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Ред-ть" Grid.Column="14" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Карточка" Grid.Column="14" />
                     </Grid>
                     <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40">
                         <ListView.ItemTemplate>
