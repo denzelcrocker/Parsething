@@ -4,6 +4,7 @@ using Parsething.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -88,12 +89,21 @@ namespace Parsething.Pages
                             purchaseAmount += (componentCalculation.PricePurchase * componentCalculation.Count);
                     }
 
-                    if (purchaseAmount > Procurement.ContractAmount)
-                        PurchasePrice.Foreground = Red;
-                    ContractPrice.Text = Procurement.ContractAmount.ToString();
+                    if (Procurement.ReserveContractAmount != null)
+                    {
+                        ContractPrice.Text = Procurement.ReserveContractAmount.ToString();
+                        if (purchaseAmount > Procurement.ReserveContractAmount)
+                            PurchasePrice.Foreground = Red;
+                    }
+                    else
+                    {
+                        ContractPrice.Text = Procurement.ContractAmount.ToString();
+                        if (purchaseAmount > Procurement.ContractAmount)
+                            PurchasePrice.Foreground = Red;
+                    }
                     PurchasePrice.Text = purchaseAmount.ToString();
                 }
-                ListViewInitialization.ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView);
+                ListViewInitialization.ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView, CalculationPrice, PurchasePrice, Procurement);
             }
         }
 
