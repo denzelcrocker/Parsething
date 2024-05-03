@@ -319,10 +319,10 @@
         <Setter Property="Background" Value="{StaticResource ComboBox.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ComboBox.BorderBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ComboBox.Foreground}"/>
-        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontSize" Value="10"/>
         <Setter Property="FontFamily" Value="Noah"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="Margin" Value="2"/>
         <Setter Property="ItemContainerStyle" Value="{DynamicResource ComboBoxItemBase}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>

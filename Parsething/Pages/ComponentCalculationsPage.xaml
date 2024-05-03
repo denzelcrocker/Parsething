@@ -52,7 +52,7 @@
                     </Grid>
                     <Grid Grid.Row="1" x:Name="ColumnsNamesPurchase" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="75"/>
                             <ColumnDefinition Width="395"/>
                             <ColumnDefinition Width="105"/>
                             <ColumnDefinition Width="120"/>
@@ -63,7 +63,7 @@
                             <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
-                        <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Парт Номер" Grid.Column="0" Margin="20,0,0,0"/>
+                        <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Парт" Grid.Column="0" Margin="20,0,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Наименование" Grid.Column="1" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Производитель" Grid.Column="2" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Статус" Grid.Column="3" />
