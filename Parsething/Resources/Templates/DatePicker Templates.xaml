@@ -123,8 +123,8 @@
                                             <Rectangle Grid.ColumnSpan="4" Grid.RowSpan="1" StrokeThickness="1">
                                                 <Rectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0.3,-1.1" StartPoint="0.46,1.6">
-                                                        <GradientStop Color="#FF4084BD"/>
-                                                        <GradientStop Color="#FFAFCFEA" Offset="1"/>
+                                                        <GradientStop Color="#930C0C" Offset="0.4"/>
+                                                        <GradientStop Color="#BD1414" Offset="1"/>
                                                     </LinearGradientBrush>
                                                 </Rectangle.Fill>
                                                 <Rectangle.Stroke>
@@ -279,8 +279,8 @@
                                             <Rectangle Grid.ColumnSpan="4" Grid.RowSpan="1" StrokeThickness="1">
                                                 <Rectangle.Fill>
                                                     <LinearGradientBrush EndPoint="0.3,-1.1" StartPoint="0.46,1.6">
-                                                        <GradientStop Color="#FF4084BD"/>
-                                                        <GradientStop Color="#FFAFCFEA" Offset="1"/>
+                                                        <GradientStop Color="#930C0C" Offset="0.4"/>
+                                                        <GradientStop Color="#BD1414" Offset="1"/>
                                                     </LinearGradientBrush>
                                                 </Rectangle.Fill>
                                                 <Rectangle.Stroke>
@@ -301,8 +301,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
-                            <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Focusable="{TemplateBinding Focusable}" HorizontalContentAlignment="Stretch" Grid.Row="0" VerticalContentAlignment="Center" Style="{DynamicResource ComponentCalculation.Item}" Grid.ColumnSpan="2" FontFamily="Noah" Foreground="Black"/>
-                            <Button x:Name="PART_Button" Grid.Column="1" Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Left" Margin="3,0,3,0" Grid.Row="0" Template="{StaticResource DropDownButtonTemplate}" VerticalAlignment="Top" Width="20"/>
+                            <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Focusable="{TemplateBinding Focusable}" HorizontalContentAlignment="Stretch" Height="38" Grid.Row="0" VerticalContentAlignment="Center" Style="{DynamicResource ComponentCalculation.Item}" Grid.ColumnSpan="2" FontFamily="Noah" Foreground="Black"/>
+                            <Button x:Name="PART_Button" Grid.Column="1" Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Left" Margin="10,-10,3,0" Grid.Row="0" Template="{StaticResource DropDownButtonTemplate}" VerticalAlignment="Top" Width="20"/>
                             <Grid x:Name="PART_DisabledVisual" Grid.Column="0" Grid.ColumnSpan="2" IsHitTestVisible="False" Opacity="0" Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>

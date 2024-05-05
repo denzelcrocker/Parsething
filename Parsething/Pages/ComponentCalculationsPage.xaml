@@ -10,16 +10,16 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Margin="55,0,25,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1300"/>
-                <ColumnDefinition Width="510"/>
+                <ColumnDefinition Width="1350"/>
+                <ColumnDefinition Width="460"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15"  CornerRadius="45">
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15" CornerRadius="45">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
                 </Border.Effect>
                 <Grid >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1300"/>
+                        <ColumnDefinition Width="1350"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
@@ -53,14 +53,15 @@
                     <Grid Grid.Row="1" x:Name="ColumnsNamesPurchase" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="75"/>
-                            <ColumnDefinition Width="395"/>
+                            <ColumnDefinition Width="290"/>
                             <ColumnDefinition Width="105"/>
-                            <ColumnDefinition Width="120"/>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="72"/>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="90"/>
-                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="105"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="130"/>
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Парт" Grid.Column="0" Margin="20,0,0,0"/>
@@ -69,10 +70,11 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Статус" Grid.Column="3" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Дата" Grid.Column="4" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Цена" Grid.Column="5" />
-                        <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Количество" Grid.Column="6" />
+                        <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Кол-во" Grid.Column="6" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Продавец" Grid.Column="7" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="№ Резерва" Grid.Column="8" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="9" />
+                        <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Карта сборки" Grid.Column="10" />
                     </Grid>
                     <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0"/>
                     <StackPanel  Orientation="Horizontal">
@@ -137,9 +139,9 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border>
-                                        <Grid HorizontalAlignment="Left" Margin="5" Width="400">
+                                        <Grid HorizontalAlignment="Left" Margin="5" Width="360">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="30"/>
                                                 <RowDefinition />
                                                 <RowDefinition Height="2"/>
                                             </Grid.RowDefinitions>
@@ -173,7 +175,7 @@
                                                 TextWrapping="Wrap"
                                                 Margin="0,0,0,5"
                                                 HorizontalAlignment="Stretch"
-                                                FontSize="15"
+                                                FontSize="13"
                                                 VerticalAlignment="Center"/>
                                             <Label x:Name="arrow" 
                                                 Grid.Column="2"
@@ -207,7 +209,7 @@
                             MaxHeight="170"
                             TextWrapping="Wrap"
                             VerticalContentAlignment="Top"/>
-                        <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3">
+                        <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3" FontSize="23">
                             <TextBlock>
                                 Технический
                             </TextBlock>

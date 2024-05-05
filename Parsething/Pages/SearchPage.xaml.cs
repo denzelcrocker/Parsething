@@ -132,7 +132,34 @@ namespace Parsething.Pages
         
         private void OverallInfo_Click(object sender, RoutedEventArgs e)
         {
-            OverallInfoPopUp.IsOpen = !OverallInfoPopUp.IsOpen;
+            //decimal? overallAmount = 0;
+            //int index = 0;
+            //decimal?[] profitCalculate = new decimal?[] { };
+            //decimal?[] profitReal = new decimal?[] { };
+            //OverallInfoPopUp.IsOpen = !OverallInfoPopUp.IsOpen;
+            //if (Procurements != null)
+            //{
+            //    OverallCount.Text = Procurements.Count.ToString();
+            //    foreach (Procurement procurement in Procurements)
+            //    {
+            //        if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null)
+            //        {
+            //            overallAmount += procurement.ContractAmount;
+            //            profitReal[index] = procurement.ContractAmount - procurement.PurchaseAmount;
+            //        }
+            //        else if (procurement.ReserveContractAmount != null)
+            //        {
+            //            overallAmount += procurement.ReserveContractAmount;
+            //            profitReal[index] = procurement.ReserveContractAmount - procurement.PurchaseAmount;
+            //        }
+            //        profitCalculate[index] = procurement.ContractAmount - procurement.CalculatingAmount;
+
+            //        index++;
+            //    }
+            //    OverallAmount.Text = ((decimal)overallAmount).ToString("N2") + " р.";
+            //    AvgCalculationProfit.Text = ((decimal)profitCalculate.Average()).ToString("N2") + " р.";
+            //    AvgPurchaseProfit.Text = ((decimal)profitReal.Average()).ToString("N2") + " р.";
+            //}
         }
         private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
         {

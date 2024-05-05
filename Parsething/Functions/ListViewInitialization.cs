@@ -63,7 +63,7 @@ namespace Parsething.Functions
                     if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsAdded == false)
                     {
                         Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader. IsAdded} };
-                        double[] columnWidths = { 628, 450, 90, 90 };
+                        double[] columnWidths = { 628, 500, 90, 90 };
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
                             ColumnDefinition columnDefinition = new ColumnDefinition();
@@ -109,8 +109,8 @@ namespace Parsething.Functions
                     {
                         if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsAdded == false)
                         {
-                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId ,componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded } };
-                            double[] columnWidths = { 60, 450, 115, 70, 50, 90, 90, 150, 150 };
+                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId ,componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded, componentCalculation.ComponentNamePurchase, componentCalculation.ManufacturerIdPurchase, componentCalculation.PricePurchase, componentCalculation.CountPurchase, componentCalculation.SellerIdPurchase, componentCalculation.ReservePurchase, componentCalculation.NotePurchase } };
+                            double[] columnWidths = { 60, 450, 115, 70, 50, 115, 90, 175, 150 };
 
                             for (int i = 0; i < columnWidths.Length; i++)
                             {
@@ -204,14 +204,13 @@ namespace Parsething.Functions
                     if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsDeleted == false)
                     {
                         Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded } };
-                        double[] columnWidths = { 628, 450, 90, 90 };
+                        double[] columnWidths = { 628, 500, 90, 90 };
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
                             ColumnDefinition columnDefinition = new ColumnDefinition();
                             columnDefinition.Width = new GridLength(columnWidths[i]);
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
-
                         TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
                         textBoxHeader.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeader, 0, true);
                         textBoxHeader.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeader, 0);
@@ -230,7 +229,6 @@ namespace Parsething.Functions
                         buttonDelete.Content = "";
                         buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
 
-
                         Grid.SetColumn(textBoxHeader, 0);
                         Grid.SetColumn(textBoxHeaderAssemblyMap, 1);
                         Grid.SetColumn(buttonAdd, 2);
@@ -242,7 +240,6 @@ namespace Parsething.Functions
                         grid.Children.Add(buttonDelete);
                         stackPanel.Children.Add(grid);
                     }
-
                     ListView listView = new();
                     listView.Style = (Style)Application.Current.FindResource("ListView");
 
@@ -250,9 +247,8 @@ namespace Parsething.Functions
                     {
                         if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsDeleted == false)
                         {
-                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded } };
-                            double[] columnWidths = { 55, 300, 100, 125, 100, 75, 40, 105, 125, 125, 100 };
-
+                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded, componentCalculation.ComponentName, componentCalculation.ManufacturerId, componentCalculation.Price, componentCalculation.Count, componentCalculation.SellerId, componentCalculation.Reserve, componentCalculation.Note } };
+                            double[] columnWidths = { 55, 300, 100, 125, 100, 75, 40, 105, 100, 125, 150 };
                             for (int i = 0; i < columnWidths.Length; i++)
                             {
                                 ColumnDefinition columnDefinition = new ColumnDefinition();
@@ -281,7 +277,6 @@ namespace Parsething.Functions
                                     break;
                                 }
                             DatePicker datePicker = new DatePicker() { SelectedDate = componentCalculation.Date, Style = (Style)Application.Current.FindResource("ComponentCalculations.DatePickerStyle") };
-                            datePicker.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             TextBox textBoxPrice = new TextBox() { Text = componentCalculation.PricePurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             if (componentCalculation.PricePurchase != null && componentCalculation.CountPurchase != null)
                                 purchaseAmount += (componentCalculation.PricePurchase * componentCalculation.CountPurchase);
@@ -343,7 +338,6 @@ namespace Parsething.Functions
                         stackPanels.Add(stackPanel);
                     }
                 }
-
                 if (Procurement.ReserveContractAmount != null)
                 {
                     if (purchaseAmount > Procurement.ReserveContractAmount)
@@ -363,6 +357,7 @@ namespace Parsething.Functions
 
         private static void ButtonDeleteDivision_Click(object sender, RoutedEventArgs e)
         {
+            UpdateListView();
             if (IsCalculation)
             {
                 int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
@@ -392,6 +387,7 @@ namespace Parsething.Functions
 
         private static void ButtonAddPosition_Click(object sender, RoutedEventArgs e)
         {
+            UpdateListView();
             StackPanel parentStackPanel = (StackPanel)((Grid)((Button)sender).Parent).Parent;
             Grid grid = (Grid)parentStackPanel.Children[0];
             ComponentCalculation newComponentCalculation = new ComponentCalculation
@@ -409,6 +405,7 @@ namespace Parsething.Functions
         }
         private static void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
+            UpdateListView();
             if (IsCalculation)
             {
                 int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
@@ -439,7 +436,8 @@ namespace Parsething.Functions
         }
         public static void ButtonAddDivision_Click(object sender, RoutedEventArgs e, Procurement procurement)
         {
-                ComponentCalculation newComponentCalculation = new ComponentCalculation
+            UpdateListView();
+            ComponentCalculation newComponentCalculation = new ComponentCalculation
                 {
                     ProcurementId = procurement.Id,
                     IsHeader = true,
@@ -500,48 +498,108 @@ namespace Parsething.Functions
                     ListView innerListView = (ListView)stackPanel.Children[1];
                     foreach (Grid grid in innerListView.Items)
                     {
-                        ComponentCalculation componentCalculationItem = new ComponentCalculation();
-                        TextBox textBoxPartNumber = (TextBox)grid.Children[0];
-                        TextBox textBoxComponentName = (TextBox)grid.Children[1];
-                        TextBox textBoxPrice = (TextBox)grid.Children[3];
-                        TextBox textBoxCount = (TextBox)grid.Children[4];
-                        TextBox textBoxReserve = (TextBox)grid.Children[6];
-                        TextBox textBoxNote = (TextBox)grid.Children[7];
-                        TextBox textBoxAssemblyMap = (TextBox)grid.Children[8];
+                        if (IsCalculation)
+                        {
+                            ComponentCalculation componentCalculationItem = new ComponentCalculation();
+                            TextBox textBoxPartNumber = (TextBox)grid.Children[0];
+                            TextBox textBoxComponentName = (TextBox)grid.Children[1];
+                            TextBox textBoxPrice = (TextBox)grid.Children[3];
+                            TextBox textBoxCount = (TextBox)grid.Children[4];
+                            TextBox textBoxReserve = (TextBox)grid.Children[6];
+                            TextBox textBoxNote = (TextBox)grid.Children[7];
+                            TextBox textBoxAssemblyMap = (TextBox)grid.Children[8];
 
-                        componentCalculationItem.Id = (int)((List<object>)grid.DataContext)[0];
-                        componentCalculationItem.ProcurementId = (int)((List<object>)grid.DataContext)[1];
-                        componentCalculationItem.PartNumber = textBoxPartNumber.Text;
-                        componentCalculationItem.ComponentName = textBoxComponentName.Text;
-                        if ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem != null)
-                        {
-                            componentCalculationItem.ManufacturerId = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
-                            //componentCalculationItem.ManufacturerIdPurchase = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
+                            componentCalculationItem.Id = (int)((List<object>)grid.DataContext)[0];
+                            componentCalculationItem.ProcurementId = (int)((List<object>)grid.DataContext)[1];
+                            componentCalculationItem.PartNumber = textBoxPartNumber.Text;
+                            componentCalculationItem.ComponentName = textBoxComponentName.Text;
+                            componentCalculationItem.ComponentNamePurchase = textBoxComponentName.Text;
+                            if ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem != null)
+                            {
+                                componentCalculationItem.ManufacturerId = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
+                                componentCalculationItem.ManufacturerIdPurchase = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
+                            }
+                            if (textBoxPrice.Text != "")
+                            {
+                                componentCalculationItem.Price = Convert.ToDecimal(textBoxPrice.Text);
+                                componentCalculationItem.PricePurchase = Convert.ToDecimal(textBoxPrice.Text);
+                            }
+                            if (textBoxCount.Text != "")
+                            {
+                                componentCalculationItem.Count = Convert.ToInt32(textBoxCount.Text);
+                                componentCalculationItem.CountPurchase = Convert.ToInt32(textBoxCount.Text);
+                            }
+                            if ((Seller)((ComboBox)grid.Children[5]).SelectedItem != null)
+                            {
+                                componentCalculationItem.SellerId = ((Seller)((ComboBox)grid.Children[5]).SelectedItem).Id;
+                                componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[5]).SelectedItem).Id;
+                            }
+                            componentCalculationItem.Reserve = textBoxReserve.Text;
+                            componentCalculationItem.ReservePurchase = textBoxReserve.Text;
+                            componentCalculationItem.Note = textBoxNote.Text;
+                            componentCalculationItem.NotePurchase = textBoxNote.Text;
+                            componentCalculationItem.AssemblyMap = textBoxAssemblyMap.Text;
+                            componentCalculationItem.ParentName = Convert.ToInt32(componentCalculationHeader.Id);
+                            componentCalculationItem.IsDeleted = (bool)((List<object>)grid.DataContext)[4];
+                            componentCalculationItem.IsAdded = (bool)((List<object>)grid.DataContext)[5];
+                            componentCalculationItem.IsHeader = (bool)((List<object>)grid.DataContext)[2];
+                            PULL.ComponentCalculation(componentCalculationItem);
+                            ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculationItem.ProcurementId);
                         }
-                        if (textBoxPrice.Text != "")
+                        else 
                         {
-                            componentCalculationItem.Price = Convert.ToDecimal(textBoxPrice.Text);
-                            //componentCalculationItem.PricePurchase = Convert.ToDecimal(textBoxPrice.Text);
+                            ComponentCalculation componentCalculationItem = new ComponentCalculation();
+                            TextBox textBoxPartNumber = (TextBox)grid.Children[0];
+                            TextBox textBoxComponentName = (TextBox)grid.Children[1];
+                            DatePicker datePicker = (DatePicker)grid.Children[4];
+                            TextBox textBoxPrice = (TextBox)grid.Children[5];
+                            TextBox textBoxCount = (TextBox)grid.Children[6];
+                            TextBox textBoxReserve = (TextBox)grid.Children[8];
+                            TextBox textBoxNote = (TextBox)grid.Children[9];
+                            TextBox textBoxAssemblyMap = (TextBox)grid.Children[10];
+
+                            componentCalculationItem.Id = (int)((List<object>)grid.DataContext)[0];
+                            componentCalculationItem.ProcurementId = (int)((List<object>)grid.DataContext)[1];
+                            componentCalculationItem.PartNumber = textBoxPartNumber.Text;
+                            componentCalculationItem.ComponentName = (string)((List<object>)grid.DataContext)[6];
+                            componentCalculationItem.ComponentNamePurchase = textBoxComponentName.Text;
+                            if ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem != null)
+                            {
+                                componentCalculationItem.ManufacturerIdPurchase = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
+                            }
+                            componentCalculationItem.ManufacturerId = (int?)((List<object>)grid.DataContext)[7];
+                            if ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem != null)
+                            {
+                                componentCalculationItem.ComponentStateId = ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem).Id;
+                            }
+                            componentCalculationItem.Date = datePicker.SelectedDate;
+                            if (textBoxPrice.Text != "")
+                            {
+                                componentCalculationItem.PricePurchase = Convert.ToDecimal(textBoxPrice.Text);
+                            }
+                            componentCalculationItem.Price = (decimal)((List<object>)grid.DataContext)[8];
+                            if (textBoxCount.Text != "")
+                            {
+                                componentCalculationItem.CountPurchase = Convert.ToInt32(textBoxCount.Text);
+                            }
+                            componentCalculationItem.Count = (int)((List<object>)grid.DataContext)[9];
+                            if ((Seller)((ComboBox)grid.Children[7]).SelectedItem != null)
+                            {
+                                componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[7]).SelectedItem).Id;
+                            }
+                            componentCalculationItem.SellerId = (int?)((List<object>)grid.DataContext)[10];
+                            componentCalculationItem.ReservePurchase = textBoxReserve.Text;
+                            componentCalculationItem.Reserve = (string)((List<object>)grid.DataContext)[11];
+                            componentCalculationItem.NotePurchase = textBoxNote.Text;
+                            componentCalculationItem.AssemblyMap = textBoxAssemblyMap.Text;
+                            componentCalculationItem.ParentName = Convert.ToInt32(componentCalculationHeader.Id);
+                            componentCalculationItem.IsDeleted = (bool)((List<object>)grid.DataContext)[4];
+                            componentCalculationItem.IsAdded = (bool)((List<object>)grid.DataContext)[5];
+                            componentCalculationItem.IsHeader = (bool)((List<object>)grid.DataContext)[2];
+                            PULL.ComponentCalculation(componentCalculationItem);
+                            ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculationItem.ProcurementId);
                         }
-                        if (textBoxCount.Text != "")
-                        {
-                            componentCalculationItem.Count = Convert.ToInt32(textBoxCount.Text);
-                            //componentCalculationItem.CountPurchase = Convert.ToInt32(textBoxCount.Text);
-                        }
-                        if ((Seller)((ComboBox)grid.Children[5]).SelectedItem != null)
-                        {
-                            componentCalculationItem.SellerId = ((Seller)((ComboBox)grid.Children[5]).SelectedItem).Id;
-                            //componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[5]).SelectedItem).Id;
-                        }
-                        componentCalculationItem.Reserve = textBoxReserve.Text;
-                        componentCalculationItem.Note = textBoxNote.Text;
-                        componentCalculationItem.AssemblyMap = textBoxAssemblyMap.Text;
-                        componentCalculationItem.ParentName = Convert.ToInt32(componentCalculationHeader.Id);
-                        componentCalculationItem.IsDeleted = (bool)((List<object>)grid.DataContext)[4];
-                        componentCalculationItem.IsAdded = (bool)((List<object>)grid.DataContext)[5];
-                        componentCalculationItem.IsHeader = (bool)((List<object>)grid.DataContext)[2];
-                        PULL.ComponentCalculation(componentCalculationItem);
-                        ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculationItem.ProcurementId);
+                        
                     }
                     ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
                 }
