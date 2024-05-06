@@ -40,6 +40,7 @@ namespace Parsething.Pages
 
         SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
 
+        private static string[] blockStatuses = new string[] { "Отправлен", "Отмена",  };
 
         public ComponentCalculationsPage(Procurement procurement, List<Procurement> procurements, bool isCalculation, bool isSearch)
         {

@@ -41,6 +41,38 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="TextBoxBase.AssemblyMap" TargetType="{x:Type TextBox}">
+        <Setter Property="FontFamily" Value="../Fonts/#Mustica Pro"/>
+        <Setter Property="Background" Value="{DynamicResource TextBoxBase.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBase.Static.BorderBrush}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource TextBoxBase.Static.CaretBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextBoxBase.Static.Foreground}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" CornerRadius="16" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="True"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="TextBoxBase.Header" TargetType="{x:Type TextBox}">
         <Setter Property="FontFamily" Value="../Fonts/#Mustica Pro"/>
         <Setter Property="Background" Value="{DynamicResource TextBoxBase.Static.Header.Background}"/>
@@ -209,6 +241,61 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Border x:Name="border" CornerRadius="7" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="True"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="AssemblyMap.Item" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase.AssemblyMap}">
+        <Setter Property="FontFamily" Value="Noah"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Margin" Value="0"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsVisible" Value="True">
+                            <Setter Property="Focusable" Value="True"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="AssemblyMap.Header" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase.Header}">
+        <Setter Property="FontFamily" Value="Noah"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" CornerRadius="10" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                     </Border>
                     <ControlTemplate.Triggers>

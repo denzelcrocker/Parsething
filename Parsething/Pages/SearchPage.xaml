@@ -452,12 +452,12 @@
                                     </Grid.RowDefinitions>
                                     <Label Content="Всего тендеров: " Style="{DynamicResource OwerAllInfo.Search}"/>
                                     <Label Content="Сумма контрактов: " Grid.Row="1" Style="{DynamicResource OwerAllInfo.Search}"/>
-                                    <Label Content="Средний расчетный профит: " Grid.Row="2" Style="{DynamicResource OwerAllInfo.Search}"/>
-                                    <Label Content="Средний реальный профит: " Grid.Row="3" Style="{DynamicResource OwerAllInfo.Search}"/>
-                                    <TextBlock x:Name="OverallCount" Grid.Column="1" />
-                                    <TextBlock x:Name="OverallAmount" Grid.Column="1" Grid.Row="1"/>
-                                    <TextBlock x:Name="AvgCalculationProfit" Grid.Column="1" Grid.Row="2"/>
-                                    <TextBlock x:Name="AvgPurchaseProfit" Grid.Column="1" Grid.Row="3"/>
+                                    <Label Content="Расчетный профит: " Grid.Row="2" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                    <Label Content="Реальный профит: " Grid.Row="3" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                    <TextBlock x:Name="OverallCount" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="OverallAmount" Grid.Column="1" Grid.Row="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="AvgCalculationProfit" Grid.Column="1" Grid.Row="2" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="AvgPurchaseProfit" Grid.Column="1" Grid.Row="3" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
                                 </Grid>
                             </Border>
                         </Popup>

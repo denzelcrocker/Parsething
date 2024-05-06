@@ -75,4 +75,11 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Background" Value="#D9D9D9"/>
     </Style>
+    <Style x:Key="OverAllInfo.Search.TextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,5,0"/>
+    </Style>
 </ResourceDictionary>

@@ -132,34 +132,45 @@ namespace Parsething.Pages
         
         private void OverallInfo_Click(object sender, RoutedEventArgs e)
         {
-            //decimal? overallAmount = 0;
-            //int index = 0;
-            //decimal?[] profitCalculate = new decimal?[] { };
-            //decimal?[] profitReal = new decimal?[] { };
-            //OverallInfoPopUp.IsOpen = !OverallInfoPopUp.IsOpen;
-            //if (Procurements != null)
-            //{
-            //    OverallCount.Text = Procurements.Count.ToString();
-            //    foreach (Procurement procurement in Procurements)
-            //    {
-            //        if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null)
-            //        {
-            //            overallAmount += procurement.ContractAmount;
-            //            profitReal[index] = procurement.ContractAmount - procurement.PurchaseAmount;
-            //        }
-            //        else if (procurement.ReserveContractAmount != null)
-            //        {
-            //            overallAmount += procurement.ReserveContractAmount;
-            //            profitReal[index] = procurement.ReserveContractAmount - procurement.PurchaseAmount;
-            //        }
-            //        profitCalculate[index] = procurement.ContractAmount - procurement.CalculatingAmount;
-
-            //        index++;
-            //    }
-            //    OverallAmount.Text = ((decimal)overallAmount).ToString("N2") + " р.";
-            //    AvgCalculationProfit.Text = ((decimal)profitCalculate.Average()).ToString("N2") + " р.";
-            //    AvgPurchaseProfit.Text = ((decimal)profitReal.Average()).ToString("N2") + " р.";
-            //}
+            decimal? overallAmount = 0;
+            decimal? overallAmountCalculate = 0;
+            decimal? profitCalculate = 0;
+            decimal? profitReal = 0;
+            decimal? calculatingAmount = 0;
+            decimal? purchaseAmount = 0;
+            
+            OverallInfoPopUp.IsOpen = !OverallInfoPopUp.IsOpen;
+            if (Procurements != null)
+            {
+                OverallCount.Text = Procurements.Count.ToString();
+                foreach (Procurement procurement in Procurements)
+                {
+                    if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
+                    {
+                        overallAmount += procurement.ContractAmount;
+                        profitReal += procurement.ContractAmount - procurement.PurchaseAmount;
+                        profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
+                        calculatingAmount += procurement.CalculatingAmount;
+                        purchaseAmount += procurement.PurchaseAmount;
+                        overallAmountCalculate += procurement.ContractAmount;
+                    }
+                    else if (procurement.ReserveContractAmount != null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
+                    {
+                        overallAmount += procurement.ReserveContractAmount;
+                        profitReal += procurement.ReserveContractAmount - procurement.PurchaseAmount;
+                        profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
+                        calculatingAmount += procurement.CalculatingAmount;
+                        purchaseAmount += procurement.PurchaseAmount;
+                        overallAmountCalculate += procurement.ContractAmount;
+                    }
+                }
+                OverallAmount.Text = ((decimal)overallAmount).ToString("N2") + " р.";
+                if (calculatingAmount != 0 && purchaseAmount != 0)
+                {
+                    AvgCalculationProfit.Text = $"{profitCalculate} р. ({(double?)((overallAmountCalculate - calculatingAmount) / calculatingAmount * 100):N1} %)";
+                    AvgPurchaseProfit.Text = $"{profitReal} р. ({(double?)((overallAmount - purchaseAmount) / purchaseAmount * 100):N1} %)";
+                }   
+            }
         }
         private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
         {

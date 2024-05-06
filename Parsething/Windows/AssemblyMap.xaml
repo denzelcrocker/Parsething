@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Parsething.Windows"
         mc:Ignorable="d"
         Title="AssemblyMap" Style="{DynamicResource AssemblyMap}"  Loaded="Page_Loaded">
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -30,7 +30,7 @@
                 </StackPanel>
             </DockPanel>
         </Border>
-        <Grid x:Name="PrintGrid" Grid.Row="1">
+        <Grid x:Name="PrintGrid" Grid.Row="1" Width="793.7" Height="1090.5" Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition/>
@@ -38,15 +38,7 @@
             <Border Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{DynamicResource Text.Background}" CornerRadius="15" Width="70" Margin="0,0,30,0">
                 <TextBlock x:Name="ProcurementId" Text="000000" Foreground="{DynamicResource Text.Foreground}" Style="{DynamicResource TextBlock.Number}" Padding="10,5" FontSize="15"/>
             </Border>
-            <DataGrid x:Name="ComponentCalculationsDataGrid" AutoGenerateColumns="False" Width="630" Grid.Row="1">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Парт" Binding="{Binding Path=PartNumber}" Width="50" FontSize="7"/>
-                    <DataGridTextColumn Header="Наименование позиции" Binding="{Binding Path=ComponentName}" Width="250" FontSize="7"/>
-                    <DataGridTextColumn Header="Производитель" Binding="{Binding Path=Manufacturer.ManufacturerName}" Width="100" FontSize="7"/>
-                    <DataGridTextColumn Header="Количество" Binding="{Binding Path=Count}" Width="80" FontSize="7"/>
-                    <DataGridTextColumn Header="Примечание" Binding="{Binding Path=NotePurchase}" Width="150" FontSize="7"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <ListView Grid.Row="1" x:Name="AssemblyMapListView" Style="{DynamicResource ListView.Preferences}"/>
         </Grid>
     </Grid>
 </Window>

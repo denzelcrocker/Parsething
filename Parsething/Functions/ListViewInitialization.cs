@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using static Parsething.Pages.ComponentCalculationsPage;
@@ -62,7 +63,7 @@ namespace Parsething.Functions
                     StackPanel stackPanel = new StackPanel();
                     if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsAdded == false)
                     {
-                        Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader. IsAdded} };
+                        Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded } };
                         double[] columnWidths = { 628, 500, 90, 90 };
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
@@ -72,11 +73,11 @@ namespace Parsething.Functions
                         }
 
                         TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
-                        textBoxHeader.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeader, 0, true );
+                        textBoxHeader.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeader, 0, true);
                         textBoxHeader.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeader, 0);
                         LoadColumnNames(textBoxHeader, 0);
                         TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
-                        textBoxHeaderAssemblyMap.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeaderAssemblyMap,1, true);
+                        textBoxHeaderAssemblyMap.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeaderAssemblyMap, 1, true);
                         textBoxHeaderAssemblyMap.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeaderAssemblyMap, 1);
                         LoadColumnNames(textBoxHeaderAssemblyMap, 1);
                         Button buttonAdd = new Button();
@@ -109,7 +110,7 @@ namespace Parsething.Functions
                     {
                         if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsAdded == false)
                         {
-                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId ,componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded, componentCalculation.ComponentNamePurchase, componentCalculation.ManufacturerIdPurchase, componentCalculation.PricePurchase, componentCalculation.CountPurchase, componentCalculation.SellerIdPurchase, componentCalculation.ReservePurchase, componentCalculation.NotePurchase } };
+                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded, componentCalculation.ComponentNamePurchase, componentCalculation.ManufacturerIdPurchase, componentCalculation.PricePurchase, componentCalculation.CountPurchase, componentCalculation.SellerIdPurchase, componentCalculation.ReservePurchase, componentCalculation.NotePurchase } };
                             double[] columnWidths = { 60, 450, 115, 70, 50, 115, 90, 175, 150 };
 
                             for (int i = 0; i < columnWidths.Length; i++)
@@ -190,10 +191,10 @@ namespace Parsething.Functions
                 }
                 if (calculatingAmount > Procurement.InitialPrice)
                     CalculationPriceTextBlock.Foreground = Red;
-                else 
+                else
                     CalculationPriceTextBlock.Foreground = Black;
                 CalculationPriceTextBlock.Text = calculatingAmount.ToString();
-                Procurement.CalculatingAmount =calculatingAmount;
+                Procurement.CalculatingAmount = calculatingAmount;
                 PULL.Procurement(Procurement);
             }
             else
@@ -438,15 +439,15 @@ namespace Parsething.Functions
         {
             UpdateListView();
             ComponentCalculation newComponentCalculation = new ComponentCalculation
-                {
-                    ProcurementId = procurement.Id,
-                    IsHeader = true,
-                    IsAdded = IsCalculation ? false : true,
-                    IsDeleted = false,
-                };
-                ComponentCalculations.Add(newComponentCalculation);
-                PUT.ComponentCalculation(newComponentCalculation);
-                ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+            {
+                ProcurementId = procurement.Id,
+                IsHeader = true,
+                IsAdded = IsCalculation ? false : true,
+                IsDeleted = false,
+            };
+            ComponentCalculations.Add(newComponentCalculation);
+            PUT.ComponentCalculation(newComponentCalculation);
+            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
         }
         private static void TextBox_LostFocus(object sender, RoutedEventArgs e, TextBox textBox, int headerId, bool isHeader)
         {
@@ -460,7 +461,7 @@ namespace Parsething.Functions
                 }
             }
         }
-        private static void TextBox_GotFocus (object sender, RoutedEventArgs e, TextBox textBox, int headerId)
+        private static void TextBox_GotFocus(object sender, RoutedEventArgs e, TextBox textBox, int headerId)
         {
             if (textBox.Text == columnNames[headerId])
             {
@@ -546,7 +547,7 @@ namespace Parsething.Functions
                             PULL.ComponentCalculation(componentCalculationItem);
                             ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculationItem.ProcurementId);
                         }
-                        else 
+                        else
                         {
                             ComponentCalculation componentCalculationItem = new ComponentCalculation();
                             TextBox textBoxPartNumber = (TextBox)grid.Children[0];
@@ -577,12 +578,12 @@ namespace Parsething.Functions
                             {
                                 componentCalculationItem.PricePurchase = Convert.ToDecimal(textBoxPrice.Text);
                             }
-                            componentCalculationItem.Price = (decimal)((List<object>)grid.DataContext)[8];
+                            componentCalculationItem.Price = (decimal?)((List<object>)grid.DataContext)[8];
                             if (textBoxCount.Text != "")
                             {
                                 componentCalculationItem.CountPurchase = Convert.ToInt32(textBoxCount.Text);
                             }
-                            componentCalculationItem.Count = (int)((List<object>)grid.DataContext)[9];
+                            componentCalculationItem.Count = (int?)((List<object>)grid.DataContext)[9];
                             if ((Seller)((ComboBox)grid.Children[7]).SelectedItem != null)
                             {
                                 componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[7]).SelectedItem).Id;
@@ -599,15 +600,106 @@ namespace Parsething.Functions
                             PULL.ComponentCalculation(componentCalculationItem);
                             ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculationItem.ProcurementId);
                         }
-                        
+
                     }
                     ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
                 }
-                catch 
+                catch
                 {
 
                 }
             }
+        }
+        public static void AssemblyMapListViewInitialization(Procurement procurement, List<ComponentCalculation> componentCalculations, ListView listViewToInitialization)
+        {
+            Manufacturers = GET.View.Manufacturers();
+            Sellers = GET.View.Sellers();
+            ComponentStates = GET.View.ComponentStates();
+            ComponentCalculations = componentCalculations;
+            List<StackPanel> stackPanels = new();
+            int idOfPosition = 1;
+            foreach (ComponentCalculation componentCalculationHeader in componentCalculations)
+            {
+                StackPanel stackPanel = new StackPanel();
+                if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsDeleted == false)
+                {
+                    Grid grid = new Grid();
+                    double[] columnWidths = { 400, 390 };
+                    for (int i = 0; i < columnWidths.Length; i++)
+                    {
+                        ColumnDefinition columnDefinition = new ColumnDefinition();
+                        columnDefinition.Width = new GridLength(columnWidths[i]);
+                        grid.ColumnDefinitions.Add(columnDefinition);
+                    }
+
+                    TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentName, Style = (Style)Application.Current.FindResource("AssemblyMap.Header") };
+                    LoadColumnNames(textBoxHeader, 0);
+                    TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMap.Header") };
+                    LoadColumnNames(textBoxHeaderAssemblyMap, 1);
+                    
+                    Grid.SetColumn(textBoxHeader, 0);
+                    Grid.SetColumn(textBoxHeaderAssemblyMap, 1);
+
+                    grid.Children.Add(textBoxHeader);
+                    grid.Children.Add(textBoxHeaderAssemblyMap);
+                    stackPanel.Children.Add(grid);
+                }
+
+                ListView listView = new();
+                listView.Style = (Style)Application.Current.FindResource("ListView");
+
+                foreach (ComponentCalculation componentCalculation in ComponentCalculations)
+                {
+                    if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsDeleted == false)
+                    {
+                        Grid grid = new Grid();
+                        double[] columnWidths = { 30, 365, 30, 100, 120, 140};
+
+                        for (int i = 0; i < columnWidths.Length; i++)
+                        {
+                            ColumnDefinition columnDefinition = new ColumnDefinition();
+                            columnDefinition.Width = new GridLength(columnWidths[i]);
+                            grid.ColumnDefinitions.Add(columnDefinition);
+                        }
+                        TextBox textBoxIdOfPosition = new TextBox() { Text = idOfPosition.ToString(), Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+                        idOfPosition++;
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+                        TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+                        TextBox textBoxSeller = new TextBox() { Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+                        foreach (Seller seller in Sellers)
+                            if (seller.Id == componentCalculation.SellerIdPurchase)
+                            {
+                                textBoxSeller.Text = seller.Name;
+                                break;
+                            }
+                        TextBox textBoxNote = new TextBox() { Text = componentCalculation.NotePurchase, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+                        TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+
+                        Grid.SetColumn(textBoxIdOfPosition, 0);
+                        Grid.SetColumn(textBoxComponentName, 1);
+                        Grid.SetColumn(textBoxCount, 2);
+                        Grid.SetColumn(textBoxSeller, 3);
+                        Grid.SetColumn(textBoxNote, 4);
+                        Grid.SetColumn(textBoxAssemblyMap, 5);
+
+                        grid.Children.Add(textBoxIdOfPosition);
+                        grid.Children.Add(textBoxComponentName);
+                        grid.Children.Add(textBoxCount);
+                        grid.Children.Add(textBoxSeller);
+                        grid.Children.Add(textBoxNote);
+                        grid.Children.Add(textBoxAssemblyMap);
+
+                        listView.Items.Add(grid);
+                    }
+
+                }
+                stackPanel.Children.Add(listView);
+                if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsAdded == false)
+                {
+                    stackPanels.Add(stackPanel);
+                }
+            }
+            listViewToInitialization.ItemsSource = stackPanels;
         }
     }
 }

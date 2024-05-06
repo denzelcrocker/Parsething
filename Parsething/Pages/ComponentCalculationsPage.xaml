@@ -34,9 +34,9 @@
                             <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="65"/>
                             <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="115"/>
                             <ColumnDefinition Width="90"/>
-                            <ColumnDefinition Width="90"/>
-                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="170"/>
                             <ColumnDefinition Width="90"/>
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Парт" Grid.Column="0" Margin="20,0,0,0"/>
