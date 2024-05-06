@@ -34,12 +34,14 @@ namespace Parsething.Pages
             var monthWins = GET.View.HistoryGroupByWins();
             var monthSends = GET.View.HistoryGroupBySended();
             var monthCalculated = GET.View.HistoryGroupByCalculations();
-
-            maxValue = Math.Max((double)monthCalculated.Max(entry => entry.Item3), Math.Max((double)monthCalculated.Max(entry => entry.Item3), (double)monthCalculated.Max(entry => entry.Item3)));
-
-            barChart = new CartesianChart
+            
+            if(monthCalculated.Count != 0 && monthSends.Count != 0 && monthWins.Count != 0)
             {
-                Series = new SeriesCollection
+                maxValue = Math.Max((double)monthCalculated.Max(entry => entry.Item3), Math.Max((double)monthCalculated.Max(entry => entry.Item3), (double)monthCalculated.Max(entry => entry.Item3)));
+
+                barChart = new CartesianChart
+                {
+                    Series = new SeriesCollection
                 {
                     new ColumnSeries
                     {
@@ -60,7 +62,7 @@ namespace Parsething.Pages
                         Fill = Brushes.Purple,
                     }
                 },
-                AxisX = new AxesCollection
+                    AxisX = new AxesCollection
                 {
                     new Axis
                     {
@@ -70,7 +72,7 @@ namespace Parsething.Pages
                         Foreground = Brushes.Black
                     }
                 },
-                AxisY = new AxesCollection
+                    AxisY = new AxesCollection
                 {
                     new Axis
                     {
@@ -86,16 +88,16 @@ namespace Parsething.Pages
                         Foreground = Brushes.Black // Черный цвет текста для оси X
                     }
                 }
-            };
+                };
 
-            Grid.SetRow(barChart, 0);
-            Grid.SetColumn(barChart, 0);
+                Grid.SetRow(barChart, 0);
+                Grid.SetColumn(barChart, 0);
 
-            MainGrid.Children.Add(barChart);
+                MainGrid.Children.Add(barChart);
 
-            chart = new CartesianChart
-            {
-                Series = new SeriesCollection
+                chart = new CartesianChart
+                {
+                    Series = new SeriesCollection
                 {
                     new LineSeries
                     {
@@ -125,7 +127,7 @@ namespace Parsething.Pages
                         PointGeometrySize = 10 // Размер точек на кривой
                     }
                 },
-                AxisX = new AxesCollection
+                    AxisX = new AxesCollection
                 {
                     new Axis
                     {
@@ -135,7 +137,7 @@ namespace Parsething.Pages
                         Foreground = System.Windows.Media.Brushes.Black
                     }
                 },
-                AxisY = new AxesCollection
+                    AxisY = new AxesCollection
                 {
                     new Axis
                     {
@@ -151,13 +153,15 @@ namespace Parsething.Pages
                         Foreground = System.Windows.Media.Brushes.Black // Черный цвет текста для оси X
                     }
                 }
-            };
-            Grid.SetRow(chart, 0);
-            Grid.SetColumn(chart, 0);
+                };
+                Grid.SetRow(chart, 0);
+                Grid.SetColumn(chart, 0);
 
-            MainGrid.Children.Add(chart);
-            barChart.Visibility = Visibility.Visible;
-            chart.Visibility = Visibility.Hidden;
+                MainGrid.Children.Add(chart);
+                barChart.Visibility = Visibility.Visible;
+                chart.Visibility = Visibility.Hidden;
+            }
+            
         }
 
         private void BarChartButton_Click(object sender, RoutedEventArgs e)

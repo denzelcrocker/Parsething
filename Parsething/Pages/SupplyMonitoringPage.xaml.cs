@@ -208,7 +208,7 @@ namespace Parsething.Pages
 
         private void WarehouseAndReserveButton_Click(object sender, RoutedEventArgs e)
         {
-            var componentStatuses = new List<string> { "Склад", "Резерв"};
+            var componentStatuses = new List<string> { "На складе", "В резерве"};
 
             supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
             List<string> headers = new();
