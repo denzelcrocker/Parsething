@@ -42,7 +42,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="PDFsharp" Version="6.0.0" />
+    <PackageReference Include="PDFsharp-WPF" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

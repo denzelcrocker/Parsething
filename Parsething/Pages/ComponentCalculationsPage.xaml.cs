@@ -180,6 +180,7 @@ namespace Parsething.Pages
 
                 }
             }
+
         }
 
         private void AddDivisionCalculating_Click(object sender, RoutedEventArgs e)
@@ -190,7 +191,22 @@ namespace Parsething.Pages
         private void AddDivisionPurchase_Click(object sender, RoutedEventArgs e)
         {
             ButtonAddDivision_Click(sender, e, Procurement);
+        }
 
+        private void GoToPassports_Click(object sender, RoutedEventArgs e)
+        {
+            GoToComments.Background = Brushes.Transparent;
+            GoToPassports.Background = Brushes.LightGray;
+            CommentsGrid.Visibility = Visibility.Hidden;
+            PassportsListView.Visibility = Visibility.Visible;
+        }
+
+        private void GoToComments_Click(object sender, RoutedEventArgs e)
+        {
+            GoToComments.Background = Brushes.LightGray;
+            GoToPassports.Background = Brushes.Transparent;
+            CommentsGrid.Visibility = Visibility.Visible;
+            PassportsListView.Visibility = Visibility.Hidden;
         }
     }
 }

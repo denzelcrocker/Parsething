@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,15 +26,24 @@ namespace Parsething.Windows
     /// </summary>
     public partial class AssemblyMap : Window
     {
+        private Procurement Procurement = new Procurement();
         private List<ComponentCalculation>? ComponentCalculations { get; set; }
+
+        private List<Comment> Comments { get; set; }
 
         public AssemblyMap(Procurement procurement)
         {
             InitializeComponent();
 
+            Procurement = procurement;
             ProcurementId.Text = procurement.Id.ToString();
+            OrganizationNameTextBlock.Text = "Организация: " + procurement.Organization.Name;
+            PostalAddressTextBlock.Text = "Адрес доставки: " + procurement.Location;
 
             ComponentCalculations = GET.View.ComponentCalculationsBy(procurement.Id).Where(cc => cc.IsDeleted == false).ToList();
+
+            Comments = GET.View.CommentsBy(procurement.Id).Where(c => c.IsTechnical == true).ToList();
+            CommentsListView.ItemsSource = Comments;
 
             AssemblyMapListViewInitialization(procurement, ComponentCalculations, AssemblyMapListView);
         }
@@ -78,11 +89,18 @@ namespace Parsething.Windows
             // Рисуем изображение на PDF-странице
             gfx.DrawImage(xImage, 0, 0, pdfPage.Width, pdfPage.Height);
 
-                // Сохраняем PDF-файл
-                string pdfFilename = "Лист_комплектаций.pdf";
-                pdf.Save(pdfFilename);
+            // Открываем диалоговое окно сохранения файла
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.Filter = "PDF Files|*.pdf";
+            saveFileDialog.Title = "Save PDF File";
+            saveFileDialog.FileName = $"Лист_комплектаций_{Procurement.Id}.pdf"; // Имя файла по умолчанию
 
-                // Печатаем PDF-файл
+            // Если пользователь выбрал местоположение и нажал "Сохранить"
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                // Сохраняем PDF-файл по указанному пути
+                pdf.Save(saveFileDialog.FileName);
+            }
         }
     }
 }
