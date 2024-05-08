@@ -105,6 +105,7 @@
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <Button x:Name="AddDivisionPurchase" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionPurchase_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Button x:Name="SavePurchaseButton" Content="Сохранить" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="SavePurchaseButton_Click" />
                     </StackPanel>
                     <StackPanel x:Name="CalculatingPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Hidden">
                         <Label Content="Сумма: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
@@ -115,6 +116,8 @@
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <Button x:Name="AddDivisionCalculating" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionCalculating_Click" />
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Button x:Name="SaveCalculatingButton" Content="Сохранить" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="SaveCalculatingButton_Click" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -125,6 +128,7 @@
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
+                        <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid>
@@ -137,11 +141,11 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="540"/>
+                            <RowDefinition Height="520"/>
                             <RowDefinition Height="170"/>
                             <RowDefinition Height="60"/>
                         </Grid.RowDefinitions>
-                        <ListView x:Name="CommentsListView" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0" Grid.Row="0" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,15">
+                        <ListView x:Name="CommentsListView" Grid.ColumnSpan="2" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,15">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border>
@@ -251,6 +255,7 @@
                         <Label Content="Ноутбук" Style="{DynamicResource Passport.CopmponentCalculation}"/>
                         <TextBox x:Name="NotebookPassportTextBox" Style="{DynamicResource PassportTextBox}"/>
                     </ListView>
+                    <Button x:Name="SavePassportButton" Content="Сохранить" Style="{DynamicResource SavePassportButton}" Cursor="Hand" Click="SavePassportButton_Click" Grid.Row="2"/>
                 </Grid>
             </Border>
         </Grid>

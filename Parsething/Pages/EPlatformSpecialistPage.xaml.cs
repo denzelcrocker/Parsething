@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,10 @@ namespace Parsething.Pages
             catch { }
 
             int countOfMethods = 0;
+
+            Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.StartDate);
+            if (Procurements != null)
+                ProcurementsListView.ItemsSource = Procurements;
 
             New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState)); // Новый
 
@@ -78,84 +83,109 @@ namespace Parsething.Pages
         {
             Procurements = GET.View.ProcurementsBy("Новый", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void CalculatedButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Посчитан", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void RetreatCalculateButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Отбой", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void DrawUpButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Оформить", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void IssuedButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Оформлен", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void ForSendButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.StartDate);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.StartDate);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void BargainingButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.Deadline);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.Deadline);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void CancellationButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Отмена", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void RejectedButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Отклонен", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
         }
 
         private void LostButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Проигран", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+                ProcurementsListView.ItemsSource = Procurements;
+        }
+        private void EditProcurement_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement, null, false));
+        }
+
+        private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+            {
+                string url = procurement.RequestUri.ToString();
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+        }
+        private void NavigateToProcurementEPlatform_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+            {
+                string url = procurement.Platform.Address.ToString();
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
         }
     }
 }

@@ -40,7 +40,8 @@ namespace Parsething.Pages
 
         SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
 
-        private static string[] blockStatuses = new string[] { "Отправлен", "Отмена",  };
+        static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен" };
+
 
         public ComponentCalculationsPage(Procurement procurement, List<Procurement> procurements, bool isCalculation, bool isSearch)
         {
@@ -106,6 +107,11 @@ namespace Parsething.Pages
                 }
                 ListViewInitialization.ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView, CalculationPrice, PurchasePrice, Procurement);
             }
+            GoToComments.Background = Brushes.LightGray;
+            GoToPassports.Background = Brushes.Transparent;
+            CommentsGrid.Visibility = Visibility.Visible;
+            PassportsListView.Visibility = Visibility.Hidden;
+            SavePassportButton.Visibility = Visibility.Hidden;
         }
 
 
@@ -199,6 +205,12 @@ namespace Parsething.Pages
             GoToPassports.Background = Brushes.LightGray;
             CommentsGrid.Visibility = Visibility.Hidden;
             PassportsListView.Visibility = Visibility.Visible;
+            SavePassportButton.Visibility = Visibility.Visible;
+
+            MonitorPassportTextBox.Text = Procurement.PassportOfMonitor;
+            PCPassportTextBox.Text = Procurement.PassportOfPC;
+            MonoblockPassportTextBox.Text = Procurement.PassportOfMonoblock;
+            NotebookPassportTextBox.Text = Procurement.PassportOfNotebook;
         }
 
         private void GoToComments_Click(object sender, RoutedEventArgs e)
@@ -207,6 +219,36 @@ namespace Parsething.Pages
             GoToPassports.Background = Brushes.Transparent;
             CommentsGrid.Visibility = Visibility.Visible;
             PassportsListView.Visibility = Visibility.Hidden;
+            SavePassportButton.Visibility = Visibility.Hidden;
+        }
+
+        private void SavePassportButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement.PassportOfMonitor = MonitorPassportTextBox.Text;
+            Procurement.PassportOfPC = PCPassportTextBox.Text;
+            Procurement.PassportOfMonoblock = MonoblockPassportTextBox.Text;
+            Procurement.PassportOfNotebook = NotebookPassportTextBox.Text;
+            PULL.Procurement(Procurement);
+        }
+
+        private void SavePurchaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateListView();
+        }
+
+        private void SaveCalculatingButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProcurementStates.Contains(Procurement.ProcurementState.Kind))
+            {
+                MessageBoxResult result = MessageBox.Show("Сохранение также перезапишет данные в закупке. Продолжить?", "Сохранение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    UpdateListView();
+                }
+                else { }
+            }
+            
         }
     }
 }

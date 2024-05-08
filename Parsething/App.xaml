@@ -6,6 +6,7 @@
                 <ResourceDictionary Source="/Resources/Templates/ButtonTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/CheckBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ComboBoxTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/EllipseTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/LabelTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ListView.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/PasswordBoxTemplates.xaml"/>

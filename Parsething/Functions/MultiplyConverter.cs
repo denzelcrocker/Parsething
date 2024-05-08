@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
@@ -105,6 +106,94 @@ namespace Parsething.Functions
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
+        }
+    }
+    public class CurrencyConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null)
+                return null;
+
+            string input = value.ToString();
+            int index = input.LastIndexOf(" ");
+            if (index != -1)
+            {
+                int secondIndex = input.LastIndexOf(" ", index - 1);
+                if (secondIndex != -1)
+                {
+                    string numberPart = input.Substring(0, secondIndex);
+                    return $"{numberPart} ";
+                }
+            }
+            return input;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class DateColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is DateTime date)
+            {
+                TimeSpan timeRemaining = date - DateTime.Now;
+
+                if (timeRemaining.TotalDays > 3)
+                {
+                    return "Green"; // Зеленый, если остается более 3 дней
+                }
+                else if (timeRemaining.TotalDays <= 3 && timeRemaining.TotalDays >= 1)
+                {
+                    return "Yellow"; // Желтый, если остается от 1 до 3 дней
+                }
+                else
+                {
+                    return "Red"; // Красный, если остается менее 1 дня
+                }
+            }
+            return "Black"; // Черный по умолчанию
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class DateTimeWithTimeZoneConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Length < 2 || values[0] == null || values[1] == null)
+                return DependencyProperty.UnsetValue;
+
+            if (values[0] is DateTime deadline && values[1] is string timeZoneOffset)
+            {
+                if (timeZoneOffset == "МСК" && !timeZoneOffset.Contains("МСК+") && !timeZoneOffset.Contains("МСК-"))
+                {
+                    return deadline.ToString("dd.MM.yyyy HH:mm:ss");
+                }
+
+                string[] parts = timeZoneOffset.Split('+', '-');
+                if (parts.Length > 1 && int.TryParse(parts[1], out int offsetHours))
+                {
+                    int sign = timeZoneOffset.Contains('+') ? 1 : -1;
+                    TimeSpan offset = TimeSpan.FromHours(sign * offsetHours);
+
+                    DateTime dateTimeWithOffset = deadline + offset;
+                    return dateTimeWithOffset.ToString("dd.MM.yyyy HH:mm:ss");
+                }
+            }
+
+            return DependencyProperty.UnsetValue;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

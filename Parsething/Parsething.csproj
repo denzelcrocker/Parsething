@@ -66,7 +66,9 @@
     <Resource Include="Resources\Fonts\Mustica Pro.otf" />
     <Resource Include="Resources\Fonts\Noah-Regular.ttf" />
     <Resource Include="Resources\Images\PlaceholderEmployeePhotoPreview.png" />
+    <Resource Include="Resources\Images\EPlatform.png" />
     <Resource Include="Resources\Images\Search.png" />
+
     <Resource Include="Resources\Images\Send.png" />
     <Resource Include="Resources\Images\GrayPrinting.png" />
   </ItemGroup>

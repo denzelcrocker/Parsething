@@ -1,0 +1,118 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Parsething.Functions">
+
+    <local:DateColorConverter x:Key="DateColorConverter"/>
+    <Style x:Key="DeadlineIndicatorStyle" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Deadline, Converter={StaticResource DateColorConverter}}" Value="Green">
+                <Setter Property="Fill" Value="Green"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Deadline, Converter={StaticResource DateColorConverter}}" Value="Yellow">
+                <Setter Property="Fill" Value="#ff8800"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Deadline, Converter={StaticResource DateColorConverter}}" Value="Red">
+                <Setter Property="Fill" Value="#BD1414"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="StartDateIndicatorStyle" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=StartDate, Converter={StaticResource DateColorConverter}}" Value="Green">
+                <Setter Property="Fill" Value="Green"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=StartDate, Converter={StaticResource DateColorConverter}}" Value="Yellow">
+                <Setter Property="Fill" Value="#ff8800"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=StartDate, Converter={StaticResource DateColorConverter}}" Value="Red">
+                <Setter Property="Fill" Value="#BD1414"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="StatusIndicatorStyle" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Новый">
+                <Setter Property="Fill" Value="#3498db"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Посчитан">
+                <Setter Property="Fill" Value="#2ecc71"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Оформить">
+                <Setter Property="Fill" Value="#f1c40f "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Оформлен">
+                <Setter Property="Fill" Value="#27ae60 "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Отправлен">
+                <Setter Property="Fill" Value="#9b59b6 "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Отмена">
+                <Setter Property="Fill" Value="#e74c3c "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Отклонен">
+                <Setter Property="Fill" Value="#c0392b "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Выигран 1ч">
+                <Setter Property="Fill" Value="#f39c12 "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Выигран 2ч">
+                <Setter Property="Fill" Value="#8e44ad "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Приемка">
+                <Setter Property="Fill" Value="#1abc9c "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="ФАС">
+                <Setter Property="Fill" Value="#d35400 "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Проигран">
+                <Setter Property="Fill" Value="#c0392b "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Отбой">
+                <Setter Property="Fill" Value="#e74c3c "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Суд">
+                <Setter Property="Fill" Value="#c0392b "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Принят">
+                <Setter Property="Fill" Value="#16a085 "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Разбор">
+                <Setter Property="Fill" Value="#3498db "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Корзина">
+                <Setter Property="Fill" Value="#7f8c8d "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Закрыт NEW">
+                <Setter Property="Fill" Value="#2c3e50 "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Завершен">
+                <Setter Property="Fill" Value="#7f8c8d "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Получен">
+                <Setter Property="Fill" Value="#2ecc71 "/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Неразобранный">
+                <Setter Property="Fill" Value="#95a5a6 "/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
