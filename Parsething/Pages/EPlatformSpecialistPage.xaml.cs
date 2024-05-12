@@ -181,7 +181,7 @@ namespace Parsething.Pages
         private void NavigateToProcurementEPlatform_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
-            if (procurement != null)
+            if (procurement != null && procurement.Platform.Address != null)
             {
                 string url = procurement.Platform.Address.ToString();
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
