@@ -24,6 +24,8 @@ namespace Parsething.Functions
 
         private static List<Manufacturer>? Manufacturers = new List<Manufacturer>();
 
+        private static List<ComponentHeaderType>? ComponentHeaderTypes = new List<ComponentHeaderType>();
+
         private static List<Seller>? Sellers = new List<Seller>();
 
         private static bool IsCalculation;
@@ -46,6 +48,7 @@ namespace Parsething.Functions
             ListView = listViewToInitialization;
             Procurement = procurement;
             CalculationPriceTextBlock = calculationPriceTextBlock;
+            ComponentHeaderTypes = GET.View.ComponentHeaderTypes();
             PurchasePriceTextBlock = purchasePriceTextBlock;
             IsCalculation = isCalculation;
             Manufacturers = GET.View.Manufacturers();
@@ -73,11 +76,17 @@ namespace Parsething.Functions
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
 
-                        TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
-                        textBoxHeader.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
-                        textBoxHeader.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeader, 0, true);
-                        textBoxHeader.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeader, 0);
-                        LoadColumnNames(textBoxHeader, 0);
+                        ComboBox comboBoxHeader = new ComboBox() { ItemsSource = ComponentHeaderTypes, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationHeader") };
+                        foreach (ComponentHeaderType componentHeaderType in ComponentHeaderTypes)
+                            if (componentHeaderType.Id == componentCalculationHeader.HeaderTypeId)
+                            {
+                                comboBoxHeader.SelectedItem = componentHeaderType;
+                                break;
+                            }
+                        comboBoxHeader.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                        comboBoxHeader.LostFocus += (sender, e) => ComboBox_LostFocus(sender, e, comboBoxHeader, 0, true);
+                        comboBoxHeader.GotFocus += (sender, e) => ComboBox_GotFocus(sender, e, comboBoxHeader, 0);
+                        LoadColumnNames(comboBoxHeader, 0);
                         TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
                         textBoxHeaderAssemblyMap.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                         textBoxHeaderAssemblyMap.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeaderAssemblyMap, 1, true);
@@ -95,12 +104,12 @@ namespace Parsething.Functions
                         buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
 
 
-                        Grid.SetColumn(textBoxHeader, 0);
+                        Grid.SetColumn(comboBoxHeader, 0);
                         Grid.SetColumn(textBoxHeaderAssemblyMap, 1);
                         Grid.SetColumn(buttonAdd, 2);
                         Grid.SetColumn(buttonDelete, 3);
 
-                        grid.Children.Add(textBoxHeader);
+                        grid.Children.Add(comboBoxHeader);
                         grid.Children.Add(textBoxHeaderAssemblyMap);
                         grid.Children.Add(buttonAdd);
                         grid.Children.Add(buttonDelete);
@@ -224,10 +233,16 @@ namespace Parsething.Functions
                             columnDefinition.Width = new GridLength(columnWidths[i]);
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
-                        TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
-                        textBoxHeader.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeader, 0, true);
-                        textBoxHeader.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeader, 0);
-                        LoadColumnNames(textBoxHeader, 0);
+                        ComboBox comboBoxHeader = new ComboBox() { ItemsSource = ComponentHeaderTypes, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationHeader") };
+                        foreach (ComponentHeaderType componentHeaderType in ComponentHeaderTypes)
+                            if (componentHeaderType.Id == componentCalculationHeader.HeaderTypeId)
+                            {
+                                comboBoxHeader.SelectedItem = componentHeaderType;
+                                break;
+                            }
+                        comboBoxHeader.LostFocus += (sender, e) => ComboBox_LostFocus(sender, e, comboBoxHeader, 0, true);
+                        comboBoxHeader.GotFocus += (sender, e) => ComboBox_GotFocus(sender, e, comboBoxHeader, 0);
+                        LoadColumnNames(comboBoxHeader, 0);
                         TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
                         textBoxHeaderAssemblyMap.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeaderAssemblyMap, 1, true);
                         textBoxHeaderAssemblyMap.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeaderAssemblyMap, 1);
@@ -242,12 +257,12 @@ namespace Parsething.Functions
                         buttonDelete.Content = "";
                         buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
 
-                        Grid.SetColumn(textBoxHeader, 0);
+                        Grid.SetColumn(comboBoxHeader, 0);
                         Grid.SetColumn(textBoxHeaderAssemblyMap, 1);
                         Grid.SetColumn(buttonAdd, 2);
                         Grid.SetColumn(buttonDelete, 3);
 
-                        grid.Children.Add(textBoxHeader);
+                        grid.Children.Add(comboBoxHeader);
                         grid.Children.Add(textBoxHeaderAssemblyMap);
                         grid.Children.Add(buttonAdd);
                         grid.Children.Add(buttonDelete);
@@ -274,7 +289,6 @@ namespace Parsething.Functions
                             TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
-                            //comboBoxManufacturer.SelectionChanged += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             foreach (Manufacturer manufacturer in Manufacturers)
                                 if (manufacturer.Id == componentCalculation.ManufacturerIdPurchase)
                                 {
@@ -282,7 +296,6 @@ namespace Parsething.Functions
                                     break;
                                 }
                             ComboBox comboBoxComponentState = new ComboBox() { ItemsSource = ComponentStates, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
-                            //comboBoxComponentState.SelectionChanged += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             foreach (ComponentState componentState in ComponentStates)
                                 if (componentState.Id == componentCalculation.ComponentStateId)
                                 {
@@ -297,7 +310,6 @@ namespace Parsething.Functions
                             TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
-                            //comboBoxSeller.SelectionChanged += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             foreach (Seller seller in Sellers)
                                 if (seller.Id == componentCalculation.SellerIdPurchase)
                                 {
@@ -491,6 +503,33 @@ namespace Parsething.Functions
                 textBox.Foreground = Brushes.Gray;
             }
         }
+        private static void ComboBox_LostFocus(object sender, RoutedEventArgs e, ComboBox comboBox, int headerId, bool isHeader)
+        {
+            if (isHeader)
+            {
+                if (string.IsNullOrWhiteSpace(comboBox.Text))
+                {
+                    comboBox.Text = columnNames[headerId];
+                    comboBox.Foreground = Brushes.Gray;
+                }
+            }
+        }
+        private static void ComboBox_GotFocus(object sender, RoutedEventArgs e, ComboBox comboBox, int headerId)
+        {
+            if (comboBox.Text == columnNames[headerId])
+            {
+                comboBox.Text = string.Empty;
+                comboBox.Foreground = Brushes.Black;
+            }
+        }
+        private static void LoadColumnNames(ComboBox comboBox, int headerId)
+        {
+            if (comboBox.Text == string.Empty || comboBox.Text == columnNames[headerId])
+            {
+                comboBox.Text = columnNames[headerId];
+                comboBox.Foreground = Brushes.Gray;
+            }
+        }
         public static void UpdateListView()
         {
             foreach (StackPanel stackPanel in ListView.Items)
@@ -498,12 +537,15 @@ namespace Parsething.Functions
                 ComponentCalculation componentCalculationHeader = new ComponentCalculation();
                 try
                 {
-                    TextBox textBoxHeader = (TextBox)((Grid)stackPanel.Children[0]).Children[0];
+                    if ((ComponentHeaderType)((ComboBox)((Grid)stackPanel.Children[0]).Children[0]).SelectedItem != null)
+                    {
+                        componentCalculationHeader.HeaderTypeId = ((ComponentHeaderType)((ComboBox)((Grid)stackPanel.Children[0]).Children[0]).SelectedItem).Id;
+                    }
+                    ComboBox comboBoxHeader = (ComboBox)((Grid)stackPanel.Children[0]).Children[0];
                     TextBox textBoxAssemblyMapHeader = (TextBox)((Grid)stackPanel.Children[0]).Children[1];
 
                     componentCalculationHeader.Id = (int)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[1];
                     componentCalculationHeader.ProcurementId = (int)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[0];
-                    componentCalculationHeader.ComponentName = textBoxHeader.Text;
                     componentCalculationHeader.AssemblyMap = textBoxAssemblyMapHeader.Text;
                     componentCalculationHeader.IsDeleted = (bool)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[3];
                     componentCalculationHeader.IsAdded = (bool)((List<object>)((Grid)stackPanel.Children[0]).DataContext)[4];
@@ -647,7 +689,9 @@ namespace Parsething.Functions
                         grid.ColumnDefinitions.Add(columnDefinition);
                     }
 
-                    TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentName, Style = (Style)Application.Current.FindResource("AssemblyMap.Header") };
+                    TextBox textBoxHeader = new TextBox() { Style = (Style)Application.Current.FindResource("AssemblyMap.Header") };
+                    if(componentCalculationHeader.ComponentHeaderType != null)
+                        textBoxHeader.Text = componentCalculationHeader.ComponentHeaderType.Kind.ToString();
                     LoadColumnNames(textBoxHeader, 0);
                     TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMap.Header") };
                     LoadColumnNames(textBoxHeaderAssemblyMap, 1);

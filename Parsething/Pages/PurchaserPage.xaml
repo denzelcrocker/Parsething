@@ -11,6 +11,7 @@
         <local:ProfitConverter x:Key="ProfitConverter"/>
         <local:PercentageProfitConverter x:Key="PercentageProfitConverter"/>
         <local:AmountConverter x:Key="AmountConverter"/>
+        <local:DateToStringConverter x:Key="DateToStringConverter"/>
         <system:String x:Key="CalculatingString">Calculating</system:String>
         <system:String x:Key="PurchaseString">Purchase</system:String>
     </Page.Resources>
@@ -211,11 +212,19 @@
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="6"
-                                        Text="{Binding Path=ActualDeliveryDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
+                                        Text="{Binding Path=ActualDeliveryDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                        FontSize="12"
                                         HorizontalAlignment="Center"
-                                        FontSize="13"
-                                         VerticalAlignment="Center"
-                                        Margin="10"/>
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,0,18"/>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Grid.Column="6"
+                                        Text="{Binding ActualDeliveryDate, Converter={StaticResource DateToStringConverter }}"
+                                        FontSize="12"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="0,18,0,0"/>
                                     <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
@@ -240,7 +249,8 @@
                                         </TextBlock.Text>
                                     </TextBlock>
                                     <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                    <TextBlock 
+                                    <Ellipse Style="{StaticResource StatusIndicatorStyle}" Grid.Column="10"/>
+                                    <TextBlock
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="10"
                                         Text="{Binding Path=ProcurementState.Kind}"

@@ -46,7 +46,6 @@ namespace Parsething.Pages
                 list.Style = (Style)Application.Current.FindResource("ListView");
                 foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
                 {
-                    
                         Grid grid = new Grid();
                         double[] columnWidths = { 150, 830, 100, 150, 100, 160, 160 };
 
@@ -105,7 +104,6 @@ namespace Parsething.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //((ListView)((StackPanel)((Button)sender).Parent).Children[2]).Items.Add("Добавление элемента");
             Procurement procurement = Entry.ProcurementBy(Convert.ToInt32(((Button)sender).DataContext));
             NavigationService.Navigate(new ComponentCalculationsPage(procurement, null, false, false));
         }

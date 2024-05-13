@@ -9,9 +9,12 @@
       Title="SearchPage"
       Loaded="Page_Loaded">
     <Page.Resources>
-        <local:ProfitConverter x:Key="ProfitConverter"/>
+        <local:ProfitConverter x:Key="ProfitConverter"/> 
         <local:PercentageProfitConverter x:Key="PercentageProfitConverter"/>
+        <local:DateToStringConverter x:Key="DateToStringConverter"/>
         <local:AmountConverter x:Key="AmountConverter"/>
+        <local:DateInfoMultiConverter x:Key="DateInfoMultiConverter" />
+        <local:DateInfoAdditionalInfoConverter x:Key="DateInfoAdditionalInfoConverter" />
         <system:String x:Key="CalculatingString">Calculating</system:String>
         <system:String x:Key="PurchaseString">Purchase</system:String>
     </Page.Resources>
@@ -179,11 +182,33 @@
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="12"
-                                        Text="{Binding Path=SigningDate, StringFormat='{}{0:dd.MM.yyyy}'}"
                                         FontSize="12"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Margin="10"/>
+                                        Margin="0,0,0,18">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource DateInfoMultiConverter}">
+                                                    <Binding Path="SigningDeadline" />
+                                                    <Binding Path="SigningDate" />
+                                                    <Binding Path="ConclusionDate" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="12"
+                                            FontSize="12"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="0,18,0,0">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource DateInfoAdditionalInfoConverter}">
+                                                    <Binding Path="SigningDeadline" />
+                                                    <Binding Path="SigningDate" />
+                                                    <Binding Path="ConclusionDate" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
                                         <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <DockPanel
                                             Grid.Column="14">
@@ -241,13 +266,21 @@
                                         <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <Ellipse Style="{StaticResource DeliveryDateIndicatorStyle}" Grid.Column="16"/>
                                         <TextBlock 
-                                        Style="{DynamicResource TableElements}"
-                                        Grid.Column="16"
-                                        Text="{Binding Path=DeliveryDate, StringFormat='{}{0:dd.MM.yyyy}'}"
-                                        FontSize="12"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Margin="10"/>
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="16"
+                                            Text="{Binding Path=ActualDeliveryDate, StringFormat='{}{0:dd.MM.yyyy}'}"
+                                            FontSize="12"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,0,18"/>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="16"
+                                            Text="{Binding ActualDeliveryDate, Converter={StaticResource DateToStringConverter }}"
+                                            FontSize="12"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="0,18,0,0"/>
                                         <Rectangle Grid.Column="17" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <Grid Grid.Column="18" Margin="0, 5">
                                             <Grid.ColumnDefinitions>
@@ -401,6 +434,8 @@
                                 <ColumnDefinition Width="260"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition Height="30"/>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="30"/>
