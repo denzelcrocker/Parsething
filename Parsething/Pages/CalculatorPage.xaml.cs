@@ -50,6 +50,8 @@ public partial class CalculatorPage : Page
         ProcurementsEmployeesDrawUp = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить");
         if (ProcurementsEmployeesDrawUp != null)
             DrawUp.Text = ProcurementsEmployeesDrawUp.Count.ToString();
+
+        NewButton.Background = Brushes.LightGray;
     }
 
     private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
@@ -67,16 +69,25 @@ public partial class CalculatorPage : Page
     private void NewButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = ProcurementsEmployeesNew;
+        NewButton.Background = Brushes.LightGray;
+        CalculatedButton.Background = Brushes.Transparent;
+        DrawUpButton.Background = Brushes.Transparent;
     }
 
     private void CalculatedButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = ProcurementsEmployeesCalculated;
+        NewButton.Background = Brushes.Transparent;
+        CalculatedButton.Background = Brushes.LightGray;
+        DrawUpButton.Background = Brushes.Transparent;
     }
 
     private void DrawUpButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = ProcurementsEmployeesDrawUp;
+        NewButton.Background = Brushes.Transparent;
+        CalculatedButton.Background = Brushes.Transparent;
+        DrawUpButton.Background = Brushes.LightGray;
     }
 
     private void EditProcurement_Click(object sender, RoutedEventArgs e)

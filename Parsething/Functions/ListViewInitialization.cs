@@ -3,6 +3,7 @@ using DatabaseLibrary.Entities.ProcurementProperties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -275,7 +276,7 @@ namespace Parsething.Functions
                     {
                         if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsDeleted == false)
                         {
-                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded, componentCalculation.ComponentName, componentCalculation.ManufacturerId, componentCalculation.Price, componentCalculation.Count, componentCalculation.SellerId, componentCalculation.Reserve, componentCalculation.Note } };
+                            Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded, componentCalculation.ComponentName, componentCalculation.ManufacturerId, componentCalculation.Price, componentCalculation.Count, componentCalculation.SellerId, componentCalculation.Reserve, componentCalculation.Note } };
                             double[] columnWidths = { 55, 300, 100, 125, 100, 75, 40, 105, 100, 125, 150 };
                             for (int i = 0; i < columnWidths.Length; i++)
                             {
@@ -532,6 +533,33 @@ namespace Parsething.Functions
         }
         public static void UpdateListView()
         {
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+            if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
+            {
+                MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.ProcurementUserId).First().FullName}");
+            }
+            else if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
+            {
+                MessageBox.Show($"Расчет сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.ProcurementUserId).First().FullName}");
+            }
+            else if (IsCalculation == true)
+            {
+                Procurement.IsCalculationBlocked = true;
+                Procurement.CalculatingUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+                PULL.Procurement(Procurement);
+                LoadListView();
+            }
+            else if (IsCalculation == false)
+            {
+                Procurement.IsPurchaseBlocked = true;
+                Procurement.PurchaseUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+                PULL.Procurement(Procurement);
+                LoadListView();
+            }
+
+        }
+        public static void LoadListView()
+        {
             foreach (StackPanel stackPanel in ListView.Items)
             {
                 ComponentCalculation componentCalculationHeader = new ComponentCalculation();
@@ -576,7 +604,7 @@ namespace Parsething.Functions
                                 componentCalculationItem.ManufacturerId = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
                                 componentCalculationItem.ManufacturerIdPurchase = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
                             }
-                                componentCalculationItem.ComponentStateId = (int?)((List<object>)grid.DataContext)[13];
+                            componentCalculationItem.ComponentStateId = (int?)((List<object>)grid.DataContext)[13];
 
                             if (textBoxPrice.Text != "")
                             {

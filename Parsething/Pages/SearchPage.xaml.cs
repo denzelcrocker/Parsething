@@ -29,6 +29,7 @@ namespace Parsething.Pages
 
         private List<Law>? Laws { get; set; }
         private List<ProcurementState>? ProcurementStates { get; set; }
+        private List<Employee>? Employees { get; set; }
 
         private List<Procurement>? FoundProcurements { get; set; }
 
@@ -38,9 +39,9 @@ namespace Parsething.Pages
         {
             InitializeComponent();
 
-            if (SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementNumber != null && SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementState != null && SearchCriteria.Instance.INN != null)
+            if (SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementNumber != null && SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementState != null && SearchCriteria.Instance.INN != null && SearchCriteria.Instance.Employee != null)
             {
-                procurements = GET.View.ProcurementsBy(SearchCriteria.Instance.ProcurementId, SearchCriteria.Instance.ProcurementNumber, SearchCriteria.Instance.Law, SearchCriteria.Instance.ProcurementState, SearchCriteria.Instance.INN);
+                procurements = GET.View.ProcurementsBy(SearchCriteria.Instance.ProcurementId, SearchCriteria.Instance.ProcurementNumber, SearchCriteria.Instance.Law, SearchCriteria.Instance.ProcurementState, SearchCriteria.Instance.INN, SearchCriteria.Instance.Employee);
                 SearchLV.ItemsSource = procurements;
             }
             else if (procurements != null)
@@ -49,6 +50,9 @@ namespace Parsething.Pages
             }
             Laws = GET.View.Laws();
             Law.ItemsSource = Laws;
+
+            Employees = GET.View.Employees().Where(e => e.IsAvailable != false).ToList();
+            Employee.ItemsSource = Employees;
 
             ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
@@ -91,12 +95,13 @@ namespace Parsething.Pages
             string law = Law.Text;
             string procurementState = ProcurementState.Text;
             string inn = SearchINN.Text;
+            string employee = Employee.Text;
 
-            if (id == 0 && number == "" && law == "" && procurementState == "" && inn == "")
+            if (id == 0 && number == "" && law == "" && procurementState == "" && inn == "" && employee == "")
             { }
             else
             {
-                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn);
+                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee);
                 SearchLV.ItemsSource = FoundProcurements;
                 Procurements = FoundProcurements;
             }

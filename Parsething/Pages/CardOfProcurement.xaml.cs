@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseLibrary.Entities.ProcurementProperties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -84,9 +85,22 @@ namespace Parsething.Pages
             catch { }
         }
 
-        public CardOfProcurement(Procurement procurement, List<Procurement> procurements,bool isSearch)
+        public CardOfProcurement(Procurement procurement, List<Procurement> procurements, bool isSearch)
         {
             InitializeComponent();
+
+            procurement = GET.Entry.ProcurementBy(procurement.Id);
+            if (procurement.IsProcurementBlocked == true)
+            {
+                MessageBox.Show($"Данный тендер сейчас редактируется пользователем: \n {GET.View.Employees().Where(e => e.Id == procurement.ProcurementUserId).First().FullName}");
+            }
+            else
+            {
+                procurement.IsProcurementBlocked = true;
+                procurement.ProcurementUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+                PULL.Procurement(procurement);
+            }
+
             ProcurementInfoLabel.Foreground = Red;
             ProcurementInfoUL.Fill = Red;
             ProcurementInfoLV.Visibility = Visibility.Visible;
@@ -417,176 +431,181 @@ namespace Parsething.Pages
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            string warningMessage = null;
-
-            bool isRegionExists = false;
-            List<Region> ProcurementRegion = new List<Region> { new Region() };
-            Procurement.Id = Convert.ToInt32(Id.Text);
-            if (ProcurementState.SelectedItem != null)
-                Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
-            if (Distance.Text != "" && Regions.Text != "")
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+            if (Procurement.IsProcurementBlocked == true && Procurement.ProcurementUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
             {
-                ProcurementRegion[0].Title = Regions.Text;
-                ProcurementRegion[0].Distance = Convert.ToInt32(Distance.Text);
-                foreach (Region region in ProcurementRegions)
+                string warningMessage = null;
+
+                bool isRegionExists = false;
+                List<Region> ProcurementRegion = new List<Region> { new Region() };
+                Procurement.Id = Convert.ToInt32(Id.Text);
+                if (ProcurementState.SelectedItem != null)
+                    Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
+                if (Distance.Text != "" && Regions.Text != "")
                 {
-                    if (ProcurementRegion[0].Title == region.Title && ProcurementRegion[0].Distance == region.Distance)
+                    ProcurementRegion[0].Title = Regions.Text;
+                    ProcurementRegion[0].Distance = Convert.ToInt32(Distance.Text);
+                    foreach (Region region in ProcurementRegions)
                     {
-                        Procurement.RegionId = GET.Entry.Region(region.Title, region.Distance).Id;
-                        isRegionExists = true;
+                        if (ProcurementRegion[0].Title == region.Title && ProcurementRegion[0].Distance == region.Distance)
+                        {
+                            Procurement.RegionId = GET.Entry.Region(region.Title, region.Distance).Id;
+                            isRegionExists = true;
+                        }
+                    }
+                    if (isRegionExists == false)
+                    {
+                        PUT.Region(ProcurementRegion[0]);
+                        Procurement.RegionId = GET.Entry.Region(Regions.Text, Convert.ToInt32(Distance.Text)).Id; ;
                     }
                 }
-                if (isRegionExists == false)
+                Procurement.OrganizationContractName = OrganizationContract.Text;
+                Procurement.OrganizationContractPostalAddress = PostalAddressContract.Text;
+                Procurement.ContactPerson = ContactPerson.Text;
+                Procurement.ContactPhone = ContactPhone.Text;
+                Procurement.DeliveryDetails = DeliveryDetails.Text;
+                Procurement.DeadlineAndType = DeadlineAndType.Text;
+                Procurement.DeliveryDeadline = DeliveryDeadline.Text;
+                Procurement.AcceptanceDeadline = AcceptanceDeadline.Text;
+                Procurement.ContractDeadline = ContractDeadline.Text;
+                Procurement.Indefinitely = Indefinitely.IsChecked;
+                Procurement.AnotherDeadline = AnotherDeadline.Text;
+                Procurement.DeadlineAndOrder = DeadlineAndOrder.Text;
+                if (RepresentativeType.SelectedItem != null)
+                    Procurement.RepresentativeTypeId = ((RepresentativeType)RepresentativeType.SelectedItem).Id;
+                if (CommissioningWork.SelectedItem != null)
+                    Procurement.CommissioningWorksId = ((CommisioningWork)CommissioningWork.SelectedItem).Id;
+                if (PlaceCount.Text != "")
+                    Procurement.PlaceCount = Convert.ToInt32(PlaceCount.Text);
+                Procurement.FinesAndPennies = FinesAndPennies.Text;
+                Procurement.PenniesPerDay = PenniesPerDay.Text;
+                Procurement.TerminationConditions = TerminationConditions.Text;
+                Procurement.EliminationDeadline = EliminationDeadline.Text;
+                Procurement.GuaranteePeriod = GuaranteePeriod.Text;
+                Procurement.Inn = INN.Text;
+                Procurement.ContractNumber = ContractNumber.Text;
+                Procurement.AssemblyNeed = AssemblyNeed.IsChecked;
+                if (Minopttorg.SelectedItem != null)
+                    Procurement.MinopttorgId = ((Minopttorg)Minopttorg.SelectedItem).Id;
+                if (LegalEntity.SelectedItem != null)
+                    Procurement.LegalEntityId = ((LegalEntity)LegalEntity.SelectedItem).Id;
+                Procurement.Applications = Applications.IsChecked;
+                if (Bet.Text != "")
                 {
-                    PUT.Region(ProcurementRegion[0]);
-                    Procurement.RegionId = GET.Entry.Region(Regions.Text, Convert.ToInt32(Distance.Text)).Id; ;
-                }
-            }
-            Procurement.OrganizationContractName = OrganizationContract.Text;
-            Procurement.OrganizationContractPostalAddress = PostalAddressContract.Text;
-            Procurement.ContactPerson = ContactPerson.Text;
-            Procurement.ContactPhone = ContactPhone.Text;
-            Procurement.DeliveryDetails = DeliveryDetails.Text;
-            Procurement.DeadlineAndType = DeadlineAndType.Text;
-            Procurement.DeliveryDeadline = DeliveryDeadline.Text;
-            Procurement.AcceptanceDeadline = AcceptanceDeadline.Text;
-            Procurement.ContractDeadline = ContractDeadline.Text;
-            Procurement.Indefinitely = Indefinitely.IsChecked;
-            Procurement.AnotherDeadline = AnotherDeadline.Text;
-            Procurement.DeadlineAndOrder = DeadlineAndOrder.Text;
-            if (RepresentativeType.SelectedItem != null)
-                Procurement.RepresentativeTypeId = ((RepresentativeType)RepresentativeType.SelectedItem).Id;
-            if (CommissioningWork.SelectedItem != null)
-                Procurement.CommissioningWorksId = ((CommisioningWork)CommissioningWork.SelectedItem).Id;
-            if (PlaceCount.Text != "")
-            Procurement.PlaceCount = Convert.ToInt32(PlaceCount.Text);
-            Procurement.FinesAndPennies = FinesAndPennies.Text;
-            Procurement.PenniesPerDay = PenniesPerDay.Text;
-            Procurement.TerminationConditions = TerminationConditions.Text;
-            Procurement.EliminationDeadline = EliminationDeadline.Text;
-            Procurement.GuaranteePeriod = GuaranteePeriod.Text;
-            Procurement.Inn = INN.Text;
-            Procurement.ContractNumber = ContractNumber.Text;
-            Procurement.AssemblyNeed = AssemblyNeed.IsChecked;
-            if (Minopttorg.SelectedItem != null)
-                Procurement.MinopttorgId = ((Minopttorg)Minopttorg.SelectedItem).Id;
-            if (LegalEntity.SelectedItem != null)
-                Procurement.LegalEntityId = ((LegalEntity)LegalEntity.SelectedItem).Id;
-            Procurement.Applications = Applications.IsChecked;
-            if (Bet.Text != "")
-            {
-                decimal BetDecimal;
-                if (decimal.TryParse(Bet.Text, out BetDecimal))
-                {
-                    Procurement.Bet = BetDecimal;
-                }
-                else
-                {
-                    warningMessage += " Ставка";
-                }
-            }
-            else
-                Procurement.Bet = null;
-            if (MinimalPrice.Text != "")
-            {
-                decimal MinimalPriceDecimal;
-                if (decimal.TryParse(MinimalPrice.Text, out MinimalPriceDecimal))
-                {
-                    Procurement.MinimalPrice = MinimalPriceDecimal;
+                    decimal BetDecimal;
+                    if (decimal.TryParse(Bet.Text, out BetDecimal))
+                    {
+                        Procurement.Bet = BetDecimal;
+                    }
+                    else
+                    {
+                        warningMessage += " Ставка";
+                    }
                 }
                 else
+                    Procurement.Bet = null;
+                if (MinimalPrice.Text != "")
                 {
-                    warningMessage += " Минимальная цена";
-                }
-            }
-            else
-                Procurement.MinimalPrice = null;
-            if (ContractAmount.Text != "")
-            {
-                decimal ContractAmountDecimal;
-                if (decimal.TryParse(ContractAmount.Text, out ContractAmountDecimal))
-                {
-                    Procurement.ContractAmount = ContractAmountDecimal;
-                }
-                else
-                {
-                    warningMessage += " Сумма контракта";
-                }
-            }
-            else
-                Procurement.ContractAmount = null;
-            if (ReserveContractAmount.Text != "")
-            {
-                decimal ReserveContractAmountDecimal;
-                if (decimal.TryParse(ReserveContractAmount.Text, out ReserveContractAmountDecimal))
-                {
-                    Procurement.ReserveContractAmount = ReserveContractAmountDecimal;
+                    decimal MinimalPriceDecimal;
+                    if (decimal.TryParse(MinimalPrice.Text, out MinimalPriceDecimal))
+                    {
+                        Procurement.MinimalPrice = MinimalPriceDecimal;
+                    }
+                    else
+                    {
+                        warningMessage += " Минимальная цена";
+                    }
                 }
                 else
+                    Procurement.MinimalPrice = null;
+                if (ContractAmount.Text != "")
                 {
-                    warningMessage += " Измененная сумма контракта";
-                }
-            }
-            else
-                Procurement.ReserveContractAmount = null;
-            Procurement.ProtocolDate = ProtocolDate.SelectedDate;
-            if (ShipmentPlan.SelectedItem != null)
-                Procurement.ShipmentPlanId = ((ShipmentPlan)ShipmentPlan.SelectedItem).Id;
-            Procurement.WaitingList = WaitingList.IsChecked;
-            Procurement.Calculating = CalculatingCB.IsChecked;
-            Procurement.Purchase = PurchasingCB.IsChecked;
-            if (ExecutionState.SelectedItem != null)
-                Procurement.ExecutionStateId = ((ExecutionState)ExecutionState.SelectedItem).Id;
-            if (WarrantyState.SelectedItem != null)
-                Procurement.WarrantyStateId = ((WarrantyState)WarrantyState.SelectedItem).Id;
-            Procurement.SigningDeadline = SigningDeadline.SelectedDate;
-            Procurement.SigningDate = SigningDate.SelectedDate;
-            Procurement.ConclusionDate = ConclusionDate.SelectedDate;
-            Procurement.ActualDeliveryDate = ActualDeliveryDate.SelectedDate;
-            Procurement.DepartureDate = DepartureDate.SelectedDate;
-            Procurement.DeliveryDate = DeliveryDate.SelectedDate;
-            Procurement.MaxAcceptanceDate = MaxAcceptanceDate.SelectedDate;
-            Procurement.CorrectionDate = CorrectionDate.SelectedDate;
-            Procurement.ActDate = ActDate.SelectedDate;
-            Procurement.MaxDueDate = MaxDueDate.SelectedDate;
-            Procurement.ClosingDate = ClosingDate.SelectedDate;
-            Procurement.RealDueDate = RealDueDate.SelectedDate;
-            if (Amount.Text != "")
-            {
-                decimal AmountDecimal;
-                if (decimal.TryParse(Amount.Text, out AmountDecimal))
-                {
-                    Procurement.Amount = AmountDecimal;
+                    decimal ContractAmountDecimal;
+                    if (decimal.TryParse(ContractAmount.Text, out ContractAmountDecimal))
+                    {
+                        Procurement.ContractAmount = ContractAmountDecimal;
+                    }
+                    else
+                    {
+                        warningMessage += " Сумма контракта";
+                    }
                 }
                 else
+                    Procurement.ContractAmount = null;
+                if (ReserveContractAmount.Text != "")
                 {
-                    warningMessage += " Оплаченная сумма";
+                    decimal ReserveContractAmountDecimal;
+                    if (decimal.TryParse(ReserveContractAmount.Text, out ReserveContractAmountDecimal))
+                    {
+                        Procurement.ReserveContractAmount = ReserveContractAmountDecimal;
+                    }
+                    else
+                    {
+                        warningMessage += " Измененная сумма контракта";
+                    }
                 }
-            }
-            else
-                Procurement.Amount = null;
-            if (SignedOriginal.SelectedItem != null)
-                Procurement.SignedOriginalId = ((SignedOriginal)SignedOriginal.SelectedItem).Id;
-            Procurement.Judgment = Judgment.IsChecked;
-            Procurement.Fas = FAS.IsChecked;
+                else
+                    Procurement.ReserveContractAmount = null;
+                Procurement.ProtocolDate = ProtocolDate.SelectedDate;
+                if (ShipmentPlan.SelectedItem != null)
+                    Procurement.ShipmentPlanId = ((ShipmentPlan)ShipmentPlan.SelectedItem).Id;
+                Procurement.WaitingList = WaitingList.IsChecked;
+                Procurement.Calculating = CalculatingCB.IsChecked;
+                Procurement.Purchase = PurchasingCB.IsChecked;
+                if (ExecutionState.SelectedItem != null)
+                    Procurement.ExecutionStateId = ((ExecutionState)ExecutionState.SelectedItem).Id;
+                if (WarrantyState.SelectedItem != null)
+                    Procurement.WarrantyStateId = ((WarrantyState)WarrantyState.SelectedItem).Id;
+                Procurement.SigningDeadline = SigningDeadline.SelectedDate;
+                Procurement.SigningDate = SigningDate.SelectedDate;
+                Procurement.ConclusionDate = ConclusionDate.SelectedDate;
+                Procurement.ActualDeliveryDate = ActualDeliveryDate.SelectedDate;
+                Procurement.DepartureDate = DepartureDate.SelectedDate;
+                Procurement.DeliveryDate = DeliveryDate.SelectedDate;
+                Procurement.MaxAcceptanceDate = MaxAcceptanceDate.SelectedDate;
+                Procurement.CorrectionDate = CorrectionDate.SelectedDate;
+                Procurement.ActDate = ActDate.SelectedDate;
+                Procurement.MaxDueDate = MaxDueDate.SelectedDate;
+                Procurement.ClosingDate = ClosingDate.SelectedDate;
+                Procurement.RealDueDate = RealDueDate.SelectedDate;
+                if (Amount.Text != "")
+                {
+                    decimal AmountDecimal;
+                    if (decimal.TryParse(Amount.Text, out AmountDecimal))
+                    {
+                        Procurement.Amount = AmountDecimal;
+                    }
+                    else
+                    {
+                        warningMessage += " Оплаченная сумма";
+                    }
+                }
+                else
+                    Procurement.Amount = null;
+                if (SignedOriginal.SelectedItem != null)
+                    Procurement.SignedOriginalId = ((SignedOriginal)SignedOriginal.SelectedItem).Id;
+                Procurement.Judgment = Judgment.IsChecked;
+                Procurement.Fas = FAS.IsChecked;
 
-            if (warningMessage != null)
-            {
-                MessageBox.Show($"Неверный формат полей: {warningMessage}");
-                return;
+                if (warningMessage != null)
+                {
+                    MessageBox.Show($"Неверный формат полей: {warningMessage}");
+                    return;
+                }
+                PULL.Procurement(Procurement);
+                if (ProcurementState.Text != Historylog)
+                {
+                    History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = ProcurementState.Text };
+                    PUT.History(history);
+                    HistoryListView.ItemsSource = null;
+                    Histories.Clear();
+                    Histories = GET.View.HistoriesBy(Procurement.Id);
+                    HistoryListView.ItemsSource = Histories;
+                    Historylog = ProcurementState.Text;
+                }
             }
-            PULL.Procurement(Procurement);
-            if (ProcurementState.Text != Historylog)
-            {
-                History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = ProcurementState.Text };
-                PUT.History(history);
-                HistoryListView.ItemsSource = null;
-                Histories.Clear();
-                Histories = GET.View.HistoriesBy(Procurement.Id);
-                HistoryListView.ItemsSource = Histories;
-                Historylog = ProcurementState.Text;
-            }
-            
+            else if (Procurement.ProcurementUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
+                MessageBox.Show($"Данный тендер сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.ProcurementUserId).First().FullName}\nВы не можете сохранить изменения");
         }
 
         private void Sender_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -804,6 +823,12 @@ namespace Parsething.Pages
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно выйти? Не забудьте СОХРАНИТЬ результат", "Выход без сохранения", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
+                if (Procurement.IsProcurementBlocked == true && Procurement.ProcurementUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
+                { 
+                    Procurement.IsProcurementBlocked = false;
+                    Procurement.ProcurementUserId = null;
+                    PULL.Procurement(Procurement);
+                }
                 if (IsSearch)
                 {
                     _ = MainFrame.Navigate(new SearchPage(Procurements));

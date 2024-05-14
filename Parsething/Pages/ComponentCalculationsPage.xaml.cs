@@ -38,6 +38,8 @@ namespace Parsething.Pages
 
         private bool IsSearch;
 
+        private bool IsCalculation;
+
         SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
 
         static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен" };
@@ -46,6 +48,7 @@ namespace Parsething.Pages
         {
             InitializeComponent();
             IsSearch = isSearch;
+            IsCalculation = isCalculation;
             Procurements = procurements;
             decimal? calculatingAmount = 0;
             decimal? purchaseAmount = 0;
@@ -104,7 +107,7 @@ namespace Parsething.Pages
                     }
                     PurchasePrice.Text = purchaseAmount.ToString();
                 }
-                ListViewInitialization.ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView, CalculationPrice, PurchasePrice, Procurement);
+                ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView, CalculationPrice, PurchasePrice, Procurement);
             }
             GoToComments.Background = Brushes.LightGray;
             GoToPassports.Background = Brushes.Transparent;
@@ -138,10 +141,22 @@ namespace Parsething.Pages
 
         private void GoBackButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Не забудьте сохранить важные данные!", "Выйти?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно выйти? Не забудьте СОХРАНИТЬ результат", "Выход без сохранения", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
             {
+                if (Procurement.IsCalculationBlocked == true && Procurement.ProcurementUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == true)
+                {
+                    Procurement.IsCalculationBlocked = false;
+                    Procurement.CalculatingUserId = null;
+                    PULL.Procurement(Procurement);
+                }
+                else if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == false)
+                {
+                    Procurement.IsPurchaseBlocked = false;
+                    Procurement.IsPurchaseBlocked = null;
+                    PULL.Procurement(Procurement);
+                }
+
                 if (IsSearch)
                 {
                     _ = MainFrame.Navigate(new SearchPage(Procurements));
@@ -190,8 +205,7 @@ namespace Parsething.Pages
                     }
                 }
             }
-            else { }
-            
+            else if (messageBoxResult == MessageBoxResult.No) { }
 
         }
 

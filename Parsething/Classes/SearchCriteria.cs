@@ -34,6 +34,7 @@ namespace Parsething.Classes
             Law = null;
             ProcurementState = null;
             INN = null;
+            Employee = null;
         }
 
         public int ProcurementId { get; set; }
@@ -41,5 +42,6 @@ namespace Parsething.Classes
         public string? Law { get; set; }
         public string? ProcurementState { get; set; }
         public string? INN { get; set; }
+        public string? Employee { get; set; }
     }
 }

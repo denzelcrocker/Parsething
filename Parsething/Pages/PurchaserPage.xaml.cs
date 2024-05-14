@@ -35,15 +35,9 @@ namespace Parsething.Pages
         private List<ComponentCalculation>? ComponentCalculationsProblem { get; set; }
         private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
         private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
-
         private List<Procurement>? ProcurementsProblems { get; set; }
-
         private List<Procurement>? ProcurementsInWork { get; set; }
         private List<Procurement>? ProcurementsAgreed  { get; set; }
-
-
-
-
 
         public PurchaserPage() =>
             InitializeComponent();
@@ -103,53 +97,155 @@ namespace Parsething.Pages
             ProcurementsAWeekLater = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
             if (ProcurementsAWeekLater != null)
                 AWeekLater.Text = ProcurementsAWeekLater.Count.ToString();
+
+            ThisWeekButton.Background = Brushes.LightGray;
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsNextWeek;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background= Brushes.Transparent;
+            NextWeekButton.Background = Brushes.LightGray;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsThisWeek;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.LightGray;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsAcceptance;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.LightGray;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsWonPartTwo;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.LightGray;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsWonPartOne;
+            WonPartOneButton.Background = Brushes.LightGray;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsProblems;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.LightGray;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsInWork;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.LightGray;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsAgreed;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.LightGray;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
         private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsAWeekLater;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.LightGray;
         }
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = ProcurementsPreviousWeek;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.LightGray;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
