@@ -124,13 +124,14 @@ public partial class MainWindow : Window
         Close();
         mainWindow.Show();
         Application.Current.MainWindow = mainWindow;
-        PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
+        if ((Employee)Application.Current.MainWindow.DataContext != null)
+            PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
     }
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
     {
         if((Employee)Application.Current.MainWindow.DataContext != null)
-        PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
+            PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
     }
 
     private void GoHome_Click(object sender, RoutedEventArgs e)
