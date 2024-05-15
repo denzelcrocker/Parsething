@@ -432,7 +432,7 @@ namespace Parsething.Pages
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Procurement = GET.Entry.ProcurementBy(Procurement.Id);
-            if (Procurement.IsProcurementBlocked == true && Procurement.ProcurementUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
+            if (Procurement.IsProcurementBlocked == true && Procurement.ProcurementUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.ProcurementUserId == null)
             {
                 string warningMessage = null;
 

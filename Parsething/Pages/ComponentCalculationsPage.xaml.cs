@@ -144,7 +144,8 @@ namespace Parsething.Pages
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно выйти? Не забудьте СОХРАНИТЬ результат", "Выход без сохранения", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                if (Procurement.IsCalculationBlocked == true && Procurement.ProcurementUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == true)
+                Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+                if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == true)
                 {
                     Procurement.IsCalculationBlocked = false;
                     Procurement.CalculatingUserId = null;
@@ -153,7 +154,7 @@ namespace Parsething.Pages
                 else if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == false)
                 {
                     Procurement.IsPurchaseBlocked = false;
-                    Procurement.IsPurchaseBlocked = null;
+                    Procurement.PurchaseUserId = null;
                     PULL.Procurement(Procurement);
                 }
 
@@ -253,7 +254,11 @@ namespace Parsething.Pages
 
         private void SavePurchaseButton_Click(object sender, RoutedEventArgs e)
         {
-            UpdateListView();
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+            if (Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.PurchaseUserId == null)
+                UpdateListView();
+            else
+                MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.PurchaseUserId).First().FullName}");
         }
 
         private void SaveCalculatingButton_Click(object sender, RoutedEventArgs e)
@@ -261,10 +266,13 @@ namespace Parsething.Pages
             if (ProcurementStates.Contains(Procurement.ProcurementState.Kind))
             {
                 MessageBoxResult result = MessageBox.Show("Сохранение также перезапишет данные в закупке. Продолжить?", "Сохранение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
                 if (result == MessageBoxResult.Yes)
                 {
-                    UpdateListView();
+                    Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+                    if (Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.CalculatingUserId == null)
+                        UpdateListView();
+                    else
+                        MessageBox.Show($"Расчет сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.CalculatingUserId).First().FullName}");
                 }
                 else { }
             }

@@ -290,7 +290,7 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="1"
-                                            FontSize="12"
+                                            FontSize="10"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center">
                                             <TextBlock.Text>
@@ -301,6 +301,29 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                     </Grid>
+                                    <Button x:Name="BetCalculatingButton" Grid.Column="14" Cursor="Hand" Click="BetCalculatingButton_Click" Style="{DynamicResource BaseButton.Bet}" />
+                                    <Popup x:Name="BetCalculatingPopUp" PlacementTarget="{Binding ElementName=BetCalculatingButton}" Placement="Bottom" StaysOpen="True" Width="170">
+                                        <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
+                                            <Grid Width="170" >
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <Label Content="Расчет: " Grid.Row="0" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                                <TextBox x:Name="CalculatingAmountPopUp" Grid.Row="1" Style="{DynamicResource ComponentCalculation.Item}"/>
+                                                <Label Content="Ставка: " Grid.Row="2" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                                <TextBox x:Name="BetPopUp" Grid.Row="3" Grid.Column="1" Style="{DynamicResource ComponentCalculation.Item}" TextChanged="BetPopUp_TextChanged"/>
+                                                <Label Content="Процент: " Grid.Row="4" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                                <TextBox x:Name="PercentagePopUp" Grid.Row="5" Grid.Column="1" Style="{DynamicResource ComponentCalculation.Item}" IsEnabled="False"/>
+                                                <Button x:Name="SaveBetPopUp" Grid.Row="6" Cursor="Hand" Click="SaveBetPopUp_Click"  Style="{DynamicResource SaveBetButton}" Content="Сохранить"/>
+                                            </Grid>
+                                        </Border>
+                                    </Popup>
                                     <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button   
                                         Grid.Column="16"

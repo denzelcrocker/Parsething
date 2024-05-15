@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseLibrary.Queries;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -342,6 +344,158 @@ namespace Parsething.Pages
             {
                 string url = procurement.Platform.Address.ToString();
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+        }
+
+        private void BetCalculatingButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            Procurement procurement = button?.DataContext as Procurement;
+
+            if (procurement != null)
+            {
+                Popup popup = FindPopupByProcurementId(procurement.Id, button);
+
+                if (popup != null)
+                {
+                    popup.IsOpen = !popup.IsOpen;
+                    TextBox calculatingAmountTextBox = popup.FindName("CalculatingAmountPopUp") as TextBox;
+                    TextBox betTextBox = popup.FindName("BetPopUp") as TextBox;
+                    TextBox percentageTextBox = popup.FindName("PercentagePopUp") as TextBox;
+
+                    if (calculatingAmountTextBox != null && betTextBox != null && percentageTextBox != null)
+                    {
+                        calculatingAmountTextBox.Text = procurement.CalculatingAmount.ToString();
+                        betTextBox.Text = procurement.Bet.ToString();
+                        if (procurement.Bet != null && procurement.CalculatingAmount != null)
+                        percentageTextBox.Text = (((decimal)procurement.Bet - (decimal)procurement.CalculatingAmount) / (decimal)procurement.CalculatingAmount * 100).ToString("N1") + "%";
+                    }
+                }
+            }
+
+        }
+
+        private Popup FindPopupByProcurementId(int procurementId, Button button)
+        {
+            Grid grid = FindParent<Grid>(button);
+
+            foreach (var child in FindVisualChildren<Popup>(grid))
+            {
+                if (child.DataContext is Procurement procurement && procurement.Id == procurementId)
+                {
+                    return child;
+                }
+            }
+
+            return null;
+        }
+
+        private T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
+
+            while (parent != null && !(parent is T))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            return parent as T;
+        }
+
+        private IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(parent, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T descendant in FindVisualChildren<T>(child))
+                    {
+                        yield return descendant;
+                    }
+                }
+            }
+        }
+
+        private void SaveBetPopUp_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+
+            Procurement procurement = button?.DataContext as Procurement;
+
+            if (procurement != null)
+            {
+                Grid parentGrid = button.Parent as Grid;
+
+                if (parentGrid != null)
+                {
+                    Border parentBorder = parentGrid.Parent as Border;
+
+                    if (parentBorder != null)
+                    {
+                        Popup popup = parentBorder.Parent as Popup;
+
+                        if (popup != null)
+                        {
+                            TextBox betTextBox = popup.FindName("BetPopUp") as TextBox;
+
+                            if (betTextBox != null)
+                            {
+                                if (decimal.TryParse(betTextBox.Text, out decimal betValue))
+                                {
+                                    procurement.Bet = betValue;
+                                    PULL.Procurement(procurement);
+                                    popup.IsOpen = !popup.IsOpen;
+                                    MessageBox.Show("Ставка успешно сохранена! Обновите страницу!");
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void BetPopUp_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox betTextBox = sender as TextBox;
+
+            Grid parentGrid = betTextBox.Parent as Grid;
+
+            if (parentGrid != null)
+            {
+                Border parentBorder = parentGrid.Parent as Border;
+
+                if (parentBorder != null)
+                {
+                    Popup popup = parentBorder.Parent as Popup;
+
+                    if (popup != null)
+                    {
+                        TextBox percentageTextBox = popup.FindName("PercentagePopUp") as TextBox;
+
+                        if (percentageTextBox != null)
+                        {
+                            if (decimal.TryParse(betTextBox.Text, out decimal betValue))
+                            {
+                                Procurement procurement = popup.DataContext as Procurement;
+
+                                if (procurement != null && procurement.CalculatingAmount != null)
+                                {
+                                    decimal percentage = ((betValue - (decimal)procurement.CalculatingAmount) / (decimal)procurement.CalculatingAmount * 100);
+                                    percentageTextBox.Text = percentage.ToString("N1") + "%";
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ public partial class MainWindow : Window
             DataContext = autorization.Employee;
         else Application.Current.Shutdown();
         InitializeComponent();
+        Closing += MainWindow_Closing;
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -111,9 +112,11 @@ public partial class MainWindow : Window
         }
     }
 
-    private void CloseAction_Click(object sender, RoutedEventArgs e) =>
+    private void CloseAction_Click(object sender, RoutedEventArgs e)
+    {
         Application.Current.Shutdown();
-
+        PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
+    }
     private void SwitchUser_Click(object sender, RoutedEventArgs e)
     {
         Visibility = Visibility.Collapsed;
@@ -121,10 +124,18 @@ public partial class MainWindow : Window
         Close();
         mainWindow.Show();
         Application.Current.MainWindow = mainWindow;
+        PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
+    }
+
+    private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if((Employee)Application.Current.MainWindow.DataContext != null)
+        PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
     }
 
     private void GoHome_Click(object sender, RoutedEventArgs e)
     {
+        PULL.ClosingActiveSessionsByEmployee(((Employee) Application.Current.MainWindow.DataContext).Id);
         SearchCriteria.Instance.ClearData();
 
         if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
@@ -171,6 +182,7 @@ public partial class MainWindow : Window
 
     private void Search_Click(object sender, RoutedEventArgs e)
     {
+        PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
         SearchCriteria.Instance.ClearData();
 
         _ = MainFrame.Navigate(new Pages.SearchPage(null));

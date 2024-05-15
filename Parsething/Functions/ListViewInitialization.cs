@@ -59,7 +59,25 @@ namespace Parsething.Functions
             List<StackPanel> stackPanels = new();
             decimal? calculatingAmount = 0;
             decimal? purchaseAmount = 0;
-
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+            if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
+            {
+                MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.PurchaseUserId).First().FullName}");
+            }
+            else if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
+            {
+                MessageBox.Show($"Расчет сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.CalculatingUserId).First().FullName}");
+            }
+            else if (IsCalculation == true)
+            {
+                Procurement.IsCalculationBlocked = true;
+                Procurement.CalculatingUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+            }
+            else if (IsCalculation == false)
+            {
+                Procurement.IsPurchaseBlocked = true;
+                Procurement.PurchaseUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+            }
             if (IsCalculation)
             {
 
@@ -383,8 +401,9 @@ namespace Parsething.Functions
 
         private static void ButtonDeleteDivision_Click(object sender, RoutedEventArgs e)
         {
-            UpdateListView();
-            if (IsCalculation)
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+
+            if (IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
             {
                 int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
                 for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
@@ -396,7 +415,7 @@ namespace Parsething.Functions
                 }
                 DELETE.ComponentCalculation(idToDelete);
             }
-            else
+            else if (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
             {
                 int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
                 for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
@@ -405,34 +424,41 @@ namespace Parsething.Functions
                     {
                         ComponentCalculations[i].IsDeleted = true;
                         PULL.ComponentCalculation(ComponentCalculations[i]);
+                        ComponentCalculations.RemoveAt(i);
+                        ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
                     }
                 }
             }
-            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+            UpdateListView();
         }
 
         private static void ButtonAddPosition_Click(object sender, RoutedEventArgs e)
         {
-            UpdateListView();
-            StackPanel parentStackPanel = (StackPanel)((Grid)((Button)sender).Parent).Parent;
-            Grid grid = (Grid)parentStackPanel.Children[0];
-            ComponentCalculation newComponentCalculation = new ComponentCalculation
-            {
-                ProcurementId = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]),
-                ParentName = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]),
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
 
-                IsAdded = IsCalculation ? false : true,
-                IsDeleted = false,
-                IsHeader = false,
-            };
-            ComponentCalculations.Add(newComponentCalculation);
-            PUT.ComponentCalculation(newComponentCalculation);
-            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+            if ((IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id) || (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id))
+            {
+                StackPanel parentStackPanel = (StackPanel)((Grid)((Button)sender).Parent).Parent;
+                ComponentCalculation newComponentCalculation = new ComponentCalculation
+                {
+                    ProcurementId = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]),
+                    ParentName = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]),
+
+                    IsAdded = IsCalculation ? false : true,
+                    IsDeleted = false,
+                    IsHeader = false,
+                };
+                ComponentCalculations.Add(newComponentCalculation);
+                PUT.ComponentCalculation(newComponentCalculation);
+            }
+            UpdateListView();
+
         }
         private static void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            UpdateListView();
-            if (IsCalculation)
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+
+            if (IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
             {
                 int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
                 for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
@@ -445,7 +471,7 @@ namespace Parsething.Functions
                 }
                 DELETE.ComponentCalculation(idToDelete);
             }
-            else
+            else if (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
             {
                 int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
                 for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
@@ -454,29 +480,53 @@ namespace Parsething.Functions
                     {
                         ComponentCalculations[i].IsDeleted = true;
                         PULL.ComponentCalculation(ComponentCalculations[i]);
+                        ComponentCalculations.RemoveAt(i);
+                        ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
                         break;
                     }
                 }
             }
-            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+            UpdateListView();
         }
         public static void ButtonAddDivision_Click(object sender, RoutedEventArgs e, Procurement procurement)
         {
-            if (ProcurementStates.Contains(Procurement.ProcurementState.Kind))
-            {
-                UpdateListView();
-                ComponentCalculation newComponentCalculation = new ComponentCalculation
+                Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+                if (IsCalculation)
                 {
-                    ProcurementId = procurement.Id,
-                    IsHeader = true,
-                    IsAdded = IsCalculation ? false : true,
-                    IsDeleted = false,
-                };
-                ComponentCalculations.Add(newComponentCalculation);
-                PUT.ComponentCalculation(newComponentCalculation);
-                ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+                    if (ProcurementStates.Contains(Procurement.ProcurementState.Kind))
+                    {
+                        if (Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
+                        {
+                            ComponentCalculation newComponentCalculation = new ComponentCalculation
+                            {
+                                ProcurementId = Procurement.Id,
+                                IsHeader = true,
+                                IsAdded = false,
+                                IsDeleted = false,
+                            };
+                            ComponentCalculations.Add(newComponentCalculation);
+                            PUT.ComponentCalculation(newComponentCalculation);
+                        }
+                    }
+                }
+                else
+                {
+                    if (Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
+                    {
+                        ComponentCalculation newComponentCalculation = new ComponentCalculation
+                        {
+                            ProcurementId = Procurement.Id,
+                            IsHeader = true,
+                            IsAdded = true,
+                            IsDeleted = false,
+                        };
+                        ComponentCalculations.Add(newComponentCalculation);
+                        PUT.ComponentCalculation(newComponentCalculation);
+                    }
+                }
+                UpdateListView();
             }
-        }
+        
         private static void TextBox_LostFocus(object sender, RoutedEventArgs e, TextBox textBox, int headerId, bool isHeader)
         {
             if (isHeader)
@@ -532,33 +582,6 @@ namespace Parsething.Functions
             }
         }
         public static void UpdateListView()
-        {
-            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
-            if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
-            {
-                MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.ProcurementUserId).First().FullName}");
-            }
-            else if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
-            {
-                MessageBox.Show($"Расчет сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.ProcurementUserId).First().FullName}");
-            }
-            else if (IsCalculation == true)
-            {
-                Procurement.IsCalculationBlocked = true;
-                Procurement.CalculatingUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
-                PULL.Procurement(Procurement);
-                LoadListView();
-            }
-            else if (IsCalculation == false)
-            {
-                Procurement.IsPurchaseBlocked = true;
-                Procurement.PurchaseUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
-                PULL.Procurement(Procurement);
-                LoadListView();
-            }
-
-        }
-        public static void LoadListView()
         {
             foreach (StackPanel stackPanel in ListView.Items)
             {
@@ -633,7 +656,7 @@ namespace Parsething.Functions
                             PULL.ComponentCalculation(componentCalculationItem);
                             ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculationItem.ProcurementId);
                         }
-                        else
+                        else if(!IsCalculation)
                         {
                             ComponentCalculation componentCalculationItem = new ComponentCalculation();
                             TextBox textBoxPartNumber = (TextBox)grid.Children[0];
@@ -687,13 +710,13 @@ namespace Parsething.Functions
                             ComponentCalculations = GET.View.ComponentCalculationsBy(componentCalculationItem.ProcurementId);
                         }
                     }
-                    ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
                 }
                 catch
                 {
                     MessageBox.Show("Дружище, ты сделал что-то неправильно...");
                 }
             }
+            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
         }
         public static void AssemblyMapListViewInitialization(Procurement procurement, List<ComponentCalculation> componentCalculations, ListView listViewToInitialization)
         {

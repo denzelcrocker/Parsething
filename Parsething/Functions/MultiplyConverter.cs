@@ -100,7 +100,7 @@ namespace Parsething.Functions
             if (calculateAmount != null && bet != null && bet != 0)
             {
                 decimal percentage = ((decimal)bet - (decimal)calculateAmount) / (decimal)calculateAmount * 100;
-                return percentage.ToString("N0") + "%";
+                return percentage.ToString("N1") + "%";
             }
             else
             {
