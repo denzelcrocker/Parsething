@@ -34,7 +34,11 @@ public partial class AutorizationWindow : Window
     {
         Employee = GET.Entry.Employee(UserName.Text, Password.Password);
         if (Employee != null)
+        {
             DialogResult = true;
+            History? history = new History { EmployeeId = Employee.Id, Date = DateTime.Now, EntityType = "Login", EntryId = 0, Text = $"{Employee.FullName}" };
+            PUT.History(history);
+        }
         else _ = MessageBox.Show("Вы ввели неверные данные!");
     }
 

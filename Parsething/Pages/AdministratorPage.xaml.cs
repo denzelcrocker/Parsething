@@ -48,7 +48,7 @@ public partial class AdministratorPage : Page
 
         Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState)); // Отбой
 
-        // Очередь расчета
+        CalculationQueue.Text  =  Convert.ToString(GET.Aggregate.ProcurementsQueueCount());// Очередь расчета
 
         Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
 
@@ -206,13 +206,9 @@ public partial class AdministratorPage : Page
 
     private void CalculationQueueButton_Click(object sender, RoutedEventArgs e)
     {
-        //ProcurementsEmployees = GET.View.ProcurementsEmployeesQueue();
-        //foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
-        //{
-        //    Procurements.Add(procurementsEmployee.Procurement);
-        //}
-        //if (Procurements != null)
-        //    MainFrame.Navigate(new SearchPage(Procurements));
+        Procurements = GET.View.ProcurementsQueue();
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
     }
 
     private void SendedButton_Click(object sender, RoutedEventArgs e)

@@ -392,13 +392,13 @@
                                     Представитель или Системный администратор
                                 </TextBlock>
                             </Label>
-                            <ComboBox x:Name="RepresentativeType" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <ComboBox x:Name="RepresentativeType" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" Height="55" DisplayMemberPath="Kind" IsEditable="True"/>
                             <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8">
                                 <TextBlock TextWrapping="Wrap">
                                     Пусконаладочные работы
                                 </TextBlock>
                             </Label>
-                            <ComboBox x:Name="CommissioningWork" Grid.Row="8" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <ComboBox x:Name="CommissioningWork" Grid.Row="8" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="55" DisplayMemberPath="Kind"/>
                             <Label Content="Количество мест" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="9"/>
                             <TextBox x:Name="PlaceCount" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="9" TextWrapping="Wrap" PreviewTextInput="Distance_PreviewTextInput"/>
                             <TextBox x:Name="FinesAndPennies" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" MaxHeight="150" Grid.Row="10" TextWrapping="Wrap"/>
@@ -444,7 +444,7 @@
                             <Label Content="Расчетчик" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
                             <CheckBox x:Name="AssemblyNeed" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
                             <Label Content="Сборка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
-                            <ComboBox x:Name="Minopttorg" Grid.Row="2" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Name"/>
+                            <ComboBox x:Name="Minopttorg" Grid.Row="2" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="55" DisplayMemberPath="Name"/>
                             <Label Content="Минпромторг" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2"/>
                         </Grid>
                     </ListView>
@@ -459,7 +459,7 @@
                                 <RowDefinition Height="65"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <ComboBox x:Name="LegalEntity" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Name"/>
+                            <ComboBox x:Name="LegalEntity" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="55" DisplayMemberPath="Name"/>
                             <Label Content="Юридическое лицо" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
                             <CheckBox x:Name="Applications" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
                             <Label Content="По заявкам" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
@@ -540,7 +540,7 @@
                             </Label>
                             <ComboBox x:Name="Purchaser" Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="FullName" SelectionChanged="Purchaser_SelectionChanged"/>
                             <Label Content="Закупка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
-                            <ComboBox x:Name="ShipmentPlan" Grid.Row="2" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <ComboBox x:Name="ShipmentPlan" Grid.Row="2" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="55" DisplayMemberPath="Kind"/>
                             <Label Content="План отгрузки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2"/>
                             <CheckBox x:Name="WaitingList" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
                             <Label Content="Лист ожиданий" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3"/>
@@ -549,13 +549,13 @@
                             <CheckBox x:Name="CalculatingCB" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
                             <Label Content="Закупка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="5"/>
                             <CheckBox x:Name="PurchasingCB" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
-                            <ComboBox x:Name="ExecutionState" Grid.Row="6" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <ComboBox x:Name="ExecutionState" Grid.Row="6" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="55" DisplayMemberPath="Kind"/>
                             <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6">
                                 <TextBlock TextWrapping="Wrap">
                                     Статус оформления обеспечения для Исполнения контракта
                                 </TextBlock>
                             </Label>
-                            <ComboBox x:Name="WarrantyState" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <ComboBox x:Name="WarrantyState" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="55" DisplayMemberPath="Kind"/>
                             <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7">
                                 <TextBlock TextWrapping="Wrap">
                                     Статус оформления обеспечения для Гарантийных обяз-в
@@ -724,7 +724,7 @@
                                 <RowDefinition Height="60"/>
                                 <RowDefinition Height="60"/>
                             </Grid.RowDefinitions>
-                            <ComboBox x:Name="SignedOriginal" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Card}" Height="55" DisplayMemberPath="Kind"/>
+                            <ComboBox x:Name="SignedOriginal" Grid.Row="0" HorizontalAlignment="Left" Grid.Column="1" Width="565" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="55" DisplayMemberPath="Kind"/>
                             <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0">
                                 <TextBlock TextWrapping="Wrap">
                                     Подписанные оригиналы документов

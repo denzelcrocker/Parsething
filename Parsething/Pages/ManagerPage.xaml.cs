@@ -88,6 +88,8 @@ namespace Parsething.Pages
             NextWeek.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Следующая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString();// Следующая неделя отгрузки
 
             AWeekLater.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Через одну", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString();// Отгрузка через неделю
+
+            Received.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Принят", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // Принят
         }
         public static List<ComponentCalculation>? ComponentCalculationsBy(string kind, int employeeId)
         {
@@ -185,12 +187,12 @@ namespace Parsething.Pages
 
         private void PartialAcceptanceButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            MessageBox.Show("В разработке");
         }
 
         private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("В разработке");
         }
 
         private void NotPaidButton_Click(object sender, RoutedEventArgs e)
@@ -250,17 +252,17 @@ namespace Parsething.Pages
 
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("В разработке");
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("В разработке");
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("В разработке");
         }
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
@@ -321,6 +323,17 @@ namespace Parsething.Pages
         private void WarrantyStateButton_Click(object sender, RoutedEventArgs e)
         {
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(null, GET.KindOf.WarrantyState, ((Employee)Application.Current.MainWindow.DataContext).Id);
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                Procurements.Add(procurementsEmployee.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ReceivedButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Принят", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 Procurements.Add(procurementsEmployee.Procurement);

@@ -89,7 +89,7 @@ namespace Parsething.Pages
         {
             InitializeComponent();
 
-            procurement = GET.Entry.ProcurementBy(procurement.Id);
+            procurement = GET.View.ProcurementBy(procurement.Id);
             if (procurement.IsProcurementBlocked == true)
             {
                 MessageBox.Show($"Данный тендер сейчас редактируется пользователем: \n {GET.View.Employees().Where(e => e.Id == procurement.ProcurementUserId).First().FullName}");
@@ -473,8 +473,12 @@ namespace Parsething.Pages
                 Procurement.DeadlineAndOrder = DeadlineAndOrder.Text;
                 if (RepresentativeType.SelectedItem != null)
                     Procurement.RepresentativeTypeId = ((RepresentativeType)RepresentativeType.SelectedItem).Id;
+                else
+                    Procurement.RepresentativeTypeId = null;
                 if (CommissioningWork.SelectedItem != null)
                     Procurement.CommissioningWorksId = ((CommisioningWork)CommissioningWork.SelectedItem).Id;
+                else
+                    Procurement.CommissioningWorksId = null;
                 if (PlaceCount.Text != "")
                     Procurement.PlaceCount = Convert.ToInt32(PlaceCount.Text);
                 Procurement.FinesAndPennies = FinesAndPennies.Text;
@@ -487,8 +491,12 @@ namespace Parsething.Pages
                 Procurement.AssemblyNeed = AssemblyNeed.IsChecked;
                 if (Minopttorg.SelectedItem != null)
                     Procurement.MinopttorgId = ((Minopttorg)Minopttorg.SelectedItem).Id;
+                else
+                    Procurement.MinopttorgId = null;
                 if (LegalEntity.SelectedItem != null)
                     Procurement.LegalEntityId = ((LegalEntity)LegalEntity.SelectedItem).Id;
+                else
+                    Procurement.LegalEntityId = null;
                 Procurement.Applications = Applications.IsChecked;
                 if (Bet.Text != "")
                 {
@@ -549,13 +557,19 @@ namespace Parsething.Pages
                 Procurement.ProtocolDate = ProtocolDate.SelectedDate;
                 if (ShipmentPlan.SelectedItem != null)
                     Procurement.ShipmentPlanId = ((ShipmentPlan)ShipmentPlan.SelectedItem).Id;
+                else
+                    Procurement.ShipmentPlanId = null;
                 Procurement.WaitingList = WaitingList.IsChecked;
                 Procurement.Calculating = CalculatingCB.IsChecked;
                 Procurement.Purchase = PurchasingCB.IsChecked;
                 if (ExecutionState.SelectedItem != null)
                     Procurement.ExecutionStateId = ((ExecutionState)ExecutionState.SelectedItem).Id;
+                else
+                    Procurement.ExecutionStateId = null;
                 if (WarrantyState.SelectedItem != null)
                     Procurement.WarrantyStateId = ((WarrantyState)WarrantyState.SelectedItem).Id;
+                else
+                    Procurement.WarrantyStateId = null;
                 Procurement.SigningDeadline = SigningDeadline.SelectedDate;
                 Procurement.SigningDate = SigningDate.SelectedDate;
                 Procurement.ConclusionDate = ConclusionDate.SelectedDate;
@@ -584,7 +598,9 @@ namespace Parsething.Pages
                     Procurement.Amount = null;
                 if (SignedOriginal.SelectedItem != null)
                     Procurement.SignedOriginalId = ((SignedOriginal)SignedOriginal.SelectedItem).Id;
-                Procurement.Judgment = Judgment.IsChecked;
+                else
+                    Procurement.SignedOriginalId = null;
+                    Procurement.Judgment = Judgment.IsChecked;
                 Procurement.Fas = FAS.IsChecked;
 
                 if (warningMessage != null)
@@ -592,7 +608,9 @@ namespace Parsething.Pages
                     MessageBox.Show($"Неверный формат полей: {warningMessage}");
                     return;
                 }
-                PULL.Procurement(Procurement);
+                if (PULL.Procurement(Procurement))
+                    MessageBox.Show("Сохранение успешно завершено");
+                
                 if (ProcurementState.Text != Historylog)
                 {
                     History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = ProcurementState.Text };

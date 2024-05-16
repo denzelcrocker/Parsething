@@ -169,7 +169,7 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource StatusIndicatorStyle}" Grid.Column="10"/>
+                                        <Ellipse Style="{StaticResource StatusIndicatorStyle}" Grid.Column="10" Margin="2,0,0,0"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="10"

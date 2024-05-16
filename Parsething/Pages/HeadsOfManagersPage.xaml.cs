@@ -97,6 +97,9 @@ namespace Parsething.Pages
             NextWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Следующая", GET.KindOf.ShipmentPlane));// Следующая неделя отгрузки
 
             AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
+
+            Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
+
         }
 
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
@@ -236,12 +239,19 @@ namespace Parsething.Pages
 
         private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("В разработке");
         }
 
         private void PartialAcceptanceButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("В разработке");
+        }
 
+        private void ReceivedButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Принят", GET.KindOf.ProcurementState);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
     }
 }
