@@ -145,7 +145,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
-                            <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Focusable="{TemplateBinding Focusable}" HorizontalContentAlignment="Stretch" Grid.Row="0" VerticalContentAlignment="Center" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Height="60" Grid.ColumnSpan="2" FontFamily="Noah" Foreground="Black"/>
+                            <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Focusable="{TemplateBinding Focusable}" HorizontalContentAlignment="Stretch" Grid.Row="0" VerticalContentAlignment="Center" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Height="55" Grid.ColumnSpan="2" FontFamily="Noah" Foreground="Black"/>
                             <Button x:Name="PART_Button" Grid.Column="1" Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Left" Margin="3,0,3,0" Grid.Row="0" Template="{StaticResource DropDownButtonTemplate}" VerticalAlignment="Top" Width="20"/>
                             <Grid x:Name="PART_DisabledVisual" Grid.Column="0" Grid.ColumnSpan="2" IsHitTestVisible="False" Opacity="0" Grid.Row="0">
                                 <Grid.ColumnDefinitions>

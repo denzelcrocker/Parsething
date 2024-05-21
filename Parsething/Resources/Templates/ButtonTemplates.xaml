@@ -58,7 +58,7 @@
         <Setter Property="Background" Value="{StaticResource SumbitAction.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource SumbitAction.Static.BorderBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource SumbitAction.Static.Foreground}"/>
-        <Setter Property="Width" Value="250"/>
+        <Setter Property="Width" Value="230"/>
         <Setter Property="Height" Value="70"/>
         <Setter Property="Margin" Value="0,40,0,0"/>
         <Setter Property="Padding" Value="0,16"/>
