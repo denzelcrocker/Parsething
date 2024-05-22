@@ -29,19 +29,21 @@ namespace Parsething.Classes
 
         public void ClearData()
         {
-            ProcurementId = 0;
+            ProcurementId = null;
             ProcurementNumber = null;
             Law = null;
             ProcurementState = null;
             INN = null;
             Employee = null;
+            OrganizationName = null;
         }
 
-        public int ProcurementId { get; set; }
+        public string? ProcurementId { get; set; }
         public string? ProcurementNumber { get; set; }
         public string? Law { get; set; }
         public string? ProcurementState { get; set; }
         public string? INN { get; set; }
         public string? Employee { get; set; }
+        public string? OrganizationName { get; set; }
     }
 }

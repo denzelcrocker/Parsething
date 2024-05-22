@@ -247,6 +247,8 @@ namespace Parsething.Pages
                     StartDate.Text = $"{Procurement.StartDate} ({Procurement.TimeZone.Offset})";
                 if (Procurement.Deadline != null && Procurement.TimeZone != null)
                     DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";
+                if (Procurement.ResultDate != null)
+                    ResultDate.Text = $"{Procurement.ResultDate}";
                 InitialPrice.Text = Procurement.InitialPrice.ToString();
                 if(Procurement.Organization != null)
                 {
@@ -337,6 +339,7 @@ namespace Parsething.Pages
                 ContractAmount.Text = Procurement.ContractAmount.ToString();
                 ReserveContractAmount.Text = Procurement.ReserveContractAmount.ToString();
                 ProtocolDate.SelectedDate = Procurement.ProtocolDate;
+                CalculatingAmount.Text = Procurement.CalculatingAmount.ToString();
                 foreach (Employee employee in Manager.ItemsSource)
                     if (ProcurementsEmployeeManagers != null)
                         if (employee.Id == ProcurementsEmployeeManagers.EmployeeId)
@@ -441,6 +444,9 @@ namespace Parsething.Pages
                 Procurement.Id = Convert.ToInt32(Id.Text);
                 if (ProcurementState.SelectedItem != null)
                     Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
+                Procurement.Securing = Securing.Text;
+                Procurement.Enforcement = Enforcement.Text;
+                Procurement.Warranty = Warranty.Text;
                 if (Distance.Text != "" && Regions.Text != "")
                 {
                     ProcurementRegion[0].Title = Regions.Text;

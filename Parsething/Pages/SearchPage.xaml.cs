@@ -39,9 +39,22 @@ namespace Parsething.Pages
         {
             InitializeComponent();
 
-            if (SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementNumber != null && SearchCriteria.Instance.Law != null && SearchCriteria.Instance.ProcurementState != null && SearchCriteria.Instance.INN != null && SearchCriteria.Instance.Employee != null)
+            if (!string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementId) ||
+                !string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementNumber) ||
+                !string.IsNullOrEmpty(SearchCriteria.Instance.Law) ||
+                !string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementState) ||
+                !string.IsNullOrEmpty(SearchCriteria.Instance.INN) ||
+                !string.IsNullOrEmpty(SearchCriteria.Instance.Employee) ||
+                !string.IsNullOrEmpty(SearchCriteria.Instance.OrganizationName))
             {
-                procurements = GET.View.ProcurementsBy(SearchCriteria.Instance.ProcurementId, SearchCriteria.Instance.ProcurementNumber, SearchCriteria.Instance.Law, SearchCriteria.Instance.ProcurementState, SearchCriteria.Instance.INN, SearchCriteria.Instance.Employee);
+                procurements = GET.View.ProcurementsBy(
+                    SearchCriteria.Instance.ProcurementId,
+                    SearchCriteria.Instance.ProcurementNumber,
+                    SearchCriteria.Instance.Law,
+                    SearchCriteria.Instance.ProcurementState,
+                    SearchCriteria.Instance.INN,
+                    SearchCriteria.Instance.Employee,
+                    SearchCriteria.Instance.OrganizationName);
                 SearchLV.ItemsSource = procurements;
             }
             else if (procurements != null)
@@ -57,18 +70,29 @@ namespace Parsething.Pages
             ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
             Procurements = procurements;
-
+            RestoreSearchCriteria();
+        }
+        private void RestoreSearchCriteria()
+        {
+            SearchId.Text = SearchCriteria.Instance.ProcurementId;
+            SearchNumber.Text = SearchCriteria.Instance.ProcurementNumber;
+            Law.SelectedItem = Laws?.FirstOrDefault(l => l.Number == SearchCriteria.Instance.Law);
+            ProcurementState.SelectedItem = ProcurementStates?.FirstOrDefault(ps => ps.Kind == SearchCriteria.Instance.ProcurementState);
+            SearchINN.Text = SearchCriteria.Instance.INN;
+            Employee.SelectedItem = Employees?.FirstOrDefault(e => e.FullName  == SearchCriteria.Instance.Employee);
+            OrganizationName.Text = SearchCriteria.Instance.OrganizationName;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
         }
+
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
             Procurement? procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement, Procurements,true));
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement, Procurements, true));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
@@ -83,34 +107,41 @@ namespace Parsething.Pages
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            // Очистка предыдущих критериев поиска
             SearchCriteria.Instance.ClearData();
 
             SearchLV.ItemsSource = null;
-            if(FoundProcurements != null)
-            FoundProcurements.Clear();
-            int id = 0;
-            if(SearchId.Text != "")
-            id = Convert.ToInt32(SearchId.Text);
+            FoundProcurements?.Clear();
+
+            string id = SearchId.Text;
             string number = SearchNumber.Text;
             string law = Law.Text;
             string procurementState = ProcurementState.Text;
             string inn = SearchINN.Text;
             string employee = Employee.Text;
+            string organizationName = OrganizationName.Text;
 
-            if (id == 0 && number == "" && law == "" && procurementState == "" && inn == "" && employee == "")
-            { }
+            if (string.IsNullOrEmpty(id) && string.IsNullOrEmpty(number) && string.IsNullOrEmpty(law) &&
+                string.IsNullOrEmpty(procurementState) && string.IsNullOrEmpty(inn) &&
+                string.IsNullOrEmpty(employee) && string.IsNullOrEmpty(organizationName))
+            {
+                // Ничего не делать, если все поля пустые
+            }
             else
             {
-                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee);
+                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName);
                 SearchLV.ItemsSource = FoundProcurements;
                 Procurements = FoundProcurements;
             }
 
+            // Сохранение введенных критериев поиска
             SearchCriteria.Instance.ProcurementId = id;
             SearchCriteria.Instance.ProcurementNumber = number;
             SearchCriteria.Instance.Law = law;
             SearchCriteria.Instance.ProcurementState = procurementState;
             SearchCriteria.Instance.INN = inn;
+            SearchCriteria.Instance.Employee = employee;
+            SearchCriteria.Instance.OrganizationName = organizationName;
         }
 
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -125,7 +156,7 @@ namespace Parsething.Pages
         {
             Procurement? procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement,Procurements,true,true));
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, true, true));
         }
 
         private void Purchase_Click(object sender, RoutedEventArgs e)
@@ -134,7 +165,7 @@ namespace Parsething.Pages
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, false, true));
         }
-        
+
         private void OverallInfo_Click(object sender, RoutedEventArgs e)
         {
             decimal? overallAmount = 0;
@@ -143,7 +174,7 @@ namespace Parsething.Pages
             decimal? profitReal = 0;
             decimal? calculatingAmount = 0;
             decimal? purchaseAmount = 0;
-            
+
             OverallInfoPopUp.IsOpen = !OverallInfoPopUp.IsOpen;
             if (Procurements != null)
             {
@@ -174,9 +205,10 @@ namespace Parsething.Pages
                 {
                     AvgCalculationProfit.Text = $"{profitCalculate} р. ({(double?)((overallAmountCalculate - calculatingAmount) / calculatingAmount * 100):N1} %)";
                     AvgPurchaseProfit.Text = $"{profitReal} р. ({(double?)((overallAmount - purchaseAmount) / purchaseAmount * 100):N1} %)";
-                }   
+                }
             }
         }
+
         private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
         {
             Procurement? procurement = (sender as Button)?.DataContext as Procurement;
@@ -186,17 +218,28 @@ namespace Parsething.Pages
                 assemblyMap.Show();
             }
         }
-        List<Procurement> procurements;
+
         private void SupplyMonitoringButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Procurement> procurements;
             if (SearchLV.Items.Count > 0)
             {
-                procurements = SearchLV.ItemsSource.Cast<Procurement>().ToList();
+                var procurements = SearchLV.ItemsSource.Cast<Procurement>().ToList();
                 _ = MainFrame.Navigate(new SupplyMonitoringPage(procurements));
             }
             else
+            {
                 MessageBox.Show("Список тендеров пуст!");
+            }
+        }
+
+        private void NavigateToEPlatformURL_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null && procurement.Platform.Address != null)
+            {
+                string url = procurement.Platform.Address.ToString();
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
         }
     }
 }
