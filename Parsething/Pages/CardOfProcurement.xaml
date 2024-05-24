@@ -359,6 +359,7 @@
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
                             <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0">
                                 <TextBlock TextWrapping="Wrap">
@@ -430,6 +431,8 @@
                             <TextBox x:Name="INN" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="15" TextWrapping="Wrap"/>
                             <Label Content="Номер контракта" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="16"/>
                             <TextBox x:Name="ContractNumber" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="16" TextWrapping="Wrap"/>
+                            <Label Content="Электронная почта" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="17"/>
+                            <TextBox x:Name="OrganizationEmail" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="17" TextWrapping="Wrap"/>
                         </Grid>
                     </ListView>
                     <ListView x:Name="CalculatingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
@@ -487,6 +490,8 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="50"/>
+                                <RowDefinition Height="50"/>
+
                             </Grid.RowDefinitions>
                             <Label Content="Ставка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
                             <TextBox x:Name="Bet" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="0" TextWrapping="Wrap"/>
@@ -512,6 +517,8 @@
                             <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ProtocolDate" Grid.Row="4" Grid.Column="1"  Height="55" />
                             <Label Content="Сумма расчета" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="5"/>
                             <TextBox x:Name="CalculatingAmount" Style="{DynamicResource SingleLineInput.CardOfProcurement}"  Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" IsReadOnly="True"/>
+                            <Label Content="Ответственный за приемку" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6"/>
+                            <TextBox x:Name="HeadOfAcceptance" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="6" TextWrapping="Wrap"/>
                         </Grid>
                     </ListView>
                     <ListView x:Name="SupplyLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
@@ -528,6 +535,10 @@
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
@@ -559,66 +570,74 @@
                             <CheckBox x:Name="CalculatingCB" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
                             <Label Content="Закупка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="5"/>
                             <CheckBox x:Name="PurchasingCB" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
-                            <ComboBox x:Name="ExecutionState" Grid.Row="6" HorizontalAlignment="Left" Grid.Column="1" Width="615" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="45" DisplayMemberPath="Kind"/>
+                            <ComboBox x:Name="ExecutionState" Grid.Row="6" HorizontalAlignment="Left" Grid.Column="1" Width="615" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="45" DisplayMemberPath="Kind" SelectionChanged="ExecutionState_SelectionChanged"/>
                             <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6">
                                 <TextBlock TextWrapping="Wrap">
                                     Статус оформления обеспечения для Исполнения контракта
                                 </TextBlock>
                             </Label>
-                            <ComboBox x:Name="WarrantyState" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="615" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="45" DisplayMemberPath="Kind"/>
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7">
+                            <Label x:Name="ExecutionPriceLabel" Content="Стоимость БГ" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7"/>
+                            <TextBox x:Name="ExecutionPrice" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="7" TextWrapping="Wrap"/>
+                            <Label x:Name="ExecutionDateLabel" Content="Дата возврата" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8"/>
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ExecutionDate" Grid.Row="8" Grid.Column="1"  Height="60" />
+                            <ComboBox x:Name="WarrantyState" Grid.Row="9" HorizontalAlignment="Left" Grid.Column="1" Width="615" Style="{DynamicResource ComboBoxBase.Regions}" IsEditable="True" Height="45" DisplayMemberPath="Kind" SelectionChanged="WarrantyState_SelectionChanged"/>
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="9">
                                 <TextBlock TextWrapping="Wrap">
                                     Статус оформления обеспечения для Гарантийных обяз-в
                                 </TextBlock>
                             </Label>
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8">
+                            <Label x:Name="WarrantyPriceLabel" Content="Стоимость БГ" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="10"/>
+                            <TextBox x:Name="WarrantyPrice" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="10" TextWrapping="Wrap"/>
+                            <Label x:Name="WarrantyDateLabel" Content="Дата возврата" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="11"/>
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="WarrantyDate" Grid.Row="11" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="12">
                                 <TextBlock TextWrapping="Wrap">
                                     Срок подписания контракта
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="SigningDeadline" Grid.Row="8" Grid.Column="1"  Height="60" />
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="9">
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="SigningDeadline" Grid.Row="12" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="13">
                                 <TextBlock TextWrapping="Wrap">
                                     Дата подписания контракта нами 
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="SigningDate" Grid.Row="9" Grid.Column="1"  Height="60" />
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="10">
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="SigningDate" Grid.Row="13" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="14">
                                 <TextBlock TextWrapping="Wrap">
                                     Дата заключения контракта Заказчиком
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ConclusionDate" Grid.Row="10" Grid.Column="1"  Height="60" />
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="11">
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ConclusionDate" Grid.Row="14" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="15">
                                 <TextBlock TextWrapping="Wrap">
                                     Максимальная дата поставки по договору
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ActualDeliveryDate" Grid.Row="11" Grid.Column="1"  Height="60" />
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="12">
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ActualDeliveryDate" Grid.Row="15" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="16">
                                 <TextBlock TextWrapping="Wrap">
                                     Дата фактической отправки
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="DepartureDate" Grid.Row="12" Grid.Column="1"  Height="60" />
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="13">
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="DepartureDate" Grid.Row="16" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="17">
                                 <TextBlock TextWrapping="Wrap">
                                     Дата фактической поставки
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="DeliveryDate" Grid.Row="13" Grid.Column="1"  Height="60" />
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="14">
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="DeliveryDate" Grid.Row="17" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="18">
                                 <TextBlock TextWrapping="Wrap">
                                     Максимальная дата окончания приемки
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="MaxAcceptanceDate" Grid.Row="14" Grid.Column="1"  Height="60" />
-                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="15">
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="MaxAcceptanceDate" Grid.Row="18" Grid.Column="1"  Height="60" />
+                            <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="19">
                                 <TextBlock TextWrapping="Wrap">
                                     Максимальная дата окончания исправления недостатков
                                 </TextBlock>
                             </Label>
-                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="CorrectionDate" Grid.Row="15" Grid.Column="1"  Height="60" />
+                            <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="CorrectionDate" Grid.Row="19" Grid.Column="1"  Height="60" />
                         </Grid>
                     </ListView>
                     <ListView x:Name="PaymentLV" Grid.Column="2" Grid.Row="2" Visibility="Visible" Style="{DynamicResource ListView}" Margin="30,30,30,80">

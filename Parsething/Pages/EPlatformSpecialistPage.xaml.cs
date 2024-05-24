@@ -80,6 +80,8 @@ namespace Parsething.Pages
             Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState)); // Отклонены
 
             Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
+
+            WonPartOne.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState)); // Выиграны 1ч
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -100,6 +102,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void CalculatedButton_Click(object sender, RoutedEventArgs e)
@@ -120,6 +123,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void RetreatCalculateButton_Click(object sender, RoutedEventArgs e)
@@ -140,6 +144,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void DrawUpButton_Click(object sender, RoutedEventArgs e)
@@ -160,6 +165,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void IssuedButton_Click(object sender, RoutedEventArgs e)
@@ -180,6 +186,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void ForSendButton_Click(object sender, RoutedEventArgs e)
@@ -200,6 +207,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
@@ -220,6 +228,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void BargainingButton_Click(object sender, RoutedEventArgs e)
@@ -240,6 +249,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
@@ -260,6 +270,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void CancellationButton_Click(object sender, RoutedEventArgs e)
@@ -280,6 +291,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.LightGray;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void RejectedButton_Click(object sender, RoutedEventArgs e)
@@ -300,6 +312,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.LightGray;
             LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
 
         private void LostButton_Click(object sender, RoutedEventArgs e)
@@ -320,7 +333,30 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.LightGray;
+            WonPartOneButton.Background = Brushes.Transparent;
         }
+
+        private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState);
+            if (Procurements != null)
+                ProcurementsListView.ItemsSource = Procurements;
+
+            NewButton.Background = Brushes.Transparent;
+            CalculatedButton.Background = Brushes.Transparent;
+            RetreatCalculateButton.Background = Brushes.Transparent;
+            DrawUpButton.Background = Brushes.Transparent;
+            IssuedButton.Background = Brushes.Transparent;
+            ForSendButton.Background = Brushes.Transparent;
+            OverdueIssuedButton.Background = Brushes.Transparent;
+            BargainingButton.Background = Brushes.Transparent;
+            OverdueSendedButton.Background = Brushes.Transparent;
+            CancellationButton.Background = Brushes.Transparent;
+            RejectedButton.Background = Brushes.Transparent;
+            LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.LightGray;
+        }
+
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
@@ -498,5 +534,6 @@ namespace Parsething.Pages
                 }
             }
         }
+
     }
 }

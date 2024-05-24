@@ -1,4 +1,5 @@
 ﻿using DatabaseLibrary.Entities.ProcurementProperties;
+using Microsoft.Windows.Themes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -306,6 +307,7 @@ namespace Parsething.Pages
                 GuaranteePeriod.Text = Procurement.GuaranteePeriod;
                 INN.Text = Procurement.Inn;
                 ContractNumber.Text = Procurement.ContractNumber;
+                OrganizationEmail.Text = Procurement.OrganizationEmail;
                 foreach (Employee employee in Calculator.ItemsSource)
                     if(ProcurementsEmployeeCalculators != null)
                     if (employee.Id == ProcurementsEmployeeCalculators.EmployeeId)
@@ -340,6 +342,7 @@ namespace Parsething.Pages
                 ReserveContractAmount.Text = Procurement.ReserveContractAmount.ToString();
                 ProtocolDate.SelectedDate = Procurement.ProtocolDate;
                 CalculatingAmount.Text = Procurement.CalculatingAmount.ToString();
+                HeadOfAcceptance.Text = Procurement.HeadOfAcceptance;
                 foreach (Employee employee in Manager.ItemsSource)
                     if (ProcurementsEmployeeManagers != null)
                         if (employee.Id == ProcurementsEmployeeManagers.EmployeeId)
@@ -369,12 +372,36 @@ namespace Parsething.Pages
                         ExecutionState.SelectedItem = executionState;
                         break;
                     }
+                ExecutionPrice.Text = Procurement.ExecutionPrice.ToString();
+                ExecutionDate.Text = Procurement.ExecutionDate.ToString();
+                if (ExecutionState.Text == null || ExecutionState.Text == "Не требуется" || ExecutionState.Text == "")
+                {
+                    ExecutionPrice.IsEnabled = false;
+                    ExecutionPriceLabel.Foreground = Gray;
+                    ExecutionDateLabel.Foreground = Gray;
+                }
+                else if (ExecutionState.Text != "Деньги (Возвратные)")
+                {
+                    ExecutionDateLabel.Foreground = Gray;
+                }
                 foreach (WarrantyState warrantyState in WarrantyState.ItemsSource)
                     if (warrantyState.Id == Procurement.WarrantyStateId)
                     {
                         WarrantyState.SelectedItem = warrantyState;
                         break;
                     }
+                WarrantyPrice.Text = Procurement.WarrantyPrice.ToString();
+                WarrantyDate.Text = Procurement.WarrantyDate.ToString();
+                if (WarrantyState.Text == null || WarrantyState.Text == "Не требуется" || (WarrantyState.Text == ""))
+                {
+                    WarrantyPrice.IsEnabled = false;
+                    WarrantyPriceLabel.Foreground = Gray;
+                    WarrantyDateLabel.Foreground = Gray;
+                }
+                else if (WarrantyState.Text != "Деньги (Возвратные)")
+                {
+                    WarrantyDateLabel.Foreground = Gray;
+                }
                 SigningDeadline.SelectedDate = Procurement.SigningDeadline;
                 SigningDate.SelectedDate = Procurement.SigningDate;
                 ConclusionDate.SelectedDate = Procurement.ConclusionDate;
@@ -407,7 +434,50 @@ namespace Parsething.Pages
 
             Historylog = ProcurementState.Text;
         }
+        private void ExecutionState_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ExecutionState.SelectedItem != null)
+            {
+                if (((ExecutionState)ExecutionState.SelectedItem).Kind == null || ((ExecutionState)ExecutionState.SelectedItem).Kind == "Не требуется" || ((ExecutionState)ExecutionState.SelectedItem).Kind == "")
+                {
+                    ExecutionPrice.IsEnabled = false;
+                    ExecutionPriceLabel.Foreground = Gray;
+                    ExecutionDateLabel.Foreground = Gray;
+                }
+                else if (((ExecutionState)ExecutionState.SelectedItem).Kind != "Деньги (Возвратные)")
+                {
+                    ExecutionPriceLabel.Foreground = Red;
+                    ExecutionDateLabel.Foreground = Gray;
+                }
+                else
+                {
+                    ExecutionPrice.IsEnabled = true;
+                    ExecutionPriceLabel.Foreground = Red;
+                    ExecutionDateLabel.Foreground = Red;
+                }
+            }
+        }
 
+        private void WarrantyState_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((WarrantyState)WarrantyState.SelectedItem).Kind == null || ((WarrantyState)WarrantyState.SelectedItem).Kind == "Не требуется" || ((WarrantyState)WarrantyState.SelectedItem).Kind == "")
+            {
+                WarrantyPrice.IsEnabled = true;
+                WarrantyPriceLabel.Foreground = Gray;
+                WarrantyDateLabel.Foreground = Gray;
+            }
+            else if (((WarrantyState)WarrantyState.SelectedItem).Kind != "Деньги (Возвратные)")
+            {
+                WarrantyPriceLabel.Foreground = Red;
+                WarrantyDateLabel.Foreground = Gray;
+            }
+            else
+            {
+                WarrantyPrice.IsEnabled = true;
+                WarrantyPriceLabel.Foreground = Red;
+                WarrantyDateLabel.Foreground = Red;
+            }
+        }
         private void Method_ToolTipOpening(object sender, ToolTipEventArgs e)
         {
             MethodToolTip.Text = Method.Text;
@@ -494,6 +564,7 @@ namespace Parsething.Pages
                 Procurement.GuaranteePeriod = GuaranteePeriod.Text;
                 Procurement.Inn = INN.Text;
                 Procurement.ContractNumber = ContractNumber.Text;
+                Procurement.OrganizationEmail = OrganizationEmail.Text;
                 Procurement.AssemblyNeed = AssemblyNeed.IsChecked;
                 if (Minopttorg.SelectedItem != null)
                     Procurement.MinopttorgId = ((Minopttorg)Minopttorg.SelectedItem).Id;
@@ -561,6 +632,7 @@ namespace Parsething.Pages
                 else
                     Procurement.ReserveContractAmount = null;
                 Procurement.ProtocolDate = ProtocolDate.SelectedDate;
+                Procurement.HeadOfAcceptance = HeadOfAcceptance.Text;
                 if (ShipmentPlan.SelectedItem != null)
                     Procurement.ShipmentPlanId = ((ShipmentPlan)ShipmentPlan.SelectedItem).Id;
                 else
@@ -572,10 +644,40 @@ namespace Parsething.Pages
                     Procurement.ExecutionStateId = ((ExecutionState)ExecutionState.SelectedItem).Id;
                 else
                     Procurement.ExecutionStateId = null;
+                if (ExecutionPrice.Text != "")
+                {
+                    decimal ExecutionPriceDecimal;
+                    if (decimal.TryParse(ExecutionPrice.Text, out ExecutionPriceDecimal))
+                    {
+                        Procurement.ExecutionPrice = ExecutionPriceDecimal;
+                    }
+                    else
+                    {
+                        warningMessage += " Стоимость БГ";
+                    }
+                }
+                else
+                    Procurement.ExecutionPrice = null;
+                Procurement.ExecutionDate = ExecutionDate.SelectedDate;
                 if (WarrantyState.SelectedItem != null)
                     Procurement.WarrantyStateId = ((WarrantyState)WarrantyState.SelectedItem).Id;
                 else
                     Procurement.WarrantyStateId = null;
+                if (WarrantyPrice.Text != "")
+                {
+                    decimal WarrantyPriceDecimal;
+                    if (decimal.TryParse(WarrantyPrice.Text, out WarrantyPriceDecimal))
+                    {
+                        Procurement.WarrantyPrice = WarrantyPriceDecimal;
+                    }
+                    else
+                    {
+                        warningMessage += " Стоимость БГ";
+                    }
+                }
+                else
+                    Procurement.WarrantyPrice = null;
+                Procurement.WarrantyDate = WarrantyDate.SelectedDate;
                 Procurement.SigningDeadline = SigningDeadline.SelectedDate;
                 Procurement.SigningDate = SigningDate.SelectedDate;
                 Procurement.ConclusionDate = ConclusionDate.SelectedDate;
@@ -1127,5 +1229,7 @@ namespace Parsething.Pages
             PaymentUL.Fill = Red;
             PaymentLV.Visibility = Visibility.Visible;
         }
+
+        
     }
 }

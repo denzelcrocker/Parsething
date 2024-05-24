@@ -401,35 +401,40 @@ namespace Parsething.Functions
 
         private static void ButtonDeleteDivision_Click(object sender, RoutedEventArgs e)
         {
-            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно удалить?", "Удаление", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Procurement = GET.Entry.ProcurementBy(Procurement.Id);
 
-            if (IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
-            {
-                int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
-                for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
+                if (IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
                 {
-                    if ((ComponentCalculations[i].Id == idToDelete && ComponentCalculations[i].IsHeader == true) || (ComponentCalculations[i].ParentName == idToDelete && ComponentCalculations[i].IsHeader == false))
+                    int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
+                    for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
                     {
-                        ComponentCalculations.RemoveAt(i);
+                        if ((ComponentCalculations[i].Id == idToDelete && ComponentCalculations[i].IsHeader == true) || (ComponentCalculations[i].ParentName == idToDelete && ComponentCalculations[i].IsHeader == false))
+                        {
+                            ComponentCalculations.RemoveAt(i);
+                        }
+                    }
+                    DELETE.ComponentCalculation(idToDelete);
+                }
+                else if (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
+                {
+                    int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
+                    for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
+                    {
+                        if ((ComponentCalculations[i].Id == idToDelete && ComponentCalculations[i].IsHeader == true) || (ComponentCalculations[i].ParentName == idToDelete && ComponentCalculations[i].IsHeader == false))
+                        {
+                            ComponentCalculations[i].IsDeleted = true;
+                            PULL.ComponentCalculation(ComponentCalculations[i]);
+                            ComponentCalculations.RemoveAt(i);
+                            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+                        }
                     }
                 }
-                DELETE.ComponentCalculation(idToDelete);
+                UpdateListView();
             }
-            else if (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
-            {
-                int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
-                for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
-                {
-                    if ((ComponentCalculations[i].Id == idToDelete && ComponentCalculations[i].IsHeader == true) || (ComponentCalculations[i].ParentName == idToDelete && ComponentCalculations[i].IsHeader == false))
-                    {
-                        ComponentCalculations[i].IsDeleted = true;
-                        PULL.ComponentCalculation(ComponentCalculations[i]);
-                        ComponentCalculations.RemoveAt(i);
-                        ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
-                    }
-                }
-            }
-            UpdateListView();
+            else if (messageBoxResult == MessageBoxResult.No) { }
         }
 
         private static void ButtonAddPosition_Click(object sender, RoutedEventArgs e)
@@ -456,37 +461,42 @@ namespace Parsething.Functions
         }
         private static void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
-            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно удалить?", "Удаление", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Procurement = GET.Entry.ProcurementBy(Procurement.Id);
 
-            if (IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
-            {
-                int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
-                for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
+                if (IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
                 {
-                    if (ComponentCalculations[i].Id == idToDelete)
+                    int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
+                    for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
                     {
-                        ComponentCalculations.RemoveAt(i);
-                        break;
+                        if (ComponentCalculations[i].Id == idToDelete)
+                        {
+                            ComponentCalculations.RemoveAt(i);
+                            break;
+                        }
+                    }
+                    DELETE.ComponentCalculation(idToDelete);
+                }
+                else if (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
+                {
+                    int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
+                    for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
+                    {
+                        if (ComponentCalculations[i].Id == idToDelete)
+                        {
+                            ComponentCalculations[i].IsDeleted = true;
+                            PULL.ComponentCalculation(ComponentCalculations[i]);
+                            ComponentCalculations.RemoveAt(i);
+                            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+                            break;
+                        }
                     }
                 }
-                DELETE.ComponentCalculation(idToDelete);
+                UpdateListView();
             }
-            else if (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
-            {
-                int idToDelete = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]);
-                for (int i = ComponentCalculations.Count - 1; i >= 0; i--)
-                {
-                    if (ComponentCalculations[i].Id == idToDelete)
-                    {
-                        ComponentCalculations[i].IsDeleted = true;
-                        PULL.ComponentCalculation(ComponentCalculations[i]);
-                        ComponentCalculations.RemoveAt(i);
-                        ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
-                        break;
-                    }
-                }
-            }
-            UpdateListView();
+            else { }
         }
         public static void ButtonAddDivision_Click(object sender, RoutedEventArgs e, Procurement procurement)
         {

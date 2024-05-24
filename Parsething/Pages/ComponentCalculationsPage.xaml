@@ -48,7 +48,6 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="№ Резерва" Grid.Column="6" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="7" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Карта сборки" Grid.Column="8" />
-
                     </Grid>
                     <Grid Grid.Row="1" x:Name="ColumnsNamesPurchase" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
