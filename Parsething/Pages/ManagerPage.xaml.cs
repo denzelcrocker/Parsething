@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages
 {
@@ -53,7 +54,7 @@ namespace Parsething.Pages
 
             // Частичная отправка
 
-            // На исправлении
+            OnTheFix.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Приемка", GET.KindOf.CorrectionDate, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString();// На исправлении
 
             NotPaidOnTime.Text = GET.Aggregate.ProcurementsEmployeesCountBy(false, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // В срок
 
@@ -69,7 +70,7 @@ namespace Parsething.Pages
 
             WarrantyState.Text = GET.Aggregate.ProcurementsEmployeesCountBy(null, GET.KindOf.WarrantyState, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // БГ гарантии
             
-            ComponentCalculationsProblem = ComponentCalculationsBy("Проблема", ((Employee)Application.Current.MainWindow.DataContext).Id).Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
+            ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема", ((Employee)Application.Current.MainWindow.DataContext).Id).Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
             if (ComponentCalculationsProblem != null)
                 Problem.Text = ComponentCalculationsProblem.Count.ToString();
 
@@ -90,6 +91,14 @@ namespace Parsething.Pages
             AWeekLater.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Через одну", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString();// Отгрузка через неделю
 
             Received.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Принят", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // Принят
+
+            ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsEmployeesCountBy(true, KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // Проверка расчета проведена
+
+            ApproveCalculatingNo.Text = GET.Aggregate.ProcurementsEmployeesCountBy(false, KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // Проверка расчета не проведена
+
+            ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsEmployeesCountBy(true, KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // Проверка закупки проведена
+
+            ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsEmployeesCountBy(false, KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // Проверка закупки не проведена
         }
         public static List<ComponentCalculation>? ComponentCalculationsBy(string kind, int employeeId)
         {
@@ -192,7 +201,13 @@ namespace Parsething.Pages
 
         private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("В разработке");
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Приемка", GET.KindOf.CorrectionDate, ((Employee)Application.Current.MainWindow.DataContext).Id);
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                Procurements.Add(procurementsEmployee.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void NotPaidButton_Click(object sender, RoutedEventArgs e)
@@ -334,6 +349,50 @@ namespace Parsething.Pages
         private void ReceivedButton_Click(object sender, RoutedEventArgs e)
         {
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Принят", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                Procurements.Add(procurementsEmployee.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApproveCalculatingYesButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, GET.KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id);
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                Procurements.Add(procurementsEmployee.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApproveCalculatingNoButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, GET.KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id);
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                Procurements.Add(procurementsEmployee.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, GET.KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id);
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                Procurements.Add(procurementsEmployee.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, GET.KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 Procurements.Add(procurementsEmployee.Procurement);

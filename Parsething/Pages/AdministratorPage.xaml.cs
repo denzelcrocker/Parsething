@@ -161,6 +161,14 @@ public partial class AdministratorPage : Page
 
         AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
+        ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Calculating).ToString(); // Проверка расчета проведена
+        
+        ApproveCalculatingNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Calculating).ToString(); // Проверка расчета не проведена
+
+        ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Purchase).ToString(); // Проверка закупки проведена
+        
+        ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
+
         Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
 
         WebClient client = new WebClient();
@@ -177,7 +185,7 @@ public partial class AdministratorPage : Page
 
         // Частичная отправка
 
-        // На исправлении
+        OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", KindOf.CorrectionDate)); // На исправлении
 
         NotPaidOnTime.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(false)); // В срок
 
@@ -364,6 +372,33 @@ public partial class AdministratorPage : Page
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }
+    private void ApproveCalculatingYesButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Calculating);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ApproveCalculatingNoButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Calculating);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Purchase);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+
+    private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
 
     private void ReceivedButton_Click(object sender, RoutedEventArgs e)
     {
@@ -375,6 +410,12 @@ public partial class AdministratorPage : Page
     private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
     {
         Procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState);
+        if (Procurements != null)
+            MainFrame.Navigate(new SearchPage(Procurements));
+    }
+    private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
+    {
+        Procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.CorrectionDate);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }
@@ -442,6 +483,8 @@ public partial class AdministratorPage : Page
             MainFrame.Navigate(new SearchPage(procurements));
         }
     }
+
+    
 }
 public static class StringExtensions
 {

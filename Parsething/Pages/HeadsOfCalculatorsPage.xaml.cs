@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages
 {
@@ -47,7 +48,7 @@ namespace Parsething.Pages
 
             Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState)); // Отбой
 
-            // Очередь расчета
+            CalculationQueue.Text = Convert.ToString(GET.Aggregate.ProcurementsQueueCount());// Очередь расчета
 
             New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState)); // Новый
 
@@ -100,7 +101,15 @@ namespace Parsething.Pages
 
             WonByApplications.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)); // По заявкам
 
-            WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)).ToString(); // Выиграны всего
+            WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)).ToString(); // Выиграны всег
+
+            ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Calculating).ToString(); // Проверка расчета проведена
+
+            ApproveCalculatingNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Calculating).ToString(); // Проверка расчета не проведена
+
+            ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Purchase).ToString(); // Проверка закупки проведена
+
+            ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -161,7 +170,9 @@ namespace Parsething.Pages
 
         private void CalculationQueueButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Procurements = GET.View.ProcurementsQueue();
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
@@ -188,6 +199,34 @@ namespace Parsething.Pages
         private void WonByOverAllButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ApproveCalculatingYesButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Calculating);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApproveCalculatingNoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Calculating);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Purchase);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
     }
 }

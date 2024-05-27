@@ -1,10 +1,15 @@
-﻿namespace Parsething.Windows;
+﻿using System.Configuration;
+
+namespace Parsething.Windows;
 
 public partial class AutorizationWindow : Window
 {
-    public AutorizationWindow() =>
+    public AutorizationWindow()
+    {
         InitializeComponent();
-
+        UserName.Text = ConfigurationManager.AppSettings["Username"];
+        Password.Password = ConfigurationManager.AppSettings["Password"];
+    }
     public Employee? Employee { get; private set; }
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) =>
@@ -40,6 +45,15 @@ public partial class AutorizationWindow : Window
             PUT.History(history);
         }
         else _ = MessageBox.Show("Вы ввели неверные данные!");
+
+        string username = UserName.Text;
+        string password = Password.Password;
+        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        config.AppSettings.Settings["Username"].Value = username;
+        config.AppSettings.Settings["Password"].Value = password;
+        config.Save(ConfigurationSaveMode.Modified);
+
+        ConfigurationManager.RefreshSection("appSettings");
     }
 
     private void Password_TextInput(object sender, TextCompositionEventArgs e) =>

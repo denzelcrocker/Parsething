@@ -42,6 +42,8 @@
                             <RowDefinition/>
                             <RowDefinition Height="2"/>
                             <RowDefinition />
+                            <RowDefinition Height="2"/>
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Label Content="Выигран 1ч:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -72,6 +74,10 @@
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="6" />
                         <TextBlock x:Name="ContractNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="6" />
                         <Button x:Name="ContractNoButton" Grid.Row="6" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ContractNoButton_Click" />
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
+                        <Label Content="Не назначены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
+                        <TextBlock x:Name="ManagersQueue" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
+                        <Button x:Name="ManagersQueueButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ManagersQueueButton_Click" />
                     </Grid>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Margin="10">
@@ -152,7 +158,9 @@
                             <RowDefinition Height="2"/>
                             <RowDefinition/>
                             <RowDefinition/>
-
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Content="Проблема:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Problem" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -181,6 +189,20 @@
                         <Label Content="Принят:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="11"/>
                         <TextBlock x:Name="Received" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="11" />
                         <Button x:Name="ReceivedButton" Grid.Row="11" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ReceivedButton_Click"  />
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="12"/>
+                        <Label Content="Проверка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="13"/>
+                        <Label Content="Расчёт Y / N:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="14"/>
+                        <TextBlock x:Name="ApproveCalculatingYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="14" />
+                        <Button x:Name="ApproveCalculatingYesButton" Grid.Row="14" Grid.Column="1" Opacity="0" Cursor="Hand" Click="ApproveCalculatingYesButton_Click"  />
+                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="14" />
+                        <TextBlock x:Name="ApproveCalculatingNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="14" />
+                        <Button x:Name="ApproveCalculatingNoButton" Grid.Row="14" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ApproveCalculatingNoButton_Click" />
+                        <Label Content="Закупка Y / N:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="15"/>
+                        <TextBlock x:Name="ApprovePurchaseYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="15" />
+                        <Button x:Name="ApprovePurchaseYesButton" Grid.Row="15" Grid.Column="1" Opacity="0" Cursor="Hand" Click="ApprovePurchaseYesButton_Click"  />
+                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="15" />
+                        <TextBlock x:Name="ApprovePurchaseNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="15" />
+                        <Button x:Name="ApprovePurchaseNoButton" Grid.Row="15" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ApprovePurchaseNoButton_Click" />
                     </Grid>
                 </StackPanel>
             </Grid>

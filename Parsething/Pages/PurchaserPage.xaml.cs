@@ -38,6 +38,9 @@ namespace Parsething.Pages
         private List<Procurement>? ProcurementsProblems { get; set; }
         private List<Procurement>? ProcurementsInWork { get; set; }
         private List<Procurement>? ProcurementsAgreed  { get; set; }
+        private List<Procurement>? ProcurementsApprovePurchaseYes { get; set; }
+        private List<Procurement>? ProcurementsApprovePurchaseNo { get; set; }
+
 
         public PurchaserPage() =>
             InitializeComponent();
@@ -97,6 +100,14 @@ namespace Parsething.Pages
             ProcurementsAWeekLater = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
             if (ProcurementsAWeekLater != null)
                 AWeekLater.Text = ProcurementsAWeekLater.Count.ToString();
+
+            ProcurementsApprovePurchaseYes = GET.View.ProcurementsBy(true, GET.KindOf.Purchase);
+            if (ProcurementsApprovePurchaseYes != null)
+                ApprovePurchaseYes.Text = ProcurementsApprovePurchaseYes.Count.ToString();
+
+            ProcurementsApprovePurchaseNo = GET.View.ProcurementsBy(false, GET.KindOf.Purchase);
+            if (ProcurementsApprovePurchaseNo != null)
+                ApprovePurchaseNo.Text = ProcurementsApprovePurchaseNo.Count.ToString();
 
             ThisWeekButton.Background = Brushes.LightGray;
         }
@@ -243,6 +254,35 @@ namespace Parsething.Pages
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.LightGray;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
+        }
+        private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = ProcurementsApprovePurchaseYes;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
+        }
+
+        private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = ProcurementsApprovePurchaseNo;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
             AWeekLaterButton.Background = Brushes.Transparent;

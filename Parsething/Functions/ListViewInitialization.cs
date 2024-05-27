@@ -386,12 +386,17 @@ namespace Parsething.Functions
                 {
                     if (purchaseAmount > Procurement.ReserveContractAmount)
                         PurchasePriceTextBlock.Foreground = Red;
+                    else
+                        PurchasePriceTextBlock.Foreground = Black;
                 }
                 else
                 {
                     if (purchaseAmount > Procurement.ContractAmount)
                         PurchasePriceTextBlock.Foreground = Red;
+                    else
+                        PurchasePriceTextBlock.Foreground = Black;
                 }
+
                 PurchasePriceTextBlock.Text = purchaseAmount.ToString();
                 Procurement.PurchaseAmount = purchaseAmount;
                 PULL.Procurement(Procurement);

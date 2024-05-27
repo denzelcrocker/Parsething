@@ -31,7 +31,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
-                <StackPanel Grid.Column="0" Margin="10" Grid.RowSpan="2">
+                <StackPanel Grid.Column="0" Margin="7" Grid.RowSpan="2">
                     <Label Content="Закупка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
                     <Grid>
@@ -43,11 +43,11 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="45"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="45"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="45"/>
                             <RowDefinition Height="2"/>
                         </Grid.RowDefinitions>
                         <Button x:Name="WonPartOneButton" Grid.ColumnSpan="5" Grid.Row="0" Cursor="Hand" Click="WonPartOneButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 1ч:"/>
@@ -81,7 +81,10 @@
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
-                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <Button x:Name="ProblemButton" Grid.ColumnSpan="5" Grid.Row="0"  Cursor="Hand" Click="ProblemButton_Click" Style="{DynamicResource BaseButton}" Content="Проблема:"/>
                         <TextBlock x:Name="Problem" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -99,7 +102,15 @@
                         <TextBlock x:Name="NextWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="9" />
                         <Button x:Name="AWeekLaterButton" Grid.ColumnSpan="5" Grid.Row="10" Cursor="Hand" Click="AWeekLaterButton_Click"  Style="{DynamicResource BaseButton}" Content="Через неделю:" Padding="25,0"/>
                         <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
-                        <Button x:Name="SupplyMonitoringButton" Content="Мониторинг поставок" Style="{DynamicResource SupplyMonitoringButton}"  Grid.Row="11"  Grid.ColumnSpan="4" Click="SupplyMonitoringButton_Click"/>
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
+                        <Label Content="Проверка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
+                        <Label Content="Закупка Y / N:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="13"/>
+                        <TextBlock x:Name="ApprovePurchaseYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="13" />
+                        <Button x:Name="ApprovePurchaseYesButton" Grid.Row="13" Grid.Column="1" Opacity="0" Cursor="Hand" Click="ApprovePurchaseYesButton_Click" />
+                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="13" />
+                        <TextBlock x:Name="ApprovePurchaseNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="13" />
+                        <Button x:Name="ApprovePurchaseNoButton" Grid.Row="13" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ApprovePurchaseNoButton_Click" />
+                        <Button x:Name="SupplyMonitoringButton" Content="Мониторинг поставок" Style="{DynamicResource SupplyMonitoringButton}"  Grid.Row="14"  Grid.ColumnSpan="4" Click="SupplyMonitoringButton_Click"/>
                     </Grid>
                 </StackPanel>
                 <Grid Grid.Column="2">

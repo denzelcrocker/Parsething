@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages
 {
@@ -62,11 +63,13 @@ namespace Parsething.Pages
 
             ContractNo.Text = GET.Aggregate.ProcurementsCountBy("", false, GET.KindOf.ContractConclusion).ToString();// Контракт Не подписан
 
+            ManagersQueue.Text = GET.Aggregate.ProcurementsManagersQueueCount().ToString();
+
             Acceptance.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState)); // Приемка
 
             // Частичная отправка
 
-            // На исправлении
+            OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.CorrectionDate)); // На исправлении
 
             NotPaidOnTime.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(false)); // В срок
 
@@ -99,6 +102,14 @@ namespace Parsething.Pages
             AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
             Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
+
+            ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Calculating).ToString(); // Проверка расчета проведена
+
+            ApproveCalculatingNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Calculating).ToString(); // Проверка расчета не проведена
+
+            ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Purchase).ToString(); // Проверка закупки проведена
+
+            ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
 
         }
 
@@ -195,6 +206,13 @@ namespace Parsething.Pages
                 MainFrame.Navigate(new SearchPage(Procurements));
         }
 
+        private void ManagersQueueButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsManagersQueue();
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
         private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState);
@@ -239,7 +257,9 @@ namespace Parsething.Pages
 
         private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("В разработке");
+            Procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.CorrectionDate);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void PartialAcceptanceButton_Click(object sender, RoutedEventArgs e)
@@ -253,5 +273,33 @@ namespace Parsething.Pages
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }
+        private void ApproveCalculatingYesButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Calculating);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApproveCalculatingNoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Calculating);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Purchase);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
     }
 }
