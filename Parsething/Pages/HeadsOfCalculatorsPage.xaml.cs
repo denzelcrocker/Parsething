@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DatabaseLibrary.Entities.ProcurementProperties;
+using Parsething.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,6 +56,8 @@ namespace Parsething.Pages
 
             Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState)); // Посчитан
 
+            CalculationsCombobox.Items.Clear();
+            CalculationsCombobox.Text = "Расчет:";
             ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый", "", "");
             foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
             {
@@ -67,6 +71,8 @@ namespace Parsething.Pages
 
             DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
 
+            DrawUpCombobox.Items.Clear();
+            DrawUpCombobox.Text = "Оформление:";
             ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить", "", "");
             foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
             {
@@ -84,6 +90,8 @@ namespace Parsething.Pages
 
             OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true, GET.KindOf.StartDate));// Просрочены
 
+            SendingCombobox.Items.Clear();
+            SendingCombobox.Text = "Отправка:";
             ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками", "", "", "Отправлен", "", "");
             foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
             {
@@ -158,7 +166,10 @@ namespace Parsething.Pages
         {
             Procurements = GET.View.ProcurementsBy("Неразобранный", GET.KindOf.ProcurementState);
             if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
+            {
+                SortWindow sortWindow = new SortWindow(Procurements);
+                sortWindow.Show();
+            }
         }
 
         private void RetreatButton_Click(object sender, RoutedEventArgs e) // отбой
@@ -227,6 +238,14 @@ namespace Parsething.Pages
             Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
+            {
+                MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+            }
         }
     }
 }

@@ -61,7 +61,7 @@
                         <Button x:Name="CalculatedButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CalculatedButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
                         <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="4" Margin="90,0,0,0"/>
-                        <ComboBox x:Name="CalculationsCombobox" Style="{DynamicResource InfoBox}" Text="Расчёт: " Grid.Column="0" Grid.Row="4">
+                        <ComboBox x:Name="CalculationsCombobox" Style="{DynamicResource InfoBox}" Text="Расчёт: " Grid.Column="0" Grid.Row="4" SelectionChanged="Combobox_SelectionChanged">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -78,7 +78,7 @@
                         <Button x:Name="DrawUpButton" Grid.Row="6" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="DrawUpButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
                         <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;"  Grid.Column="0" Grid.Row="8" Margin="160,0,0,0"/>
-                        <ComboBox x:Name="DrawUpCombobox" Style="{DynamicResource InfoBox}" Text="Оформление:" Grid.Column="0" Grid.Row="8">
+                        <ComboBox x:Name="DrawUpCombobox" Style="{DynamicResource InfoBox}" Text="Оформление:" Grid.Column="0" Grid.Row="8" SelectionChanged="Combobox_SelectionChanged">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -103,7 +103,7 @@
                         <Button x:Name="OverdueIssuedButton" Grid.Row="14" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueIssuedButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="15"/>
                         <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;"  Grid.Column="0" Grid.Row="16" Margin="120,0,0,0"/>
-                        <ComboBox x:Name="SendingCombobox" Style="{DynamicResource InfoBox}" Text="Отправка:" Grid.Column="0" Grid.Row="16">
+                        <ComboBox x:Name="SendingCombobox" Style="{DynamicResource InfoBox}" Text="Отправка:" Grid.Column="0" Grid.Row="16" SelectionChanged="Combobox_SelectionChanged">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -138,7 +138,7 @@
                         </Grid.RowDefinitions>
                         <Label Content="Спаршены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Parsed" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Label Content="Неразобранные:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
+                        <Label Content="Разобрать:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
                         <TextBlock x:Name="Unsorted" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
                         <Button x:Name="UnsortedButton" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="UnsortedButton_Click" />
                         <Label Content="Отбой:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>

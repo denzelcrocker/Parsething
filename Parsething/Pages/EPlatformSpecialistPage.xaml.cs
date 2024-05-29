@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages
 {
@@ -62,6 +63,8 @@ namespace Parsething.Pages
 
             Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.Deadline)); // Торги
 
+            QuotesCombobox.Items.Clear();
+            QuotesCombobox.Text = "Сп-бы опр-я:";
             ProcurementsMethodsGroupings = GET.View.ProcurementsGroupByMethod();
             foreach (var item in ProcurementsMethodsGroupings)
             {
@@ -82,6 +85,13 @@ namespace Parsething.Pages
             Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
 
             WonPartOne.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState)); // Выиграны 1ч
+        }
+        private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
+            {
+                MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+            }
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)

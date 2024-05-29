@@ -48,6 +48,9 @@ namespace Parsething.Pages
 
             WonByApplications.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)); // По заявкам
 
+            ManagersCombobox.Text = "Менеджеры:";
+            ManagersCombobox.Items.Clear();
+
             ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка");
             foreach (var item in ProcurementsEmployeesManagersGroupings)
             {
@@ -57,7 +60,7 @@ namespace Parsething.Pages
             foreach (var item in ProcurementsEmployeesManagersGroupings)
             {
                 ManagersCombobox.Items.Add(item); // Расчет (по сотрудникам)
-            }// Менеджеры выпадающий список
+            }// Менеджеры выпадающий список}
 
             ContractYes.Text = GET.Aggregate.ProcurementsCountBy("", true, GET.KindOf.ContractConclusion).ToString(); // Контракт Подписан
 
@@ -300,6 +303,12 @@ namespace Parsething.Pages
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }
-
+        private void ManagersCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
+            {
+                MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+            }
+        }
     }
 }

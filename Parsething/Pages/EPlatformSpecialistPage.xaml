@@ -107,7 +107,7 @@
                         <Button x:Name="BargainingButton" Grid.Row="0" Grid.ColumnSpan="4" Cursor="Hand" Click="BargainingButton_Click" Style="{DynamicResource BaseButton}" Content="Торги:"/>
                         <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
                         <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="1" Margin="160,0,0,0"/>
-                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Сп-бы опр-я: " Grid.Column="0" Grid.Row="1">
+                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Сп-бы опр-я: " Grid.Column="0" Grid.Row="1" SelectionChanged="Combobox_SelectionChanged">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">

@@ -111,9 +111,7 @@
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Template" Value="{StaticResource ComboBoxTemplate}"/>
     </Style>
-    
 
-    
     <Style x:Key="InfoBox.ToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="IsTabStop" Value="false"/>
@@ -177,12 +175,25 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     <Style x:Key="EnabledComboboxItem" TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="IsEnabled" Value="True"/>
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{x:Null}"/>
                 <Setter Property="BorderBrush" Value="{x:Null}"/>
                 <Setter Property="Foreground" Value="Silver"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="CustomComboBoxItemStyle" TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="IsEnabled" Value="True"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{x:Null}"/>
+                <Setter Property="BorderBrush" Value="{x:Null}"/>
+                <Setter Property="Foreground" Value="Silver"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -192,8 +203,8 @@
         <Setter Property="Foreground" Value="#000"/>
         <Setter Property="Margin" Value="0,0,0,10"/>
         <Setter Property="FontFamily" Value="Noah"/>
-        <Setter Property="IsEditable" Value="False"/>
-        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="IsEditable" Value="True"/>
+        <Setter Property="IsReadOnly" Value="False"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
@@ -202,7 +213,7 @@
         <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="Template" Value="{StaticResource InfoBox.Template}"/>
-        <Setter Property="ItemContainerStyle" Value="{StaticResource EnabledComboboxItem }"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource CustomComboBoxItemStyle}"/>
     </Style>
-    
+
 </ResourceDictionary>

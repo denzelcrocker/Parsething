@@ -54,6 +54,9 @@ public partial class AdministratorPage : Page
 
         Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.Deadline)); // Торги
 
+
+        QuotesCombobox.Items.Clear();
+        QuotesCombobox.Text = "Сп-бы опр-я:";
         ProcurementsMethodsGroupings = GET.View.ProcurementsGroupByMethod();
         foreach (var item in ProcurementsMethodsGroupings)
         {
@@ -77,6 +80,8 @@ public partial class AdministratorPage : Page
 
         Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState)); // Посчитан
 
+        CalculationsCombobox.Items.Clear();
+        CalculationsCombobox.Text = "Расчет:";
         ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый","","");
         foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
         {
@@ -90,6 +95,8 @@ public partial class AdministratorPage : Page
 
         DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
 
+        DrawUpCombobox.Items.Clear();
+        DrawUpCombobox.Text = "Оформление:";
         ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить","","");
         foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
         {
@@ -107,6 +114,8 @@ public partial class AdministratorPage : Page
 
         OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true, GET.KindOf.StartDate));// Просрочены
 
+        SendingCombobox.Items.Clear();
+        SendingCombobox.Text = "Отправка:";
         ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками","","", "Отправлен","","");
         foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
         {
@@ -126,6 +135,8 @@ public partial class AdministratorPage : Page
 
         WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)).ToString(); // Выиграны всего
 
+        ManagersCombobox.Items.Clear();
+        ManagersCombobox.Text = "Менеджеры:";
         ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка");
         foreach (var item in ProcurementsEmployeesManagersGroupings)
         {
@@ -479,12 +490,17 @@ public partial class AdministratorPage : Page
         var selectedGrouping = (sender as FrameworkElement)?.DataContext as ProcurementsEmployeesGrouping;
         if (selectedGrouping != null)
         {
-            List<Procurement> procurements = Functions.Conversion.ProcurementsEmployeesConversion(View.ProcurementsEmployeesBy(Convert.ToInt32(selectedGrouping.Id)));
-            MainFrame.Navigate(new SearchPage(procurements));
+            MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
         }
     }
 
-    
+    private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
+        {
+            MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+        }
+    }
 }
 public static class StringExtensions
 {
