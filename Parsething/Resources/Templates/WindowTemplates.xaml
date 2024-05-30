@@ -88,8 +88,8 @@
         </Setter>
     </Style>
     <Style x:Key="SortWindow" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
-        <Setter Property="Width" Value="800"/>
-        <Setter Property="Height" Value="700"/>
+        <Setter Property="Width" Value="830"/>
+        <Setter Property="Height" Value="500"/>
         <Setter Property="ResizeMode" Value="NoResize"/>
         <Setter Property="Template">
             <Setter.Value>

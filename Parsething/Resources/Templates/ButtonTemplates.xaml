@@ -458,4 +458,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="SortWindowButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource SumbitAction.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SumbitAction.Static.BorderBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource SumbitAction.Static.Foreground}"/>
+        <Setter Property="FontFamily" Value="Noah"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="1,4"/>
+        <Setter Property="Padding" Value="1,7"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="7" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

@@ -165,9 +165,9 @@ namespace Parsething.Pages
         private void UnsortedButton_Click(object sender, RoutedEventArgs e) // неразобранные 
         {
             Procurements = GET.View.ProcurementsBy("Неразобранный", GET.KindOf.ProcurementState);
-            if (Procurements != null)
+            if (Procurements.Count != 0)
             {
-                SortWindow sortWindow = new SortWindow(Procurements);
+                SortWindow sortWindow = new SortWindow(Procurements, true);
                 sortWindow.Show();
             }
         }
@@ -246,6 +246,12 @@ namespace Parsething.Pages
             {
                 MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
             }
+        }
+
+        private void AddProcurementButton_Click(object sender, RoutedEventArgs e)
+        {
+            SortWindow sortWindow = new SortWindow(null, false);
+            sortWindow.Show();
         }
     }
 }
