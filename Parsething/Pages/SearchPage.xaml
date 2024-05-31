@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parsething.Functions"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       Title="SearchPage"
@@ -13,6 +14,7 @@
         <local:PercentageProfitConverter x:Key="PercentageProfitConverter"/>
         <local:DateToStringConverter x:Key="DateToStringConverter"/>
         <local:AmountConverter x:Key="AmountConverter"/>
+        <local:ComponentStateConverter x:Key="ComponentStateConverter"/>
         <local:DateInfoMultiConverter x:Key="DateInfoMultiConverter" />
         <local:DateInfoAdditionalInfoConverter x:Key="DateInfoAdditionalInfoConverter" />
         <system:String x:Key="CalculatingString">Calculating</system:String>
@@ -55,7 +57,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Id" Grid.Column="0" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Закон" Grid.Column="1" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Номер закупки" Grid.Column="2" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Комплектующие" Grid.Column="2" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Дата подачи заявок" Grid.Column="3" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="4" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Контракт" Grid.Column="4" Margin="0,10,0,0"/>
@@ -81,11 +83,6 @@
                                 BorderBrush="#C6BDBF"
                                 CornerRadius="15">
                                     <Grid HorizontalAlignment="Stretch" Height="50">
-                                        <Grid.ToolTip>
-                                            <ToolTip>
-                                                Перейти
-                                            </ToolTip>
-                                        </Grid.ToolTip>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="80"/>
                                             <ColumnDefinition Width="2"/>
@@ -137,13 +134,25 @@
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"/>
                                         <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <TextBlock 
-                                        Style="{DynamicResource TableElements}"
-                                        Grid.Column="4"
-                                        Text="{Binding Path=Number}"
-                                        FontSize="12"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"/>
+                                        <lvc:CartesianChart Grid.Column="4" 
+                                            Width="130" 
+                                            MinHeight="14" 
+                                            Height="23"
+                                            Series="{Binding ComponentStates, 
+                                              Converter={StaticResource ComponentStateConverter}}">
+                                            <lvc:CartesianChart.AxisX>
+                                                <lvc:Axis ShowLabels="False" />
+                                            </lvc:CartesianChart.AxisX>
+                                            <lvc:CartesianChart.AxisY>
+                                                <lvc:Axis ShowLabels="False" />
+                                            </lvc:CartesianChart.AxisY>
+                                            <lvc:CartesianChart.DataTooltip>
+                                                <lvc:DefaultTooltip />
+                                            </lvc:CartesianChart.DataTooltip>
+                                            <lvc:CartesianChart.VisualElements>
+                                                <lvc:VisualElement Opacity="0" />
+                                            </lvc:CartesianChart.VisualElements>
+                                        </lvc:CartesianChart>
                                         <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"

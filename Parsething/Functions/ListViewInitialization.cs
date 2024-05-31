@@ -56,6 +56,7 @@ namespace Parsething.Functions
             Sellers = GET.View.Sellers();
             ComponentStates = GET.View.ComponentStates();
             ComponentCalculations = componentCalculations;
+
             List<StackPanel> stackPanels = new();
             decimal? calculatingAmount = 0;
             decimal? purchaseAmount = 0;
@@ -437,7 +438,7 @@ namespace Parsething.Functions
                         }
                     }
                 }
-                UpdateListView();
+                UpdateListView(null, null);
             }
             else if (messageBoxResult == MessageBoxResult.No) { }
         }
@@ -461,7 +462,7 @@ namespace Parsething.Functions
                 ComponentCalculations.Add(newComponentCalculation);
                 PUT.ComponentCalculation(newComponentCalculation);
             }
-            UpdateListView();
+            UpdateListView(null, null);
 
         }
         private static void ButtonDelete_Click(object sender, RoutedEventArgs e)
@@ -499,7 +500,7 @@ namespace Parsething.Functions
                         }
                     }
                 }
-                UpdateListView();
+                UpdateListView(null, null);
             }
             else { }
         }
@@ -539,7 +540,7 @@ namespace Parsething.Functions
                         PUT.ComponentCalculation(newComponentCalculation);
                     }
                 }
-                UpdateListView();
+                UpdateListView(null, null);
             }
         
         private static void TextBox_LostFocus(object sender, RoutedEventArgs e, TextBox textBox, int headerId, bool isHeader)
@@ -596,7 +597,7 @@ namespace Parsething.Functions
                 comboBox.Foreground = Brushes.Gray;
             }
         }
-        public static void UpdateListView()
+        public static void UpdateListView(DatePicker? sameDatePicker, ComboBox? sameComboBox)
         {
             foreach (StackPanel stackPanel in ListView.Items)
             {
@@ -693,11 +694,19 @@ namespace Parsething.Functions
                                 componentCalculationItem.ManufacturerIdPurchase = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
                             }
                             componentCalculationItem.ManufacturerId = (int?)((List<object>)grid.DataContext)[7];
-                            if ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem != null)
+                            if (sameComboBox != null && sameComboBox.SelectedItem != null)
+                                componentCalculationItem.ComponentStateId = ((ComponentState)sameComboBox.SelectedItem).Id;
+                            else 
                             {
-                                componentCalculationItem.ComponentStateId = ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem).Id;
+                                if ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem != null)
+                                {
+                                    componentCalculationItem.ComponentStateId = ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem).Id;
+                                }
                             }
-                            componentCalculationItem.Date = datePicker.SelectedDate;
+                            if (sameDatePicker != null && sameDatePicker.SelectedDate != null)
+                                componentCalculationItem.Date = sameDatePicker.SelectedDate;
+                            else
+                                componentCalculationItem.Date = datePicker.SelectedDate;
                             if (textBoxPrice.Text != "")
                             {
                                 componentCalculationItem.PricePurchase = Convert.ToDecimal(textBoxPrice.Text);

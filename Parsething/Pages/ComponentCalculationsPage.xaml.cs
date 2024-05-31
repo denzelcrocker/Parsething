@@ -32,6 +32,8 @@ namespace Parsething.Pages
 
         private List<ComponentCalculation>? ComponentCalculations = new List<ComponentCalculation>();
 
+        private List<ComponentState>? ComponentStates = new List<ComponentState>();
+
         private List<Procurement>? Procurements = new List<Procurement>();
 
         private Procurement? Procurement { get; set; }
@@ -87,6 +89,9 @@ namespace Parsething.Pages
                     ColumnsNamesPurchase.Visibility = Visibility.Visible;
                     CalculatingPanel.Visibility = Visibility.Hidden;
                     ColumnsNamesCalculating.Visibility = Visibility.Hidden;
+                    ComponentStates = GET.View.ComponentStates();
+                    SameComponentState.ItemsSource = ComponentStates;
+
                     foreach (ComponentCalculation componentCalculation in ComponentCalculations)
                     {
                         if (componentCalculation.PricePurchase != null && componentCalculation.Count != null)
@@ -256,7 +261,7 @@ namespace Parsething.Pages
         {
             Procurement = GET.Entry.ProcurementBy(Procurement.Id);
             if (Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.PurchaseUserId == null)
-                UpdateListView();
+                UpdateListView(SameDate, SameComponentState);
             else
                 MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.PurchaseUserId).First().FullName}");
         }
@@ -270,7 +275,7 @@ namespace Parsething.Pages
                 {
                     Procurement = GET.Entry.ProcurementBy(Procurement.Id);
                     if (Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.CalculatingUserId == null)
-                        UpdateListView();
+                        UpdateListView(null, null);
                     else
                         MessageBox.Show($"Расчет сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.CalculatingUserId).First().FullName}");
                 }

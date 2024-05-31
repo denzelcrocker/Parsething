@@ -55,6 +55,7 @@ namespace Parsething.Pages
                     SearchCriteria.Instance.INN,
                     SearchCriteria.Instance.Employee,
                     SearchCriteria.Instance.OrganizationName);
+                GET.View.PopulateComponentStates(procurements);
                 SearchLV.ItemsSource = procurements;
             }
             else if (procurements != null)
@@ -130,6 +131,7 @@ namespace Parsething.Pages
             else
             {
                 FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName);
+                GET.View.PopulateComponentStates(FoundProcurements);
                 SearchLV.ItemsSource = FoundProcurements;
                 Procurements = FoundProcurements;
             }

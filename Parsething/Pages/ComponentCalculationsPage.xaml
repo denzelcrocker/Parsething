@@ -105,6 +105,10 @@
                         <Button x:Name="AddDivisionPurchase" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionPurchase_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Button x:Name="SavePurchaseButton" Content="Сохранить" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="SavePurchaseButton_Click" />
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <DatePicker x:Name="SameDate" Style="{DynamicResource ComponentCalculations.DatePickerStyle}" Width="150" VerticalAlignment="Center"/>
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <ComboBox x:Name="SameComponentState" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Kind" Width="150" Height="35"/>
                     </StackPanel>
                     <StackPanel x:Name="CalculatingPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Hidden">
                         <Label Content="Сумма: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>

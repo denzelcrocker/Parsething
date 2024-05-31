@@ -137,7 +137,8 @@ namespace Parsething.Pages
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
                 });
-    
+                
+
                 ListView list = new();
                 list.Style = (Style)Application.Current.FindResource("ListView");
                 foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
@@ -393,6 +394,7 @@ namespace Parsething.Pages
 
             listViewSupplyMonitoring.ItemsSource = stackPanels;
         }
+
 
         private void ExportToExcelButton_Click(object sender, RoutedEventArgs e)
         {

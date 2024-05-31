@@ -101,6 +101,7 @@ namespace Parsething.Windows
                 AddButton.Visibility = Visibility.Visible;
 
                 Number.IsReadOnly = false;
+
                 DeadLine.IsReadOnly = false;
                 ResultDate.IsReadOnly = false;
                 LawCombobox.IsEnabled = true;

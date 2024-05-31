@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="/Resources/Templates/ComboBoxCard Templates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/DatePicker Templates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ImageTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/ChartTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

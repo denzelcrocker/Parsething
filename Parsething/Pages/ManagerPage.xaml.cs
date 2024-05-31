@@ -100,34 +100,7 @@ namespace Parsething.Pages
 
             ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsEmployeesCountBy(false, KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id).ToString(); // Проверка закупки не проведена
         }
-        public static List<ComponentCalculation>? ComponentCalculationsBy(string kind, int employeeId)
-        {
-            using ParsethingContext db = new();
-            List<ComponentCalculation> componentCalculations = null;
-
-            try
-            {
-                componentCalculations = db.ComponentCalculations
-                    .Include(cc => cc.ComponentState)
-                    .Include(cc => cc.Procurement)
-                    .Include(cc => cc.Procurement.Law)
-                    .Include(cc => cc.Procurement.ProcurementState)
-                    .Include(cc => cc.Procurement.Region)
-                    .Include(cc => cc.Procurement.Method)
-                    .Include(cc => cc.Procurement.Platform)
-                    .Include(cc => cc.Procurement.TimeZone)
-                    .Include(cc => cc.Procurement.Organization)
-                    .Include(cc => cc.Manufacturer)
-                    .Include(cc => cc.ComponentType)
-                    .Include(cc => cc.Seller)
-                    .Where(cc => cc.Procurement.EmployeeId == employeeId)
-                    .Where(cc => cc.ComponentState.Kind == kind)
-                    .ToList();
-            }
-            catch { }
-
-            return componentCalculations;
-        }
+       
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 1ч", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);

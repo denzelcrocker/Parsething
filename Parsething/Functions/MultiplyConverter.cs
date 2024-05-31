@@ -1,11 +1,15 @@
-﻿using System;
+﻿using LiveCharts.Wpf;
+using LiveCharts;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using Parsething.Classes;
 
 namespace Parsething.Functions
 {
@@ -337,6 +341,33 @@ namespace Parsething.Functions
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
+        }
+    }
+    public class ComponentStateConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is ObservableCollection<ComponentStateCount> componentStates)
+            {
+                var seriesCollection = new SeriesCollection();
+                foreach (var componentState in componentStates)
+                {
+                    var color = StatusColorProvider.GetColor(componentState.State);
+                    seriesCollection.Add(new ColumnSeries
+                    {
+                        Title = componentState.State,
+                        Values = new ChartValues<int> { componentState.Count },
+                        Fill = color
+                    });
+                }
+                return seriesCollection;
+            }
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

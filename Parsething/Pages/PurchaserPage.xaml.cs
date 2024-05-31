@@ -1,4 +1,7 @@
-﻿using DatabaseLibrary.Entities.ProcurementProperties;
+﻿using DatabaseLibrary.Entities.ComponentCalculationProperties;
+using DatabaseLibrary.Entities.ProcurementProperties;
+using LiveCharts.Wpf;
+using LiveCharts;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -41,13 +44,13 @@ namespace Parsething.Pages
         private List<Procurement>? ProcurementsApprovePurchaseYes { get; set; }
         private List<Procurement>? ProcurementsApprovePurchaseNo { get; set; }
 
-
         public PurchaserPage() =>
             InitializeComponent();
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
+            
 
             ProcurementsWonPartOne = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState);
             if (ProcurementsWonPartOne != null)
@@ -110,10 +113,13 @@ namespace Parsething.Pages
                 ApprovePurchaseNo.Text = ProcurementsApprovePurchaseNo.Count.ToString();
 
             ThisWeekButton.Background = Brushes.LightGray;
+
+
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsNextWeek);
             View.ItemsSource = ProcurementsNextWeek;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -129,6 +135,7 @@ namespace Parsething.Pages
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsThisWeek);
             View.ItemsSource = ProcurementsThisWeek;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -144,6 +151,7 @@ namespace Parsething.Pages
 
         private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsAcceptance);
             View.ItemsSource = ProcurementsAcceptance;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -159,6 +167,7 @@ namespace Parsething.Pages
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsWonPartTwo);
             View.ItemsSource = ProcurementsWonPartTwo;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.LightGray;
@@ -174,6 +183,7 @@ namespace Parsething.Pages
 
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsWonPartOne);
             View.ItemsSource = ProcurementsWonPartOne;
             WonPartOneButton.Background = Brushes.LightGray;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -188,6 +198,7 @@ namespace Parsething.Pages
         }
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsProblems);
             View.ItemsSource = ProcurementsProblems;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -203,6 +214,7 @@ namespace Parsething.Pages
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsInWork);
             View.ItemsSource = ProcurementsInWork;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -218,6 +230,7 @@ namespace Parsething.Pages
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsAgreed);
             View.ItemsSource = ProcurementsAgreed;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -232,6 +245,7 @@ namespace Parsething.Pages
         }
         private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsAWeekLater);
             View.ItemsSource = ProcurementsAWeekLater;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -246,6 +260,7 @@ namespace Parsething.Pages
         }
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsPreviousWeek);
             View.ItemsSource = ProcurementsPreviousWeek;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -260,6 +275,7 @@ namespace Parsething.Pages
         }
         private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsApprovePurchaseYes);
             View.ItemsSource = ProcurementsApprovePurchaseYes;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -275,6 +291,7 @@ namespace Parsething.Pages
 
         private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
         {
+            GET.View.PopulateComponentStates(ProcurementsApprovePurchaseNo);
             View.ItemsSource = ProcurementsApprovePurchaseNo;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
