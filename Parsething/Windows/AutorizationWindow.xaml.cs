@@ -1,4 +1,6 @@
 ﻿using System.Configuration;
+using System.Net;
+using System.Net.NetworkInformation;
 
 namespace Parsething.Windows;
 
@@ -41,7 +43,30 @@ public partial class AutorizationWindow : Window
         if (Employee != null)
         {
             DialogResult = true;
-            History? history = new History { EmployeeId = Employee.Id, Date = DateTime.Now, EntityType = "Login", EntryId = 0, Text = $"{Employee.FullName}" };
+
+            string computerName = Dns.GetHostName();
+
+            string ipAddress = string.Empty;
+            foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (networkInterface.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (var addressInfo in networkInterface.GetIPProperties().UnicastAddresses)
+                    {
+                        if (addressInfo.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        {
+                            ipAddress = addressInfo.Address.ToString();
+                            break;
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(ipAddress))
+                {
+                    break;
+                }
+            }
+            string loginInfo = $"{Employee.FullName}, IP: {ipAddress}, Компьютер: {computerName}";
+            History? history = new History { EmployeeId = Employee.Id, Date = DateTime.Now, EntityType = "Login", EntryId = 0, Text = $"{loginInfo}" };
             PUT.History(history);
         }
         else _ = MessageBox.Show("Вы ввели неверные данные!");

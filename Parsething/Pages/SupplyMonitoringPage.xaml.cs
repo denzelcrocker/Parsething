@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DatabaseLibrary.Queries;
 using static DatabaseLibrary.Queries.GET;
+using System.Windows.Controls.Primitives;
 
 namespace Parsething.Pages
 {
@@ -24,14 +25,17 @@ namespace Parsething.Pages
     public partial class SupplyMonitoringPage : Page
     {
         private List<Procurement> procurementsList { get; set; }
-        public List<SupplyMonitoringList> supplyMonitoringList { get; set; }
+        private List<SupplyMonitoringList> supplyMonitoringList { get; set; }
+        private List<ComponentState> componentStates { get; set; }
+        private List<Seller> sellers { get; set; }
 
 
         public SupplyMonitoringPage(List<Procurement> procurements)
         {
             InitializeComponent();
             procurementsList = procurements;
-
+            componentStates = GET.View.ComponentStates();
+            sellers = GET.View.Sellers();
         }
 
         private void CommonListButton_Click(object sender, RoutedEventArgs e)
@@ -122,32 +126,58 @@ namespace Parsething.Pages
                     headers.Add(supplyMonitoring.SupplierName);
                 }
             }
-    
+
             foreach (string header in headers)
             {
                 StackPanel stackPanel = new();
+                DockPanel dockPanel = new();
+
                 decimal? totalAmount = 0;
                 foreach (SupplyMonitoringList supplyMonitoringList in supplyMonitoringList)
                 {
                     if (supplyMonitoringList.SupplierName == header)
                         totalAmount += supplyMonitoringList.TotalAmount;
                 }
-                stackPanel.Children.Add(new TextBlock()
+                stackPanel.Children.Add(dockPanel);
+                dockPanel.Children.Add(new TextBlock()
                 {
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
+                    Width = 1730
                 });
-                
 
-                ListView list = new();
-                list.Style = (Style)Application.Current.FindResource("ListView");
+                Button saveButton = new Button()
+                {
+                    Content = "↓",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                    DataContext = header
+                };
+                saveButton.Click += (s, args) =>
+                {
+                    string header = (string)((Button)s).DataContext;
+                    Popup popup = CreatePopup(saveButton, supplyMonitoringList, header);
+                    popup.IsOpen = true;
+                };
+                dockPanel.Children.Add(saveButton);
+                Button сopyToClipBoardButton = new Button()
+                {
+                    Content = "Copy",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                };
+                сopyToClipBoardButton.Click += (sender, e) =>
+                {
+                    CopyToClipBoardButton_Click(sender, e, header, totalAmount);
+                };
+                dockPanel.Children.Add(сopyToClipBoardButton);
+
+                ListView list = new ListView() { Style = (Style)Application.Current.FindResource("ListView") };
                 foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
                 {
                     if (supplyMonitoring.SupplierName == header)
                     {
                         Grid grid = new Grid();
-                        double[] columnWidths = { 150, 830, 100, 150, 100, 160, 160 };
-    
+                        double[] columnWidths = { 150, 830, 100, 150, 100, 160, 170 };
+
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
                             ColumnDefinition columnDefinition = new ColumnDefinition();
@@ -160,7 +190,7 @@ namespace Parsething.Pages
                             grid.Children.Add(border);
                         }
                         grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(130) });
-    
+
                         TextBlock textBlockManufacturerName = new TextBlock() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("TableElements") };
                         TextBlock textBlockComponentName = new TextBlock() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, Style = (Style)Application.Current.FindResource("TableElements") };
                         TextBlock textBlockComponentStatus = new TextBlock() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("TableElements") };
@@ -171,7 +201,7 @@ namespace Parsething.Pages
                         Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
-    
+
                         Grid.SetColumn(textBlockManufacturerName, 0);
                         Grid.SetColumn(textBlockComponentName, 1);
                         Grid.SetColumn(textBlockComponentStatus, 2);
@@ -180,7 +210,7 @@ namespace Parsething.Pages
                         Grid.SetColumn(textBlockSellerName, 5);
                         Grid.SetColumn(textBlockTotalAmount, 6);
                         Grid.SetColumn(button, 7);
-    
+
                         grid.Children.Add(textBlockManufacturerName);
                         grid.Children.Add(textBlockComponentName);
                         grid.Children.Add(textBlockComponentStatus);
@@ -189,7 +219,7 @@ namespace Parsething.Pages
                         grid.Children.Add(textBlockSellerName);
                         grid.Children.Add(textBlockTotalAmount);
                         grid.Children.Add(button);
-    
+
                         if (supplyMonitoring.ComponentStatus == "Купить")
                         {
                             textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
@@ -200,10 +230,75 @@ namespace Parsething.Pages
                 stackPanel.Children.Add(list);
                 stackPanels.Add(stackPanel);
             }
-    
+
             listViewSupplyMonitoring.ItemsSource = stackPanels;
-         }
-        
+        }
+
+
+        private Popup CreatePopup(Button targetButton, List<SupplyMonitoringList> supplyMonitoringList, string header)
+        {
+            var datePicker = new DatePicker
+            {
+                Name = "DatePicker",
+                Style = (Style)Application.Current.FindResource("ComponentCalculations.DatePickerStyle"),
+                Width = 150,
+                Height = 40
+            };
+
+            var comboBox = new ComboBox
+            {
+                Name = "ComboBox",
+                DisplayMemberPath = "Kind",
+                Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),
+                ItemsSource = componentStates,
+                Width = 150,
+                Height = 35
+            };
+
+            var saveButton = new Button
+            {
+                Content = "Save",
+                Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                Width = 150,
+                Height = 35,
+                Tag = header,
+                Margin = new Thickness(5)
+            };
+
+            var stackPanel = new StackPanel
+            {
+                Children =
+                {
+                    datePicker,
+                    comboBox,
+                    saveButton
+                }
+            };
+
+            var border = new Border
+            {
+                Background = Brushes.White,
+                BorderBrush = Brushes.Gray,
+                BorderThickness = new Thickness(1),
+                Padding = new Thickness(10),
+                Child = stackPanel
+            };
+
+            var popup = new Popup
+            {
+                AllowsTransparency = true,
+                PopupAnimation = PopupAnimation.Fade,
+                Placement = PlacementMode.Bottom,
+                StaysOpen = false,
+                PlacementTarget = targetButton,
+                Child = border
+            };
+
+            saveButton.Tag = popup;
+            saveButton.Click += (s, args) => SaveButton_Click(s, args, supplyMonitoringList, datePicker, comboBox);
+
+            return popup;
+        }
 
         private void WarehouseAndReserveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -222,6 +317,7 @@ namespace Parsething.Pages
 
             foreach (string header in headers)
             {
+                DockPanel dockPanel = new();
                 StackPanel stackPanel = new();
                 decimal? totalAmount = 0;
                 foreach (SupplyMonitoringList supplyMonitoringList in supplyMonitoringList)
@@ -229,11 +325,37 @@ namespace Parsething.Pages
                     if (supplyMonitoringList.SupplierName == header)
                         totalAmount += supplyMonitoringList.TotalAmount;
                 }
-                stackPanel.Children.Add(new TextBlock()
+                stackPanel.Children.Add(dockPanel);
+                dockPanel.Children.Add(new TextBlock()
                 {
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
+                    Width = 1730
                 });
+
+                Button saveButton = new Button()
+                {
+                    Content = "↓",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                    DataContext = header
+                };
+                saveButton.Click += (s, args) =>
+                {
+                    string header = (string)((Button)s).DataContext;
+                    Popup popup = CreatePopup(saveButton, supplyMonitoringList, header);
+                    popup.IsOpen = true;
+                };
+                dockPanel.Children.Add(saveButton);
+                Button сopyToClipBoardButton = new Button()
+                {
+                    Content = "Copy",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                };
+                сopyToClipBoardButton.Click += (sender, e) =>
+                {
+                    CopyToClipBoardButton_Click(sender, e, header, totalAmount);
+                };
+                dockPanel.Children.Add(сopyToClipBoardButton);
 
                 ListView list = new();
                 list.Style = (Style)Application.Current.FindResource("ListView");
@@ -317,6 +439,7 @@ namespace Parsething.Pages
 
             foreach (string header in headers)
             {
+                DockPanel dockPanel = new();
                 StackPanel stackPanel = new();
                 decimal? totalAmount = 0;
                 foreach (SupplyMonitoringList supplyMonitoringList in supplyMonitoringList)
@@ -324,11 +447,37 @@ namespace Parsething.Pages
                     if (supplyMonitoringList.SupplierName == header)
                         totalAmount += supplyMonitoringList.TotalAmount;
                 }
-                stackPanel.Children.Add(new TextBlock()
+                stackPanel.Children.Add(dockPanel);
+                dockPanel.Children.Add(new TextBlock()
                 {
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
+                    Width = 1730
                 });
+
+                Button saveButton = new Button()
+                {
+                    Content = "↓",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                    DataContext = header
+                };
+                saveButton.Click += (s, args) =>
+                {
+                    string header = (string)((Button)s).DataContext;
+                    Popup popup = CreatePopup(saveButton, supplyMonitoringList, header);
+                    popup.IsOpen = true;
+                };
+                dockPanel.Children.Add(saveButton);
+                Button сopyToClipBoardButton = new Button()
+                {
+                    Content = "Copy",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                };
+                сopyToClipBoardButton.Click += (sender, e) =>
+                {
+                    CopyToClipBoardButton_Click(sender, e, header, totalAmount);
+                };
+                dockPanel.Children.Add(сopyToClipBoardButton);
 
                 ListView list = new();
                 list.Style = (Style)Application.Current.FindResource("ListView");
@@ -394,11 +543,74 @@ namespace Parsething.Pages
 
             listViewSupplyMonitoring.ItemsSource = stackPanels;
         }
+        private void SaveButton_Click(object sender, RoutedEventArgs e, List<SupplyMonitoringList> supplyMonitoringList, DatePicker datePicker, ComboBox comboBox)
+        {
+            if (supplyMonitoringList == null) return;
 
+            var procurementIds = supplyMonitoringList.Select(s => s.TenderNumber).Distinct().ToList();
+            string header = (string)((Button)sender).DataContext;
+
+            var componentStatuses = supplyMonitoringList.Select(s => s.ComponentStatus).Distinct().ToList();
+
+            var componentCalculations = GET.View.ComponentCalculationsBy(procurementIds, componentStatuses);
+
+            DateTime? selectedDate = datePicker.SelectedDate;
+            string selectedStatus = ((comboBox.SelectedItem as ComponentState)?.Kind) ?? string.Empty;
+
+            var sellerId = sellers.FirstOrDefault(s => s.Name == header)?.Id;
+
+            var filteredComponentCalculations = componentCalculations.Where(cc => cc.SellerIdPurchase == sellerId) .ToList();
+
+            UpdateComponentCalculations(filteredComponentCalculations, selectedDate, selectedStatus);
+
+            if (sender is Button button && button.Tag is Popup popup)
+            {
+                popup.IsOpen = false;
+            }
+        }
+        private void UpdateComponentCalculations(List<ComponentCalculation> componentCalculations, DateTime? selectedDate, string selectedStatus)
+        {
+            foreach (var calculation in componentCalculations)
+            {
+                if (selectedDate.HasValue)
+                {
+                    calculation.Date = selectedDate.Value;
+                }
+
+                if (!string.IsNullOrEmpty(selectedStatus))
+                {
+                    using ParsethingContext db = new();
+                    var state = db.ComponentStates.FirstOrDefault(s => s.Kind == selectedStatus);
+                    if (state != null)
+                    {
+                        calculation.ComponentStateId = state.Id;
+                    }
+                }
+
+                PULL.ComponentCalculation(calculation);
+            }
+        }
 
         private void ExportToExcelButton_Click(object sender, RoutedEventArgs e)
         {
             Functions.ExportToExcel.ExportSupplyMonitoringListToExcel(supplyMonitoringList);
+        }
+
+        private void CopyToClipBoardButton_Click(object sender, RoutedEventArgs e, string header, decimal? totalAmount)
+        {
+            if (supplyMonitoringList == null) return;
+
+            var recordsForHeader = supplyMonitoringList.Where(s => s.SupplierName == header).ToList();
+
+            StringBuilder clipboardText = new StringBuilder();
+
+            clipboardText.AppendLine($"{header} - {totalAmount}");
+            foreach (var record in recordsForHeader)
+            {
+                clipboardText.AppendLine($"{record.ComponentName}        {record.AveragePrice}      {record.TotalCount}");
+            }
+
+            Clipboard.SetText(clipboardText.ToString());
         }
     }
 }

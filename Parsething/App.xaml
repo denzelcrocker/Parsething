@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="/Resources/Templates/DatePicker Templates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ImageTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ChartTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/PopUpTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

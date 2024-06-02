@@ -70,6 +70,8 @@
     <Style x:Key="TextBlock.SupplyMonitoring.Header" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
         <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Padding" Value="3"/>
+
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="#535353"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
