@@ -3,9 +3,12 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Parsething.Pages"
+      xmlns:local="clr-namespace:Parsething.Functions"
       mc:Ignorable="d"
       Title="CalculatorPage" Loaded="Page_Loaded">
+    <Page.Resources>
+        <local:CalculatingCountConverter x:Key="CalculatingCountConverter"/>
+    </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -90,7 +93,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames}" Content="Id" Grid.Column="0" />
                         <Label Style="{DynamicResource ColumnNames}" Content="Закон" Grid.Column="1" />
-                        <Label Style="{DynamicResource ColumnNames}" Content="Номер закупки" Grid.Column="2" />
+                        <Label Style="{DynamicResource ColumnNames}" Content="Количество позиций" Grid.Column="2" />
                         <Label Style="{DynamicResource ColumnNames}" Content="Дата подачи заявок" Grid.Column="3" />
                         <Label Style="{DynamicResource ColumnNames}" Content="Расчет" Grid.Column="4" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames}" Content="Максимальная цена" Grid.Column="4" Margin="0,15,0,0"/>
@@ -151,7 +154,7 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="4"
-                                            Text="{Binding Path=Procurement.Number}"
+                                            Text="{Binding Procurement.Id, Converter={StaticResource CalculatingCountConverter }}"
                                             FontSize="13"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"/>

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DatabaseLibrary.Entities.ProcurementProperties;
 using Parsething.Windows;
 
 namespace Parsething.Pages
@@ -30,6 +31,7 @@ namespace Parsething.Pages
 
         private List<Procurement>? Procurements = new List<Procurement>();
 
+
         public AssemblyPage()
         {
             InitializeComponent();
@@ -41,7 +43,10 @@ namespace Parsething.Pages
 
             Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
             if (Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
 
             ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
             if (ComponentCalculationsProblem != null)
@@ -75,7 +80,10 @@ namespace Parsething.Pages
                 Procurements.Add(componentCalculation.Procurement);
             }
             if (Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
@@ -87,7 +95,10 @@ namespace Parsething.Pages
                 Procurements.Add(componentCalculation.Procurement);
             }
             if (Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
@@ -99,7 +110,10 @@ namespace Parsething.Pages
                 Procurements.Add(componentCalculation.Procurement);
             }
             if (Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
         }
 
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
@@ -113,28 +127,40 @@ namespace Parsething.Pages
         {
             Procurements = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane);
             if (Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane);
-            if (Procurements != null)
+            if(Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
         }
 
         private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
             if (Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
         }
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
             if (Procurements != null)
+            {
+                GET.View.PopulateComponentStates(Procurements);
                 View.ItemsSource = Procurements;
+            }
         }
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {

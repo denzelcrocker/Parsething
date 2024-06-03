@@ -370,4 +370,21 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class CalculatingCountConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int id)
+            {
+                GET.Aggregate.ComponentClculationCountBy(id);
+                return GET.Aggregate.ComponentClculationCountBy(id);
+            }
+            return null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

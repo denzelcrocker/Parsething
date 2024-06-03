@@ -143,7 +143,7 @@ namespace Parsething.Pages
                 {
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
-                    Width = 1730
+                    Width = 1710
                 });
 
                 Button saveButton = new Button()
@@ -330,7 +330,7 @@ namespace Parsething.Pages
                 {
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
-                    Width = 1730
+                    Width = 1710
                 });
 
                 Button saveButton = new Button()
@@ -452,7 +452,7 @@ namespace Parsething.Pages
                 {
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
-                    Width = 1730
+                    Width = 1710
                 });
 
                 Button saveButton = new Button()
