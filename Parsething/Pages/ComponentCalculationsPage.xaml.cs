@@ -146,72 +146,67 @@ namespace Parsething.Pages
 
         private void GoBackButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно выйти? Не забудьте СОХРАНИТЬ результат", "Выход без сохранения", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+            if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == true)
             {
-                Procurement = GET.Entry.ProcurementBy(Procurement.Id);
-                if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == true)
-                {
-                    Procurement.IsCalculationBlocked = false;
-                    Procurement.CalculatingUserId = null;
-                    PULL.Procurement(Procurement);
-                }
-                else if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == false)
-                {
-                    Procurement.IsPurchaseBlocked = false;
-                    Procurement.PurchaseUserId = null;
-                    PULL.Procurement(Procurement);
-                }
+                Procurement.IsCalculationBlocked = false;
+                Procurement.CalculatingUserId = null;
+                PULL.Procurement(Procurement);
+            }
+            else if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == false)
+            {
+                Procurement.IsPurchaseBlocked = false;
+                Procurement.PurchaseUserId = null;
+                PULL.Procurement(Procurement);
+            }
 
-                if (IsSearch)
+            if (IsSearch)
+            {
+                _ = MainFrame.Navigate(new SearchPage(Procurements));
+            }
+            else
+            {
+                if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
                 {
-                    _ = MainFrame.Navigate(new SearchPage(Procurements));
+                    _ = MainFrame.Navigate(new Pages.AdministratorPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела расчетов" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела расчетов")
+                {
+                    _ = MainFrame.Navigate(new Pages.HeadsOfCalculatorsPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист отдела расчетов")
+                {
+                    _ = MainFrame.Navigate(new Pages.CalculatorPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
+                {
+                    _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по работе с электронными площадками")
+                {
+                    _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист тендерного отдела")
+                {
+                    _ = MainFrame.Navigate(new Pages.ManagerPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела закупки" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела закупок" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист закупки")
+                {
+                    _ = MainFrame.Navigate(new Pages.PurchaserPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по производству")
+                {
+                    _ = MainFrame.Navigate(new Pages.AssemblyPage());
+                }
+                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Юрист")
+                {
+                    _ = MainFrame.Navigate(new Pages.LawyerPage());
                 }
                 else
                 {
-                    if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
-                    {
-                        _ = MainFrame.Navigate(new Pages.AdministratorPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела расчетов" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела расчетов")
-                    {
-                        _ = MainFrame.Navigate(new Pages.HeadsOfCalculatorsPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист отдела расчетов")
-                    {
-                        _ = MainFrame.Navigate(new Pages.CalculatorPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
-                    {
-                        _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по работе с электронными площадками")
-                    {
-                        _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист тендерного отдела")
-                    {
-                        _ = MainFrame.Navigate(new Pages.ManagerPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела закупки" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела закупок" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист закупки")
-                    {
-                        _ = MainFrame.Navigate(new Pages.PurchaserPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по производству")
-                    {
-                        _ = MainFrame.Navigate(new Pages.AssemblyPage());
-                    }
-                    else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Юрист")
-                    {
-                        _ = MainFrame.Navigate(new Pages.LawyerPage());
-                    }
-                    else
-                    {
 
-                    }
                 }
             }
-            else if (messageBoxResult == MessageBoxResult.No) { }
 
         }
 

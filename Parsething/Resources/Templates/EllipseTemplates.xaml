@@ -3,6 +3,8 @@
                     xmlns:local="clr-namespace:Parsething.Functions">
 
     <local:DateColorConverter x:Key="DateColorConverter"/>
+    <local:ShipmentPlanColorConverter x:Key="ShipmentPlanColorConverter"/>
+
     <Style x:Key="DeadlineIndicatorStyle" TargetType="Ellipse">
         <Setter Property="Width" Value="12"/>
         <Setter Property="Height" Value="12"/>
@@ -100,6 +102,29 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=MaxAcceptanceDate, Converter={StaticResource DateColorConverter}}" Value="Red">
                 <Setter Property="Fill" Value="#BD1414"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ShipmentPlanIndicatorStyle" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ShipmentPlan.Kind, Converter={StaticResource ShipmentPlanColorConverter}}" Value="Black">
+                <Setter Property="Fill" Value="Black"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ShipmentPlan.Kind, Converter={StaticResource ShipmentPlanColorConverter}}" Value="Red">
+                <Setter Property="Fill" Value="#BD1414"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ShipmentPlan.Kind, Converter={StaticResource ShipmentPlanColorConverter}}" Value="Orange">
+                <Setter Property="Fill" Value="#ff8800"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ShipmentPlan.Kind, Converter={StaticResource ShipmentPlanColorConverter}}" Value="Green">
+                <Setter Property="Fill" Value="Green"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

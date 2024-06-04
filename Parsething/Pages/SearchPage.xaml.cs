@@ -61,6 +61,7 @@ namespace Parsething.Pages
             else if (procurements != null)
             {
                 SearchLV.ItemsSource = procurements;
+                GET.View.PopulateComponentStates(procurements);
             }
             Laws = GET.View.Laws();
             Law.ItemsSource = Laws;

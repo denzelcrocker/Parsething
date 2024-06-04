@@ -192,6 +192,38 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class ShipmentPlanColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string kind)
+            {
+
+                if (kind == "Пред-предыдущая" || kind == "Предыдущая")
+                {
+                    return "Black";
+                }
+                else if (kind == "Текущая")
+                {
+                    return "Red";
+                }
+                else if (kind == "Следующая")
+                {
+                    return "Orange";
+                }
+                else
+                {
+                    return "Green";
+                }
+            }
+            return "Black";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     public class DateTimeWithTimeZoneConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

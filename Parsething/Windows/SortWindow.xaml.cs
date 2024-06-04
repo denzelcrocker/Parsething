@@ -87,7 +87,6 @@ namespace Parsething.Windows
                             RegionCombobox.SelectedItem = region;
                             break;
                         }
-
                     Procurements.Remove(Procurement);
                 }
                 else

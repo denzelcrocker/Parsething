@@ -28,6 +28,8 @@ namespace Parsething.Pages
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsNew { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsDrawUp { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesEPSpecialistGroupings { get; set; }
+        private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
+
 
         private List<Procurement>? Procurements = new List<Procurement>();
 
@@ -43,6 +45,7 @@ namespace Parsething.Pages
             int countOfCalculationsNew = 0;
             int countOfCalculationsDrawUp = 0;
             int countOfSended = 0;
+            int countOfMethods = 0;
 
             Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState)); // Спаршены
 
@@ -118,6 +121,31 @@ namespace Parsething.Pages
             ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Purchase).ToString(); // Проверка закупки проведена
 
             ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
+
+            Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
+
+            Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.Deadline)); // Торги
+
+            QuotesCombobox.Items.Clear();
+            QuotesCombobox.Text = "Сп-бы опр-я:";
+            ProcurementsMethodsGroupings = GET.View.ProcurementsGroupByMethod();
+            foreach (var item in ProcurementsMethodsGroupings)
+            {
+                countOfMethods += item.CountOfProcurements;
+            }
+            Quotes.Text = countOfMethods.ToString(); // Котировки (общее количество)
+            foreach (var item in ProcurementsMethodsGroupings)
+            {
+                QuotesCombobox.Items.Add(item); // Котировки (по методам)
+            }// Котировки
+
+            OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.Deadline)); // Просрочены
+
+            Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState)); // Отменены
+
+            Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState)); // Отклонены
+
+            Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -236,6 +264,47 @@ namespace Parsething.Pages
         private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+        private void SendedButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Отправлен", GET.KindOf.ProcurementState);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void BargainingButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.Deadline);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.Deadline);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void CancellationButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Отмена", GET.KindOf.ProcurementState);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void RejectedButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Отклонен", GET.KindOf.ProcurementState);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void LostButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Проигран", GET.KindOf.ProcurementState);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }
