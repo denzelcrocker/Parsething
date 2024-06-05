@@ -401,7 +401,7 @@ namespace Parsething.Pages
 
             if (procurement != null)
             {
-                Popup popup = FindPopupByProcurementId(procurement.Id, button);
+                Popup popup = Functions.FindPopup.FindPopupByProcurementId(procurement.Id, button);
 
                 if (popup != null)
                 {
@@ -420,53 +420,6 @@ namespace Parsething.Pages
                 }
             }
 
-        }
-
-        private Popup FindPopupByProcurementId(int procurementId, Button button)
-        {
-            Grid grid = FindParent<Grid>(button);
-
-            foreach (var child in FindVisualChildren<Popup>(grid))
-            {
-                if (child.DataContext is Procurement procurement && procurement.Id == procurementId)
-                {
-                    return child;
-                }
-            }
-
-            return null;
-        }
-
-        private T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
-
-            while (parent != null && !(parent is T))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-
-            return parent as T;
-        }
-
-        private IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject
-        {
-            if (parent != null)
-            {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-                {
-                    DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                    if (child != null && child is T)
-                    {
-                        yield return (T)child;
-                    }
-
-                    foreach (T descendant in FindVisualChildren<T>(child))
-                    {
-                        yield return descendant;
-                    }
-                }
-            }
         }
 
         private void SaveBetPopUp_Click(object sender, RoutedEventArgs e)

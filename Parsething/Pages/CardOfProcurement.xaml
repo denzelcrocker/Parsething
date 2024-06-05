@@ -4,6 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parsething.Pages"
+      xmlns:cls="clr-namespace:Parsething.Classes"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d" 
       Title="CardOfProcurement" Loaded="Page_Loaded">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -150,6 +152,9 @@
                         <Button x:Name="SaveButton" Grid.Row="16" Style="{DynamicResource SumbitAction}" Content="Сохранить" Click="SaveButton_Click"/>
                     </Grid>
                     <ListView x:Name="ProcurementInfoLV" Grid.Column="2" Grid.Row="2" Margin="30,30,30,80" Style="{DynamicResource ListView}" Visibility="Hidden">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -198,9 +203,9 @@
                             <TextBox x:Name="Platform" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="4" IsReadOnly="True"/>
                             <Label Content="URL ЕТР" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="5"/>
                             <TextBox x:Name="PlatformURL" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="5" IsReadOnly="True"/>
-                            <Label Content="Подача заявки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6"/>
+                            <Label Content="Начало подачи заявок" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6"/>
                             <TextBox x:Name="StartDate" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="6" IsReadOnly="True"/>
-                            <Label Content="Аукцион" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7"/>
+                            <Label Content="Окончание подачи заявки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7"/>
                             <TextBox x:Name="DeadLine" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="7" IsReadOnly="True"/>
                             <Label Content="Дата подведения итогов" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8"/>
                             <TextBox x:Name="ResultDate" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="8" IsReadOnly="True"/>
@@ -247,6 +252,9 @@
                         </Grid>
                     </ListView>
                     <ListView x:Name="ContractInfoLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Margin="30,30,30,80" Style="{DynamicResource ListView}">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -284,6 +292,9 @@
                         </Grid>
                     </ListView>
                     <ListView x:Name="ContractNuancesLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Margin="30,30,30,80" Style="{DynamicResource ListView}">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -298,6 +309,9 @@
                             <Label Content="Выбранные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
                             <Label Content="Доступные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"/>
                             <ListView x:Name="ProcurementPreferencesSelectedLV" Grid.Column="0" Cursor="Hand" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="0,0,10,0" MouseDoubleClick="ProcurementPreferencesSelectedLV_MouseDoubleClick">
+                                <i:Interaction.Behaviors>
+                                    <cls:SmoothScrollBehavior />
+                                </i:Interaction.Behaviors>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border>
@@ -320,6 +334,9 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                             <ListView x:Name="ProcurementPreferencesNotSelectedLV" Cursor="Hand"  Grid.Column="1" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="10,0,0,0" MouseDoubleClick="ProcurementPreferencesNotSelectedLV_MouseDoubleClick">
+                                <i:Interaction.Behaviors>
+                                    <cls:SmoothScrollBehavior />
+                                </i:Interaction.Behaviors>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border>
@@ -439,6 +456,9 @@
                         </Grid>
                     </ListView>
                     <ListView x:Name="CalculatingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -458,6 +478,9 @@
                         </Grid>
                     </ListView>
                     <ListView x:Name="SendingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -481,6 +504,9 @@
                         </Grid>
                     </ListView>
                     <ListView x:Name="BargainingLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -521,6 +547,9 @@
                         </Grid>
                     </ListView>
                     <ListView x:Name="SupplyLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -640,6 +669,9 @@
                         </Grid>
                     </ListView>
                     <ListView x:Name="PaymentLV" Grid.Column="2" Grid.Row="2" Visibility="Visible" Style="{DynamicResource ListView}" Margin="30,30,30,80">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"/>
@@ -654,7 +686,7 @@
                             </Grid.RowDefinitions>
                             <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0">
                                 <TextBlock TextWrapping="Wrap">
-                                    Дата подисания акта приемки
+                                    Дата подписания акта приемки
                                 </TextBlock>
                             </Label>
                             <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ActDate" Grid.Row="0" Grid.Column="1"  Height="55" />
@@ -697,6 +729,9 @@
                             <Label Content="Выбранные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"/>
                             <Label Content="Доступные" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center"/>
                             <ListView x:Name="ProcurementDocumentsSelectedLV" Grid.Column="0" Cursor="Hand" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="0,0,10,0" MouseDoubleClick="ProcurementDocumentsSelectedLV_MouseDoubleClick" >
+                                <i:Interaction.Behaviors>
+                                    <cls:SmoothScrollBehavior />
+                                </i:Interaction.Behaviors>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border>
@@ -719,6 +754,9 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                             <ListView x:Name="ProcurementDocumentsNotSelectedLV" Cursor="Hand"  Grid.Column="1" BorderThickness="0" Grid.Row="2" Style="{DynamicResource ListView.Preferences}" Margin="10,0,0,0" MouseDoubleClick="ProcurementDocumentsNotSelectedLV_MouseDoubleClick"  >
+                                <i:Interaction.Behaviors>
+                                    <cls:SmoothScrollBehavior />
+                                </i:Interaction.Behaviors>
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border>
@@ -790,6 +828,9 @@
                         </Grid.RowDefinitions>
                         <Label Content="Комментарии" Style="{DynamicResource Label.CardOfProcurement}"/>
                         <ListView x:Name="CommentsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,15">
+                            <i:Interaction.Behaviors>
+                                <cls:SmoothScrollBehavior />
+                            </i:Interaction.Behaviors>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border>

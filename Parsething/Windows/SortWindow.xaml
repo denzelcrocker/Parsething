@@ -15,6 +15,8 @@
         <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Label Content="Осталось:" Style="{DynamicResource TitleBar.Label}"/>
+                    <TextBlock x:Name="BalanceOfTendersTextBlock" Style="{DynamicResource TitleBar.TextBlock}"/>
                     <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
                     <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarAction}" Click="CloseAction_Click"/>
                 </StackPanel>

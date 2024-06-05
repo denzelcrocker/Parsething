@@ -146,6 +146,14 @@ namespace Parsething.Pages
             Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState)); // Отклонены
 
             Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
+
+            PreviousWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane));// Предыдущая неделя отгрузки
+
+            ThisWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Текущая", GET.KindOf.ShipmentPlane));// Текущая неделя отгрузки
+
+            NextWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Следующая", GET.KindOf.ShipmentPlane));// Следующая неделя отгрузки
+
+            AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -321,6 +329,34 @@ namespace Parsething.Pages
         {
             SortWindow sortWindow = new SortWindow(null, false);
             sortWindow.Show();
+        }
+
+        private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Предыдущая", GET.KindOf.ShipmentPlane);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void NextWeekButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
     }
 }

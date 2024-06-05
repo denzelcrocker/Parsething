@@ -42,6 +42,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
     <PackageReference Include="PDFsharp-WPF" Version="6.0.0" />
   </ItemGroup>
 
@@ -68,7 +69,7 @@
     <Resource Include="Resources\Images\PlaceholderEmployeePhotoPreview.png" />
     <Resource Include="Resources\Images\EPlatform.png" />
     <Resource Include="Resources\Images\Search.png" />
-
+    <Resource Include="Resources\Images\EmployeePreview.png" />
     <Resource Include="Resources\Images\Send.png" />
     <Resource Include="Resources\Images\GrayPrinting.png" />
   </ItemGroup>

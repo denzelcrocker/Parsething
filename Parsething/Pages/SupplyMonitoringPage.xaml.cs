@@ -28,6 +28,7 @@ namespace Parsething.Pages
         private List<SupplyMonitoringList> supplyMonitoringList { get; set; }
         private List<ComponentState> componentStates { get; set; }
         private List<Seller> sellers { get; set; }
+        private decimal? overAllPrice = 0;
 
 
         public SupplyMonitoringPage(List<Procurement> procurements)
@@ -41,69 +42,72 @@ namespace Parsething.Pages
         private void CommonListButton_Click(object sender, RoutedEventArgs e)
         {
             var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+            overAllPrice = 0;
 
             supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses).OrderBy(x => x.ComponentName).ToList();
             List<StackPanel> stackPanels = new();
-                StackPanel stackPanel = new();
-                
-                ListView list = new();
-                list.Style = (Style)Application.Current.FindResource("ListView");
-                foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
+            StackPanel stackPanel = new();
+            
+            ListView list = new();
+            list.Style = (Style)Application.Current.FindResource("ListView");
+            foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
+            {
+                Grid grid = new Grid();
+                double[] columnWidths = { 150, 830, 100, 150, 100, 160, 160 };
+
+                for (int i = 0; i < columnWidths.Length; i++)
                 {
-                        Grid grid = new Grid();
-                        double[] columnWidths = { 150, 830, 100, 150, 100, 160, 160 };
-
-                        for (int i = 0; i < columnWidths.Length; i++)
-                        {
-                            ColumnDefinition columnDefinition = new ColumnDefinition();
-                            columnDefinition.Width = new GridLength(columnWidths[i]);
-                            grid.ColumnDefinitions.Add(columnDefinition);
-                            Border border = new Border();
-                            border.BorderThickness = new Thickness(1);
-                            border.BorderBrush = Brushes.Black;
-                            Grid.SetColumn(border, i);
-                            grid.Children.Add(border);
-                        }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(130) });
-
-                        TextBlock textBlockManufacturerName = new TextBlock() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentName = new TextBlock() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentStatus = new TextBlock() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockAveragePrice = new TextBlock() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalCount = new TextBlock() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockSellerName = new TextBlock() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalAmount = new TextBlock() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
-                        button.Click += Button_Click;
-                        button.DataContext = supplyMonitoring.TenderNumber;
-
-                        Grid.SetColumn(textBlockManufacturerName, 0);
-                        Grid.SetColumn(textBlockComponentName, 1);
-                        Grid.SetColumn(textBlockComponentStatus, 2);
-                        Grid.SetColumn(textBlockAveragePrice, 3);
-                        Grid.SetColumn(textBlockTotalCount, 4);
-                        Grid.SetColumn(textBlockSellerName, 5);
-                        Grid.SetColumn(textBlockTotalAmount, 6);
-                        Grid.SetColumn(button, 7);
-
-                        grid.Children.Add(textBlockManufacturerName);
-                        grid.Children.Add(textBlockComponentName);
-                        grid.Children.Add(textBlockComponentStatus);
-                        grid.Children.Add(textBlockAveragePrice);
-                        grid.Children.Add(textBlockTotalCount);
-                        grid.Children.Add(textBlockSellerName);
-                        grid.Children.Add(textBlockTotalAmount);
-                        grid.Children.Add(button);
-
-                        if (supplyMonitoring.ComponentStatus == "Купить")
-                        {
-                            textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
-                        }
-                        list.Items.Add(grid);
+                    ColumnDefinition columnDefinition = new ColumnDefinition();
+                    columnDefinition.Width = new GridLength(columnWidths[i]);
+                    grid.ColumnDefinitions.Add(columnDefinition);
+                    Border border = new Border();
+                    border.BorderThickness = new Thickness(1);
+                    border.BorderBrush = Brushes.Black;
+                    Grid.SetColumn(border, i);
+                    grid.Children.Add(border);
                 }
-                stackPanel.Children.Add(list);
-                stackPanels.Add(stackPanel);
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
+
+                TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                button.Click += Button_Click;
+                button.DataContext = supplyMonitoring.TenderNumber;
+
+                Grid.SetColumn(textBlockManufacturerName, 0);
+                Grid.SetColumn(textBlockComponentName, 1);
+                Grid.SetColumn(textBlockComponentStatus, 2);
+                Grid.SetColumn(textBlockAveragePrice, 3);
+                Grid.SetColumn(textBlockTotalCount, 4);
+                Grid.SetColumn(textBlockSellerName, 5);
+                Grid.SetColumn(textBlockTotalAmount, 6);
+                Grid.SetColumn(button, 7);
+
+                grid.Children.Add(textBlockManufacturerName);
+                grid.Children.Add(textBlockComponentName);
+                grid.Children.Add(textBlockComponentStatus);
+                grid.Children.Add(textBlockAveragePrice);
+                grid.Children.Add(textBlockTotalCount);
+                grid.Children.Add(textBlockSellerName);
+                grid.Children.Add(textBlockTotalAmount);
+                grid.Children.Add(button);
+
+                if (supplyMonitoring.ComponentStatus == "Купить")
+                {
+                    textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
+                }
+                list.Items.Add(grid);
+                overAllPrice += supplyMonitoring.TotalAmount;
+            }
+            stackPanel.Children.Add(list);
+            stackPanels.Add(stackPanel);
             listViewSupplyMonitoring.ItemsSource = stackPanels;
+            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " p.";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -115,6 +119,7 @@ namespace Parsething.Pages
         private void BySuppliersButton_Click(object sender, RoutedEventArgs e)
         {
             var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+            overAllPrice = 0;
 
             supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
             List<string> headers = new();
@@ -189,15 +194,15 @@ namespace Parsething.Pages
                             Grid.SetColumn(border, i);
                             grid.Children.Add(border);
                         }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(130) });
+                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
 
-                        TextBlock textBlockManufacturerName = new TextBlock() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentName = new TextBlock() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentStatus = new TextBlock() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockAveragePrice = new TextBlock() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalCount = new TextBlock() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockSellerName = new TextBlock() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalAmount = new TextBlock() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
+                        TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
@@ -225,6 +230,7 @@ namespace Parsething.Pages
                             textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
                         }
                         list.Items.Add(grid);
+                        overAllPrice += supplyMonitoring.TotalAmount;
                     }
                 }
                 stackPanel.Children.Add(list);
@@ -232,6 +238,7 @@ namespace Parsething.Pages
             }
 
             listViewSupplyMonitoring.ItemsSource = stackPanels;
+            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
         }
 
 
@@ -303,6 +310,7 @@ namespace Parsething.Pages
         private void WarehouseAndReserveButton_Click(object sender, RoutedEventArgs e)
         {
             var componentStatuses = new List<string> { "На складе", "В резерве"};
+            overAllPrice = 0;
 
             supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
             List<string> headers = new();
@@ -377,15 +385,15 @@ namespace Parsething.Pages
                             Grid.SetColumn(border, i);
                             grid.Children.Add(border);
                         }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(130) });
+                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
 
-                        TextBlock textBlockManufacturerName = new TextBlock() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentName = new TextBlock() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentStatus = new TextBlock() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockAveragePrice = new TextBlock() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalCount = new TextBlock() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockSellerName = new TextBlock() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalAmount = new TextBlock() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
+                        TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
@@ -413,6 +421,7 @@ namespace Parsething.Pages
                             textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
                         }
                         list.Items.Add(grid);
+                        overAllPrice += supplyMonitoring.TotalAmount;
                     }
                 }
                 stackPanel.Children.Add(list);
@@ -420,11 +429,13 @@ namespace Parsething.Pages
             }
 
             listViewSupplyMonitoring.ItemsSource = stackPanels;
+            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
         }
 
         private void OnTheWayButton_Click(object sender, RoutedEventArgs e)
         {
             var componentStatuses = new List<string> {"В пути"};
+            overAllPrice = 0;
 
             supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
             List<string> headers = new();
@@ -499,15 +510,15 @@ namespace Parsething.Pages
                             Grid.SetColumn(border, i);
                             grid.Children.Add(border);
                         }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(130) });
+                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
 
-                        TextBlock textBlockManufacturerName = new TextBlock() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentName = new TextBlock() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockComponentStatus = new TextBlock() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockAveragePrice = new TextBlock() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalCount = new TextBlock() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockSellerName = new TextBlock() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("TableElements") };
-                        TextBlock textBlockTotalAmount = new TextBlock() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("TableElements") };
+                        TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                        TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
@@ -535,6 +546,7 @@ namespace Parsething.Pages
                             textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
                         }
                         list.Items.Add(grid);
+                        overAllPrice += supplyMonitoring.TotalAmount;
                     }
                 }
                 stackPanel.Children.Add(list);
@@ -542,6 +554,7 @@ namespace Parsething.Pages
             }
 
             listViewSupplyMonitoring.ItemsSource = stackPanels;
+            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e, List<SupplyMonitoringList> supplyMonitoringList, DatePicker datePicker, ComboBox comboBox)
         {
@@ -611,6 +624,11 @@ namespace Parsething.Pages
             }
 
             Clipboard.SetText(clipboardText.ToString());
+        }
+
+        private void OverallInfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            OverAllInfoPopUp.IsOpen = !OverAllInfoPopUp.IsOpen;
         }
     }
 }

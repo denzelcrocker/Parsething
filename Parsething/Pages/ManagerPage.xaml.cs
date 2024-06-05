@@ -240,17 +240,32 @@ namespace Parsething.Pages
 
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("В разработке");
+            foreach (ComponentCalculation componentCalculation in ComponentCalculationsProblem)
+            {
+                Procurements.Add(componentCalculation.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("В разработке");
+            foreach (ComponentCalculation componentCalculation in ComponentCalculationsInWork)
+            {
+                Procurements.Add(componentCalculation.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("В разработке");
+            foreach (ComponentCalculation componentCalculation in ComponentCalculationsAgreed)
+            {
+                Procurements.Add(componentCalculation.Procurement);
+            }
+            if (Procurements != null)
+                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)

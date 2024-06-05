@@ -69,9 +69,8 @@
     </Style>
     <Style x:Key="TextBlock.SupplyMonitoring.Header" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
         <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="15"/>
         <Setter Property="Padding" Value="3"/>
-
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="#535353"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -89,6 +88,12 @@
         <Setter Property="FontSize" Value="10"/>
         <Setter Property="Margin" Value="15,0,0,0"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="TitleBar.TextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="#948F90"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 </ResourceDictionary>

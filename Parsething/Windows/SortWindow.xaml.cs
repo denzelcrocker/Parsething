@@ -57,6 +57,9 @@ namespace Parsething.Windows
             {
                 if (Procurements.Count != 0)
                 {
+                    BalanceOfTendersTextBlock.Visibility = Visibility.Visible;
+                    BalanceOfTendersTextBlock.Text = Procurements.Count.ToString();
+
                     Procurements = Procurements.OrderBy(p => p.Deadline).ToList();
                     Procurement = Procurements.First();
 
@@ -96,6 +99,7 @@ namespace Parsething.Windows
             }
             else
             {
+                BalanceOfTendersTextBlock.Visibility = Visibility.Hidden;
                 SortBar.Visibility = Visibility.Hidden;
                 AddButton.Visibility = Visibility.Visible;
 

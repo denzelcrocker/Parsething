@@ -241,7 +241,7 @@ namespace Parsething.Functions
                 string[] parts = timeZoneOffset.Split('+', '-');
                 if (parts.Length > 1 && int.TryParse(parts[1], out int offsetHours))
                 {
-                    int sign = timeZoneOffset.Contains('+') ? 1 : -1;
+                    int sign = timeZoneOffset.Contains('+') ? -1 : 1;
                     TimeSpan offset = TimeSpan.FromHours(sign * offsetHours);
 
                     DateTime dateTimeWithOffset = deadline + offset;

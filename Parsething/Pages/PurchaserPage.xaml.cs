@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 namespace Parsething.Pages
 {
@@ -43,6 +44,7 @@ namespace Parsething.Pages
         private List<Procurement>? ProcurementsAgreed  { get; set; }
         private List<Procurement>? ProcurementsApprovePurchaseYes { get; set; }
         private List<Procurement>? ProcurementsApprovePurchaseNo { get; set; }
+        private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
 
         public PurchaserPage() =>
             InitializeComponent();
@@ -344,6 +346,46 @@ namespace Parsething.Pages
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, null, true, false));
+        }
+
+        private void EmployeeInfoButton_MouseEnter(object sender, RoutedEventArgs e)
+        {
+            Button? button = sender as Button;
+
+            Procurement? procurement = button?.DataContext as Procurement;
+            if (procurement != null && button != null)
+            {
+                ProcurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(procurement.Id);
+                Popup popup = Functions.FindPopup.FindPopupByProcurementId(procurement.Id, button);
+
+                if (popup != null && ProcurementsEmployees.Count != 0)
+                {
+                    popup.IsOpen = !popup.IsOpen;
+                    TextBlock calculatorTextBlock = popup.FindName("CalculatorTextBlock") as TextBlock;
+                    TextBlock managerTextBlock = popup.FindName("ManagerTextBlock") as TextBlock;
+
+                    if (calculatorTextBlock != null)
+                        calculatorTextBlock.Text = ProcurementsEmployees.LastOrDefault(pe => pe.Employee.PositionId == 2 || pe.Employee.PositionId == 3 || pe.Employee.PositionId == 4)?.Employee.FullName;
+                    if (managerTextBlock != null)
+                        managerTextBlock.Text = ProcurementsEmployees.LastOrDefault(pe => pe.Employee.PositionId == 5 || pe.Employee.PositionId == 6 || pe.Employee.PositionId == 8)?.Employee.FullName;
+                }
+            }
+        }
+        private void EmployeeInfoButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Button? button = sender as Button;
+            if (button != null)
+            {
+                Procurement? procurement = button.DataContext as Procurement;
+                if (procurement != null)
+                {
+                    Popup popup = Functions.FindPopup.FindPopupByProcurementId(procurement.Id, button);
+                    if (popup != null)
+                    {
+                        popup.IsOpen = false;
+                    }
+                }
+            }
         }
     }
     

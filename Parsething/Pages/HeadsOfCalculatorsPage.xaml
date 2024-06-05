@@ -13,11 +13,11 @@
             </Border.Effect>
             <Grid Width="1810" Height="820">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="360"/>
+                    <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="360"/>
+                    <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="360"/>
+                    <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="2"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -214,17 +214,17 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition Height="2"/>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <Label Content="Отправлены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Sended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -260,6 +260,36 @@
                         <Label Content="Проиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="10"/>
                         <TextBlock x:Name="Lost" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
                         <Button x:Name="LostButton" Grid.Row="10" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="LostButton_Click" />
+                    </Grid>
+                    <Label Content="Поставка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
+                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Content="План отгрузки:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
+                        <Label Content="Пред. неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="1"/>
+                        <TextBlock x:Name="PreviousWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
+                        <Button x:Name="PreviousWeekButton" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="PreviousWeekButton_Click" />
+                        <Label Content="Текущая неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="2"/>
+                        <TextBlock x:Name="ThisWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
+                        <Button x:Name="ThisWeekWeekButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ThisWeekButton_Click" />
+                        <Label Content="След. неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="3"/>
+                        <TextBlock x:Name="NextWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
+                        <Button x:Name="NextWeekButton" Grid.Row="3" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="NextWeekButton_Click"  />
+                        <Label Content="Через неделю:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="4"/>
+                        <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
+                        <Button x:Name="AWeekLaterButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="AWeekLaterButton_Click"  />
                     </Grid>
                 </StackPanel>
             </Grid>

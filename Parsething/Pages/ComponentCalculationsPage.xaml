@@ -3,6 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:cls="clr-namespace:Parsething.Classes"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:local="clr-namespace:Parsething.Pages"
       mc:Ignorable="d" 
       Title="ComponentCalculationsPage" Loaded="Page_Loaded" >
@@ -75,7 +77,12 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="9" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Карта сборки" Grid.Column="10" />
                     </Grid>
-                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0"/>
+                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
+                    </ListView>
+
                     <StackPanel  Orientation="Horizontal">
                         <Button   
                         Grid.Column="0"
@@ -149,6 +156,9 @@
                             <RowDefinition Height="60"/>
                         </Grid.RowDefinitions>
                         <ListView x:Name="CommentsListView" Grid.ColumnSpan="2" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,15">
+                            <i:Interaction.Behaviors>
+                                <cls:SmoothScrollBehavior />
+                            </i:Interaction.Behaviors>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border>

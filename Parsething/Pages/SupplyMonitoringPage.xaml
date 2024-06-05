@@ -29,6 +29,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="70" />
                             </Grid.ColumnDefinitions>
                             <Button x:Name="CommonListButton"
                                 Grid.Column="0"
@@ -55,6 +56,20 @@
                                 Content="Экспорт в Excel"
                                 Style="{DynamicResource SupplyMonitoringButton}"
                                 Margin="10" Click="ExportToExcelButton_Click"/>
+                            <Button x:Name="OverallInfoButton"
+                                Grid.Column="5"
+                                Width="50"
+                                Content="i"
+                                Style="{DynamicResource SupplyMonitoringButton}"
+                                Margin="10" Click="OverallInfoButton_Click"/>
+                            <Popup x:Name="OverAllInfoPopUp" PlacementTarget="{Binding ElementName=OverallInfoButton}" Placement="Bottom" StaysOpen="True" Width="170">
+                                <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
+                                    <Grid Width="170" >
+                                        <Label Content="Всего: " Style="{DynamicResource LabelBase}"/>
+                                        <TextBlock x:Name="OverAllInfoTextBlock" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    </Grid>
+                                </Border>
+                            </Popup>
                         </Grid>
                         <Grid Grid.Row="2" x:Name="ColumnsNamesPurchase" Visibility="Visible">
                             <Grid.ColumnDefinitions>
