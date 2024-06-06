@@ -28,7 +28,7 @@ public partial class AdministratorPage : Page
     public AdministratorPage() =>
         InitializeComponent();
 
-    private void Page_Loaded(object sender, RoutedEventArgs e)
+    private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
 
         try
@@ -182,13 +182,8 @@ public partial class AdministratorPage : Page
 
         Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
 
-        WebClient client = new WebClient();
-        var xml = client.DownloadString("https://www.cbr-xml-daily.ru/daily.xml");
-        XDocument xdoc = XDocument.Parse(xml);
-        var el = xdoc.Element("ValCurs").Elements("Valute");
-        string dollar = el.Where(x => x.Attribute("ID").Value == "R01235").Select(x => x.Element("Value").Value).FirstOrDefault();
-        dollar = dollar.RemoveEnd(2) + " ₽";
-        RateForCentralBank.Text = dollar;
+        await UpdateRatesFromCBRAsync();
+
 
         // Рублей в обороте
 
@@ -208,7 +203,16 @@ public partial class AdministratorPage : Page
 
         FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
     }
-
+    private async Task UpdateRatesFromCBRAsync()
+    {
+        WebClient client = new WebClient();
+        var xml = await client.DownloadStringTaskAsync("https://www.cbr-xml-daily.ru/daily.xml");
+        XDocument xdoc = XDocument.Parse(xml);
+        var el = xdoc.Element("ValCurs").Elements("Valute");
+        string dollar = el.Where(x => x.Attribute("ID").Value == "R01235").Select(x => x.Element("Value").Value).FirstOrDefault();
+        dollar = dollar.RemoveEnd(2) + " ₽";
+        RateForCentralBank.Text = dollar;
+    }
     private void UnsortedButton_Click(object sender, RoutedEventArgs e) // неразобранные 
     {
         Procurements = GET.View.ProcurementsBy("Неразобранный", GET.KindOf.ProcurementState);

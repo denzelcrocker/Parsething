@@ -308,6 +308,13 @@ namespace Parsething.Functions
                             TextBox textBoxPartNumber = new TextBox() { Text = componentCalculation.PartNumber, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxPartNumber.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            Label replacementLabel = new Label() { Content = "!", Visibility = Visibility.Hidden, Style = (Style)Application.Current.FindResource("ComponentCalculation.Label") };
+                            ToolTip tooltip = new ToolTip();
+                            tooltip.Style = (Style)Application.Current.FindResource("ComponentCalculation.ToolTip");
+                            tooltip.Content = componentCalculation.ComponentName;
+                            replacementLabel.ToolTip = tooltip;
+                            if (componentCalculation.ComponentName != componentCalculation.ComponentNamePurchase)
+                                replacementLabel.Visibility = Visibility.Visible;
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
                             foreach (Manufacturer manufacturer in Manufacturers)
@@ -350,6 +357,7 @@ namespace Parsething.Functions
 
                             Grid.SetColumn(textBoxPartNumber, 0);
                             Grid.SetColumn(textBoxComponentName, 1);
+                            Grid.SetColumn(replacementLabel, 1);
                             Grid.SetColumn(comboBoxManufacturer, 2);
                             Grid.SetColumn(comboBoxComponentState, 3);
                             Grid.SetColumn(datePicker, 4);
@@ -363,6 +371,7 @@ namespace Parsething.Functions
 
                             grid.Children.Add(textBoxPartNumber);
                             grid.Children.Add(textBoxComponentName);
+                            grid.Children.Add(replacementLabel);
                             grid.Children.Add(comboBoxManufacturer);
                             grid.Children.Add(comboBoxComponentState);
                             grid.Children.Add(datePicker);
@@ -692,30 +701,30 @@ namespace Parsething.Functions
                             ComponentCalculation componentCalculationItem = new ComponentCalculation();
                             TextBox textBoxPartNumber = (TextBox)grid.Children[0];
                             TextBox textBoxComponentName = (TextBox)grid.Children[1];
-                            DatePicker datePicker = (DatePicker)grid.Children[4];
-                            TextBox textBoxPrice = (TextBox)grid.Children[5];
-                            TextBox textBoxCount = (TextBox)grid.Children[6];
-                            TextBox textBoxReserve = (TextBox)grid.Children[8];
-                            TextBox textBoxNote = (TextBox)grid.Children[9];
-                            TextBox textBoxAssemblyMap = (TextBox)grid.Children[10];
+                            DatePicker datePicker = (DatePicker)grid.Children[5];
+                            TextBox textBoxPrice = (TextBox)grid.Children[6];
+                            TextBox textBoxCount = (TextBox)grid.Children[7];
+                            TextBox textBoxReserve = (TextBox)grid.Children[9];
+                            TextBox textBoxNote = (TextBox)grid.Children[10];
+                            TextBox textBoxAssemblyMap = (TextBox)grid.Children[11];
 
                             componentCalculationItem.Id = (int)((List<object>)grid.DataContext)[0];
                             componentCalculationItem.ProcurementId = (int)((List<object>)grid.DataContext)[1];
                             componentCalculationItem.PartNumber = textBoxPartNumber.Text;
                             componentCalculationItem.ComponentName = (string)((List<object>)grid.DataContext)[6];
                             componentCalculationItem.ComponentNamePurchase = textBoxComponentName.Text;
-                            if ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem != null)
+                            if ((Manufacturer)((ComboBox)grid.Children[3]).SelectedItem != null)
                             {
-                                componentCalculationItem.ManufacturerIdPurchase = ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem).Id;
+                                componentCalculationItem.ManufacturerIdPurchase = ((Manufacturer)((ComboBox)grid.Children[3]).SelectedItem).Id;
                             }
                             componentCalculationItem.ManufacturerId = (int?)((List<object>)grid.DataContext)[7];
                             if (sameComboBox != null && sameComboBox.SelectedItem != null)
                                 componentCalculationItem.ComponentStateId = ((ComponentState)sameComboBox.SelectedItem).Id;
                             else 
                             {
-                                if ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem != null)
+                                if ((ComponentState)((ComboBox)grid.Children[4]).SelectedItem != null)
                                 {
-                                    componentCalculationItem.ComponentStateId = ((ComponentState)((ComboBox)grid.Children[3]).SelectedItem).Id;
+                                    componentCalculationItem.ComponentStateId = ((ComponentState)((ComboBox)grid.Children[4]).SelectedItem).Id;
                                 }
                             }
                             if (sameDatePicker != null && sameDatePicker.SelectedDate != null)
@@ -732,9 +741,9 @@ namespace Parsething.Functions
                                 componentCalculationItem.CountPurchase = Convert.ToInt32(textBoxCount.Text);
                             }
                             componentCalculationItem.Count = (int?)((List<object>)grid.DataContext)[9];
-                            if ((Seller)((ComboBox)grid.Children[7]).SelectedItem != null)
+                            if ((Seller)((ComboBox)grid.Children[8]).SelectedItem != null)
                             {
-                                componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[7]).SelectedItem).Id;
+                                componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[8]).SelectedItem).Id;
                             }
                             componentCalculationItem.SellerId = (int?)((List<object>)grid.DataContext)[10];
                             componentCalculationItem.ReservePurchase = textBoxReserve.Text;

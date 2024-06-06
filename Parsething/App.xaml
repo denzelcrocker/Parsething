@@ -19,6 +19,7 @@
                 <ResourceDictionary Source="/Resources/Templates/ImageTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ChartTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/PopUpTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Templates/ToolTipTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

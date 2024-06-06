@@ -163,4 +163,10 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
+    <Style x:Key="ComponentCalculation.Label" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="{StaticResource MainText.Foreground}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
 </ResourceDictionary> 

@@ -3,17 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Parsething.Classes;
 using Parsething.Windows;
 using DatabaseLibrary.Entities.ProcurementProperties;
@@ -22,9 +16,6 @@ using System.Windows.Controls.Primitives;
 
 namespace Parsething.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для SearchPage.xaml
-    /// </summary>
     public partial class SearchPage : Page
     {
         private Frame MainFrame { get; set; } = null!;
@@ -32,52 +23,73 @@ namespace Parsething.Pages
         private List<Law>? Laws { get; set; }
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<Employee>? Employees { get; set; }
-
         private List<Procurement>? FoundProcurements { get; set; }
-
         private List<Procurement>? Procurements { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
-
+        private const int PageSize = 20; // Размер страницы для пагинации
+        private int CurrentPage = 1; // Текущая страница
 
         public SearchPage(List<Procurement>? procurements)
         {
             InitializeComponent();
+            InitializeData(procurements);
+        }
 
-            if (!string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementId) ||
-                !string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementNumber) ||
-                !string.IsNullOrEmpty(SearchCriteria.Instance.Law) ||
-                !string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementState) ||
-                !string.IsNullOrEmpty(SearchCriteria.Instance.INN) ||
-                !string.IsNullOrEmpty(SearchCriteria.Instance.Employee) ||
-                !string.IsNullOrEmpty(SearchCriteria.Instance.OrganizationName))
+        private async void InitializeData(List<Procurement>? procurements)
+        {
+            ShowLoadingIndicator(true);
+
+            if (!IsSearchCriteriaEmpty())
             {
-                procurements = GET.View.ProcurementsBy(
+                procurements = await Task.Run(() => GET.View.ProcurementsBy(
                     SearchCriteria.Instance.ProcurementId,
                     SearchCriteria.Instance.ProcurementNumber,
                     SearchCriteria.Instance.Law,
                     SearchCriteria.Instance.ProcurementState,
                     SearchCriteria.Instance.INN,
                     SearchCriteria.Instance.Employee,
-                    SearchCriteria.Instance.OrganizationName);
-                GET.View.PopulateComponentStates(procurements);
-                SearchLV.ItemsSource = procurements;
+                    SearchCriteria.Instance.OrganizationName,
+                    PageSize,
+                    CurrentPage));
             }
-            else if (procurements != null)
+
+            if (procurements != null)
             {
                 SearchLV.ItemsSource = procurements;
                 GET.View.PopulateComponentStates(procurements);
             }
-            Laws = GET.View.Laws();
+
+            Laws = await Task.Run(() => GET.View.Laws());
             Law.ItemsSource = Laws;
 
-            Employees = GET.View.Employees().Where(e => e.IsAvailable != false).ToList();
+            Employees = (await Task.Run(() => GET.View.Employees())).Where(e => e.IsAvailable != false).ToList();
             Employee.ItemsSource = Employees;
 
-            ProcurementStates = GET.View.ProcurementStates();
+            ProcurementStates = await Task.Run(() => GET.View.ProcurementStates());
             ProcurementState.ItemsSource = ProcurementStates;
             Procurements = procurements;
+
+            ShowLoadingIndicator(false);
+
             RestoreSearchCriteria();
         }
+
+        private void ShowLoadingIndicator(bool show)
+        {
+            LoadingGrid.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private bool IsSearchCriteriaEmpty()
+        {
+            return string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementId) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementNumber) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.Law) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementState) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.INN) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.Employee) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.OrganizationName);
+        }
+
         private void RestoreSearchCriteria()
         {
             SearchId.Text = SearchCriteria.Instance.ProcurementId;
@@ -85,12 +97,16 @@ namespace Parsething.Pages
             Law.SelectedItem = Laws?.FirstOrDefault(l => l.Number == SearchCriteria.Instance.Law);
             ProcurementState.SelectedItem = ProcurementStates?.FirstOrDefault(ps => ps.Kind == SearchCriteria.Instance.ProcurementState);
             SearchINN.Text = SearchCriteria.Instance.INN;
-            Employee.SelectedItem = Employees?.FirstOrDefault(e => e.FullName  == SearchCriteria.Instance.Employee);
+            Employee.SelectedItem = Employees?.FirstOrDefault(e => e.FullName == SearchCriteria.Instance.Employee);
             OrganizationName.Text = SearchCriteria.Instance.OrganizationName;
         }
+
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
+            try
+            {
+                MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
+            }
             catch { }
         }
 
@@ -111,11 +127,11 @@ namespace Parsething.Pages
             }
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            // Очистка предыдущих критериев поиска
-            SearchCriteria.Instance.ClearData();
+            ShowLoadingIndicator(true);
 
+            SearchCriteria.Instance.ClearData();
             SearchLV.ItemsSource = null;
             FoundProcurements?.Clear();
 
@@ -127,21 +143,23 @@ namespace Parsething.Pages
             string employee = Employee.Text;
             string organizationName = OrganizationName.Text;
 
-            if (string.IsNullOrEmpty(id) && string.IsNullOrEmpty(number) && string.IsNullOrEmpty(law) &&
-                string.IsNullOrEmpty(procurementState) && string.IsNullOrEmpty(inn) &&
-                string.IsNullOrEmpty(employee) && string.IsNullOrEmpty(organizationName))
+            if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(number) || !string.IsNullOrEmpty(law) ||
+                !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(inn) ||
+                !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName))
             {
-                // Ничего не делать, если все поля пустые
-            }
-            else
-            {
-                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName);
+                FoundProcurements = await Task.Run(() => GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, PageSize, CurrentPage));
                 GET.View.PopulateComponentStates(FoundProcurements);
                 SearchLV.ItemsSource = FoundProcurements;
                 Procurements = FoundProcurements;
             }
 
-            // Сохранение введенных критериев поиска
+            SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName);
+
+            ShowLoadingIndicator(false);
+        }
+
+        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName)
+        {
             SearchCriteria.Instance.ProcurementId = id;
             SearchCriteria.Instance.ProcurementNumber = number;
             SearchCriteria.Instance.Law = law;
@@ -188,31 +206,41 @@ namespace Parsething.Pages
                 OverallCount.Text = Procurements.Count.ToString();
                 foreach (Procurement procurement in Procurements)
                 {
-                    if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
-                    {
-                        overallAmount += procurement.ContractAmount;
-                        profitReal += procurement.ContractAmount - procurement.PurchaseAmount;
-                        profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
-                        calculatingAmount += procurement.CalculatingAmount;
-                        purchaseAmount += procurement.PurchaseAmount;
-                        overallAmountCalculate += procurement.ContractAmount;
-                    }
-                    else if (procurement.ReserveContractAmount != null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
-                    {
-                        overallAmount += procurement.ReserveContractAmount;
-                        profitReal += procurement.ReserveContractAmount - procurement.PurchaseAmount;
-                        profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
-                        calculatingAmount += procurement.CalculatingAmount;
-                        purchaseAmount += procurement.PurchaseAmount;
-                        overallAmountCalculate += procurement.ContractAmount;
-                    }
+                    CalculateOverallInfo(procurement, ref overallAmount, ref profitCalculate, ref profitReal, ref calculatingAmount, ref purchaseAmount, ref overallAmountCalculate);
                 }
-                OverallAmount.Text = ((decimal)overallAmount).ToString("N2") + " р.";
-                if (calculatingAmount != 0 && purchaseAmount != 0)
-                {
-                    AvgCalculationProfit.Text = $"{profitCalculate} р. ({(double?)((overallAmountCalculate - calculatingAmount) / calculatingAmount * 100):N1} %)";
-                    AvgPurchaseProfit.Text = $"{profitReal} р. ({(double?)((overallAmount - purchaseAmount) / purchaseAmount * 100):N1} %)";
-                }
+                DisplayOverallInfo(overallAmount, overallAmountCalculate, calculatingAmount, purchaseAmount, profitCalculate, profitReal);
+            }
+        }
+
+        private void CalculateOverallInfo(Procurement procurement, ref decimal? overallAmount, ref decimal? profitCalculate, ref decimal? profitReal, ref decimal? calculatingAmount, ref decimal? purchaseAmount, ref decimal? overallAmountCalculate)
+        {
+            if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
+            {
+                overallAmount += procurement.ContractAmount;
+                profitReal += procurement.ContractAmount - procurement.PurchaseAmount;
+                profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
+                calculatingAmount += procurement.CalculatingAmount;
+                purchaseAmount += procurement.PurchaseAmount;
+                overallAmountCalculate += procurement.ContractAmount;
+            }
+            else if (procurement.ReserveContractAmount != null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
+            {
+                overallAmount += procurement.ReserveContractAmount;
+                profitReal += procurement.ReserveContractAmount - procurement.PurchaseAmount;
+                profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
+                calculatingAmount += procurement.CalculatingAmount;
+                purchaseAmount += procurement.PurchaseAmount;
+                overallAmountCalculate += procurement.ContractAmount;
+            }
+        }
+
+        private void DisplayOverallInfo(decimal? overallAmount, decimal? overallAmountCalculate, decimal? calculatingAmount, decimal? purchaseAmount, decimal? profitCalculate, decimal? profitReal)
+        {
+            OverallAmount.Text = ((decimal)overallAmount).ToString("N2") + " р.";
+            if (calculatingAmount != 0 && purchaseAmount != 0)
+            {
+                AvgCalculationProfit.Text = $"{profitCalculate} р. ({(double?)((overallAmountCalculate - calculatingAmount) / calculatingAmount * 100):N1} %)";
+                AvgPurchaseProfit.Text = $"{profitReal} р. ({(double?)((overallAmount - purchaseAmount) / purchaseAmount * 100):N1} %)";
             }
         }
 
@@ -248,10 +276,10 @@ namespace Parsething.Pages
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
         }
+
         private void EmployeeInfoButton_MouseEnter(object sender, RoutedEventArgs e)
         {
             Button? button = sender as Button;
-
             Procurement? procurement = button?.DataContext as Procurement;
             if (procurement != null && button != null)
             {
@@ -261,16 +289,21 @@ namespace Parsething.Pages
                 if (popup != null && ProcurementsEmployees.Count != 0)
                 {
                     popup.IsOpen = !popup.IsOpen;
-                    TextBlock calculatorTextBlock = popup.FindName("CalculatorTextBlock") as TextBlock;
-                    TextBlock managerTextBlock = popup.FindName("ManagerTextBlock") as TextBlock;
-
-                    if (calculatorTextBlock != null)
-                        calculatorTextBlock.Text = ProcurementsEmployees.LastOrDefault(pe => pe.Employee.PositionId == 2 || pe.Employee.PositionId == 3 || pe.Employee.PositionId == 4)?.Employee.FullName;
-                    if (managerTextBlock != null)
-                        managerTextBlock.Text = ProcurementsEmployees.LastOrDefault(pe => pe.Employee.PositionId == 5 || pe.Employee.PositionId == 6 || pe.Employee.PositionId == 8)?.Employee.FullName;
+                    SetEmployeePopupText(popup, "CalculatorTextBlock", 2, 3, 4);
+                    SetEmployeePopupText(popup, "ManagerTextBlock", 5, 6, 8);
                 }
             }
         }
+
+        private void SetEmployeePopupText(Popup popup, string textBlockName, params int[] positionIds)
+        {
+            TextBlock textBlock = popup.FindName(textBlockName) as TextBlock;
+            if (textBlock != null)
+            {
+                textBlock.Text = ProcurementsEmployees.LastOrDefault(pe => positionIds.Contains(pe.Employee.PositionId))?.Employee.FullName;
+            }
+        }
+
         private void EmployeeInfoButton_MouseLeave(object sender, MouseEventArgs e)
         {
             Button? button = sender as Button;
@@ -285,6 +318,40 @@ namespace Parsething.Pages
                         popup.IsOpen = false;
                     }
                 }
+            }
+        }
+
+        private async void LoadMoreItems()
+        {
+            CurrentPage++;
+            var newItems = await Task.Run(() => GET.View.ProcurementsBy(
+                SearchCriteria.Instance.ProcurementId,
+                SearchCriteria.Instance.ProcurementNumber,
+                SearchCriteria.Instance.Law,
+                SearchCriteria.Instance.ProcurementState,
+                SearchCriteria.Instance.INN,
+                SearchCriteria.Instance.Employee,
+                SearchCriteria.Instance.OrganizationName,
+                PageSize,
+                CurrentPage));
+
+            if (newItems != null)
+            {
+                foreach (var item in newItems)
+                {
+                    Procurements.Add(item);
+                }
+
+                SearchLV.ItemsSource = null;
+                SearchLV.ItemsSource = Procurements;
+            }
+        }
+
+        private void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (e.VerticalOffset == e.ExtentHeight - e.ViewportHeight)
+            {
+                LoadMoreItems();
             }
         }
     }

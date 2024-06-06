@@ -79,7 +79,7 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="ЕТР" Grid.Column="16" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Карточка" Grid.Column="17" />
                     </Grid>
-                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40">
+                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40" ScrollViewer.ScrollChanged="SearchLV_ScrollChanged">
                         <i:Interaction.Behaviors>
                             <cls:SmoothScrollBehavior />
                         </i:Interaction.Behaviors>
@@ -504,6 +504,12 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+                    <Grid Name="LoadingGrid"  Grid.Column="2" Grid.Row="1" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="Загрузка..." Foreground="Black" FontSize="20" HorizontalAlignment="Center"/>
+                            <ProgressBar IsIndeterminate="True" Width="200" Height="20" Margin="0,20,0,0"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
             <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="30,15,0,15" CornerRadius="45">
@@ -552,6 +558,7 @@
                             <TextBox x:Name="OrganizationName" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="13"/>
                         </Grid>
                     </ListView>
+                    
                     <DockPanel Grid.Row="1">
                         <Button x:Name="SearchButton" 
                             Width="110"
