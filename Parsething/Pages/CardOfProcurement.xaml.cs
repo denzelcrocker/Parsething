@@ -950,284 +950,139 @@ namespace Parsething.Pages
         private void GoBackButton_Click(object sender, RoutedEventArgs e)
         {
             if (Procurement.IsProcurementBlocked == true && Procurement.ProcurementUserId == ((Employee)Application.Current.MainWindow.DataContext).Id)
-            { 
+            {
                 Procurement.IsProcurementBlocked = false;
                 Procurement.ProcurementUserId = null;
                 PULL.Procurement(Procurement);
             }
+
             if (IsSearch)
             {
                 _ = MainFrame.Navigate(new SearchPage(Procurements));
+                return;
+            }
+
+            var employee = (Employee)Application.Current.MainWindow.DataContext;
+            var positionKind = employee.Position.Kind;
+
+            var navigationMap = new Dictionary<string, Page>
+                {
+                    { "Администратор", new Pages.AdministratorPage() },
+                    { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+                    { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+                    { "Специалист отдела расчетов", new Pages.CalculatorPage() },
+                    { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
+                    { "Заместитель руководителя тендерного отдела", new Pages.HeadsOfManagersPage() },
+                    { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
+                    { "Специалист тендерного отдела", new Pages.ManagerPage() },
+                    { "Руководитель отдела закупки", new Pages.PurchaserPage() },
+                    { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
+                    { "Специалист закупки", new Pages.PurchaserPage() },
+                    { "Руководитель отдела производства", new Pages.AssemblyPage() },
+                    { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
+                    { "Специалист по производству", new Pages.AssemblyPage() },
+                    { "Юрист", new Pages.LawyerPage() }
+                };
+
+            if (navigationMap.TryGetValue(positionKind, out var page))
+            {
+                _ = MainFrame.Navigate(page);
             }
             else
             {
-                if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
-                {
-                    _ = MainFrame.Navigate(new Pages.AdministratorPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела расчетов" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела расчетов")
-                {
-                    _ = MainFrame.Navigate(new Pages.HeadsOfCalculatorsPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист отдела расчетов")
-                {
-                    _ = MainFrame.Navigate(new Pages.CalculatorPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
-                {
-                    _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по работе с электронными площадками")
-                {
-                    _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист тендерного отдела")
-                {
-                    _ = MainFrame.Navigate(new Pages.ManagerPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела закупки" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела закупок" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист закупки")
-                {
-                    _ = MainFrame.Navigate(new Pages.PurchaserPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по производству")
-                {
-                    _ = MainFrame.Navigate(new Pages.AssemblyPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Юрист")
-                {
-                    _ = MainFrame.Navigate(new Pages.LawyerPage());
-                }
-                else
-                {
-
-                }
+                // Обработка случаев, когда должность не найдена в словаре
             }
+        }
+        private void ResetAll()
+        {
+            ProcurementInfoLabel.Foreground = Gray;
+            ProcurementInfoUL.Fill = Gray;
+            ProcurementInfoLV.Visibility = Visibility.Hidden;
+
+            ContractInfoLabel.Foreground = Gray;
+            ContractInfoUL.Fill = Gray;
+            ContractInfoLV.Visibility = Visibility.Hidden;
+
+            ContractNuancesLabel.Foreground = Gray;
+            ContractNuancesUL.Fill = Gray;
+            ContractNuancesLV.Visibility = Visibility.Hidden;
+
+            CalculatingLabel.Foreground = Gray;
+            CalculatingUL.Fill = Gray;
+            CalculatingLV.Visibility = Visibility.Hidden;
+
+            SendingLabel.Foreground = Gray;
+            SendingUL.Fill = Gray;
+            SendingLV.Visibility = Visibility.Hidden;
+
+            BargainingLabel.Foreground = Gray;
+            BargainingUL.Fill = Gray;
+            BargainingLV.Visibility = Visibility.Hidden;
+
+            SupplyLabel.Foreground = Gray;
+            SupplyUL.Fill = Gray;
+            SupplyLV.Visibility = Visibility.Hidden;
+
+            PaymentLabel.Foreground = Gray;
+            PaymentUL.Fill = Gray;
+            PaymentLV.Visibility = Visibility.Hidden;
+        }
+
+        private void SetActiveElement(Label label, Rectangle ul, ListView lv)
+        {
+            label.Foreground = Red;
+            ul.Fill = Red;
+            lv.Visibility = Visibility.Visible;
         }
 
         private void ProcurementInfo_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Red;
-            ProcurementInfoUL.Fill = Red;
-            ProcurementInfoLV.Visibility = Visibility.Visible;
-            ContractInfoLabel.Foreground = Gray;
-            ContractInfoUL.Fill = Gray;
-            ContractInfoLV.Visibility = Visibility.Hidden;
-            ContractNuancesLabel.Foreground = Gray;
-            ContractNuancesUL.Fill = Gray;
-            ContractNuancesLV.Visibility = Visibility.Hidden;
-            CalculatingLabel.Foreground = Gray;
-            CalculatingUL.Fill = Gray;
-            CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
-            SupplyLabel.Foreground = Gray;
-            SupplyUL.Fill = Gray;
-            SupplyLV.Visibility = Visibility.Hidden;
-            PaymentLabel.Foreground = Gray;
-            PaymentUL.Fill = Gray;
-            PaymentLV.Visibility = Visibility.Hidden;
+            ResetAll();
+            SetActiveElement(ProcurementInfoLabel, ProcurementInfoUL, ProcurementInfoLV);
         }
 
         private void ContractInfo_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Gray;
-            ProcurementInfoUL.Fill = Gray;
-            ProcurementInfoLV.Visibility = Visibility.Hidden;
-            ContractInfoLabel.Foreground = Red;
-            ContractInfoUL.Fill = Red;
-            ContractInfoLV.Visibility = Visibility.Visible;
-            ContractNuancesLabel.Foreground = Gray;
-            ContractNuancesUL.Fill = Gray;
-            ContractNuancesLV.Visibility = Visibility.Hidden;
-            CalculatingLabel.Foreground = Gray;
-            CalculatingUL.Fill = Gray;
-            CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
-            SupplyLabel.Foreground = Gray;
-            SupplyUL.Fill = Gray;
-            SupplyLV.Visibility = Visibility.Hidden;
-            PaymentLabel.Foreground = Gray;
-            PaymentUL.Fill = Gray;
-            PaymentLV.Visibility = Visibility.Hidden;
+            ResetAll();
+            SetActiveElement(ContractInfoLabel, ContractInfoUL, ContractInfoLV);
         }
 
         private void ContractNuances_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Gray;
-            ProcurementInfoUL.Fill = Gray;
-            ProcurementInfoLV.Visibility = Visibility.Hidden;
-            ContractInfoLabel.Foreground = Gray;
-            ContractInfoUL.Fill = Gray;
-            ContractInfoLV.Visibility = Visibility.Hidden;
-            ContractNuancesLabel.Foreground = Red;
-            ContractNuancesUL.Fill = Red;
-            ContractNuancesLV.Visibility = Visibility.Visible;
-            CalculatingLabel.Foreground = Gray;
-            CalculatingUL.Fill = Gray;
-            CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
-            SupplyLabel.Foreground = Gray;
-            SupplyUL.Fill = Gray;
-            SupplyLV.Visibility = Visibility.Hidden;
-            PaymentLabel.Foreground = Gray;
-            PaymentUL.Fill = Gray;
-            PaymentLV.Visibility = Visibility.Hidden;
+            ResetAll();
+            SetActiveElement(ContractNuancesLabel, ContractNuancesUL, ContractNuancesLV);
         }
 
         private void Calculating_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Gray;
-            ProcurementInfoUL.Fill = Gray;
-            ProcurementInfoLV.Visibility = Visibility.Hidden;
-            ContractInfoLabel.Foreground = Gray;
-            ContractInfoUL.Fill = Gray;
-            ContractInfoLV.Visibility = Visibility.Hidden;
-            ContractNuancesLabel.Foreground = Gray;
-            ContractNuancesUL.Fill = Gray;
-            ContractNuancesLV.Visibility = Visibility.Hidden;
-            CalculatingLabel.Foreground = Red;
-            CalculatingUL.Fill = Red;
-            CalculatingLV.Visibility = Visibility.Visible;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
-            SupplyLabel.Foreground = Gray;
-            SupplyUL.Fill = Gray;
-            SupplyLV.Visibility = Visibility.Hidden;
-            PaymentLabel.Foreground = Gray;
-            PaymentUL.Fill = Gray;
-            PaymentLV.Visibility = Visibility.Hidden;
+            ResetAll();
+            SetActiveElement(CalculatingLabel, CalculatingUL, CalculatingLV);
         }
 
         private void Sending_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Gray;
-            ProcurementInfoUL.Fill = Gray;
-            ProcurementInfoLV.Visibility = Visibility.Hidden;
-            ContractInfoLabel.Foreground = Gray;
-            ContractInfoUL.Fill = Gray;
-            ContractInfoLV.Visibility = Visibility.Hidden;
-            ContractNuancesLabel.Foreground = Gray;
-            ContractNuancesUL.Fill = Gray;
-            ContractNuancesLV.Visibility = Visibility.Hidden;
-            CalculatingLabel.Foreground = Gray;
-            CalculatingUL.Fill = Gray;
-            CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Red;
-            SendingUL.Fill = Red;
-            SendingLV.Visibility = Visibility.Visible;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
-            SupplyLabel.Foreground = Gray;
-            SupplyUL.Fill = Gray;
-            SupplyLV.Visibility = Visibility.Hidden;
-            PaymentLabel.Foreground = Gray;
-            PaymentUL.Fill = Gray;
-            PaymentLV.Visibility = Visibility.Hidden;
+            ResetAll();
+            SetActiveElement(SendingLabel, SendingUL, SendingLV);
         }
 
         private void Bargaining_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Gray;
-            ProcurementInfoUL.Fill = Gray;
-            ProcurementInfoLV.Visibility = Visibility.Hidden;
-            ContractInfoLabel.Foreground = Gray;
-            ContractInfoUL.Fill = Gray;
-            ContractInfoLV.Visibility = Visibility.Hidden;
-            ContractNuancesLabel.Foreground = Gray;
-            ContractNuancesUL.Fill = Gray;
-            ContractNuancesLV.Visibility = Visibility.Hidden;
-            CalculatingLabel.Foreground = Gray;
-            CalculatingUL.Fill = Gray;
-            CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Red;
-            BargainingUL.Fill = Red;
-            BargainingLV.Visibility = Visibility.Visible;
-            SupplyLabel.Foreground = Gray;
-            SupplyUL.Fill = Gray;
-            SupplyLV.Visibility = Visibility.Hidden;
-            PaymentLabel.Foreground = Gray;
-            PaymentUL.Fill = Gray;
-            PaymentLV.Visibility = Visibility.Hidden;
+            ResetAll();
+            SetActiveElement(BargainingLabel, BargainingUL, BargainingLV);
         }
 
         private void Supply_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Gray;
-            ProcurementInfoUL.Fill = Gray;
-            ProcurementInfoLV.Visibility = Visibility.Hidden;
-            ContractInfoLabel.Foreground = Gray;
-            ContractInfoUL.Fill = Gray;
-            ContractInfoLV.Visibility = Visibility.Hidden;
-            ContractNuancesLabel.Foreground = Gray;
-            ContractNuancesUL.Fill = Gray;
-            ContractNuancesLV.Visibility = Visibility.Hidden;
-            CalculatingLabel.Foreground = Gray;
-            CalculatingUL.Fill = Gray;
-            CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
-            SupplyLabel.Foreground = Red;
-            SupplyUL.Fill = Red;
-            SupplyLV.Visibility = Visibility.Visible;
-            PaymentLabel.Foreground = Gray;
-            PaymentUL.Fill = Gray;
-            PaymentLV.Visibility = Visibility.Hidden;
+            ResetAll();
+            SetActiveElement(SupplyLabel, SupplyUL, SupplyLV);
         }
 
         private void Payment_Click(object sender, RoutedEventArgs e)
         {
-            ProcurementInfoLabel.Foreground = Gray;
-            ProcurementInfoUL.Fill = Gray;
-            ProcurementInfoLV.Visibility = Visibility.Hidden;
-            ContractInfoLabel.Foreground = Gray;
-            ContractInfoUL.Fill = Gray;
-            ContractInfoLV.Visibility = Visibility.Hidden;
-            ContractNuancesLabel.Foreground = Gray;
-            ContractNuancesUL.Fill = Gray;
-            ContractNuancesLV.Visibility = Visibility.Hidden;
-            CalculatingLabel.Foreground = Gray;
-            CalculatingUL.Fill = Gray;
-            CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
-            SupplyLabel.Foreground = Gray;
-            SupplyUL.Fill = Gray;
-            SupplyLV.Visibility = Visibility.Hidden;
-            PaymentLabel.Foreground = Red;
-            PaymentUL.Fill = Red;
-            PaymentLV.Visibility = Visibility.Visible;
+            ResetAll();
+            SetActiveElement(PaymentLabel, PaymentUL, PaymentLV);
         }
 
-        
+
     }
 }

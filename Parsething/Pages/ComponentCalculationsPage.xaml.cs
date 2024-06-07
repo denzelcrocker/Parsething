@@ -147,13 +147,15 @@ namespace Parsething.Pages
         private void GoBackButton_Click(object sender, RoutedEventArgs e)
         {
             Procurement = GET.Entry.ProcurementBy(Procurement.Id);
-            if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == true)
+            var currentUserId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+
+            if (Procurement.IsCalculationBlocked == true && Procurement.CalculatingUserId == currentUserId && IsCalculation == true)
             {
                 Procurement.IsCalculationBlocked = false;
                 Procurement.CalculatingUserId = null;
                 PULL.Procurement(Procurement);
             }
-            else if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id && IsCalculation == false)
+            else if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId == currentUserId && IsCalculation == false)
             {
                 Procurement.IsPurchaseBlocked = false;
                 Procurement.PurchaseUserId = null;
@@ -163,51 +165,38 @@ namespace Parsething.Pages
             if (IsSearch)
             {
                 _ = MainFrame.Navigate(new SearchPage(Procurements));
+                return;
+            }
+
+            var employee = (Employee)Application.Current.MainWindow.DataContext;
+            var positionKind = employee.Position.Kind;
+
+            var navigationMap = new Dictionary<string, Page>
+                {
+                    { "Администратор", new Pages.AdministratorPage() },
+                    { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+                    { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+                    { "Специалист отдела расчетов", new Pages.CalculatorPage() },
+                    { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
+                    { "Заместитель руководителя тендреного отдела", new Pages.HeadsOfManagersPage() },
+                    { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
+                    { "Специалист тендерного отдела", new Pages.ManagerPage() },
+                    { "Руководитель отдела закупки", new Pages.PurchaserPage() },
+                    { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
+                    { "Специалист закупки", new Pages.PurchaserPage() },
+                    { "Руководитель отдела производства", new Pages.AssemblyPage() },
+                    { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
+                    { "Специалист по производству", new Pages.AssemblyPage() },
+                    { "Юрист", new Pages.LawyerPage() }
+                };
+
+            if (navigationMap.TryGetValue(positionKind, out var page))
+            {
+                _ = MainFrame.Navigate(page);
             }
             else
             {
-                if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Администратор")
-                {
-                    _ = MainFrame.Navigate(new Pages.AdministratorPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела расчетов" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела расчетов")
-                {
-                    _ = MainFrame.Navigate(new Pages.HeadsOfCalculatorsPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист отдела расчетов")
-                {
-                    _ = MainFrame.Navigate(new Pages.CalculatorPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
-                {
-                    _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по работе с электронными площадками")
-                {
-                    _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист тендерного отдела")
-                {
-                    _ = MainFrame.Navigate(new Pages.ManagerPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела закупки" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела закупок" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист закупки")
-                {
-                    _ = MainFrame.Navigate(new Pages.PurchaserPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя отдела производства" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по производству")
-                {
-                    _ = MainFrame.Navigate(new Pages.AssemblyPage());
-                }
-                else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Юрист")
-                {
-                    _ = MainFrame.Navigate(new Pages.LawyerPage());
-                }
-                else
-                {
-
-                }
             }
-
         }
 
         private void AddDivisionCalculating_Click(object sender, RoutedEventArgs e)

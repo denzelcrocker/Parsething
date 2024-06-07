@@ -205,13 +205,17 @@ public partial class AdministratorPage : Page
     }
     private async Task UpdateRatesFromCBRAsync()
     {
-        WebClient client = new WebClient();
-        var xml = await client.DownloadStringTaskAsync("https://www.cbr-xml-daily.ru/daily.xml");
-        XDocument xdoc = XDocument.Parse(xml);
-        var el = xdoc.Element("ValCurs").Elements("Valute");
-        string dollar = el.Where(x => x.Attribute("ID").Value == "R01235").Select(x => x.Element("Value").Value).FirstOrDefault();
-        dollar = dollar.RemoveEnd(2) + " ₽";
-        RateForCentralBank.Text = dollar;
+        try
+        {
+            WebClient client = new WebClient();
+            var xml = await client.DownloadStringTaskAsync("https://www.cbr-xml-daily.ru/daily.xml");
+            XDocument xdoc = XDocument.Parse(xml);
+            var el = xdoc.Element("ValCurs").Elements("Valute");
+            string dollar = el.Where(x => x.Attribute("ID").Value == "R01235").Select(x => x.Element("Value").Value).FirstOrDefault();
+            dollar = dollar.RemoveEnd(2) + " ₽";
+            RateForCentralBank.Text = dollar;
+        }
+        catch { }
     }
     private void UnsortedButton_Click(object sender, RoutedEventArgs e) // неразобранные 
     {

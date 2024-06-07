@@ -78,9 +78,6 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Карта сборки" Grid.Column="10" />
                     </Grid>
                     <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0">
-                        <i:Interaction.Behaviors>
-                            <cls:SmoothScrollBehavior />
-                        </i:Interaction.Behaviors>
                     </ListView>
 
                     <StackPanel  Orientation="Horizontal">
