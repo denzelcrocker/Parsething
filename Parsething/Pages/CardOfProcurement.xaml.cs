@@ -1,5 +1,6 @@
 ﻿using DatabaseLibrary.Entities.ProcurementProperties;
 using Microsoft.Windows.Themes;
+using Parsething.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -328,7 +329,21 @@ namespace Parsething.Pages
                         LegalEntity.SelectedItem = legalEntity;
                         break;
                     }
-                Applications.IsChecked = Procurement.Applications;
+                ApplicationsCB.IsChecked = Procurement.Applications;
+                if (ApplicationsCB.IsChecked == true && Procurement.ParentProcurementId == null)
+                {
+                    AddApplicationButton.Visibility = Visibility.Visible;
+                    ApplicationLabel.Visibility = Visibility.Visible;
+                    ApplicationUL.Visibility = Visibility.Visible;
+                    Applications.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    AddApplicationButton.Visibility = Visibility.Hidden;
+                    ApplicationLabel.Visibility = Visibility.Hidden;
+                    ApplicationUL.Visibility = Visibility.Hidden;
+                    Applications.Visibility = Visibility.Hidden;
+                }
                 foreach (Employee employee in Sender.ItemsSource)
                     if (ProcurementsEmployeeSenders != null)
                         if (employee.Id == ProcurementsEmployeeSenders.EmployeeId)
@@ -340,6 +355,7 @@ namespace Parsething.Pages
                 MinimalPrice.Text = Procurement.MinimalPrice.ToString();
                 ContractAmount.Text = Procurement.ContractAmount.ToString();
                 ReserveContractAmount.Text = Procurement.ReserveContractAmount.ToString();
+                IsUnitPriceCB.IsChecked = Procurement.IsUnitPrice;
                 ProtocolDate.SelectedDate = Procurement.ProtocolDate;
                 CalculatingAmount.Text = Procurement.CalculatingAmount.ToString();
                 HeadOfAcceptance.Text = Procurement.HeadOfAcceptance;
@@ -579,7 +595,21 @@ namespace Parsething.Pages
                     Procurement.LegalEntityId = ((LegalEntity)LegalEntity.SelectedItem).Id;
                 else
                     Procurement.LegalEntityId = null;
-                Procurement.Applications = Applications.IsChecked;
+                Procurement.Applications = ApplicationsCB.IsChecked;
+                if (ApplicationsCB.IsChecked == true && Procurement.ParentProcurementId == null)
+                {
+                    AddApplicationButton.Visibility = Visibility.Visible;
+                    ApplicationLabel.Visibility = Visibility.Visible;
+                    ApplicationUL.Visibility = Visibility.Visible;
+                    Applications.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    AddApplicationButton.Visibility = Visibility.Hidden;
+                    ApplicationLabel.Visibility = Visibility.Hidden;
+                    ApplicationUL.Visibility = Visibility.Hidden;
+                    Applications.Visibility = Visibility.Hidden;
+                }
                 if (Bet.Text != "")
                 {
                     decimal BetDecimal;
@@ -636,6 +666,7 @@ namespace Parsething.Pages
                 }
                 else
                     Procurement.ReserveContractAmount = null;
+                Procurement.IsUnitPrice = IsUnitPriceCB.IsChecked;
                 Procurement.ProtocolDate = ProtocolDate.SelectedDate;
                 Procurement.HeadOfAcceptance = HeadOfAcceptance.Text;
                 if (ShipmentPlan.SelectedItem != null)
@@ -1026,6 +1057,10 @@ namespace Parsething.Pages
             PaymentLabel.Foreground = Gray;
             PaymentUL.Fill = Gray;
             PaymentLV.Visibility = Visibility.Hidden;
+
+            ApplicationLabel.Foreground = Gray;
+            ApplicationUL.Fill = Gray;
+            ApplicationLV.Visibility = Visibility.Hidden;
         }
 
         private void SetActiveElement(Label label, Rectangle ul, ListView lv)
@@ -1082,7 +1117,21 @@ namespace Parsething.Pages
             ResetAll();
             SetActiveElement(PaymentLabel, PaymentUL, PaymentLV);
         }
+        private void Applications_Click(object sender, RoutedEventArgs e)
+        {
+            ResetAll();
+            SetActiveElement(ApplicationLabel, ApplicationUL, ApplicationLV);
+        }
 
+        private void AddApplicationButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null)
+            {
+                AddApplicationWindow addApplicationWindow = new AddApplicationWindow(Procurement);
+                addApplicationWindow.Show();
+            }
+        }
 
+        
     }
 }

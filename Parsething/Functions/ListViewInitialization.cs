@@ -316,7 +316,7 @@ namespace Parsething.Functions
                             if (componentCalculation.ComponentName != componentCalculation.ComponentNamePurchase)
                                 replacementLabel.Visibility = Visibility.Visible;
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
+                            ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),  };
                             foreach (Manufacturer manufacturer in Manufacturers)
                                 if (manufacturer.Id == componentCalculation.ManufacturerIdPurchase)
                                 {

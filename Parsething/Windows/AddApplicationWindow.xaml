@@ -1,0 +1,28 @@
+﻿<Window x:Class="Parsething.Windows.AddApplicationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Parsething.Windows"
+        mc:Ignorable="d"
+        Title="AddApplicationWindow" 
+        Style="{DynamicResource AddApplicationWindow}" Loaded="Window_Loaded" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
+                    <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarAction}" Click="CloseAction_Click"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        <StackPanel>
+        </StackPanel>
+        <Button x:Name="AddApplicationButton" Content="Создать заявку" Style="{DynamicResource SortWindowButton}" Grid.Row="2"/>
+    </Grid>
+</Window>

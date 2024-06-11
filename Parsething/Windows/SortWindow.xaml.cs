@@ -30,7 +30,6 @@ namespace Parsething.Windows
         private List<Law> Laws { get; set; }
         private List<Organization> Organizations { get; set; }
 
-
         private bool IsSort;
 
 
