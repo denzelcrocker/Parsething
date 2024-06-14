@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Parsething.Functions;
 
 namespace Parsething.Windows
 {
@@ -20,18 +22,23 @@ namespace Parsething.Windows
     public partial class AddApplicationWindow : Window
     {
         private Frame MainFrame { get; set; } = null!;
+        private List<ComponentCalculation>? componentCalculations { get; set; }
+        private Procurement? Procurement { get; set; }
 
         public AddApplicationWindow(Procurement procurement)
         {
             InitializeComponent();
 
+            Procurement = procurement;
+            componentCalculations = GET.View.ComponentCalculationsBy(Procurement.Id);
+            NumberOfApplicationTextBlock.Text = GET.Aggregate.NumberOfApplication(Procurement.Id).ToString();
             if (procurement.IsUnitPrice == true)
             {
-
+                ListViewInitialization.RemainingComponentCalculationsListViewInitialization(Procurement.IsUnitPrice, componentCalculations, ComponentCalculationsListView, Procurement);
             }
             else
-            { 
-                
+            {
+                ListViewInitialization.RemainingComponentCalculationsListViewInitialization(Procurement.IsUnitPrice, componentCalculations, ComponentCalculationsListView, Procurement);
             }
         }
 
@@ -48,5 +55,10 @@ namespace Parsething.Windows
 
         private void CloseAction_Click(object sender, RoutedEventArgs e) =>
             Close();
+
+        private void AddApplicationButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

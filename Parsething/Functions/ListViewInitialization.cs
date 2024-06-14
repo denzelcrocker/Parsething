@@ -859,5 +859,83 @@ namespace Parsething.Functions
             }
             listViewToInitialization.ItemsSource = stackPanels;
         }
+        public static void RemainingComponentCalculationsListViewInitialization(bool? isUnitPrice, List<ComponentCalculation> componentCalculations, ListView listViewToInitialization, Procurement procurement)
+        {
+            List<StackPanel> stackPanels = new List<StackPanel>();
+            int counterOfComponentCalculations = 1;
+            foreach (ComponentCalculation componentCalculationHeader in componentCalculations)
+            {
+                StackPanel stackPanel = new StackPanel();
+                if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsDeleted == false)
+                {
+                    Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded } };
+                    double[] columnWidths = { 370, 55, 55};
+                    for (int i = 0; i < columnWidths.Length; i++)
+                    {
+                        ColumnDefinition columnDefinition = new ColumnDefinition();
+                        columnDefinition.Width = new GridLength(columnWidths[i]);
+                        grid.ColumnDefinitions.Add(columnDefinition);
+                    }
+
+                    TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentHeaderType.Kind, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+                    LoadColumnNames(textBoxHeader, 0);
+                    TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
+                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = componentCalculationHeader.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true};
+
+                    Grid.SetColumn(textBoxHeader, 0);
+                    Grid.SetColumn(textBoxHeaderCount, 1);
+                    Grid.SetColumn(textBoxHeaderRemainingCount, 3);
+
+                    grid.Children.Add(textBoxHeader);
+                    grid.Children.Add(textBoxHeaderCount);
+                    grid.Children.Add(textBoxHeaderRemainingCount);
+                    stackPanel.Children.Add(grid);
+                }
+
+                ListView listView = new();
+                listView.Style = (Style)Application.Current.FindResource("ListView");
+
+                foreach (ComponentCalculation componentCalculation in componentCalculations)
+                {
+                    if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsDeleted == false)
+                    {
+                        Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded, componentCalculation.ComponentNamePurchase, componentCalculation.ManufacturerIdPurchase, componentCalculation.PricePurchase, componentCalculation.CountPurchase, componentCalculation.SellerIdPurchase, componentCalculation.ReservePurchase, componentCalculation.NotePurchase, componentCalculation.ComponentStateId } };
+                        double[] columnWidths = { 40, 327, 55, 55 };
+
+                        for (int i = 0; i < columnWidths.Length; i++)
+                        {
+                            ColumnDefinition columnDefinition = new ColumnDefinition();
+                            columnDefinition.Width = new GridLength(columnWidths[i]);
+                            grid.ColumnDefinitions.Add(columnDefinition);
+                        }
+                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                        TextBox textBoxRemainingCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+
+                        Grid.SetColumn(textBoxCounter, 0);
+                        Grid.SetColumn(textBoxComponentName, 1);
+                        Grid.SetColumn(textBoxCount, 2);
+                        Grid.SetColumn(textBoxRemainingCount, 3);
+
+                        grid.Children.Add(textBoxCounter);
+                        grid.Children.Add(textBoxComponentName);
+                        grid.Children.Add(textBoxCount);
+                        grid.Children.Add(textBoxRemainingCount);
+
+                        listView.Items.Add(grid);
+
+                        counterOfComponentCalculations++;
+                    }
+
+                }
+                stackPanel.Children.Add(listView);
+                if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsAdded == false)
+                {
+                    stackPanels.Add(stackPanel);
+                }
+            }
+            listViewToInitialization.ItemsSource = stackPanels;
+        }
     }
 }

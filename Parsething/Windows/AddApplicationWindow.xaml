@@ -16,13 +16,42 @@
         <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Label Content="Заявка № " Style="{DynamicResource TitleBar.Label}"/>
+                    <TextBlock x:Name="NumberOfApplicationTextBlock" Style="{DynamicResource TitleBar.TextBlock}"/>
                     <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
                     <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarAction}" Click="CloseAction_Click"/>
                 </StackPanel>
             </DockPanel>
         </Border>
-        <StackPanel>
-        </StackPanel>
-        <Button x:Name="AddApplicationButton" Content="Создать заявку" Style="{DynamicResource SortWindowButton}" Grid.Row="2"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Content="Сумма заявки" Style="{DynamicResource Label.CardOfProcurement}"/>
+            <TextBox x:Name="ApplicationAmount" Grid.Column="1" Style="{DynamicResource SingleLineInput.CardOfProcurement}"/>
+            <Label Content="Остаток" Style="{DynamicResource Label.CardOfProcurement}" Grid.Row="1"/>
+            <TextBox x:Name="ApplicationReamaing" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="1" IsReadOnly="True"/>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="65"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Label Style="{DynamicResource ColumnNames.Search}" Content="№" Grid.Column="0" />
+                <Label Style="{DynamicResource ColumnNames.Search}" Content="Наименование" Grid.Column="1" />
+                <Label Style="{DynamicResource ColumnNames.Search}" Content="Кол-во" Grid.Column="2" />
+                <Label Style="{DynamicResource ColumnNames.Search}" Content="Остаток" Grid.Column="3" />
+            </Grid>
+            <ListView x:Name="ComponentCalculationsListView" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource ListView}"/>
+        </Grid>
+        <Button x:Name="AddApplicationButton" Content="Создать заявку" Style="{DynamicResource SortWindowButton}" Grid.Row="2" Click="AddApplicationButton_Click"/>
     </Grid>
 </Window>
