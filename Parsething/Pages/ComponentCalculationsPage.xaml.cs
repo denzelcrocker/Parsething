@@ -245,7 +245,7 @@ namespace Parsething.Pages
         {
             Procurement = GET.Entry.ProcurementBy(Procurement.Id);
             if (Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.PurchaseUserId == null)
-                UpdateListView(SameDate, SameComponentState);
+                UpdateComponentCalculationListView(SameDate, SameComponentState);
             else
                 MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.PurchaseUserId).First().FullName}");
         }
@@ -259,7 +259,7 @@ namespace Parsething.Pages
                 {
                     Procurement = GET.Entry.ProcurementBy(Procurement.Id);
                     if (Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.CalculatingUserId == null)
-                        UpdateListView(null, null);
+                        UpdateComponentCalculationListView(null, null);
                     else
                         MessageBox.Show($"Расчет сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.CalculatingUserId).First().FullName}");
                 }
