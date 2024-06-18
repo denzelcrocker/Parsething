@@ -61,8 +61,6 @@ namespace Parsething.Windows
             }
             ApplicationRemaining.Text = remainingAmount.ToString();
 
-
-
             ComponentCalculations = GET.View.ComponentCalculationsBy(Procurement.Id);
             NumberOfApplicationTextBlock.Text = GET.Aggregate.NumberOfApplication(Procurement.Id).ToString();
 
@@ -96,7 +94,9 @@ namespace Parsething.Windows
             if (decimal.TryParse(ApplicationRemaining.Text, out decimal applicationRemainingValue) && decimal.TryParse(ApplicationAmount.Text, out decimal applicationAmountValue))
             {
                 if (applicationRemainingValue - applicationAmountValue < 0)
+                {
                     MessageBox.Show("Лимит суммы заявки превышен");
+                }
                 else
                 {
                     Procurement newProcurement = new Procurement()
@@ -147,15 +147,13 @@ namespace Parsething.Windows
                         AssemblyNeed = Procurement.AssemblyNeed,
                         MinopttorgId = Procurement.MinopttorgId,
                         LegalEntityId = Procurement.LegalEntityId,
-                        //Applications = Procurement.Applications,
-                        ApplicationAmount = decimal.TryParse(ApplicationAmount.Text, out var applicationAmount) ? applicationAmount : 0,
+                        ApplicationAmount = applicationAmountValue,
+                        ApplicationNumber = GET.Aggregate.NumberOfApplication(Procurement.Id),
                         Bet = Procurement.Bet,
                         MinimalPrice = Procurement.MinimalPrice,
-                        ContractAmount = Procurement.ContractAmount,
-                        ReserveContractAmount = Procurement.ReserveContractAmount,
+                        ContractAmount = applicationAmountValue,
                         IsUnitPrice = Procurement.IsUnitPrice,
                         ProtocolDate = Procurement.ProtocolDate,
-                        HeadOfAcceptance = Procurement.HeadOfAcceptance,
                         ExecutionStateId = Procurement.ExecutionStateId,
                         ExecutionPrice = Procurement.ExecutionPrice,
                         ExecutionDate = Procurement.ExecutionDate,
@@ -176,17 +174,24 @@ namespace Parsething.Windows
                         PassportOfMonoblock = Procurement.PassportOfMonoblock,
                         PassportOfNotebook = Procurement.PassportOfNotebook,
                     };
-                    PUT.Procurement(newProcurement);
 
-                    ListViewInitialization.CopyComponentCalculationsToNewProcurement(newProcurement, ComponentCalculationsListView);
-
-
-                    MessageBox.Show("Заявка успешно создана");
+                    var exceededComponents = ListViewInitialization.CheckComponentCalculationsLimits(ComponentCalculationsListView);
+                    if (exceededComponents.Any())
+                    {
+                        string message = "Следующие позиции превышены по количеству:\n" + string.Join("\n", exceededComponents);
+                        MessageBox.Show(message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        PUT.Procurement(newProcurement);
+                        ListViewInitialization.CopyComponentCalculationsToNewProcurement(newProcurement, ComponentCalculationsListView);
+                        MessageBox.Show("Заявка успешно создана");
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("Ошибка в веденных данных");
+                MessageBox.Show("Ошибка в введенных данных");
             }
         }
     }

@@ -861,9 +861,22 @@ namespace Parsething.Functions
         }
         public static void RemainingComponentCalculationsListViewInitialization(List<ComponentCalculation> componentCalculations, ListView listViewToInitialization, Procurement procurement)
         {
-
             List<StackPanel> stackPanels = new List<StackPanel>();
             int counterOfComponentCalculations = 1;
+
+
+            // Получаем все дочерние тендеры и их компоненты
+            var childProcurements = GET.View.ApplicationsBy(procurement.Id);
+            var childProcurementComponents = new List<ComponentCalculation>();
+            foreach (var childProcurement in childProcurements)
+            {
+                var components = GET.View.ComponentCalculationsBy(childProcurement.Id);
+                if (components != null)
+                {
+                    childProcurementComponents.AddRange(components);
+                }
+            }
+
             foreach (ComponentCalculation componentCalculationHeader in componentCalculations)
             {
                 StackPanel stackPanel = new StackPanel();
@@ -881,11 +894,17 @@ namespace Parsething.Functions
                     TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentHeaderType.Kind, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
                     LoadColumnNames(textBoxHeader, 0);
                     TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
-                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : componentCalculationHeader.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+
+                    // Вычисляем остаток для заголовка
+                    var parentComponent = componentCalculations.FirstOrDefault(pc => pc.HeaderTypeId == componentCalculationHeader.HeaderTypeId && pc.IsDeleted == false);
+                    var usedCount = childProcurementComponents.Where(c => c.ComponentNamePurchase == componentCalculationHeader.ComponentNamePurchase && c.IsDeleted == false).Sum(c => c.CountPurchase);
+                    var remainingCount = parentComponent != null ? parentComponent.CountPurchase - usedCount : componentCalculationHeader.CountPurchase;
+
+                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
 
                     Grid.SetColumn(textBoxHeader, 0);
                     Grid.SetColumn(textBoxHeaderCount, 1);
-                    Grid.SetColumn(textBoxHeaderRemainingCount, 3);
+                    Grid.SetColumn(textBoxHeaderRemainingCount, 2);
 
                     grid.Children.Add(textBoxHeader);
                     grid.Children.Add(textBoxHeaderCount);
@@ -912,7 +931,13 @@ namespace Parsething.Functions
                         TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
                         TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
                         TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                        TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+
+                        // Вычисляем остаток для компонента
+                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentNamePurchase == componentCalculation.ComponentNamePurchase && pc.IsDeleted == false && pc.SellerIdPurchase == componentCalculation.SellerIdPurchase);
+                        var usedCount = childProcurementComponents.Where(c => c.ComponentNamePurchase == componentCalculation.ComponentNamePurchase && c.IsDeleted == false && c.SellerIdPurchase == componentCalculation.SellerIdPurchase).Sum(c => c.CountPurchase);
+                        var remainingCount = parentComponent != null ? parentComponent.CountPurchase - usedCount : componentCalculation.CountPurchase;
+
+                        TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
 
                         Grid.SetColumn(textBoxCounter, 0);
                         Grid.SetColumn(textBoxComponentName, 1);
@@ -928,14 +953,15 @@ namespace Parsething.Functions
 
                         counterOfComponentCalculations++;
                     }
-
                 }
+
                 stackPanel.Children.Add(listView);
                 if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsAdded == false)
                 {
                     stackPanels.Add(stackPanel);
                 }
             }
+
             listViewToInitialization.ItemsSource = stackPanels;
         }
         public static void CopyComponentCalculationsToNewProcurement(Procurement newProcurement, ListView listViewToInitialization)
@@ -948,84 +974,168 @@ namespace Parsething.Functions
                     {
                         var componentCalculationHeader = (ComponentCalculation)headerGrid.DataContext;
 
-                        
                         TextBox countTextBox = null;
                         foreach (var gridChild in headerGrid.Children)
                         {
-                            if (gridChild is TextBox textBox && Grid.GetColumn(textBox) == 1) 
+                            if (gridChild is TextBox textBox && Grid.GetColumn(textBox) == 1)
                             {
                                 countTextBox = textBox;
                                 break;
                             }
                         }
 
-                        if (countTextBox != null)
+                        if (countTextBox != null && int.TryParse(countTextBox.Text, out int countPurchase))
                         {
-                            if (int.TryParse(countTextBox.Text, out int countPurchase))
+                            ComponentCalculation newComponentCalculationHeader = new ComponentCalculation
                             {
-                                ComponentCalculation newComponentCalculationHeader = new ComponentCalculation
-                                {
-                                    ParentName = componentCalculationHeader.ParentName,
-                                    PartNumber = componentCalculationHeader.PartNumber,
-                                    HeaderTypeId = componentCalculationHeader.HeaderTypeId,
-                                    ComponentNamePurchase = componentCalculationHeader.ComponentNamePurchase,
-                                    CountPurchase = countPurchase,
-                                    ProcurementId = newProcurement.Id,
-                                    IsDeleted = componentCalculationHeader.IsDeleted,
-                                    IsHeader = componentCalculationHeader.IsHeader,
-                                    IsAdded = componentCalculationHeader.IsAdded,
-                                };
-                                PUT.ComponentCalculation(newComponentCalculationHeader);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Ошибка преобразования CountPurchase: " + countTextBox.Text);
-                            }
-                        }
-                    }
-                    else if (child is ListView innerListView)
-                    {
-                        foreach (Grid grid in innerListView.Items)
-                        {
-                            var componentCalculation = (ComponentCalculation)grid.DataContext;
+                                ProcurementId = newProcurement.Id,
+                                PartNumber = componentCalculationHeader.PartNumber,
+                                HeaderTypeId = componentCalculationHeader.HeaderTypeId,
+                                ComponentName = componentCalculationHeader.ComponentName,
+                                ComponentNamePurchase = componentCalculationHeader.ComponentNamePurchase,
+                                ManufacturerId = componentCalculationHeader.ManufacturerId,
+                                ManufacturerIdPurchase = componentCalculationHeader.ManufacturerIdPurchase,
+                                Count = componentCalculationHeader.Count,
+                                CountPurchase = countPurchase,
+                                SellerId = componentCalculationHeader.SellerId,
+                                SellerIdPurchase = componentCalculationHeader.SellerIdPurchase,
+                                IsDeleted = componentCalculationHeader.IsDeleted,
+                                IsHeader = componentCalculationHeader.IsHeader,
+                                IsAdded = componentCalculationHeader.IsAdded,
+                            };
 
-                            TextBox countTextBox = null;
-                            foreach (var gridChild in grid.Children)
-                            {
-                                if (gridChild is TextBox textBox && Grid.GetColumn(textBox) == 2)
-                                {
-                                    countTextBox = textBox;
-                                    break;
-                                }
-                            }
+                            PUT.ComponentCalculation(newComponentCalculationHeader);
+                            int newHeaderId = newComponentCalculationHeader.Id;
 
-                            if (countTextBox != null)
+                            if (stackPanel.Children.OfType<ListView>().FirstOrDefault() is ListView innerListView)
                             {
-                                if (int.TryParse(countTextBox.Text, out int countPurchase))
+                                foreach (Grid grid in innerListView.Items)
                                 {
-                                    ComponentCalculation newComponentCalculation = new ComponentCalculation
+                                    var componentCalculation = (ComponentCalculation)grid.DataContext;
+
+                                    TextBox childCountTextBox = null;
+                                    foreach (var gridChild in grid.Children)
                                     {
-                                        ParentName = componentCalculation.ParentName,
-                                        PartNumber = componentCalculation.PartNumber,
-                                        ComponentNamePurchase = componentCalculation.ComponentNamePurchase,
-                                        CountPurchase = countPurchase,
-                                        ProcurementId = newProcurement.Id,
-                                        IsDeleted = componentCalculation.IsDeleted,
-                                        IsHeader = componentCalculation.IsHeader,
-                                        IsAdded = componentCalculation.IsAdded,
+                                        if (gridChild is TextBox textBox && Grid.GetColumn(textBox) == 2)
+                                        {
+                                            childCountTextBox = textBox;
+                                            break;
+                                        }
+                                    }
 
-                                    };
-                                    PUT.ComponentCalculation(newComponentCalculation);
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Ошибка преобразования CountPurchase: " + countTextBox.Text);
+                                    if (childCountTextBox != null && int.TryParse(childCountTextBox.Text, out int childCountPurchase))
+                                    {
+                                        ComponentCalculation newComponentCalculation = new ComponentCalculation
+                                        {
+                                            ParentName = newHeaderId,
+                                            PartNumber = componentCalculation.PartNumber,
+                                            ComponentName = componentCalculation.ComponentName,
+                                            ComponentNamePurchase = componentCalculation.ComponentNamePurchase,
+                                            ManufacturerId = componentCalculation.ManufacturerId,
+                                            ManufacturerIdPurchase = componentCalculation.ManufacturerIdPurchase,
+                                            Count = componentCalculation.Count,
+                                            CountPurchase = childCountPurchase,
+                                            SellerId = componentCalculation.SellerId,
+                                            SellerIdPurchase = componentCalculation.SellerIdPurchase,
+                                            ProcurementId = newProcurement.Id,
+                                            IsDeleted = componentCalculation.IsDeleted,
+                                            IsHeader = componentCalculation.IsHeader,
+                                            IsAdded = componentCalculation.IsAdded,
+                                        };
+
+                                        PUT.ComponentCalculation(newComponentCalculation);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+        public static List<string> CheckComponentCalculationsLimits(ListView listViewToInitialization)
+        {
+            var exceededComponents = new List<string>();
+
+            foreach (StackPanel stackPanel in listViewToInitialization.Items)
+            {
+                foreach (var child in stackPanel.Children)
+                {
+                    if (child is Grid headerGrid)
+                    {
+                        var componentCalculationHeader = (ComponentCalculation)headerGrid.DataContext;
+
+                        TextBox countTextBox = null;
+                        TextBox remainingCountTextBox = null;
+                        foreach (var gridChild in headerGrid.Children)
+                        {
+                            if (gridChild is TextBox textBox && Grid.GetColumn(textBox) == 1)
+                            {
+                                countTextBox = textBox;
+                                break;
+                            }
+                        }
+                        foreach (var gridChild in headerGrid.Children)
+                        {
+                            if (gridChild is TextBox remainingTextBox && Grid.GetColumn(remainingTextBox) == 2)
+                            {
+                                remainingCountTextBox = remainingTextBox;
+                                break;
+                            }
+                        }
+
+                        if (countTextBox != null && remainingCountTextBox != null)
+                        {
+                            if (int.TryParse(countTextBox.Text, out int countPurchase) && int.TryParse(remainingCountTextBox.Text, out int remainingCountPurchase))
+                            {
+                                if (remainingCountPurchase < countPurchase)
+                                {
+                                    exceededComponents.Add($"{componentCalculationHeader.ComponentNamePurchase}: количество {countPurchase}, остаток {remainingCountPurchase}");
+                                }
+                            }
+                        }
+
+                        if (stackPanel.Children.OfType<ListView>().FirstOrDefault() is ListView innerListView)
+                        {
+                            foreach (Grid grid in innerListView.Items)
+                            {
+                                var componentCalculation = (ComponentCalculation)grid.DataContext;
+
+                                TextBox childCountTextBox = null;
+                                TextBox childRemainingCountTextBox = null;
+                                foreach (var gridChild in grid.Children)
+                                {
+                                    if (gridChild is TextBox textBox && Grid.GetColumn(textBox) == 2)
+                                    {
+                                        childCountTextBox = textBox;
+                                        break;
+                                    }
+                                }
+                                foreach (var gridChild in grid.Children)
+                                {
+                                    if (gridChild is TextBox remainingTextBox && Grid.GetColumn(remainingTextBox) == 3)
+                                    {
+                                        childRemainingCountTextBox = remainingTextBox;
+                                        break;
+                                    }
+                                }
+
+                                if (childCountTextBox != null && childRemainingCountTextBox != null)
+                                {
+                                    if (int.TryParse(childCountTextBox.Text, out int childCountPurchase) && int.TryParse(childRemainingCountTextBox.Text, out int childRemainingCountPurchase))
+                                    {
+                                        if (childRemainingCountPurchase < childCountPurchase)
+                                        {
+                                            exceededComponents.Add($"{componentCalculation.ComponentNamePurchase}: количество {childCountPurchase}, остаток {childRemainingCountPurchase}");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return exceededComponents;
         }
     }
 }

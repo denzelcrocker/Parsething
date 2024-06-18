@@ -23,25 +23,74 @@ namespace Parsething.Pages
         private List<Law>? Laws { get; set; }
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<Employee>? Employees { get; set; }
+        private List<Procurement> AllProcurements { get; set; } = new List<Procurement>();
+
         private List<Procurement>? FoundProcurements { get; set; }
         private List<Procurement>? Procurements { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
         private const int PageSize = 20; // Размер страницы для пагинации
         private int CurrentPage = 1; // Текущая страница
 
+
         public SearchPage(List<Procurement>? procurements)
         {
             InitializeComponent();
-            InitializeData(procurements);
+            Procurements = new List<Procurement>(); // Инициализируем пустой список
+
+            if (procurements != null && procurements.Count > 0)
+            {
+                AllProcurements = procurements;
+                LoadInitialData();
+            }
+            else
+            {
+                InitializeData();
+            }
         }
 
-        private async void InitializeData(List<Procurement>? procurements)
+        private async void LoadInitialData()
         {
             ShowLoadingIndicator(true);
 
-            if (!IsSearchCriteriaEmpty())
+            // Загружаем данные для выпадающих списков
+            Laws = await Task.Run(() => GET.View.Laws());
+            Law.ItemsSource = Laws;
+
+            Employees = (await Task.Run(() => GET.View.Employees())).Where(e => e.IsAvailable != false).ToList();
+            Employee.ItemsSource = Employees;
+
+            ProcurementStates = await Task.Run(() => GET.View.ProcurementStates());
+            ProcurementState.ItemsSource = ProcurementStates;
+
+            Procurements = AllProcurements.Take(PageSize).ToList();
+            SearchLV.ItemsSource = Procurements;
+
+            ShowLoadingIndicator(false);
+
+            RestoreSearchCriteria();
+        }
+        private async void InitializeData()
+        {
+            ShowLoadingIndicator(true);
+
+            // Загружаем данные для выпадающих списков
+            Laws = await Task.Run(() => GET.View.Laws());
+            Law.ItemsSource = Laws;
+
+            Employees = (await Task.Run(() => GET.View.Employees())).Where(e => e.IsAvailable != false).ToList();
+            Employee.ItemsSource = Employees;
+
+            ProcurementStates = await Task.Run(() => GET.View.ProcurementStates());
+            ProcurementState.ItemsSource = ProcurementStates;
+
+            // Проверяем, есть ли переданные тендеры
+            if (AllProcurements != null && AllProcurements.Count > 0)
             {
-                procurements = await Task.Run(() => GET.View.ProcurementsBy(
+                Procurements = AllProcurements.Take(PageSize).ToList();
+            }
+            else if (!IsSearchCriteriaEmpty())
+            {
+                Procurements = await Task.Run(() => GET.View.ProcurementsBy(
                     SearchCriteria.Instance.ProcurementId,
                     SearchCriteria.Instance.ProcurementNumber,
                     SearchCriteria.Instance.Law,
@@ -52,22 +101,12 @@ namespace Parsething.Pages
                     PageSize,
                     CurrentPage));
             }
-
-            if (procurements != null)
+            else
             {
-                SearchLV.ItemsSource = procurements;
-                GET.View.PopulateComponentStates(procurements);
+                Procurements = await Task.Run(() => GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage));
             }
 
-            Laws = await Task.Run(() => GET.View.Laws());
-            Law.ItemsSource = Laws;
-
-            Employees = (await Task.Run(() => GET.View.Employees())).Where(e => e.IsAvailable != false).ToList();
-            Employee.ItemsSource = Employees;
-
-            ProcurementStates = await Task.Run(() => GET.View.ProcurementStates());
-            ProcurementState.ItemsSource = ProcurementStates;
-            Procurements = procurements;
+            SearchLV.ItemsSource = Procurements;
 
             ShowLoadingIndicator(false);
 
@@ -321,37 +360,65 @@ namespace Parsething.Pages
             }
         }
 
-        private async void LoadMoreItems()
+        private async Task LoadMoreItems()
         {
             CurrentPage++;
-            var newItems = await Task.Run(() => GET.View.ProcurementsBy(
-                SearchCriteria.Instance.ProcurementId,
-                SearchCriteria.Instance.ProcurementNumber,
-                SearchCriteria.Instance.Law,
-                SearchCriteria.Instance.ProcurementState,
-                SearchCriteria.Instance.INN,
-                SearchCriteria.Instance.Employee,
-                SearchCriteria.Instance.OrganizationName,
-                PageSize,
-                CurrentPage));
 
-            if (newItems != null)
+            // Проверяем, есть ли переданные тендеры
+            if (AllProcurements != null && AllProcurements.Count > 0)
             {
-                foreach (var item in newItems)
+                var newItems = AllProcurements.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                if (newItems.Count > 0)
                 {
-                    Procurements.Add(item);
-                }
+                    foreach (var item in newItems)
+                    {
+                        Procurements.Add(item);
+                    }
 
-                SearchLV.ItemsSource = null;
-                SearchLV.ItemsSource = Procurements;
+                    SearchLV.ItemsSource = null; // Обновляем источник данных
+                    SearchLV.ItemsSource = Procurements;
+                }
+            }
+            else
+            {
+                var newItems = await Task.Run(() => GET.View.ProcurementsBy(
+                    SearchCriteria.Instance.ProcurementId,
+                    SearchCriteria.Instance.ProcurementNumber,
+                    SearchCriteria.Instance.Law,
+                    SearchCriteria.Instance.ProcurementState,
+                    SearchCriteria.Instance.INN,
+                    SearchCriteria.Instance.Employee,
+                    SearchCriteria.Instance.OrganizationName,
+                    PageSize,
+                    CurrentPage));
+
+                if (newItems != null && newItems.Count > 0)
+                {
+                    foreach (var item in newItems)
+                    {
+                        Procurements.Add(item);
+                    }
+
+                    SearchLV.ItemsSource = null; // Обновляем источник данных
+                    SearchLV.ItemsSource = Procurements;
+                }
             }
         }
-
         private void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.VerticalOffset == e.ExtentHeight - e.ViewportHeight)
             {
                 LoadMoreItems();
+            }
+        }
+
+        private void GoToApplicationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+            {
+                List<Procurement> procurements = GET.View.ApplicationsBy(procurement.ParentProcurementId);
+                MainFrame.Navigate(new SearchPage(procurements));
             }
         }
     }

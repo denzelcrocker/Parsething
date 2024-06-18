@@ -419,4 +419,72 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class ApplicationsVisibilityConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Length != 2) return Visibility.Collapsed;
+
+            bool applications = values[0] != null && (bool)values[0];
+            int? parentProcurementId = values[1] as int?;
+
+            if (parentProcurementId != null)
+                return Visibility.Visible;
+            else if (applications)
+                return Visibility.Visible;
+
+            return Visibility.Collapsed;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class ApplicationsOrNumberConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length < 3)
+                return null;
+
+            bool applications = values[0] != null && (bool)values[0];
+            int? procurementId = values[1] as int?;
+            int? applicationNumber = values[2] as int?;
+
+            if (applications && procurementId.HasValue)
+            {
+                int count = GET.Aggregate.CountOfApplications(procurementId.Value);
+                return count.ToString();
+            }
+
+            return applicationNumber?.ToString() ?? "0";
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class ParentProcurementIdConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int? parentProcurementId = value as int?;
+
+            if (parentProcurementId.HasValue)
+            {
+                return parentProcurementId.Value.ToString();
+            }
+            else
+            {
+                return "Parent";
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
