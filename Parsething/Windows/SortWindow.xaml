@@ -76,10 +76,13 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+
                 </Grid.ColumnDefinitions>
                 <Button x:Name="QueueButton" Style="{DynamicResource SortWindowButton}" Content="Очередь" Grid.Column="0" Click="QueueButton_Click"/>
-                <ComboBox x:Name="AssignCombobox" Grid.Column="1" Style="{DynamicResource ComboBox.Card}" DisplayMemberPath="FullName" SelectionChanged="AssignCombobox_SelectionChanged"/>
-                <Button x:Name="RetreatButton" Style="{DynamicResource SortWindowButton}" Content="Отбой" Grid.Column="2" Click="RetreatButton_Click"/>
+                <ComboBox x:Name="AssignComboBox" Grid.Column="2" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="FullName"/>
+                <Button x:Name="AssignButton" Style="{DynamicResource SortWindowButton}" Content="Назначить на" Grid.Column="1" Click="AssignButton_Click"/>
+                <Button x:Name="RetreatButton" Style="{DynamicResource SortWindowButton}" Content="Отбой" Grid.Column="3" Click="RetreatButton_Click"/>
             </Grid>
         </DockPanel>
         <Button x:Name="AddButton" Style="{DynamicResource SortWindowButton}" Content="Добавить" Grid.Row="2" Click="AddButton_Click" Visibility="Hidden"/>

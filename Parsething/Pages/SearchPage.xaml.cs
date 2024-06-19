@@ -411,13 +411,16 @@ namespace Parsething.Pages
                 LoadMoreItems();
             }
         }
-
         private void GoToApplicationsButton_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
             {
-                List<Procurement> procurements = GET.View.ApplicationsBy(procurement.ParentProcurementId);
+                List<Procurement> procurements = new List<Procurement> ();
+                if (procurement.ParentProcurementId != null) 
+                    procurements = GET.View.ApplicationsBy(procurement.ParentProcurementId);
+                else
+                    procurements = GET.View.ApplicationsBy(procurement.Id);
                 MainFrame.Navigate(new SearchPage(procurements));
             }
         }

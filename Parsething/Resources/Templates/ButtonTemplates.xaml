@@ -491,7 +491,7 @@
         <Setter Property="Foreground" Value="{StaticResource SumbitAction.Static.Foreground}"/>
         <Setter Property="FontFamily" Value="Noah"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Margin" Value="1,4"/>
+        <Setter Property="Margin" Value="1,1"/>
         <Setter Property="Padding" Value="1,7"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Focusable" Value="False"/>

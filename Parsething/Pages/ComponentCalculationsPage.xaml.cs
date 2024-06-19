@@ -248,16 +248,18 @@ namespace Parsething.Pages
                 UpdateComponentCalculationListView(SameDate, SameComponentState);
             else
                 MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.PurchaseUserId).First().FullName}");
+            SameDate.SelectedDate = null;
+            SameComponentState.Text = null;
         }
 
         private void SaveCalculatingButton_Click(object sender, RoutedEventArgs e)
         {
+            Procurement = GET.Entry.ProcurementBy(Procurement.Id);
             if (ProcurementStates.Contains(Procurement.ProcurementState.Kind))
             {
                 MessageBoxResult result = MessageBox.Show("Сохранение также перезапишет данные в закупке. Продолжить?", "Сохранение", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
-                    Procurement = GET.Entry.ProcurementBy(Procurement.Id);
                     if (Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.CalculatingUserId == null)
                         UpdateComponentCalculationListView(null, null);
                     else

@@ -38,7 +38,7 @@ namespace Parsething.Windows
             InitializeComponent();
 
             Calculators = GET.View.EmployeesBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
-            AssignCombobox.ItemsSource = Calculators;
+            AssignComboBox.ItemsSource = Calculators;
             Laws = GET.View.Laws();
             LawCombobox.ItemsSource = Laws;
             Organizations = GET.View.Organizations();
@@ -145,19 +145,6 @@ namespace Parsething.Windows
                 string url = Procurement.RequestUri.ToString();
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
-        }
-
-        private void AssignCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
-            procurementsEmployee.ProcurementId = Procurement.Id;
-            procurementsEmployee.EmployeeId = ((Employee)AssignCombobox.SelectedItem).Id;
-            PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
-
-            Procurement.ProcurementStateId = 1;
-            PULL.Procurement(Procurement);
-
-            SortInitialization();
         }
 
         private void QueueButton_Click(object sender, RoutedEventArgs e)
@@ -276,6 +263,23 @@ namespace Parsething.Windows
             {
                 PUT.ProcurementSource(Procurement);
                 MessageBox.Show("Тендер успешно добавлен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void AssignButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (AssignComboBox.SelectedItem != null)
+            {
+                ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+                procurementsEmployee.ProcurementId = Procurement.Id;
+                procurementsEmployee.EmployeeId = ((Employee)AssignComboBox.SelectedItem).Id;
+                PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
+
+                Procurement.ProcurementStateId = 1;
+                PULL.Procurement(Procurement);
+
+                SortInitialization();
+                AssignComboBox.SelectedItem = null;
             }
         }
     }

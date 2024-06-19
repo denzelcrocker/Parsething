@@ -77,9 +77,7 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="9" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Карта сборки" Grid.Column="10" />
                     </Grid>
-                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0">
-                    </ListView>
-
+                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0"/>
                     <StackPanel  Orientation="Horizontal">
                         <Button   
                         Grid.Column="0"

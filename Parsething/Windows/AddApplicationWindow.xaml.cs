@@ -185,13 +185,22 @@ namespace Parsething.Windows
                     {
                         PUT.Procurement(newProcurement);
                         ListViewInitialization.CopyComponentCalculationsToNewProcurement(newProcurement, ComponentCalculationsListView);
-                        MessageBox.Show("Заявка успешно создана");
+                        AutoClosingMessageBox.ShowAutoClosingMessageBox($"Заявка успешно создана.", "Информация", 1500);
+                        CloseCurrentWindow();
                     }
                 }
             }
             else
             {
                 MessageBox.Show("Ошибка в введенных данных");
+            }
+        }
+        private void CloseCurrentWindow()
+        {
+            Window currentWindow = Window.GetWindow(this);
+            if (currentWindow != null)
+            {
+                currentWindow.Close();
             }
         }
     }

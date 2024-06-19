@@ -1,5 +1,6 @@
 ﻿using DatabaseLibrary.Entities.ComponentCalculationProperties;
 using DatabaseLibrary.Entities.ProcurementProperties;
+using Parsething.Classes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -160,14 +161,19 @@ namespace Parsething.Functions
                             textBoxComponentName.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
 
-                            ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
+                            ComboBox comboBoxManufacturer = new ComboBox()
+                            {
+                                Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),
+                                ItemsSource = Manufacturers,
+                                DisplayMemberPath = "ManufacturerName"
+                            };
+                            comboBoxManufacturer.SelectedValuePath = "Id";
+                            comboBoxManufacturer.SelectedValue = componentCalculation.ManufacturerId;
                             comboBoxManufacturer.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
-                            foreach (Manufacturer manufacturer in Manufacturers)
-                                if (manufacturer.Id == componentCalculation.ManufacturerId)
-                                {
-                                    comboBoxManufacturer.SelectedItem = manufacturer;
-                                    break;
-                                }
+                            VirtualizingStackPanel.SetIsVirtualizing(comboBoxManufacturer, true);
+                            VirtualizingStackPanel.SetVirtualizationMode(comboBoxManufacturer, VirtualizationMode.Recycling);
+                            ScrollViewer.SetIsDeferredScrollingEnabled(comboBoxManufacturer, true);
+
                             TextBox textBoxPrice = new TextBox() { Text = componentCalculation.Price.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxPrice.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             if (componentCalculation.Price != null && componentCalculation.Count != null)
@@ -761,7 +767,7 @@ namespace Parsething.Functions
                 }
                 catch
                 {
-                    MessageBox.Show("Дружище, ты сделал что-то неправильно...");
+                    AutoClosingMessageBox.ShowAutoClosingMessageBox($"Дружище, ты сделал что-то неправильно...", "Информация", 1000);
                 }
             }
             ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
@@ -893,12 +899,12 @@ namespace Parsething.Functions
 
                     TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentHeaderType.Kind, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
                     LoadColumnNames(textBoxHeader, 0);
-                    TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
+                    TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
 
                     // Вычисляем остаток для заголовка
                     var parentComponent = componentCalculations.FirstOrDefault(pc => pc.HeaderTypeId == componentCalculationHeader.HeaderTypeId && pc.IsDeleted == false);
-                    var usedCount = childProcurementComponents.Where(c => c.ComponentNamePurchase == componentCalculationHeader.ComponentNamePurchase && c.IsDeleted == false).Sum(c => c.CountPurchase);
-                    var remainingCount = parentComponent != null ? parentComponent.CountPurchase - usedCount : componentCalculationHeader.CountPurchase;
+                    var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.IsDeleted == false).Sum(c => c.Count);
+                    var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculationHeader.Count;
 
                     TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
 
@@ -929,13 +935,13 @@ namespace Parsething.Functions
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
                         TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
-                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
-                        TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxCount = new TextBox() { Text = componentCalculation.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
 
                         // Вычисляем остаток для компонента
-                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentNamePurchase == componentCalculation.ComponentNamePurchase && pc.IsDeleted == false && pc.SellerIdPurchase == componentCalculation.SellerIdPurchase);
-                        var usedCount = childProcurementComponents.Where(c => c.ComponentNamePurchase == componentCalculation.ComponentNamePurchase && c.IsDeleted == false && c.SellerIdPurchase == componentCalculation.SellerIdPurchase).Sum(c => c.CountPurchase);
-                        var remainingCount = parentComponent != null ? parentComponent.CountPurchase - usedCount : componentCalculation.CountPurchase;
+                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentName == componentCalculation.ComponentName && pc.IsDeleted == false && pc.SellerId == componentCalculation.SellerId);
+                        var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
+                        var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculation.Count;
 
                         TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
 
@@ -964,8 +970,107 @@ namespace Parsething.Functions
 
             listViewToInitialization.ItemsSource = stackPanels;
         }
+        public static void CardRemainingComponentCalculationsListViewInitialization(List<ComponentCalculation> componentCalculations, ListView listViewToInitialization, Procurement procurement)
+        {
+            List<StackPanel> stackPanels = new List<StackPanel>();
+            int counterOfComponentCalculations = 1;
+
+
+            var childProcurements = GET.View.ApplicationsBy(procurement.Id);
+            var childProcurementComponents = new List<ComponentCalculation>();
+            foreach (var childProcurement in childProcurements)
+            {
+                var components = GET.View.ComponentCalculationsBy(childProcurement.Id);
+                if (components != null)
+                {
+                    childProcurementComponents.AddRange(components);
+                }
+            }
+
+            foreach (ComponentCalculation componentCalculationHeader in componentCalculations)
+            {
+                StackPanel stackPanel = new StackPanel();
+                if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsDeleted == false)
+                {
+                    Grid grid = new Grid() { DataContext = componentCalculationHeader };
+                    double[] columnWidths = { 550, 55};
+                    for (int i = 0; i < columnWidths.Length; i++)
+                    {
+                        ColumnDefinition columnDefinition = new ColumnDefinition();
+                        columnDefinition.Width = new GridLength(columnWidths[i]);
+                        grid.ColumnDefinitions.Add(columnDefinition);
+                    }
+
+                    TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentHeaderType.Kind, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+                    LoadColumnNames(textBoxHeader, 0);
+
+                    var parentComponent = componentCalculations.FirstOrDefault(pc => pc.HeaderTypeId == componentCalculationHeader.HeaderTypeId && pc.IsDeleted == false);
+                    var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.IsDeleted == false).Sum(c => c.Count);
+                    var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculationHeader.Count;
+
+                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+
+                    Grid.SetColumn(textBoxHeader, 0);
+                    Grid.SetColumn(textBoxHeaderRemainingCount, 1);
+
+                    grid.Children.Add(textBoxHeader);
+                    grid.Children.Add(textBoxHeaderRemainingCount);
+                    stackPanel.Children.Add(grid);
+                }
+
+                ListView listView = new();
+                listView.Style = (Style)Application.Current.FindResource("ListView");
+
+                foreach (ComponentCalculation componentCalculation in componentCalculations)
+                {
+                    if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsDeleted == false)
+                    {
+                        Grid grid = new Grid() { DataContext = componentCalculation };
+                        double[] columnWidths = { 40, 508, 54};
+
+                        for (int i = 0; i < columnWidths.Length; i++)
+                        {
+                            ColumnDefinition columnDefinition = new ColumnDefinition();
+                            columnDefinition.Width = new GridLength(columnWidths[i]);
+                            grid.ColumnDefinitions.Add(columnDefinition);
+                        }
+                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+
+                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentName == componentCalculation.ComponentName && pc.IsDeleted == false && pc.SellerId == componentCalculation.SellerId);
+                        var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
+                        var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculation.Count;
+
+                        TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+
+                        Grid.SetColumn(textBoxCounter, 0);
+                        Grid.SetColumn(textBoxComponentName, 1);
+                        Grid.SetColumn(textBoxRemainingCount, 2);
+
+                        grid.Children.Add(textBoxCounter);
+                        grid.Children.Add(textBoxComponentName);
+                        grid.Children.Add(textBoxRemainingCount);
+
+                        listView.Items.Add(grid);
+
+                        counterOfComponentCalculations++;
+                    }
+                }
+
+                stackPanel.Children.Add(listView);
+                if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsAdded == false)
+                {
+                    stackPanels.Add(stackPanel);
+                }
+            }
+
+            listViewToInitialization.ItemsSource = stackPanels;
+        }
         public static void CopyComponentCalculationsToNewProcurement(Procurement newProcurement, ListView listViewToInitialization)
         {
+            decimal? totalCalculatingAmount = 0;
+            decimal? totalPurchaseAmount = 0;
+
             foreach (StackPanel stackPanel in listViewToInitialization.Items)
             {
                 foreach (var child in stackPanel.Children)
@@ -992,13 +1097,18 @@ namespace Parsething.Functions
                                 PartNumber = componentCalculationHeader.PartNumber,
                                 HeaderTypeId = componentCalculationHeader.HeaderTypeId,
                                 ComponentName = componentCalculationHeader.ComponentName,
-                                ComponentNamePurchase = componentCalculationHeader.ComponentNamePurchase,
+                                ComponentNamePurchase = componentCalculationHeader.ComponentName,
                                 ManufacturerId = componentCalculationHeader.ManufacturerId,
-                                ManufacturerIdPurchase = componentCalculationHeader.ManufacturerIdPurchase,
-                                Count = componentCalculationHeader.Count,
+                                ManufacturerIdPurchase = componentCalculationHeader.ManufacturerId,
+                                Count = countPurchase,
                                 CountPurchase = countPurchase,
+                                Price = componentCalculationHeader.Price,
+                                PricePurchase = componentCalculationHeader.Price,
                                 SellerId = componentCalculationHeader.SellerId,
-                                SellerIdPurchase = componentCalculationHeader.SellerIdPurchase,
+                                SellerIdPurchase = componentCalculationHeader.SellerId,
+                                Note = componentCalculationHeader.Note,
+                                NotePurchase = componentCalculationHeader.Note,
+                                AssemblyMap = componentCalculationHeader.AssemblyMap,
                                 IsDeleted = componentCalculationHeader.IsDeleted,
                                 IsHeader = componentCalculationHeader.IsHeader,
                                 IsAdded = componentCalculationHeader.IsAdded,
@@ -1030,13 +1140,18 @@ namespace Parsething.Functions
                                             ParentName = newHeaderId,
                                             PartNumber = componentCalculation.PartNumber,
                                             ComponentName = componentCalculation.ComponentName,
-                                            ComponentNamePurchase = componentCalculation.ComponentNamePurchase,
+                                            ComponentNamePurchase = componentCalculation.ComponentName,
                                             ManufacturerId = componentCalculation.ManufacturerId,
-                                            ManufacturerIdPurchase = componentCalculation.ManufacturerIdPurchase,
-                                            Count = componentCalculation.Count,
+                                            ManufacturerIdPurchase = componentCalculation.ManufacturerId,
+                                            Count = childCountPurchase,
                                             CountPurchase = childCountPurchase,
+                                            Price = componentCalculation.Price,
+                                            PricePurchase = componentCalculation.Price,
                                             SellerId = componentCalculation.SellerId,
-                                            SellerIdPurchase = componentCalculation.SellerIdPurchase,
+                                            SellerIdPurchase = componentCalculation.SellerId,
+                                            Note = componentCalculation.Note,
+                                            NotePurchase = componentCalculation.Note,
+                                            AssemblyMap = componentCalculation.AssemblyMap,
                                             ProcurementId = newProcurement.Id,
                                             IsDeleted = componentCalculation.IsDeleted,
                                             IsHeader = componentCalculation.IsHeader,
@@ -1044,6 +1159,9 @@ namespace Parsething.Functions
                                         };
 
                                         PUT.ComponentCalculation(newComponentCalculation);
+
+                                        totalCalculatingAmount += componentCalculation.Price * childCountPurchase;
+                                        totalPurchaseAmount += componentCalculation.Price * childCountPurchase;
                                     }
                                 }
                             }
@@ -1051,6 +1169,9 @@ namespace Parsething.Functions
                     }
                 }
             }
+            newProcurement.CalculatingAmount = totalCalculatingAmount;
+            newProcurement.PurchaseAmount = totalPurchaseAmount;
+            PULL.Procurement(newProcurement);
         }
         public static List<string> CheckComponentCalculationsLimits(ListView listViewToInitialization)
         {

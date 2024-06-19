@@ -1,8 +1,12 @@
 ﻿using DatabaseLibrary.Entities.ProcurementProperties;
 using Microsoft.Windows.Themes;
+using Parsething.Classes;
+using Parsething.Functions;
 using Parsething.Windows;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +78,7 @@ namespace Parsething.Pages
         private Procurement? Procurement { get; set; }
 
         private List<Procurement> Procurements { get; set; }
+        private List<ComponentCalculation> ComponentCalculations { get; set; }
         private bool IsSearch;
 
 
@@ -446,6 +451,7 @@ namespace Parsething.Pages
                         }
                 Judgment.IsChecked = Procurement.Judgment;
                 FAS.IsChecked = Procurement.Fas;
+                LoadApplications();
             }
 
             Historylog = ProcurementState.Text;
@@ -535,6 +541,9 @@ namespace Parsething.Pages
                 Procurement.Id = Convert.ToInt32(Id.Text);
                 if (ProcurementState.SelectedItem != null)
                     Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
+
+                CreateFolderIfNeeded(((ProcurementState)ProcurementState.SelectedItem).Kind);
+
                 Procurement.Securing = Securing.Text;
                 Procurement.Enforcement = Enforcement.Text;
                 Procurement.Warranty = Warranty.Text;
@@ -753,6 +762,7 @@ namespace Parsething.Pages
                     return;
                 }
                 PULL.Procurement(Procurement);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Успешно сохранено.", "Информация", 1000);
                 if (ProcurementState.Text != Historylog)
                 {
                     History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = ProcurementState.Text };
@@ -767,7 +777,27 @@ namespace Parsething.Pages
             else if (Procurement.ProcurementUserId != ((Employee)Application.Current.MainWindow.DataContext).Id)
                 MessageBox.Show($"Данный тендер сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.ProcurementUserId).First().FullName}\nВы не можете сохранить изменения");
         }
+        public void CreateFolderIfNeeded(string procurementState)
+        {
+            if (procurementState == "Оформить")
+            {
+                string networkPath = @"\\192.168.1.128\Tender_files";
+                string newFolderPath = System.IO.Path.Combine(networkPath, Procurement.Id.ToString());
 
+                try
+                {
+                    if (!Directory.Exists(newFolderPath))
+                    {
+                        Directory.CreateDirectory(newFolderPath);
+                        AutoClosingMessageBox.ShowAutoClosingMessageBox($"Папка {newFolderPath} успешно создана.", "Информация", 1500); 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AutoClosingMessageBox.ShowAutoClosingMessageBox($"Ошибка при создании папки: {ex.Message}", "Ошибка", 1500); 
+                }
+            }
+        }
         private void Sender_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
@@ -1021,7 +1051,6 @@ namespace Parsething.Pages
             }
             else
             {
-                // Обработка случаев, когда должность не найдена в словаре
             }
         }
         private void ResetAll()
@@ -1122,6 +1151,61 @@ namespace Parsething.Pages
             ResetAll();
             SetActiveElement(ApplicationLabel, ApplicationUL, ApplicationLV);
         }
+        private void LoadApplications()
+        {
+            var applications = GET.View.ApplicationsBy(Procurement.Id);
+
+            decimal? applicationAmount = 0;
+
+            foreach (var application in applications)
+            { 
+                applicationAmount += application.ApplicationAmount;
+            }
+
+            ApplicationAmount.Text = applicationAmount.ToString();
+            ApplicationCount.Text = GET.Aggregate.CountOfApplications(Procurement.Id).ToString();
+            RemainingApplicationAmount.Text = (Procurement.ContractAmount - applicationAmount).ToString();
+            Grid grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(300) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(615) });
+
+            int row = 0;
+
+            foreach (var application in applications)
+            {
+                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+                Label label = new Label
+                {
+                    Content = $"Заявка {application.ApplicationNumber}",
+                    Style = (Style)FindResource("Label.CardOfProcurement")
+                };
+                Grid.SetColumn(label, 0);
+                Grid.SetRow(label, row);
+                grid.Children.Add(label);
+
+                TextBox textBox = new TextBox
+                {
+                    Text = application.ContractAmount.ToString(),
+                    Style = (Style)FindResource("SingleLineInput.CardOfProcurement"),
+                    MinHeight = 50,
+                    MaxHeight = 150,
+                    TextWrapping = TextWrapping.Wrap,
+                    IsReadOnly = true
+                };
+                Grid.SetColumn(textBox, 1);
+                Grid.SetRow(textBox, row);
+                grid.Children.Add(textBox);
+
+                row++;
+            }
+
+            ApplicationLV.Items.Add(grid);
+
+            ComponentCalculations = GET.View.ComponentCalculationsBy(Procurement.Id);
+
+            ListViewInitialization.CardRemainingComponentCalculationsListViewInitialization(ComponentCalculations, RemainingComponentCalculationLV, Procurement);
+        }
 
         private void AddApplicationButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1132,6 +1216,18 @@ namespace Parsething.Pages
             }
         }
 
-        
+        private void GoToProcurementFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            string networkPath = $@"\\192.168.1.128\Tender_files\{Procurement.Id}";
+
+            try
+            {
+                Process.Start("explorer.exe", networkPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при попытке открыть папку: {ex.Message}");
+            }
+        }
     }
 }
