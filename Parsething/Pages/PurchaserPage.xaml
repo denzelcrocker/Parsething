@@ -144,7 +144,7 @@
                     <Label Style="{DynamicResource ColumnNames}" Content="Реальный профит" Grid.Column="8" Margin="0,15,0,0"/>
                     <Label Style="{DynamicResource ColumnNames}" Content="Расчетный профит" Grid.Column="8" Margin="0,0,0,20"/>
                     <Label Style="{DynamicResource ColumnNames}" Content="Отгрузка" Grid.Column="9"/>
-                    <Label Style="{DynamicResource ColumnNames}" Content="Закупка" Grid.Column="10" />
+                    <Label Style="{DynamicResource ColumnNames}" Content="Расчет" Grid.Column="10" />
                     <Label Style="{DynamicResource ColumnNames}" Content="Закупка" Grid.Column="11" />
                     <Label Style="{DynamicResource ColumnNames}" Content="ЕИС" Grid.Column="12" />
                     <Label Style="{DynamicResource ColumnNames}" Content="Ред-ть" Grid.Column="13" />

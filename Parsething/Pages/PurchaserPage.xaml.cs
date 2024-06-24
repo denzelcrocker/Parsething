@@ -46,13 +46,13 @@ namespace Parsething.Pages
         private List<Procurement>? ProcurementsApprovePurchaseNo { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
 
-        public PurchaserPage() =>
-            InitializeComponent();
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        public PurchaserPage()
         {
+            InitializeComponent();
+
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
-            
+
 
             ProcurementsWonPartOne = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState);
             if (ProcurementsWonPartOne != null)
@@ -116,6 +116,10 @@ namespace Parsething.Pages
 
             ThisWeekButton.Background = Brushes.LightGray;
 
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            
 
         }
 

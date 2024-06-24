@@ -106,4 +106,12 @@
     <Using Include="System.Windows.Input" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\zelen\source\repos\Parsething\Parsething\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\zelen\source\repos\Parsething\Parsething\.editorconfig" />
+  </ItemGroup>
+
 </Project>

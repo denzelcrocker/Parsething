@@ -3,6 +3,7 @@ using Microsoft.Windows.Themes;
 using Parsething.Classes;
 using Parsething.Functions;
 using Parsething.Windows;
+using PdfSharp.Snippets.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -148,7 +149,8 @@ namespace Parsething.Pages
             ProcurementRegions = GET.View.Regions();
             Regions.ItemsSource = ProcurementRegions;
 
-            ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(procurement.Id);
+            int idToGetPreferences = procurement.ParentProcurementId ?? procurement.Id;
+                ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(idToGetPreferences);
             PreferencesNotSelected = GET.View.Preferences();
 
             foreach (ProcurementsPreference procurementsPreference in ProcurementPreferencesSelected)
@@ -166,7 +168,9 @@ namespace Parsething.Pages
             ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
             ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
 
-            ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(procurement.Id);
+
+            int idToGetDocuments = procurement.ParentProcurementId ?? procurement.Id;
+                ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(idToGetDocuments); 
             DocumentsNotSelected = GET.View.Documents();
 
             foreach (ProcurementsDocument procurementsDocument in ProcurementDocumentsSelected)
@@ -544,6 +548,11 @@ namespace Parsething.Pages
 
                 CreateFolderIfNeeded(((ProcurementState)ProcurementState.SelectedItem).Kind);
 
+                DateTime resultDate;
+
+                if (DateTime.TryParse(ResultDate.Text, out resultDate))
+                    Procurement.ResultDate = resultDate;
+
                 Procurement.Securing = Securing.Text;
                 Procurement.Enforcement = Enforcement.Text;
                 Procurement.Warranty = Warranty.Text;
@@ -841,12 +850,22 @@ namespace Parsething.Pages
             Preference preferenceItem = ((ListView)sender).SelectedItem as Preference;
             if (preferenceItem != null)
             {
-                ProcurementsPreference procurementsPreferenceToRemove = new ProcurementsPreference { Procurement = Procurement, Preference = preferenceItem, PreferenceId = preferenceItem.Id, ProcurementId = Procurement.Id};
+                int idToGetPreferences = Procurement.ParentProcurementId ?? Procurement.Id;
+                Procurement procurement = GET.Entry.ProcurementBy(idToGetPreferences);
+
+                ProcurementsPreference procurementsPreferenceToRemove = new ProcurementsPreference
+                {
+                    Procurement = procurement,
+                    Preference = preferenceItem,
+                    PreferenceId = preferenceItem.Id,
+                    ProcurementId = idToGetPreferences
+                };
                 DELETE.ProcurementPreference(procurementsPreferenceToRemove);
+
                 ProcurementPreferencesSelectedLV.ItemsSource = null;
                 ProcurementPreferencesNotSelectedLV.ItemsSource = null;
                 PreferencesSelected.Clear();
-                ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(Procurement.Id);
+                ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(idToGetPreferences);
                 PreferencesNotSelected = GET.View.Preferences();
 
                 foreach (ProcurementsPreference procurementsPreference in ProcurementPreferencesSelected)
@@ -863,20 +882,29 @@ namespace Parsething.Pages
                 ProcurementPreferencesSelectedLV.ItemsSource = PreferencesSelected;
                 ProcurementPreferencesNotSelectedLV.ItemsSource = PreferencesNotSelected;
             }
-
         }
-        
+
         private void ProcurementPreferencesNotSelectedLV_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Preference preferenceItem = ((ListView)sender).SelectedItem as Preference;
             if (preferenceItem != null)
             {
-                ProcurementsPreference procurementsPreferenceToAdd = new ProcurementsPreference { Procurement = Procurement, Preference = preferenceItem };
+                int idToGetPreferences = Procurement.ParentProcurementId ?? Procurement.Id;
+                Procurement procurement = GET.Entry.ProcurementBy(idToGetPreferences);
+
+                ProcurementsPreference procurementsPreferenceToAdd = new ProcurementsPreference
+                {
+                    Procurement = procurement,
+                    Preference = preferenceItem,
+                    PreferenceId = preferenceItem.Id,
+                    ProcurementId = idToGetPreferences
+                };
                 PUT.ProcurementsPreferences(procurementsPreferenceToAdd);
+
                 ProcurementPreferencesSelectedLV.ItemsSource = null;
                 ProcurementPreferencesNotSelectedLV.ItemsSource = null;
                 PreferencesSelected.Clear();
-                ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(Procurement.Id);
+                ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(idToGetPreferences);
                 PreferencesNotSelected = GET.View.Preferences();
 
                 foreach (ProcurementsPreference procurementsPreference in ProcurementPreferencesSelected)
@@ -900,12 +928,21 @@ namespace Parsething.Pages
             Document documentItem = ((ListView)sender).SelectedItem as Document;
             if (documentItem != null)
             {
-                ProcurementsDocument procurementsDocumentsToRemove = new ProcurementsDocument { Procurement = Procurement, Document = documentItem, DocumentId = documentItem.Id, ProcurementId = Procurement.Id };
+                int idToGetDocuments = Procurement.ParentProcurementId ?? Procurement.Id;
+                Procurement procurement = GET.Entry.ProcurementBy(idToGetDocuments);
+
+                ProcurementsDocument procurementsDocumentsToRemove = new ProcurementsDocument 
+                {
+                    Procurement = procurement,
+                    Document = documentItem,
+                    DocumentId = documentItem.Id,
+                    ProcurementId = idToGetDocuments
+                };
                 DELETE.ProcurementDocument(procurementsDocumentsToRemove);
                 ProcurementDocumentsSelectedLV.ItemsSource = null;
                 ProcurementDocumentsNotSelectedLV.ItemsSource = null;
                 DocumentsSelected.Clear();
-                ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(Procurement.Id);
+                ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(idToGetDocuments);
                 DocumentsNotSelected = GET.View.Documents();
 
                 foreach (ProcurementsDocument procurementsDocument in ProcurementDocumentsSelected)
@@ -929,12 +966,21 @@ namespace Parsething.Pages
             Document documentItem = ((ListView)sender).SelectedItem as Document;
             if (documentItem != null)
             {
-                ProcurementsDocument procurementsDocumentsToAdd = new ProcurementsDocument { Procurement = Procurement, Document = documentItem, DocumentId = documentItem.Id, ProcurementId = Procurement.Id };
+                int idToGetDocuments = Procurement.ParentProcurementId ?? Procurement.Id;
+                Procurement procurement = GET.Entry.ProcurementBy(idToGetDocuments);
+
+                ProcurementsDocument procurementsDocumentsToAdd = new ProcurementsDocument 
+                {
+                    Procurement = procurement, 
+                    Document = documentItem,
+                    DocumentId = documentItem.Id,
+                    ProcurementId = idToGetDocuments
+                };
                 PUT.ProcurementsDocuments(procurementsDocumentsToAdd);
                 ProcurementDocumentsSelectedLV.ItemsSource = null;
                 ProcurementDocumentsNotSelectedLV.ItemsSource = null;
                 DocumentsSelected.Clear();
-                ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(Procurement.Id);
+                ProcurementDocumentsSelected = GET.View.ProcurementsDocumentsBy(idToGetDocuments);
                 DocumentsNotSelected = GET.View.Documents();
 
                 foreach (ProcurementsDocument procurementsDocument in ProcurementDocumentsSelected)

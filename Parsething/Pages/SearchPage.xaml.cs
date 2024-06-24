@@ -53,13 +53,13 @@ namespace Parsething.Pages
             ShowLoadingIndicator(true);
 
             // Загружаем данные для выпадающих списков
-            Laws = await Task.Run(() => GET.View.Laws());
+            Laws = GET.View.Laws();
             Law.ItemsSource = Laws;
 
-            Employees = (await Task.Run(() => GET.View.Employees())).Where(e => e.IsAvailable != false).ToList();
+            Employees = GET.View.Employees().Where(e => e.IsAvailable != false).ToList();
             Employee.ItemsSource = Employees;
 
-            ProcurementStates = await Task.Run(() => GET.View.ProcurementStates());
+            ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
 
             Procurements = AllProcurements.Take(PageSize).ToList();
@@ -74,13 +74,13 @@ namespace Parsething.Pages
             ShowLoadingIndicator(true);
 
             // Загружаем данные для выпадающих списков
-            Laws = await Task.Run(() => GET.View.Laws());
+            Laws = GET.View.Laws();
             Law.ItemsSource = Laws;
 
-            Employees = (await Task.Run(() => GET.View.Employees())).Where(e => e.IsAvailable != false).ToList();
+            Employees = GET.View.Employees().Where(e => e.IsAvailable != false).ToList();
             Employee.ItemsSource = Employees;
 
-            ProcurementStates = await Task.Run(() => GET.View.ProcurementStates());
+            ProcurementStates =  GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
 
             // Проверяем, есть ли переданные тендеры
@@ -90,7 +90,7 @@ namespace Parsething.Pages
             }
             else if (!IsSearchCriteriaEmpty())
             {
-                Procurements = await Task.Run(() => GET.View.ProcurementsBy(
+                Procurements = GET.View.ProcurementsBy(
                     SearchCriteria.Instance.ProcurementId,
                     SearchCriteria.Instance.ProcurementNumber,
                     SearchCriteria.Instance.Law,
@@ -99,11 +99,11 @@ namespace Parsething.Pages
                     SearchCriteria.Instance.Employee,
                     SearchCriteria.Instance.OrganizationName,
                     PageSize,
-                    CurrentPage));
+                    CurrentPage);
             }
             else
             {
-                Procurements = await Task.Run(() => GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage));
+                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage);
             }
 
             SearchLV.ItemsSource = Procurements;
@@ -186,7 +186,7 @@ namespace Parsething.Pages
                 !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(inn) ||
                 !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName))
             {
-                FoundProcurements = await Task.Run(() => GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, PageSize, CurrentPage));
+                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, PageSize, CurrentPage);
                 GET.View.PopulateComponentStates(FoundProcurements);
                 SearchLV.ItemsSource = FoundProcurements;
                 Procurements = FoundProcurements;

@@ -226,7 +226,7 @@
                             <Label Content="Окончание подачи заявки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7"/>
                             <TextBox x:Name="DeadLine" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="7" IsReadOnly="True"/>
                             <Label Content="Дата подведения итогов" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8"/>
-                            <TextBox x:Name="ResultDate" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="8" IsReadOnly="True"/>
+                            <TextBox x:Name="ResultDate" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="8"/>
                             <Label Content="Начальная цена" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="9"/>
                             <TextBox x:Name="InitialPrice" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="9" IsReadOnly="True"/>
                             <Label Content="Организация" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="10"/>
