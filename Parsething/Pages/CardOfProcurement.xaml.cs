@@ -790,7 +790,7 @@ namespace Parsething.Pages
         {
             if (procurementState == "Оформить")
             {
-                string networkPath = @"\\192.168.1.128\Tender_files";
+                string networkPath = @"\\192.168.1.128\Parsething\Tender_files";
                 string newFolderPath = System.IO.Path.Combine(networkPath, Procurement.Id.ToString());
 
                 try
@@ -1205,7 +1205,7 @@ namespace Parsething.Pages
 
             foreach (var application in applications)
             { 
-                applicationAmount += application.ApplicationAmount;
+                applicationAmount += application.ContractAmount;
             }
 
             ApplicationAmount.Text = applicationAmount.ToString();
@@ -1264,7 +1264,7 @@ namespace Parsething.Pages
 
         private void GoToProcurementFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            string networkPath = $@"\\192.168.1.128\Tender_files\{Procurement.Id}";
+            string networkPath = $@"\\192.168.1.128\Parsething\Tender_files\{Procurement.Id}";
 
             try
             {

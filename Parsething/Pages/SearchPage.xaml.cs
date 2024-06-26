@@ -63,6 +63,7 @@ namespace Parsething.Pages
             ProcurementState.ItemsSource = ProcurementStates;
 
             Procurements = AllProcurements.Take(PageSize).ToList();
+            GET.View.PopulateComponentStates(Procurements);
             SearchLV.ItemsSource = Procurements;
 
             ShowLoadingIndicator(false);
@@ -105,6 +106,7 @@ namespace Parsething.Pages
             {
                 Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage);
             }
+            GET.View.PopulateComponentStates(Procurements);
 
             SearchLV.ItemsSource = Procurements;
 

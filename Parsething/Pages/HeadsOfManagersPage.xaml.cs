@@ -55,7 +55,7 @@ namespace Parsething.Pages
             ManagersCombobox.Text = "Менеджеры:";
             ManagersCombobox.Items.Clear();
 
-            ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка");
+            ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка", "Принят");
             foreach (var item in ProcurementsEmployeesManagersGroupings)
             {
                 countOfManagers += item.CountOfProcurements;

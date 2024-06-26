@@ -61,7 +61,7 @@ namespace Parsething.Pages
 
             CalculationsCombobox.Items.Clear();
             CalculationsCombobox.Text = "Расчет:";
-            ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый", "", "");
+            ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый", "", "", "");
             foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
             {
                 countOfCalculationsNew += item.CountOfProcurements;
@@ -76,7 +76,7 @@ namespace Parsething.Pages
 
             DrawUpCombobox.Items.Clear();
             DrawUpCombobox.Text = "Оформление:";
-            ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить", "", "");
+            ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить", "", "", "");
             foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
             {
                 countOfCalculationsDrawUp += item.CountOfProcurements;
@@ -95,7 +95,7 @@ namespace Parsething.Pages
 
             SendingCombobox.Items.Clear();
             SendingCombobox.Text = "Отправка:";
-            ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками", "", "", "Отправлен", "", "");
+            ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками", "", "", "Отправлен", "", "", "");
             foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
             {
                 countOfSended += item.CountOfProcurements;

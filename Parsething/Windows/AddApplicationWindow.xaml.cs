@@ -54,9 +54,9 @@ namespace Parsething.Windows
                 foreach (Procurement application in Applications)
                 {
                     if (procurement.IsUnitPrice == true)
-                        remainingAmount -= application.ApplicationAmount ?? 0;
+                        remainingAmount -= application.ContractAmount ?? 0;
                     else
-                        remainingAmount -= application.ApplicationAmount ?? 0;
+                        remainingAmount -= application.ContractAmount ?? 0;
                 }
             }
             ApplicationRemaining.Text = remainingAmount.ToString();
@@ -147,7 +147,6 @@ namespace Parsething.Windows
                         AssemblyNeed = Procurement.AssemblyNeed,
                         MinopttorgId = Procurement.MinopttorgId,
                         LegalEntityId = Procurement.LegalEntityId,
-                        ApplicationAmount = applicationAmountValue,
                         ApplicationNumber = GET.Aggregate.NumberOfApplication(Procurement.Id),
                         Bet = Procurement.Bet,
                         MinimalPrice = Procurement.MinimalPrice,

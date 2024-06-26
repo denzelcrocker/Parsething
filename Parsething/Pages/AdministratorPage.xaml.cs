@@ -82,7 +82,7 @@ public partial class AdministratorPage : Page
 
         CalculationsCombobox.Items.Clear();
         CalculationsCombobox.Text = "Расчет:";
-        ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый","","");
+        ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый","","", "");
         foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
         {
             countOfCalculationsNew += item.CountOfProcurements;
@@ -97,7 +97,7 @@ public partial class AdministratorPage : Page
 
         DrawUpCombobox.Items.Clear();
         DrawUpCombobox.Text = "Оформление:";
-        ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить","","");
+        ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить","","", "");
         foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
         {
             countOfCalculationsDrawUp += item.CountOfProcurements;
@@ -116,7 +116,7 @@ public partial class AdministratorPage : Page
 
         SendingCombobox.Items.Clear();
         SendingCombobox.Text = "Отправка:";
-        ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками","","", "Отправлен","","");
+        ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками","","", "Отправлен","","", "");
         foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
         {
             countOfSended += item.CountOfProcurements;
@@ -137,7 +137,7 @@ public partial class AdministratorPage : Page
 
         ManagersCombobox.Items.Clear();
         ManagersCombobox.Text = "Менеджеры:";
-        ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка");
+        ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка", "Принят");
         foreach (var item in ProcurementsEmployeesManagersGroupings)
         {
             countOfManagers += item.CountOfProcurements;
@@ -310,14 +310,14 @@ public partial class AdministratorPage : Page
 
     private void ForSendButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.StartDate);
+        Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.Deadline);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }
 
     private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.StartDate);
+        Procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.Deadline);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }
