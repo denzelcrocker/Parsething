@@ -10,6 +10,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using Parsething.Classes;
+using System.IO;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace Parsething.Functions
 {
@@ -480,6 +483,51 @@ namespace Parsething.Functions
             {
                 return "Parent";
             }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class Base64ToImageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string base64String && !string.IsNullOrEmpty(base64String))
+            {
+                try
+                {
+                    byte[] imageBytes = System.Convert.FromBase64String(base64String);
+                    BitmapImage bitmap = new BitmapImage();
+                    using (MemoryStream stream = new MemoryStream(imageBytes))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = stream;
+                        bitmap.EndInit();
+                    }
+                    return bitmap;
+                }
+                catch
+                {
+                    return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/PlaceholderEmployeePhotoPreview.png"));
+                }
+            }
+
+            return new BitmapImage(new Uri("pack://application:,,,/Resources/Images/PlaceholderEmployeePhotoPreview.png"));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class InverseScaleYConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return new ScaleTransform(1, -1);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

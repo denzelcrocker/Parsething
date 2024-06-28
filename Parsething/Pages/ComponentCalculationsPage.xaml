@@ -5,12 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:cls="clr-namespace:Parsething.Classes"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-      xmlns:local="clr-namespace:Parsething.Pages"
+      xmlns:local="clr-namespace:Parsething.Functions"
       mc:Ignorable="d" 
-      Title="ComponentCalculationsPage" Loaded="Page_Loaded" >
-
+      Title="ComponentCalculationsPage" Loaded="Page_Loaded">
+    <Page.Resources>
+        <local:Base64ToImageConverter x:Key="Base64ToImageConverter"/>
+        <local:InverseScaleYConverter x:Key="InverseScaleYConverter"/>
+    </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Margin="55,0,25,10">
+        <Grid Margin="55,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1350"/>
                 <ColumnDefinition Width="460"/>
@@ -26,8 +29,8 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="30"/>
-                        <RowDefinition Height="640"/>
-                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="660"/>
+                        <RowDefinition Height="80"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="1" x:Name="ColumnsNamesCalculating" Visibility="Visible">
                         <Grid.ColumnDefinitions>
@@ -147,44 +150,64 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="520"/>
-                            <RowDefinition Height="170"/>
+                            <RowDefinition Height="130"/>
                             <RowDefinition Height="60"/>
                         </Grid.RowDefinitions>
-                        <ListView x:Name="CommentsListView" Grid.ColumnSpan="2" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,15">
+                        <ListView x:Name="CommentsListView" 
+                            Grid.Column="0" 
+                            Grid.ColumnSpan="2" 
+                            BorderThickness="0" 
+                            Grid.Row="0" 
+                            Style="{DynamicResource ListView.Preferences}" 
+                            Margin="0,15,0,15"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible">
                             <i:Interaction.Behaviors>
                                 <cls:SmoothScrollBehavior />
                             </i:Interaction.Behaviors>
+                            <ListView.LayoutTransform>
+                                <ScaleTransform ScaleY="-1"/>
+                            </ListView.LayoutTransform>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Border>
-                                        <Grid HorizontalAlignment="Left" Margin="5" Width="360">
+                                    <Border LayoutTransform="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=Content, Converter={StaticResource InverseScaleYConverter}}" BorderThickness="1" BorderBrush="{DynamicResource TitleBar.Background}" CornerRadius="15" Margin="15,3,0,3">
+                                        <Grid HorizontalAlignment="Left" Margin="5" Width="333">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
+                                                <RowDefinition Height="50"/>
                                                 <RowDefinition />
-                                                <RowDefinition Height="2"/>
+                                                <RowDefinition Height="14"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="50"/>
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition Width="30"/>
                                             </Grid.ColumnDefinitions>
+                                            <Ellipse x:Name="EmployeePhoto" 
+                                                Width="40" 
+                                                Height="40"
+                                                Grid.Column="0" 
+                                                Grid.Row="0"
+                                                Margin="3">
+                                                <Ellipse.Fill>
+                                                    <ImageBrush Stretch="Uniform" ImageSource="{Binding Path=Employee.Photo, Converter={StaticResource Base64ToImageConverter}}"/>
+                                                </Ellipse.Fill>
+                                            </Ellipse>
                                             <TextBlock 
                                                 Style="{DynamicResource TableElements}"
                                                 Text="{Binding Path=Employee.FullName}"
-                                                Grid.Column="0"
+                                                Grid.Column="1"
                                                 Grid.Row="0"
                                                 HorizontalAlignment="Left"
-                                                FontSize="20"
+                                                FontSize="15"
                                                 VerticalAlignment="Center"/>
                                             <TextBlock 
                                                 Style="{DynamicResource TableElements}"
                                                 Text="{Binding Path=Date, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
                                                 Grid.Column="1"
-                                                Grid.Row="0"
+                                                Grid.ColumnSpan="2"
+                                                Grid.Row="2"
                                                 HorizontalAlignment="Right"
                                                 FontSize="12"
                                                 VerticalAlignment="Center"/>
-                                            <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2" Grid.Row="2" Grid.ColumnSpan="3"/>
                                             <TextBlock 
                                                 Style="{DynamicResource TableElements}"
                                                 Text="{Binding Path=Text}"
@@ -193,16 +216,16 @@
                                                 TextWrapping="Wrap"
                                                 Margin="0,0,0,5"
                                                 HorizontalAlignment="Stretch"
-                                                FontSize="13"
+                                                FontSize="12"
                                                 VerticalAlignment="Center"/>
                                             <Label x:Name="arrow" 
-                                                Grid.Column="2"
-                                                Content="&#xe836;" 
-                                                FontSize="20"
-                                                FontFamily="Segoe Fluent Icons"
-                                                Foreground="{StaticResource MainText.Foreground}"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center">
+                                                    Grid.Column="2"
+                                                    Content="&#xe836;" 
+                                                    FontSize="20"
+                                                    FontFamily="Segoe Fluent Icons"
+                                                    Foreground="{StaticResource MainText.Foreground}"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
                                                 <Label.Style>
                                                     <Style TargetType="Label">
                                                         <Setter Property="Visibility" Value="Collapsed"/>

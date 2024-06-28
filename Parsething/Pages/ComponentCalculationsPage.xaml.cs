@@ -46,6 +46,7 @@ namespace Parsething.Pages
 
         static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен" };
 
+
         public ComponentCalculationsPage(Procurement procurement, List<Procurement> procurements, bool isCalculation, bool isSearch)
         {
             InitializeComponent();
@@ -61,6 +62,7 @@ namespace Parsething.Pages
 
                 Comments = GET.View.CommentsBy(procurement.Id);
                 CommentsListView.ItemsSource = Comments;
+                ScrollToBottom();
                 ComponentCalculations = GET.View.ComponentCalculationsBy(procurement.Id);
                 if (isCalculation)
                 {
@@ -121,8 +123,6 @@ namespace Parsething.Pages
             SavePassportButton.Visibility = Visibility.Hidden;
         }
 
-
-
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
@@ -141,6 +141,7 @@ namespace Parsething.Pages
                 Comments.Clear();
                 Comments = GET.View.CommentsBy(Procurement.Id);
                 CommentsListView.ItemsSource = Comments;
+                ScrollToBottom();
             }
         }
 
@@ -267,7 +268,14 @@ namespace Parsething.Pages
                 }
                 else { }
             }
-            
+        }
+        private void ScrollToBottom()
+        {
+            if (CommentsListView.Items.Count > 0)
+            {
+                var lastItem = CommentsListView.Items[0];
+                CommentsListView.ScrollIntoView(lastItem);
+            }
         }
     }
 }

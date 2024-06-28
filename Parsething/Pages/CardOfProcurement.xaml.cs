@@ -228,8 +228,7 @@ namespace Parsething.Pages
 
             Comments = GET.View.CommentsBy(procurement.Id);
             CommentsListView.ItemsSource = Comments;
-
-            
+            ScrollToBottom();
 
             Procurement = procurement;
             if (Procurement != null && ProcurementState != null)
@@ -460,6 +459,14 @@ namespace Parsething.Pages
 
             Historylog = ProcurementState.Text;
         }
+        private void ScrollToBottom()
+        {
+            if (CommentsListView.Items.Count > 0)
+            {
+                var lastItem = CommentsListView.Items[0];
+                CommentsListView.ScrollIntoView(lastItem);
+            }
+        }
         private void ExecutionState_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ExecutionState.SelectedItem != null)
@@ -562,7 +569,7 @@ namespace Parsething.Pages
                     ProcurementRegion[0].Distance = Convert.ToInt32(Distance.Text);
                     foreach (Region region in ProcurementRegions)
                     {
-                        if (ProcurementRegion[0].Title == region.Title && ProcurementRegion[0].Distance == region.Distance)
+                        if (ProcurementRegion[0].Title == region.Title)
                         {
                             Procurement.RegionId = GET.Entry.Region(region.Title, region.Distance).Id;
                             isRegionExists = true;
@@ -570,7 +577,7 @@ namespace Parsething.Pages
                     }
                     if (isRegionExists == false)
                     {
-                        PUT.Region(ProcurementRegion[0]);
+                        PULL.Region(ProcurementRegion[0]);
                         Procurement.RegionId = GET.Entry.Region(Regions.Text, Convert.ToInt32(Distance.Text)).Id; ;
                     }
                 }
@@ -1011,6 +1018,7 @@ namespace Parsething.Pages
                 Comments.Clear();
                 Comments = GET.View.CommentsBy(Procurement.Id);
                 CommentsListView.ItemsSource = Comments;
+                ScrollToBottom();
             }
         }
 
