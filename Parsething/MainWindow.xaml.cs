@@ -6,6 +6,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Parsething.Classes;
 using Parsething.Windows;
+using System;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Input;
 
 namespace Parsething
 {
@@ -75,7 +80,6 @@ namespace Parsething
             }
             else
             {
-                // Add any additional roles here
             }
         }
 
@@ -126,17 +130,48 @@ namespace Parsething
 
         private void MaximizeWithoutCoveringTaskbar()
         {
-            var workingArea = SystemParameters.WorkArea;
+            var hwnd = new WindowInteropHelper(this).Handle;
 
-            MaxWidth = workingArea.Width + 20;
-            MaxHeight = workingArea.Height + 20;
+            IntPtr monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+            MONITORINFO monitorInfo = new MONITORINFO();
+            monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
 
-            Left = workingArea.Left;
-            Top = workingArea.Top;
+            if (GetMonitorInfo(monitor, ref monitorInfo))
+            {
+                MaxWidth = monitorInfo.rcWork.right - monitorInfo.rcWork.left + 20;
+                MaxHeight = monitorInfo.rcWork.bottom - monitorInfo.rcWork.top + 20;
+
+                Left = monitorInfo.rcWork.left;
+                Top = monitorInfo.rcWork.top;
+            }
 
             WindowState = WindowState.Maximized;
         }
+        [DllImport("user32.dll")]
+        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
 
+        [DllImport("user32.dll")]
+        private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct MONITORINFO
+        {
+            public int cbSize;
+            public RECT rcMonitor;
+            public RECT rcWork;
+            public uint dwFlags;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RECT
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
+
+        private const uint MONITOR_DEFAULTTONEAREST = 0x00000002;
         private void CloseAction_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
