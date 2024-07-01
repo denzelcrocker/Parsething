@@ -154,6 +154,18 @@ namespace Parsething.Functions
                                 grid.ColumnDefinitions.Add(columnDefinition);
                             }
                             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30) });
+                            Button buttonMoveUp = new Button();
+                            buttonMoveUp.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            buttonMoveUp.Click += ButtonMoveUp_Click;
+                            buttonMoveUp.Content = "";
+                            buttonMoveUp.Margin = new Thickness (0, 0, 40, 11);
+                            buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarAction");
+                            Button buttonMoveDown = new Button();
+                            buttonMoveDown.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            buttonMoveDown.Click += ButtonMoveDown_Click;
+                            buttonMoveDown.Content = "";
+                            buttonMoveDown.Margin = new Thickness(0, 11, 40, 0);
+                            buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarAction");
                             TextBox textBoxPartNumber = new TextBox() { Text = componentCalculation.PartNumber, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxPartNumber.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxPartNumber.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
@@ -206,6 +218,8 @@ namespace Parsething.Functions
                             buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
 
                             Grid.SetColumn(textBoxPartNumber, 0);
+                            Grid.SetColumn(buttonMoveUp, 0);
+                            Grid.SetColumn(buttonMoveDown, 0);
                             Grid.SetColumn(textBoxComponentName, 1);
                             Grid.SetColumn(comboBoxManufacturer, 2);
                             Grid.SetColumn(textBoxPrice, 3);
@@ -217,6 +231,8 @@ namespace Parsething.Functions
                             Grid.SetColumn(buttonDelete, 9);
 
                             grid.Children.Add(textBoxPartNumber);
+                            grid.Children.Add(buttonMoveUp);
+                            grid.Children.Add(buttonMoveDown);
                             grid.Children.Add(textBoxComponentName);
                             grid.Children.Add(comboBoxManufacturer);
                             grid.Children.Add(textBoxPrice);
@@ -420,7 +436,46 @@ namespace Parsething.Functions
             }
             ListView.ItemsSource = stackPanels;
         }
+        private static void ButtonMoveUp_Click(object sender, RoutedEventArgs e)
+        {
+            // Получаем текущий элемент и его индекс
+            var button = sender as Button;
+            var grid = button?.Parent as Grid;
+            var listView = grid?.Parent as ListView;
+            var index = listView?.Items.IndexOf(grid);
 
+            if (index > 0)
+            {
+                // Меняем местами текущий элемент и предыдущий
+                var item = ComponentCalculations[(int)index];
+                ComponentCalculations[(int)index] = ComponentCalculations[(int)index - 1];
+                ComponentCalculations[(int)index - 1] = item;
+
+                // Обновляем ListView
+                
+            }
+        }
+
+        private static void ButtonMoveDown_Click(object sender, RoutedEventArgs e)
+        {
+            // Получаем текущий элемент и его индекс
+            var button = sender as Button;
+            var grid = button?.Parent as Grid;
+            var listView = grid?.Parent as ListView;
+            var index = listView?.Items.IndexOf(grid);
+
+            if (index < ComponentCalculations.Count - 1)
+            {
+                // Меняем местами текущий элемент и следующий
+                var item = ComponentCalculations[(int)index];
+                ComponentCalculations[(int)index] = ComponentCalculations[(int)index + 1];
+                ComponentCalculations[(int)index + 1] = item;
+
+                // Обновляем ListView
+                listView.ItemsSource = null;
+                listView.ItemsSource = ComponentCalculations;
+            }
+        }
         private static void ButtonDeleteDivision_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Точно удалить?", "Удаление", MessageBoxButton.YesNo);
