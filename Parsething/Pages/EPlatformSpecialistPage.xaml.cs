@@ -61,7 +61,7 @@ namespace Parsething.Pages
 
             OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true, GET.KindOf.Deadline));// Просрочены
 
-            Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.Deadline)); // Торги
+            Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.ResultDate)); // Торги
 
             QuotesCombobox.Items.Clear();
             QuotesCombobox.Text = "Сп-бы опр-я:";
@@ -76,7 +76,7 @@ namespace Parsething.Pages
                 QuotesCombobox.Items.Add(item); // Котировки (по методам)
             }// Котировки
 
-            OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.Deadline)); // Просрочены
+            OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.ResultDate)); // Просрочены
 
             Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState)); // Отменены
 
@@ -243,7 +243,7 @@ namespace Parsething.Pages
 
         private void BargainingButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.Deadline);
+            Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.ResultDate);
             if (Procurements != null)
                 ProcurementsListView.ItemsSource = Procurements;
 
@@ -264,7 +264,7 @@ namespace Parsething.Pages
 
         private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.Deadline);
+            Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.ResultDate);
             if (Procurements != null)
                 ProcurementsListView.ItemsSource = Procurements;
 

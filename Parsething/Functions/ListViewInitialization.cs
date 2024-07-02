@@ -47,6 +47,7 @@ namespace Parsething.Functions
 
         public static void ComponentCalculationsListViewInitialization(bool isCalculation, List<ComponentCalculation> componentCalculations, ListView listViewToInitialization, TextBlock calculationPriceTextBlock, TextBlock purchasePriceTextBlock, Procurement procurement)
         {
+            int indexOfComponent = 1;
             ListView = listViewToInitialization;
             Procurement = procurement;
             CalculationPriceTextBlock = calculationPriceTextBlock;
@@ -56,7 +57,7 @@ namespace Parsething.Functions
             Manufacturers = GET.View.Manufacturers();
             Sellers = GET.View.Sellers();
             ComponentStates = GET.View.ComponentStates();
-            ComponentCalculations = componentCalculations;
+            ComponentCalculations = componentCalculations.OrderBy(cc => cc.IndexOfComponent).ToList();
 
             List<StackPanel> stackPanels = new();
             decimal? calculatingAmount = 0;
@@ -157,18 +158,16 @@ namespace Parsething.Functions
                             Button buttonMoveUp = new Button();
                             buttonMoveUp.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             buttonMoveUp.Click += ButtonMoveUp_Click;
-                            buttonMoveUp.Content = "";
-                            buttonMoveUp.Margin = new Thickness (0, 0, 40, 11);
+                            buttonMoveUp.Content = "";
+                            buttonMoveUp.Margin = new Thickness (0, 0, 35, 11);
                             buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarAction");
                             Button buttonMoveDown = new Button();
                             buttonMoveDown.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             buttonMoveDown.Click += ButtonMoveDown_Click;
-                            buttonMoveDown.Content = "";
-                            buttonMoveDown.Margin = new Thickness(0, 11, 40, 0);
+                            buttonMoveDown.Content = "";
+                            buttonMoveDown.Margin = new Thickness(0, 11, 35, 0);
                             buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarAction");
-                            TextBox textBoxPartNumber = new TextBox() { Text = componentCalculation.PartNumber, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxPartNumber.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
-                            textBoxPartNumber.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
+                            TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
                             TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxComponentName.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
@@ -217,7 +216,7 @@ namespace Parsething.Functions
                             buttonDelete.Content = "";
                             buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
 
-                            Grid.SetColumn(textBoxPartNumber, 0);
+                            Grid.SetColumn(textBoxIndex, 0);
                             Grid.SetColumn(buttonMoveUp, 0);
                             Grid.SetColumn(buttonMoveDown, 0);
                             Grid.SetColumn(textBoxComponentName, 1);
@@ -230,9 +229,7 @@ namespace Parsething.Functions
                             Grid.SetColumn(textBoxAssemblyMap, 8);
                             Grid.SetColumn(buttonDelete, 9);
 
-                            grid.Children.Add(textBoxPartNumber);
-                            grid.Children.Add(buttonMoveUp);
-                            grid.Children.Add(buttonMoveDown);
+                            grid.Children.Add(textBoxIndex);
                             grid.Children.Add(textBoxComponentName);
                             grid.Children.Add(comboBoxManufacturer);
                             grid.Children.Add(textBoxPrice);
@@ -242,8 +239,12 @@ namespace Parsething.Functions
                             grid.Children.Add(textBoxNote);
                             grid.Children.Add(textBoxAssemblyMap);
                             grid.Children.Add(buttonDelete);
+                            grid.Children.Add(buttonMoveUp);
+                            grid.Children.Add(buttonMoveDown);
 
                             listView.Items.Add(grid);
+
+                            indexOfComponent++;
                         }
 
                     }
@@ -327,8 +328,19 @@ namespace Parsething.Functions
                                 grid.ColumnDefinitions.Add(columnDefinition);
                             }
                             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30) });
-                            TextBox textBoxPartNumber = new TextBox() { Text = componentCalculation.PartNumber, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxPartNumber.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
+                            Button buttonMoveUp = new Button();
+                            buttonMoveUp.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            buttonMoveUp.Click += ButtonMoveUp_Click;
+                            buttonMoveUp.Content = "";
+                            buttonMoveUp.Margin = new Thickness(0, 0, 35, 11);
+                            buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarAction");
+                            Button buttonMoveDown = new Button();
+                            buttonMoveDown.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            buttonMoveDown.Click += ButtonMoveDown_Click;
+                            buttonMoveDown.Content = "";
+                            buttonMoveDown.Margin = new Thickness(0, 11, 35, 0);
+                            buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarAction");
+                            TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
                             TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             Label replacementLabel = new Label() { Content = "!", Visibility = Visibility.Hidden, Style = (Style)Application.Current.FindResource("ComponentCalculation.Label") };
                             ToolTip tooltip = new ToolTip();
@@ -377,7 +389,9 @@ namespace Parsething.Functions
                             buttonDelete.Content = "";
                             buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
 
-                            Grid.SetColumn(textBoxPartNumber, 0);
+                            Grid.SetColumn(textBoxIndex, 0);
+                            Grid.SetColumn(buttonMoveUp, 0);
+                            Grid.SetColumn(buttonMoveDown, 0);
                             Grid.SetColumn(textBoxComponentName, 1);
                             Grid.SetColumn(replacementLabel, 1);
                             Grid.SetColumn(comboBoxManufacturer, 2);
@@ -391,7 +405,7 @@ namespace Parsething.Functions
                             Grid.SetColumn(textBoxAssemblyMap, 10);
                             Grid.SetColumn(buttonDelete, 11);
 
-                            grid.Children.Add(textBoxPartNumber);
+                            grid.Children.Add(textBoxIndex);
                             grid.Children.Add(textBoxComponentName);
                             grid.Children.Add(replacementLabel);
                             grid.Children.Add(comboBoxManufacturer);
@@ -404,8 +418,12 @@ namespace Parsething.Functions
                             grid.Children.Add(textBoxNote);
                             grid.Children.Add(textBoxAssemblyMap);
                             grid.Children.Add(buttonDelete);
+                            grid.Children.Add(buttonMoveUp);
+                            grid.Children.Add(buttonMoveDown);
 
                             listView.Items.Add(grid);
+
+                            indexOfComponent++;
                         }
 
                     }
@@ -438,42 +456,57 @@ namespace Parsething.Functions
         }
         private static void ButtonMoveUp_Click(object sender, RoutedEventArgs e)
         {
-            // Получаем текущий элемент и его индекс
             var button = sender as Button;
             var grid = button?.Parent as Grid;
-            var listView = grid?.Parent as ListView;
-            var index = listView?.Items.IndexOf(grid);
 
-            if (index > 0)
+            var textBlock = grid?.Children.OfType<TextBox>().FirstOrDefault(tb => tb.Name == "textBoxIndex");
+
+            if (textBlock != null && int.TryParse(textBlock.Text, out int index))
             {
-                // Меняем местами текущий элемент и предыдущий
-                var item = ComponentCalculations[(int)index];
-                ComponentCalculations[(int)index] = ComponentCalculations[(int)index - 1];
-                ComponentCalculations[(int)index - 1] = item;
+                if (index > 0)
+                {
+                    var listView = grid?.Parent as ListView;
 
-                // Обновляем ListView
-                
+                    var previousGrid = listView?.Items.OfType<Grid>()
+                        .FirstOrDefault(g => g.Children.OfType<TextBox>().Any(tb => tb.Name == "textBoxIndex" && int.Parse(tb.Text) == index - 1));
+
+                    if (previousGrid != null)
+                    {
+
+                        textBlock.Text = (index - 1).ToString();
+                        previousGrid.Children.OfType<TextBox>().FirstOrDefault(tb => tb.Name == "textBoxIndex").Text = index.ToString();
+
+                        UpdateComponentCalculationListView(null, null);
+                    }
+                }
             }
+
         }
 
         private static void ButtonMoveDown_Click(object sender, RoutedEventArgs e)
         {
-            // Получаем текущий элемент и его индекс
             var button = sender as Button;
             var grid = button?.Parent as Grid;
-            var listView = grid?.Parent as ListView;
-            var index = listView?.Items.IndexOf(grid);
 
-            if (index < ComponentCalculations.Count - 1)
+            var textBlock = grid?.Children.OfType<TextBox>().FirstOrDefault(tb => tb.Name == "textBoxIndex");
+
+            if (textBlock != null && int.TryParse(textBlock.Text, out int index))
             {
-                // Меняем местами текущий элемент и следующий
-                var item = ComponentCalculations[(int)index];
-                ComponentCalculations[(int)index] = ComponentCalculations[(int)index + 1];
-                ComponentCalculations[(int)index + 1] = item;
+                var listView = grid?.Parent as ListView;
 
-                // Обновляем ListView
-                listView.ItemsSource = null;
-                listView.ItemsSource = ComponentCalculations;
+                if (index < ComponentCalculations.Count - 1)
+                {
+                    var nextGrid = listView?.Items.OfType<Grid>()
+                        .FirstOrDefault(g => g.Children.OfType<TextBox>().Any(tb => tb.Name == "textBoxIndex" && int.Parse(tb.Text) == index + 1));
+
+                    if (nextGrid != null)
+                    {
+                        textBlock.Text = (index + 1).ToString();
+                        nextGrid.Children.OfType<TextBox>().FirstOrDefault(tb => tb.Name == "textBoxIndex").Text = index.ToString();
+
+                        UpdateComponentCalculationListView(null, null);
+                    }
+                }
             }
         }
         private static void ButtonDeleteDivision_Click(object sender, RoutedEventArgs e)
@@ -710,7 +743,7 @@ namespace Parsething.Functions
                         if (IsCalculation && ProcurementStates.Contains(Procurement.ProcurementState.Kind))
                         {
                             ComponentCalculation componentCalculationItem = new ComponentCalculation();
-                            TextBox textBoxPartNumber = (TextBox)grid.Children[0];
+                            TextBox textBoxIndex = (TextBox)grid.Children[0];
                             TextBox textBoxComponentName = (TextBox)grid.Children[1];
                             TextBox textBoxPrice = (TextBox)grid.Children[3];
                             TextBox textBoxCount = (TextBox)grid.Children[4];
@@ -720,7 +753,7 @@ namespace Parsething.Functions
 
                             componentCalculationItem.Id = (int)((List<object>)grid.DataContext)[0];
                             componentCalculationItem.ProcurementId = (int)((List<object>)grid.DataContext)[1];
-                            componentCalculationItem.PartNumber = textBoxPartNumber.Text;
+                            componentCalculationItem.IndexOfComponent = Convert.ToInt32(textBoxIndex.Text);
                             componentCalculationItem.ComponentName = textBoxComponentName.Text;
                             componentCalculationItem.ComponentNamePurchase = textBoxComponentName.Text;
                             if ((Manufacturer)((ComboBox)grid.Children[2]).SelectedItem != null)
@@ -760,7 +793,7 @@ namespace Parsething.Functions
                         else if (!IsCalculation)
                         {
                             ComponentCalculation componentCalculationItem = new ComponentCalculation();
-                            TextBox textBoxPartNumber = (TextBox)grid.Children[0];
+                            TextBox textBoxIndex = (TextBox)grid.Children[0];
                             TextBox textBoxComponentName = (TextBox)grid.Children[1];
                             DatePicker datePicker = (DatePicker)grid.Children[5];
                             TextBox textBoxPrice = (TextBox)grid.Children[6];
@@ -771,7 +804,7 @@ namespace Parsething.Functions
 
                             componentCalculationItem.Id = (int)((List<object>)grid.DataContext)[0];
                             componentCalculationItem.ProcurementId = (int)((List<object>)grid.DataContext)[1];
-                            componentCalculationItem.PartNumber = textBoxPartNumber.Text;
+                            componentCalculationItem.IndexOfComponent = Convert.ToInt32(textBoxIndex.Text);
                             componentCalculationItem.ComponentName = (string)((List<object>)grid.DataContext)[6];
                             componentCalculationItem.ComponentNamePurchase = textBoxComponentName.Text;
                             if ((Manufacturer)((ComboBox)grid.Children[3]).SelectedItem != null)

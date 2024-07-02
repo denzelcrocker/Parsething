@@ -1,4 +1,6 @@
 ﻿using DatabaseLibrary.Entities.ProcurementProperties;
+using DatabaseLibrary.Queries;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Windows.Themes;
 using Parsething.Classes;
 using Parsething.Functions;
@@ -10,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -281,9 +284,9 @@ namespace Parsething.Pages
                     if (region.Id == Procurement.RegionId)
                     {
                         Regions.SelectedItem = region;
-                        Distance.Text = region.Distance.ToString();
                         break;
                     }
+                Distance.Text = Procurement.Distance.ToString();
                 OrganizationContract.Text = Procurement.OrganizationContractName;
                 PostalAddressContract.Text = Procurement.OrganizationContractPostalAddress;
                 ContactPerson.Text = Procurement.ContactPerson;
@@ -555,6 +558,19 @@ namespace Parsething.Pages
 
                 CreateFolderIfNeeded(((ProcurementState)ProcurementState.SelectedItem).Kind);
 
+                DateTime deadline;
+
+                string pattern = @"(\d{2}\.\d{2}\.\d{4} \d{1,2}:\d{2}:\d{2})";
+                Match match = Regex.Match(DeadLine.Text, pattern);
+
+                if (match.Success)
+                {
+                    string dateTimeString = match.Groups[1].Value;
+                    if (DateTime.TryParse(dateTimeString, out deadline))
+                        Procurement.Deadline = deadline;
+                }
+                
+
                 DateTime resultDate;
 
                 if (DateTime.TryParse(ResultDate.Text, out resultDate))
@@ -563,24 +579,34 @@ namespace Parsething.Pages
                 Procurement.Securing = Securing.Text;
                 Procurement.Enforcement = Enforcement.Text;
                 Procurement.Warranty = Warranty.Text;
-                if (Distance.Text != "" && Regions.Text != "")
+                if (Regions.SelectedItem != null)
                 {
-                    ProcurementRegion[0].Title = Regions.Text;
-                    ProcurementRegion[0].Distance = Convert.ToInt32(Distance.Text);
-                    foreach (Region region in ProcurementRegions)
+                    var selectedRegion = Regions.SelectedItem as Region;
+                    if (selectedRegion != null)
                     {
-                        if (ProcurementRegion[0].Title == region.Title)
-                        {
-                            Procurement.RegionId = GET.Entry.Region(region.Title, region.Distance).Id;
-                            isRegionExists = true;
-                        }
+                        Procurement.RegionId = selectedRegion.Id;
                     }
-                    if (isRegionExists == false)
+                    else
                     {
-                        PULL.Region(ProcurementRegion[0]);
-                        Procurement.RegionId = GET.Entry.Region(Regions.Text, Convert.ToInt32(Distance.Text)).Id; ;
+                        Procurement.RegionId = null;
+                        warningMessage += " Регион";
                     }
                 }
+                else
+                {
+                    Procurement.RegionId = null;
+                    warningMessage += " Регион";
+                }
+                if (Distance.Text != "")
+                {
+                    int distance;
+                    if (int.TryParse(Distance.Text, out distance))
+                        Procurement.Distance = distance;
+                    else
+                        warningMessage += " Расстояние";
+                }
+                else
+                    Procurement.Distance = null;
                 Procurement.OrganizationContractName = OrganizationContract.Text;
                 Procurement.OrganizationContractPostalAddress = PostalAddressContract.Text;
                 Procurement.ContactPerson = ContactPerson.Text;
@@ -637,57 +663,41 @@ namespace Parsething.Pages
                 }
                 if (Bet.Text != "")
                 {
-                    decimal BetDecimal;
-                    if (decimal.TryParse(Bet.Text, out BetDecimal))
-                    {
-                        Procurement.Bet = BetDecimal;
-                    }
+                    decimal betDecimal;
+                    if (decimal.TryParse(Bet.Text, out betDecimal))
+                        Procurement.Bet = betDecimal;
                     else
-                    {
                         warningMessage += " Ставка";
-                    }
                 }
                 else
                     Procurement.Bet = null;
                 if (MinimalPrice.Text != "")
                 {
-                    decimal MinimalPriceDecimal;
-                    if (decimal.TryParse(MinimalPrice.Text, out MinimalPriceDecimal))
-                    {
-                        Procurement.MinimalPrice = MinimalPriceDecimal;
-                    }
+                    decimal minimalPriceDecimal;
+                    if (decimal.TryParse(MinimalPrice.Text, out minimalPriceDecimal))
+                        Procurement.MinimalPrice = minimalPriceDecimal;
                     else
-                    {
                         warningMessage += " Минимальная цена";
-                    }
                 }
                 else
                     Procurement.MinimalPrice = null;
                 if (ContractAmount.Text != "")
                 {
-                    decimal ContractAmountDecimal;
-                    if (decimal.TryParse(ContractAmount.Text, out ContractAmountDecimal))
-                    {
-                        Procurement.ContractAmount = ContractAmountDecimal;
-                    }
+                    decimal contractAmountDecimal;
+                    if (decimal.TryParse(ContractAmount.Text, out contractAmountDecimal))
+                        Procurement.ContractAmount = contractAmountDecimal;
                     else
-                    {
                         warningMessage += " Сумма контракта";
-                    }
                 }
                 else
                     Procurement.ContractAmount = null;
                 if (ReserveContractAmount.Text != "")
                 {
-                    decimal ReserveContractAmountDecimal;
-                    if (decimal.TryParse(ReserveContractAmount.Text, out ReserveContractAmountDecimal))
-                    {
-                        Procurement.ReserveContractAmount = ReserveContractAmountDecimal;
-                    }
+                    decimal reserveContractAmountDecimal;
+                    if (decimal.TryParse(ReserveContractAmount.Text, out reserveContractAmountDecimal))
+                        Procurement.ReserveContractAmount = reserveContractAmountDecimal;
                     else
-                    {
                         warningMessage += " Измененная сумма контракта";
-                    }
                 }
                 else
                     Procurement.ReserveContractAmount = null;
@@ -707,15 +717,11 @@ namespace Parsething.Pages
                     Procurement.ExecutionStateId = null;
                 if (ExecutionPrice.Text != "")
                 {
-                    decimal ExecutionPriceDecimal;
-                    if (decimal.TryParse(ExecutionPrice.Text, out ExecutionPriceDecimal))
-                    {
-                        Procurement.ExecutionPrice = ExecutionPriceDecimal;
-                    }
+                    decimal executionPriceDecimal;
+                    if (decimal.TryParse(ExecutionPrice.Text, out executionPriceDecimal))
+                        Procurement.ExecutionPrice = executionPriceDecimal;
                     else
-                    {
                         warningMessage += " Стоимость БГ";
-                    }
                 }
                 else
                     Procurement.ExecutionPrice = null;
@@ -726,15 +732,11 @@ namespace Parsething.Pages
                     Procurement.WarrantyStateId = null;
                 if (WarrantyPrice.Text != "")
                 {
-                    decimal WarrantyPriceDecimal;
-                    if (decimal.TryParse(WarrantyPrice.Text, out WarrantyPriceDecimal))
-                    {
-                        Procurement.WarrantyPrice = WarrantyPriceDecimal;
-                    }
+                    decimal warrantyPriceDecimal;
+                    if (decimal.TryParse(WarrantyPrice.Text, out warrantyPriceDecimal))
+                        Procurement.WarrantyPrice = warrantyPriceDecimal;
                     else
-                    {
                         warningMessage += " Стоимость БГ";
-                    }
                 }
                 else
                     Procurement.WarrantyPrice = null;
@@ -753,15 +755,11 @@ namespace Parsething.Pages
                 Procurement.RealDueDate = RealDueDate.SelectedDate;
                 if (Amount.Text != "")
                 {
-                    decimal AmountDecimal;
-                    if (decimal.TryParse(Amount.Text, out AmountDecimal))
-                    {
-                        Procurement.Amount = AmountDecimal;
-                    }
+                    decimal amountDecimal;
+                    if (decimal.TryParse(Amount.Text, out amountDecimal))
+                        Procurement.Amount = amountDecimal;
                     else
-                    {
                         warningMessage += " Оплаченная сумма";
-                    }
                 }
                 else
                     Procurement.Amount = null;
@@ -1020,31 +1018,6 @@ namespace Parsething.Pages
                 CommentsListView.ItemsSource = Comments;
                 ScrollToBottom();
             }
-        }
-
-        private void Regions_KeyDown(object sender, KeyEventArgs e)
-        {
-            foreach (Region region in Regions.ItemsSource)
-                if (region.Title == Regions.Text)
-                {
-                    Distance.Text = region.Distance.ToString();
-                    break;
-                }
-        }
-
-        private void Regions_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
-        private void Regions_DropDownClosed(object sender, EventArgs e)
-        {
-            foreach (Region region in Regions.ItemsSource)
-                if (region.Title == Regions.Text)
-                {
-                    Distance.Text = region.Distance.ToString();
-                    break;
-                }
         }
 
         private void Distance_PreviewTextInput(object sender, TextCompositionEventArgs e)

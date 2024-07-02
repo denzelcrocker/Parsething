@@ -52,7 +52,7 @@ public partial class AdministratorPage : Page
 
         Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
 
-        Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.Deadline)); // Торги
+        Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.ResultDate)); // Торги
 
 
         QuotesCombobox.Items.Clear();
@@ -68,7 +68,7 @@ public partial class AdministratorPage : Page
             QuotesCombobox.Items.Add(item); // Котировки (по методам)
         }// Котировки
 
-        OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.Deadline)); // Просрочены
+        OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.ResultDate)); // Просрочены
 
         Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState)); // Отменены
 
@@ -247,14 +247,14 @@ public partial class AdministratorPage : Page
 
     private void BargainingButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.Deadline);
+        Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.ResultDate);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }
 
     private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.Deadline);
+        Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.ResultDate);
         if (Procurements != null)
             MainFrame.Navigate(new SearchPage(Procurements));
     }

@@ -228,7 +228,7 @@
                             <Label Content="Начало подачи заявок" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6"/>
                             <TextBox x:Name="StartDate" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="6" IsReadOnly="True"/>
                             <Label Content="Окончание подачи заявки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7"/>
-                            <TextBox x:Name="DeadLine" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="7" IsReadOnly="True"/>
+                            <TextBox x:Name="DeadLine" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="7"/>
                             <Label Content="Дата подведения итогов" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="8"/>
                             <TextBox x:Name="ResultDate" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="8"/>
                             <Label Content="Начальная цена" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="9"/>
@@ -291,7 +291,7 @@
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
                             <Label Content="Регион" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
-                            <ComboBox x:Name="Regions"  HorizontalAlignment="Left" Grid.Column="1" Width="615" Style="{DynamicResource ComboBoxBase.Regions}" Height="45" StaysOpenOnEdit="True" IsEditable="True" DisplayMemberPath="Title" SelectionChanged="Regions_SelectionChanged" KeyDown="Regions_KeyDown" DropDownClosed="Regions_DropDownClosed"/>
+                            <ComboBox x:Name="Regions"  HorizontalAlignment="Left" Grid.Column="1" Width="615" Style="{DynamicResource ComboBoxBase.Regions}" Height="45" StaysOpenOnEdit="True" IsEditable="True" DisplayMemberPath="Title"/>
                             <Label Content="Расстояние" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="1"/>
                             <TextBox x:Name="Distance" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="1" PreviewTextInput="Distance_PreviewTextInput"/>
                             <Label Content="Организация (контракт)" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2"/>
