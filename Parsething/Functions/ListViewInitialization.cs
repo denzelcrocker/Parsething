@@ -553,12 +553,17 @@ namespace Parsething.Functions
 
             if ((IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id) || (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id))
             {
-                StackPanel parentStackPanel = (StackPanel)((Grid)((Button)sender).Parent).Parent;
+                var parentName = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
+
                 ComponentCalculation newComponentCalculation = new ComponentCalculation
                 {
                     ProcurementId = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]),
+                    IndexOfComponent = ComponentCalculations
+                        .Where(cc => cc.ParentName == parentName)
+                        .OrderByDescending(cc => cc.IndexOfComponent)
+                        .Select(cc => cc.IndexOfComponent)
+                        .FirstOrDefault() + 1,
                     ParentName = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]),
-
                     IsAdded = IsCalculation ? false : true,
                     IsDeleted = false,
                     IsHeader = false,

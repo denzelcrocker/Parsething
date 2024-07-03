@@ -8,6 +8,7 @@ using Parsething.Windows;
 using PdfSharp.Snippets.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -36,9 +37,7 @@ namespace Parsething.Pages
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<RepresentativeType>? RepresentativeTypes { get; set; }
         private List<CommisioningWork>? CommissioningWorks { get; set; }
-
         private List<Region>? ProcurementRegions { get; set; }
-
         private List<Employee>? Calculators { get; set; }
         private ProcurementsEmployee? ProcurementsEmployeeCalculators = new ProcurementsEmployee();
 
@@ -579,24 +578,13 @@ namespace Parsething.Pages
                 Procurement.Securing = Securing.Text;
                 Procurement.Enforcement = Enforcement.Text;
                 Procurement.Warranty = Warranty.Text;
-                if (Regions.SelectedItem != null)
-                {
-                    var selectedRegion = Regions.SelectedItem as Region;
-                    if (selectedRegion != null)
-                    {
-                        Procurement.RegionId = selectedRegion.Id;
-                    }
-                    else
-                    {
-                        Procurement.RegionId = null;
-                        warningMessage += " Регион";
-                    }
-                }
-                else
-                {
+                var selectedRegion = Regions.SelectedItem as Region;
+                if (selectedRegion != null)
+                    Procurement.RegionId = selectedRegion.Id;
+                else if (Regions.Text == "")
                     Procurement.RegionId = null;
+                else
                     warningMessage += " Регион";
-                }
                 if (Distance.Text != "")
                 {
                     int distance;
