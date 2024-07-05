@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +30,9 @@ namespace Parsething.Pages
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
 
         private List<Procurement>? Procurements = new List<Procurement>();
+        private bool _isAscendingDeadline = true;
+        private bool _isAscendingLaw = true;
+        private bool _isAscendingResultDate = true;
 
         public EPlatformSpecialistPage()
         {
@@ -93,7 +97,76 @@ namespace Parsething.Pages
                 MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
             }
         }
+        private void SortByDeadline(object sender, MouseButtonEventArgs e)
+        {
+            ClearSortingArrows();
+            if (_isAscendingDeadline)
+            {
+                ProcurementsListView.ItemsSource = Procurements.OrderBy(p => p.Deadline).ToList();
+                _isAscendingDeadline = false;
+            }
+            else
+            {
+                ProcurementsListView.ItemsSource = Procurements.OrderByDescending(p => p.Deadline).ToList();
+                _isAscendingDeadline = true;
+            }
+            UpdateSortingArrow((Label)sender, _isAscendingDeadline);
+        }
 
+        private void SortByResultDate(object sender, MouseButtonEventArgs e)
+        {
+            ClearSortingArrows();
+            if (_isAscendingResultDate)
+            {
+                ProcurementsListView.ItemsSource = Procurements.OrderBy(p => p.ResultDate).ToList();
+                _isAscendingResultDate = false;
+            }
+            else
+            {
+                ProcurementsListView.ItemsSource = Procurements.OrderByDescending(p => p.ResultDate).ToList();
+                _isAscendingResultDate = true;
+            }
+            UpdateSortingArrow((Label)sender, _isAscendingResultDate);
+        }
+
+        private void SortByLaw(object sender, MouseButtonEventArgs e)
+        {
+            ClearSortingArrows();
+            if (_isAscendingLaw)
+            {
+                ProcurementsListView.ItemsSource = Procurements.OrderBy(p => ExtractLawNumber(p.Law.Number)).ToList();
+                _isAscendingLaw = false;
+            }
+            else
+            {
+                ProcurementsListView.ItemsSource = Procurements.OrderByDescending(p => ExtractLawNumber(p.Law.Number)).ToList();
+                _isAscendingLaw = true;
+            }
+            UpdateSortingArrow((Label)sender, _isAscendingLaw);
+        }
+
+        private int ExtractLawNumber(string law)
+        {
+            var match = Regex.Match(law, @"\d+");
+            return match.Success ? int.Parse(match.Value) : 0;
+        }
+
+        private void UpdateSortingArrow(Label label, bool isAscending)
+        {
+            string arrow = isAscending ? "↑" : "↓";
+            label.Content = label.Content.ToString().TrimEnd('↑', '↓') + "" + arrow;
+        }
+
+        private void ClearSortingArrows()
+        {
+            foreach (var child in SortingHeadersGrid.Children)
+            {
+                if (child is Label label)
+                {
+                    label.Content = label.Content.ToString().TrimEnd('↑', '↓');
+                }
+            }
+        }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
             Procurements = GET.View.ProcurementsBy("Новый", GET.KindOf.ProcurementState);
@@ -113,6 +186,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void CalculatedButton_Click(object sender, RoutedEventArgs e)
@@ -134,6 +208,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void RetreatCalculateButton_Click(object sender, RoutedEventArgs e)
@@ -155,6 +230,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void DrawUpButton_Click(object sender, RoutedEventArgs e)
@@ -176,6 +252,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void IssuedButton_Click(object sender, RoutedEventArgs e)
@@ -197,6 +274,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void ForSendButton_Click(object sender, RoutedEventArgs e)
@@ -218,6 +296,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
@@ -239,6 +318,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void BargainingButton_Click(object sender, RoutedEventArgs e)
@@ -260,6 +340,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
@@ -281,6 +362,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void CancellationButton_Click(object sender, RoutedEventArgs e)
@@ -302,6 +384,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void RejectedButton_Click(object sender, RoutedEventArgs e)
@@ -323,6 +406,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.LightGray;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void LostButton_Click(object sender, RoutedEventArgs e)
@@ -344,6 +428,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.LightGray;
             WonPartOneButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
         }
 
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
@@ -365,6 +450,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.LightGray;
+            ClearSortingArrows();
         }
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)

@@ -13,6 +13,7 @@ using Parsething.Windows;
 using DatabaseLibrary.Entities.ProcurementProperties;
 using DatabaseLibrary.Entities.EmployeeMuchToMany;
 using System.Windows.Controls.Primitives;
+using System.Text.RegularExpressions;
 
 namespace Parsething.Pages
 {
@@ -30,7 +31,8 @@ namespace Parsething.Pages
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
         private const int PageSize = 20; // Размер страницы для пагинации
         private int CurrentPage = 1; // Текущая страница
-
+        private bool _isAscending = false; // Переменная для отслеживания направления сортировки
+        private string _currentSortingField = ""; // Переменная для хранения текущего поля сортировки
 
         public SearchPage(List<Procurement>? procurements)
         {
@@ -100,11 +102,13 @@ namespace Parsething.Pages
                     SearchCriteria.Instance.Employee,
                     SearchCriteria.Instance.OrganizationName,
                     PageSize,
-                    CurrentPage);
+                    CurrentPage,
+                    _currentSortingField,
+                    _isAscending);
             }
             else
             {
-                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage);
+                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
             }
             GET.View.PopulateComponentStates(Procurements);
 
@@ -170,6 +174,7 @@ namespace Parsething.Pages
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            CurrentPage = 1;
             ShowLoadingIndicator(true);
 
             SearchCriteria.Instance.ClearData();
@@ -188,7 +193,7 @@ namespace Parsething.Pages
                 !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(inn) ||
                 !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName))
             {
-                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, PageSize, CurrentPage);
+                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, PageSize, CurrentPage, _currentSortingField, _isAscending);
                 GET.View.PopulateComponentStates(FoundProcurements);
                 SearchLV.ItemsSource = FoundProcurements;
                 Procurements = FoundProcurements;
@@ -392,7 +397,9 @@ namespace Parsething.Pages
                     SearchCriteria.Instance.Employee,
                     SearchCriteria.Instance.OrganizationName,
                     PageSize,
-                    CurrentPage));
+                    CurrentPage,
+                    _currentSortingField,
+                    _isAscending));
 
                 if (newItems != null && newItems.Count > 0)
                 {
@@ -424,6 +431,85 @@ namespace Parsething.Pages
                 else
                     procurements = GET.View.ApplicationsBy(procurement.Id);
                 MainFrame.Navigate(new SearchPage(procurements));
+            }
+        }
+        private void SortByField(object sender, MouseButtonEventArgs e)
+        {
+            CurrentPage = 1;
+
+            // Получаем информацию о поле сортировки из Tag элемента управления
+            if (sender is Label label && label.Tag is string field)
+            {
+                ClearSortingArrows();
+
+                // Если текущее поле сортировки совпадает с новым, меняем направление сортировки
+                if (_currentSortingField == field)
+                {
+                    _isAscending = !_isAscending;
+                }
+                else
+                {
+                    _isAscending = true; // Начинаем с сортировки по возрастанию, если выбрано новое поле
+                }
+
+                // Обновляем текущее поле сортировки
+                _currentSortingField = field;
+
+                // Выполняем сортировку
+                if (AllProcurements != null && AllProcurements.Count > 0)
+                {
+                    Procurements = AllProcurements.Take(PageSize).ToList();
+                }
+                else if (!IsSearchCriteriaEmpty())
+                {
+                    Procurements = GET.View.ProcurementsBy(
+                        SearchCriteria.Instance.ProcurementId,
+                        SearchCriteria.Instance.ProcurementNumber,
+                        SearchCriteria.Instance.Law,
+                        SearchCriteria.Instance.ProcurementState,
+                        SearchCriteria.Instance.INN,
+                        SearchCriteria.Instance.Employee,
+                        SearchCriteria.Instance.OrganizationName,
+                        PageSize,
+                        CurrentPage,
+                        _currentSortingField,
+                        _isAscending);
+                }
+                else
+                {
+                    Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
+                }
+                GET.View.PopulateComponentStates(Procurements);
+                SearchLV.ItemsSource = Procurements;
+                // Обновляем стрелку сортировки на заголовке столбца
+                UpdateSortingArrow(label, _isAscending);
+            }
+        }
+
+        // Вспомогательный метод для извлечения номера закона из строки
+        private int ExtractLawNumber(string law)
+        {
+            var match = Regex.Match(law, @"\d+");
+            return match.Success ? int.Parse(match.Value) : 0;
+        }
+
+        // Метод для обновления стрелок сортировки на заголовках столбцов
+        private void UpdateSortingArrow(Label label, bool isAscending)
+        {
+            ClearSortingArrows();
+            string arrow = isAscending ? "↑" : "↓";
+            label.Content = label.Content.ToString().TrimEnd('↑', '↓') + arrow;
+        }
+
+        // Метод для очистки стрелок сортировки на всех заголовках столбцов
+        private void ClearSortingArrows()
+        {
+            foreach (var child in SortingHeadersGrid.Children)
+            {
+                if (child is Label label)
+                {
+                    label.Content = label.Content.ToString().TrimEnd('↑', '↓');
+                }
             }
         }
     }

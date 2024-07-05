@@ -555,7 +555,9 @@ namespace Parsething.Pages
                 if (ProcurementState.SelectedItem != null)
                     Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
 
-                CreateFolderIfNeeded(((ProcurementState)ProcurementState.SelectedItem).Kind);
+
+                if(ProcurementState.SelectedItem != null)
+                    CreateFolderIfNeeded(((ProcurementState)ProcurementState.SelectedItem).Kind);
 
                 DateTime deadline;
 

@@ -46,19 +46,43 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-
     <Style x:Key="ColumnNames" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-
+    <Style x:Key="ClickableColumnNames" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Gray"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style x:Key="ColumnNames.Search" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
         <Setter Property="FontSize" Value="10"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="ClickableColumnNames.Search" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
+        <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Gray"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style x:Key="ColumnNames.Purchase" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>

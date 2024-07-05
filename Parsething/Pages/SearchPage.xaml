@@ -40,10 +40,10 @@
                         <RowDefinition Height="40"/>
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Grid>
+                    <Grid x:Name="SortingHeadersGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="42"/>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="105"/>
                             <ColumnDefinition Width="130"/>
@@ -62,17 +62,17 @@
                             <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Id" Grid.Column="0" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Закон" Grid.Column="1" />
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Закон" Grid.Column="1" MouseLeftButtonUp="SortByField" Tag="Law"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="В работе" Grid.Column="2" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Комплектующие" Grid.Column="3" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Дата подачи заявок" Grid.Column="4" />
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата подачи заявок" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="Deadline"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="5" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Контракт" Grid.Column="5" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Статус тендера" Grid.Column="6" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Подписание" Grid.Column="7" />
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Подписание" Grid.Column="7" MouseLeftButtonUp="SortByField" Tag="SigningDeadline"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Проверка" Grid.Column="8" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Поставка" Grid.Column="9" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Приемка" Grid.Column="10" />
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Поставка" Grid.Column="9" MouseLeftButtonUp="SortByField" Tag="ActualDeliveryDate"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Приемка" Grid.Column="10" MouseLeftButtonUp="SortByField" Tag="MaxAcceptanceDate"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Реальный профит" Grid.Column="11" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчетный профит" Grid.Column="11" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Печать" Grid.Column="12" />
