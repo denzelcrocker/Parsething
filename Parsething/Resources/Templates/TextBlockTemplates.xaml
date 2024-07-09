@@ -46,7 +46,6 @@
         <Setter Property="Foreground" Value="#000"/>
         <Setter Property="FontFamily" Value="Noah"/>
     </Style>
-
     <Style x:Key="TableElements" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase.2}">
         <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
         <Setter Property="FontSize" Value="15"/>

@@ -154,7 +154,7 @@
     <Style x:Key="Label.Search" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">
         <Setter Property="Foreground" Value="{StaticResource MainText.Foreground}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontSize" Value="12"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
     <Style x:Key="Label.Calculating" TargetType="{x:Type Label}" BasedOn="{StaticResource LabelBase}">

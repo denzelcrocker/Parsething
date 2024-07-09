@@ -566,38 +566,41 @@
                                 <ColumnDefinition Width="260"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
                             </Grid.RowDefinitions>
                             <Label Content="Id тендера" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
                             <TextBox x:Name="SearchId" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="1"/>
                             <Label Content="Номер закупки" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"/>
                             <TextBox x:Name="SearchNumber" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="3" PreviewTextInput="Search_PreviewTextInput" />
                             <Label Content="Закон" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left"/>
-                            <ComboBox x:Name="Law" Grid.Row="5" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="Number" FontSize="17"/>
+                            <ComboBox x:Name="Law" Grid.Row="5" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="Number" FontSize="15"/>
                             <Label Content="Статус тендера" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left"/>
-                            <ComboBox x:Name="ProcurementState" Grid.Row="7" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="Kind" FontSize="17"/>
+                            <ComboBox x:Name="ProcurementState" Grid.Row="7" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="Kind" FontSize="15"/>
                             <Label Content="ИНН заказчика" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left"/>
                             <TextBox x:Name="SearchINN" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="9" PreviewTextInput="Search_PreviewTextInput"/>
                             <Label Content="Сотрудник" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="10" HorizontalAlignment="Left"/>
-                            <ComboBox x:Name="Employee" Grid.Row="11" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="FullName" FontSize="17"/>
+                            <ComboBox x:Name="Employee" Grid.Row="11" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="FullName" FontSize="15"/>
                             <Label Content="Организация" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="12" HorizontalAlignment="Left"/>
                             <TextBox x:Name="OrganizationName" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="13"/>
+                            <Label Content="Юридическое лицо" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="14" HorizontalAlignment="Left"/>
+                            <ComboBox x:Name="LegalEntity" Grid.Row="15" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="Name" FontSize="15"/>
                         </Grid>
                     </ListView>
-                    
                     <DockPanel Grid.Row="1">
                         <Button x:Name="SearchButton" 
                             Width="110"

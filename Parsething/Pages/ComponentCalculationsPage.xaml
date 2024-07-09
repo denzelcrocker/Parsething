@@ -208,24 +208,25 @@
                                                 HorizontalAlignment="Right"
                                                 FontSize="12"
                                                 VerticalAlignment="Center"/>
-                                            <TextBlock 
-                                                Style="{DynamicResource TableElements}"
-                                                Text="{Binding Path=Text}"
+                                            <TextBox Text="{Binding Path=Text}"
                                                 Grid.ColumnSpan="3"
                                                 Grid.Row="1"
                                                 TextWrapping="Wrap"
                                                 Margin="0,0,0,5"
                                                 HorizontalAlignment="Stretch"
                                                 FontSize="12"
-                                                VerticalAlignment="Center"/>
+                                                VerticalAlignment="Center"
+                                                IsReadOnly="True"
+                                                BorderThickness="0"
+                                                Background="Transparent"/>
                                             <Label x:Name="arrow" 
-                                                    Grid.Column="2"
-                                                    Content="&#xe836;" 
-                                                    FontSize="20"
-                                                    FontFamily="Segoe Fluent Icons"
-                                                    Foreground="{StaticResource MainText.Foreground}"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center">
+                                                Grid.Column="2"
+                                                Content="&#xe836;" 
+                                                FontSize="20"
+                                                FontFamily="Segoe Fluent Icons"
+                                                Foreground="{StaticResource MainText.Foreground}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
                                                 <Label.Style>
                                                     <Style TargetType="Label">
                                                         <Setter Property="Visibility" Value="Collapsed"/>

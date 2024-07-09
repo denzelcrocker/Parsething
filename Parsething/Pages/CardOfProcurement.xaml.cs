@@ -295,8 +295,6 @@ namespace Parsething.Pages
                 DeliveryDeadline.Text = Procurement.DeliveryDeadline;
                 AcceptanceDeadline.Text = Procurement.AcceptanceDeadline;
                 ContractDeadline.Text = Procurement.ContractDeadline;
-                Indefinitely.IsChecked = Procurement.Indefinitely;
-                AnotherDeadline.Text = Procurement.AnotherDeadline;
                 DeadlineAndOrder.Text = Procurement.DeadlineAndOrder;
                 foreach (RepresentativeType representativeType in RepresentativeType.ItemsSource)
                     if (representativeType.Id == Procurement.RepresentativeTypeId)
@@ -606,8 +604,6 @@ namespace Parsething.Pages
                 Procurement.DeliveryDeadline = DeliveryDeadline.Text;
                 Procurement.AcceptanceDeadline = AcceptanceDeadline.Text;
                 Procurement.ContractDeadline = ContractDeadline.Text;
-                Procurement.Indefinitely = Indefinitely.IsChecked;
-                Procurement.AnotherDeadline = AnotherDeadline.Text;
                 Procurement.DeadlineAndOrder = DeadlineAndOrder.Text;
                 if (RepresentativeType.SelectedItem != null)
                     Procurement.RepresentativeTypeId = ((RepresentativeType)RepresentativeType.SelectedItem).Id;

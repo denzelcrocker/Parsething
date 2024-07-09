@@ -24,6 +24,7 @@ namespace Parsething.Pages
         private List<Law>? Laws { get; set; }
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<Employee>? Employees { get; set; }
+        private List<LegalEntity>? LegalEntities { get; set; }
         private List<Procurement> AllProcurements { get; set; } = new List<Procurement>();
 
         private List<Procurement>? FoundProcurements { get; set; }
@@ -64,6 +65,9 @@ namespace Parsething.Pages
             ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
 
+            LegalEntities = GET.View.LegalEntities();
+            LegalEntity.ItemsSource = LegalEntities;
+
             Procurements = AllProcurements.Take(PageSize).ToList();
             GET.View.PopulateComponentStates(Procurements);
             SearchLV.ItemsSource = Procurements;
@@ -86,6 +90,8 @@ namespace Parsething.Pages
             ProcurementStates =  GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
 
+            LegalEntities = GET.View.LegalEntities();
+            LegalEntity.ItemsSource = LegalEntities;
             // Проверяем, есть ли переданные тендеры
             if (AllProcurements != null && AllProcurements.Count > 0)
             {
@@ -151,6 +157,7 @@ namespace Parsething.Pages
             try
             {
                 MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
+
             }
             catch { }
         }
@@ -437,32 +444,24 @@ namespace Parsething.Pages
         {
             CurrentPage = 1;
 
-            // Получаем информацию о поле сортировки из Tag элемента управления
             if (sender is Label label && label.Tag is string field)
             {
                 ClearSortingArrows();
 
-                // Если текущее поле сортировки совпадает с новым, меняем направление сортировки
                 if (_currentSortingField == field)
                 {
                     _isAscending = !_isAscending;
                 }
                 else
                 {
-                    _isAscending = true; // Начинаем с сортировки по возрастанию, если выбрано новое поле
+                    _isAscending = true;
                 }
 
-                // Обновляем текущее поле сортировки
                 _currentSortingField = field;
-
-                // Выполняем сортировку
-                if (AllProcurements != null && AllProcurements.Count > 0)
+                
+                if (!IsSearchCriteriaEmpty())
                 {
-                    Procurements = AllProcurements.Take(PageSize).ToList();
-                }
-                else if (!IsSearchCriteriaEmpty())
-                {
-                    Procurements = GET.View.ProcurementsBy(
+                    AllProcurements = GET.View.ProcurementsBy(
                         SearchCriteria.Instance.ProcurementId,
                         SearchCriteria.Instance.ProcurementNumber,
                         SearchCriteria.Instance.Law,
@@ -474,15 +473,43 @@ namespace Parsething.Pages
                         CurrentPage,
                         _currentSortingField,
                         _isAscending);
+
+                    Procurements = AllProcurements.Take(PageSize).ToList();
+                }
+                else if (AllProcurements != null && AllProcurements.Count > 0)
+                {
+                    AllProcurements = SortProcurements(AllProcurements, field, _isAscending);
+                    Procurements = AllProcurements.Take(PageSize).ToList();
                 }
                 else
                 {
-                    Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
+                    AllProcurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", int.MaxValue, 1, _currentSortingField, _isAscending);
+                    Procurements = AllProcurements.Take(PageSize).ToList();
                 }
+
                 GET.View.PopulateComponentStates(Procurements);
                 SearchLV.ItemsSource = Procurements;
-                // Обновляем стрелку сортировки на заголовке столбца
+
                 UpdateSortingArrow(label, _isAscending);
+            }
+        }
+
+        private List<Procurement> SortProcurements(List<Procurement> procurements, string field, bool isAscending)
+        {
+            switch (field)
+            {
+                case "Law":
+                    return isAscending ? procurements.OrderBy(p => p.Law.Number).ToList() : procurements.OrderByDescending(p => p.Law.Number).ToList();
+                case "Deadline":
+                    return isAscending ? procurements.OrderBy(p => p.Deadline).ToList() : procurements.OrderByDescending(p => p.Deadline).ToList();
+                case "SigningDeadline":
+                    return isAscending ? procurements.OrderBy(p => p.SigningDeadline).ToList() : procurements.OrderByDescending(p => p.SigningDeadline).ToList();
+                case "ActualDeliveryDate":
+                    return isAscending ? procurements.OrderBy(p => p.ActualDeliveryDate).ToList() : procurements.OrderByDescending(p => p.ActualDeliveryDate).ToList();
+                case "MaxAcceptanceDate":
+                    return isAscending ? procurements.OrderBy(p => p.MaxAcceptanceDate).ToList() : procurements.OrderByDescending(p => p.MaxAcceptanceDate).ToList();
+                default:
+                    return procurements;
             }
         }
 
