@@ -135,6 +135,7 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="80"/>
                                         </Grid.ColumnDefinitions>
+                                        <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyle}"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Text="{Binding Path=Procurement.Id}"

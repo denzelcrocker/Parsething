@@ -4,6 +4,7 @@
 
     <local:DateColorConverter x:Key="DateColorConverter"/>
     <local:ShipmentPlanColorConverter x:Key="ShipmentPlanColorConverter"/>
+    <local:RepeatedStatusColorConverter x:Key="RepeatedStatusColorConverter"/>
 
     <Style x:Key="DeadlineIndicatorStyle" TargetType="Ellipse">
         <Setter Property="Width" Value="12"/>
@@ -269,6 +270,23 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Procurement.ProcurementState.Kind}" Value="Неразобранный">
                 <Setter Property="Fill" Value="#95a5a6 "/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="RepeatedStatusIndicatorStyle" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Id, Converter={StaticResource RepeatedStatusColorConverter}}" Value="Red">
+                <Setter Property="Fill" Value="Red"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Id, Converter={StaticResource RepeatedStatusColorConverter}}" Value="Transparent">
+                <Setter Property="Fill" Value="Transparent"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

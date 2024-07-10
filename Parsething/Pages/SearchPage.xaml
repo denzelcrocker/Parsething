@@ -130,6 +130,7 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="50"/>
                                         </Grid.ColumnDefinitions>
+                                        <Ellipse Style="{StaticResource StatusIndicatorStyleProcurementEmployee}"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Text="{Binding Path=Id}"
@@ -582,6 +583,9 @@
                                 <RowDefinition Height="45"/>
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="40"/>
                             </Grid.RowDefinitions>
                             <Label Content="Id тендера" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
                             <TextBox x:Name="SearchId" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="1"/>
@@ -599,6 +603,28 @@
                             <TextBox x:Name="OrganizationName" Style="{DynamicResource SingleLineInput.Search}" Grid.Column="1" Height="45" Grid.Row="13"/>
                             <Label Content="Юридическое лицо" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="14" HorizontalAlignment="Left"/>
                             <ComboBox x:Name="LegalEntity" Grid.Row="15" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="Name" FontSize="15"/>
+                            <Label Content="Тип даты" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="16" HorizontalAlignment="Left"/>
+                            <ComboBox x:Name="DateType"
+                                    Grid.Row="17"
+                                    HorizontalAlignment="Left"
+                                    Style="{DynamicResource ComboBoxBase.Search}"
+                                    Height="40"
+                                    FontSize="15"
+                                    SelectedValuePath="Content"
+                                    SelectedValue="{Binding SelectedDateType, Mode=TwoWay}">
+                                <ComboBoxItem Content="Дата начала подачи" Tag="StartDate"/>
+                                <ComboBoxItem Content="Дата окончания подачи" Tag="Deadline"/>
+                                <ComboBoxItem Content="Дата подведения итогов" Tag="ResultDate"/>
+                                <ComboBoxItem Content="Срок подписания контракта" Tag="SigningDeadline"/>
+                                <ComboBoxItem Content="Максиальная дата поставки" Tag="ActualDeliveryDate"/>
+                                <ComboBoxItem Content="Максимальная дата приемки" Tag="MaxAcceptanceDate"/>
+                            </ComboBox>
+                            <DockPanel Grid.Row="18">
+                                <Label Content="От" Style="{DynamicResource Label.Search}"/>
+                                <DatePicker x:Name="StartDate" Style="{DynamicResource ComponentCalculations.DatePickerStyle}" MinWidth="100"/>
+                                <Label Content="До" Style="{DynamicResource Label.Search}"/>
+                                <DatePicker x:Name="EndDate" Style="{DynamicResource ComponentCalculations.DatePickerStyle}" MinWidth="100"/>
+                            </DockPanel>
                         </Grid>
                     </ListView>
                     <DockPanel Grid.Row="1">

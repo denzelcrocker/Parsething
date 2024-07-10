@@ -535,4 +535,25 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class RepeatedStatusColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int procurementId)
+            {
+                var newStatusCount = GET.Aggregate.CountNewStatusByProcurementId(procurementId);
+
+                if (newStatusCount >= 2)
+                {
+                    return "Red";
+                }
+            }
+            return "Transperent"; 
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

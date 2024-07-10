@@ -68,6 +68,7 @@ namespace Parsething.Pages
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
 
+
             Procurements = AllProcurements.Take(PageSize).ToList();
             GET.View.PopulateComponentStates(Procurements);
             SearchLV.ItemsSource = Procurements;
@@ -92,6 +93,8 @@ namespace Parsething.Pages
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
+
+
             // Проверяем, есть ли переданные тендеры
             if (AllProcurements != null && AllProcurements.Count > 0)
             {
@@ -107,6 +110,10 @@ namespace Parsething.Pages
                     SearchCriteria.Instance.INN,
                     SearchCriteria.Instance.Employee,
                     SearchCriteria.Instance.OrganizationName,
+                    SearchCriteria.Instance.LegalEntity,
+                    SearchCriteria.Instance.DateType,
+                    SearchCriteria.Instance.StartDate,
+                    SearchCriteria.Instance.EndDate,
                     PageSize,
                     CurrentPage,
                     _currentSortingField,
@@ -114,7 +121,7 @@ namespace Parsething.Pages
             }
             else
             {
-                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
+                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "","","", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
             }
             GET.View.PopulateComponentStates(Procurements);
 
@@ -124,7 +131,6 @@ namespace Parsething.Pages
 
             RestoreSearchCriteria();
         }
-
         private void ShowLoadingIndicator(bool show)
         {
             LoadingGrid.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
@@ -138,7 +144,11 @@ namespace Parsething.Pages
                    string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementState) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.INN) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.Employee) &&
-                   string.IsNullOrEmpty(SearchCriteria.Instance.OrganizationName);
+                   string.IsNullOrEmpty(SearchCriteria.Instance.OrganizationName) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.LegalEntity) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.DateType) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.StartDate) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.EndDate);
         }
 
         private void RestoreSearchCriteria()
@@ -150,6 +160,18 @@ namespace Parsething.Pages
             SearchINN.Text = SearchCriteria.Instance.INN;
             Employee.SelectedItem = Employees?.FirstOrDefault(e => e.FullName == SearchCriteria.Instance.Employee);
             OrganizationName.Text = SearchCriteria.Instance.OrganizationName;
+            LegalEntity.SelectedItem = LegalEntities?.FirstOrDefault(l => l.Name == SearchCriteria.Instance.LegalEntity);
+            DateType.SelectedItem = SearchCriteria.Instance.DateType;
+
+            if (DateTime.TryParse(SearchCriteria.Instance.StartDate, out DateTime startDate))
+                StartDate.SelectedDate = startDate;
+            else
+                StartDate.SelectedDate = null;
+
+            if (DateTime.TryParse(SearchCriteria.Instance.EndDate, out DateTime endDate))
+                EndDate.SelectedDate = endDate;
+            else
+                EndDate.SelectedDate = null;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -190,28 +212,35 @@ namespace Parsething.Pages
 
             string id = SearchId.Text;
             string number = SearchNumber.Text;
-            string law = Law.Text;
-            string procurementState = ProcurementState.Text;
+            string law = (Law.SelectedItem as Law)?.Number ?? string.Empty;
+            string procurementState = (ProcurementState.SelectedItem as ProcurementState)?.Kind ?? string.Empty;
             string inn = SearchINN.Text;
-            string employee = Employee.Text;
+            string employee = (Employee.SelectedItem as Employee)?.FullName ?? string.Empty;
             string organizationName = OrganizationName.Text;
+            string legalEntity = (LegalEntity.SelectedItem as LegalEntity)?.Name ?? string.Empty;
+            string dateType = (DateType.SelectedItem as ComboBoxItem)?.Tag as string ?? string.Empty;
+            string startDate = StartDate.SelectedDate?.ToString("yyyy-MM-dd") ?? string.Empty;
+            string endDate = EndDate.SelectedDate?.ToString("yyyy-MM-dd") ?? string.Empty;
 
             if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(number) || !string.IsNullOrEmpty(law) ||
                 !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(inn) ||
-                !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName))
+                !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName) ||
+                !string.IsNullOrEmpty(legalEntity) || !string.IsNullOrEmpty(dateType) ||
+                !string.IsNullOrEmpty(startDate) || !string.IsNullOrEmpty(endDate))
             {
-                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, PageSize, CurrentPage, _currentSortingField, _isAscending);
+                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, PageSize, CurrentPage, _currentSortingField, _isAscending);
+                
                 GET.View.PopulateComponentStates(FoundProcurements);
+                
                 SearchLV.ItemsSource = FoundProcurements;
                 Procurements = FoundProcurements;
             }
 
-            SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName);
+            SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate);
 
             ShowLoadingIndicator(false);
         }
-
-        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName)
+        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate)
         {
             SearchCriteria.Instance.ProcurementId = id;
             SearchCriteria.Instance.ProcurementNumber = number;
@@ -220,6 +249,10 @@ namespace Parsething.Pages
             SearchCriteria.Instance.INN = inn;
             SearchCriteria.Instance.Employee = employee;
             SearchCriteria.Instance.OrganizationName = organizationName;
+            SearchCriteria.Instance.LegalEntity = legalEntity;
+            SearchCriteria.Instance.DateType = dateType;
+            SearchCriteria.Instance.StartDate = startDate;
+            SearchCriteria.Instance.EndDate = endDate;
         }
 
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -378,23 +411,7 @@ namespace Parsething.Pages
         {
             CurrentPage++;
 
-            // Проверяем, есть ли переданные тендеры
-            if (AllProcurements != null && AllProcurements.Count > 0)
-            {
-                var newItems = AllProcurements.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-                if (newItems.Count > 0)
-                {
-                    foreach (var item in newItems)
-                    {
-                        Procurements.Add(item);
-                    }
-
-                    SearchLV.ItemsSource = null; // Обновляем источник данных
-                    SearchLV.ItemsSource = Procurements;
-                }
-            }
-            else
-            {
+            
                 var newItems = await Task.Run(() => GET.View.ProcurementsBy(
                     SearchCriteria.Instance.ProcurementId,
                     SearchCriteria.Instance.ProcurementNumber,
@@ -403,6 +420,10 @@ namespace Parsething.Pages
                     SearchCriteria.Instance.INN,
                     SearchCriteria.Instance.Employee,
                     SearchCriteria.Instance.OrganizationName,
+                    SearchCriteria.Instance.LegalEntity,
+                    SearchCriteria.Instance.DateType,
+                    SearchCriteria.Instance.StartDate,
+                    SearchCriteria.Instance.EndDate,
                     PageSize,
                     CurrentPage,
                     _currentSortingField,
@@ -418,7 +439,6 @@ namespace Parsething.Pages
                     SearchLV.ItemsSource = null; // Обновляем источник данных
                     SearchLV.ItemsSource = Procurements;
                 }
-            }
         }
         private void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -469,6 +489,10 @@ namespace Parsething.Pages
                         SearchCriteria.Instance.INN,
                         SearchCriteria.Instance.Employee,
                         SearchCriteria.Instance.OrganizationName,
+                        SearchCriteria.Instance.LegalEntity,
+                        SearchCriteria.Instance.DateType,
+                        SearchCriteria.Instance.StartDate,
+                        SearchCriteria.Instance.EndDate,
                         PageSize,
                         CurrentPage,
                         _currentSortingField,
@@ -483,7 +507,7 @@ namespace Parsething.Pages
                 }
                 else
                 {
-                    AllProcurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", int.MaxValue, 1, _currentSortingField, _isAscending);
+                    AllProcurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", "", "", "", "", int.MaxValue, 1, _currentSortingField, _isAscending);
                     Procurements = AllProcurements.Take(PageSize).ToList();
                 }
 

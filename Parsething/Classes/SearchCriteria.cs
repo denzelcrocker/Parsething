@@ -36,6 +36,10 @@ namespace Parsething.Classes
             INN = null;
             Employee = null;
             OrganizationName = null;
+            LegalEntity = null;
+            DateType = null;
+            StartDate = null;
+            EndDate = null;
         }
 
         public string? ProcurementId { get; set; }
@@ -45,5 +49,9 @@ namespace Parsething.Classes
         public string? INN { get; set; }
         public string? Employee { get; set; }
         public string? OrganizationName { get; set; }
+        public string? LegalEntity { get; set; }
+        public string? DateType { get; set; }
+        public string? StartDate { get; set; }
+        public string? EndDate { get; set; }
     }
 }

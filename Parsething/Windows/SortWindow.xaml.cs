@@ -152,6 +152,9 @@ namespace Parsething.Windows
             Procurement.ProcurementStateId = 1;
             PULL.Procurement(Procurement);
 
+            History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Новый" };
+            PUT.History(history);
+
             SortInitialization();
         }
 
@@ -159,6 +162,9 @@ namespace Parsething.Windows
         {
             Procurement.ProcurementStateId = 13;
             PULL.Procurement(Procurement);
+
+            History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Отбой" };
+            PUT.History(history);
 
             SortInitialization();
         }
@@ -277,6 +283,9 @@ namespace Parsething.Windows
 
                 Procurement.ProcurementStateId = 1;
                 PULL.Procurement(Procurement);
+
+                History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Новый" };
+                PUT.History(history);
 
                 SortInitialization();
                 AssignComboBox.SelectedItem = null;
