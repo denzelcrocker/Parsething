@@ -411,23 +411,38 @@ namespace Parsething.Pages
         {
             CurrentPage++;
 
-            
-                var newItems = await Task.Run(() => GET.View.ProcurementsBy(
-                    SearchCriteria.Instance.ProcurementId,
-                    SearchCriteria.Instance.ProcurementNumber,
-                    SearchCriteria.Instance.Law,
-                    SearchCriteria.Instance.ProcurementState,
-                    SearchCriteria.Instance.INN,
-                    SearchCriteria.Instance.Employee,
-                    SearchCriteria.Instance.OrganizationName,
-                    SearchCriteria.Instance.LegalEntity,
-                    SearchCriteria.Instance.DateType,
-                    SearchCriteria.Instance.StartDate,
-                    SearchCriteria.Instance.EndDate,
-                    PageSize,
-                    CurrentPage,
-                    _currentSortingField,
-                    _isAscending));
+            if (AllProcurements != null && AllProcurements.Count > 0) // обязательно посмотреть!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            {
+                var newItems = AllProcurements.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                if (newItems.Count > 0)
+                {
+                    foreach (var item in newItems)
+                    {
+                        Procurements.Add(item);
+                    }
+
+                    SearchLV.ItemsSource = null;
+                    SearchLV.ItemsSource = Procurements;
+                }
+            }
+            else 
+            {
+                var newItems = GET.View.ProcurementsBy(
+                        SearchCriteria.Instance.ProcurementId,
+                        SearchCriteria.Instance.ProcurementNumber,
+                        SearchCriteria.Instance.Law,
+                        SearchCriteria.Instance.ProcurementState,
+                        SearchCriteria.Instance.INN,
+                        SearchCriteria.Instance.Employee,
+                        SearchCriteria.Instance.OrganizationName,
+                        SearchCriteria.Instance.LegalEntity,
+                        SearchCriteria.Instance.DateType,
+                        SearchCriteria.Instance.StartDate,
+                        SearchCriteria.Instance.EndDate,
+                        PageSize,
+                        CurrentPage,
+                        _currentSortingField,
+                        _isAscending);
 
                 if (newItems != null && newItems.Count > 0)
                 {
@@ -439,6 +454,7 @@ namespace Parsething.Pages
                     SearchLV.ItemsSource = null; // Обновляем источник данных
                     SearchLV.ItemsSource = Procurements;
                 }
+            }
         }
         private void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {

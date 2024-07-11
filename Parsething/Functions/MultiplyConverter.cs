@@ -539,11 +539,20 @@ namespace Parsething.Functions
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int procurementId)
+            if (value is Procurement procurement)
             {
-                var newStatusCount = GET.Aggregate.CountNewStatusByProcurementId(procurementId);
+                var newStatusCount = GET.Aggregate.CountNewStatusByProcurementId(procurement.Id);
 
-                if (newStatusCount >= 2)
+                if (newStatusCount >= 2 && procurement.ProcurementState.Kind == "Новый")
+                {
+                    return "Red";
+                }
+            }
+            else if (value is ProcurementsEmployee procurementsEmployee)
+            {
+                var newStatusCount = GET.Aggregate.CountNewStatusByProcurementId(procurementsEmployee.Procurement.Id);
+
+                if (newStatusCount >= 2 && procurementsEmployee.Procurement.ProcurementState.Kind == "Новый")
                 {
                     return "Red";
                 }
@@ -556,4 +565,5 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+
 }

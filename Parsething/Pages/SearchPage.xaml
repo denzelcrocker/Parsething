@@ -130,7 +130,7 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="50"/>
                                         </Grid.ColumnDefinitions>
-                                        <Ellipse Style="{StaticResource StatusIndicatorStyleProcurementEmployee}"/>
+                                        <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurement}"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Text="{Binding Path=Id}"

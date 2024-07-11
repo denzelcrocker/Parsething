@@ -273,7 +273,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="RepeatedStatusIndicatorStyle" TargetType="Ellipse">
+    <Style x:Key="RepeatedStatusIndicatorStyleProcurement" TargetType="Ellipse">
         <Setter Property="Width" Value="12"/>
         <Setter Property="Height" Value="12"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -282,10 +282,27 @@
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="Stroke" Value="Black"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=Id, Converter={StaticResource RepeatedStatusColorConverter}}" Value="Red">
-                <Setter Property="Fill" Value="Red"/>
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource RepeatedStatusColorConverter}}" Value="Red">
+                <Setter Property="Fill" Value="#BD1414"/>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Id, Converter={StaticResource RepeatedStatusColorConverter}}" Value="Transparent">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource RepeatedStatusColorConverter}}" Value="Transparent">
+                <Setter Property="Fill" Value="Transparent"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="RepeatedStatusIndicatorStyleProcurementsEmployee" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=Procurement, Converter={StaticResource RepeatedStatusColorConverter}}" Value="Red">
+                <Setter Property="Fill" Value="#BD1414"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Procurement, Converter={StaticResource RepeatedStatusColorConverter}}" Value="Transparent">
                 <Setter Property="Fill" Value="Transparent"/>
             </DataTrigger>
         </Style.Triggers>
