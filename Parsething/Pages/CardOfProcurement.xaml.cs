@@ -398,7 +398,7 @@ namespace Parsething.Pages
                     }
                 ExecutionPrice.Text = Procurement.ExecutionPrice.ToString();
                 ExecutionDate.Text = Procurement.ExecutionDate.ToString();
-                if (ExecutionState.Text == null || ExecutionState.Text == "Не требуется" || ExecutionState.Text == "")
+                if (ExecutionState.Text == null || ExecutionState.Text == "Не требуется" || ExecutionState.Text == "" || ExecutionState.Text == "Добросовестность")
                 {
                     ExecutionPrice.IsEnabled = false;
                     ExecutionPriceLabel.Foreground = Gray;
@@ -416,7 +416,7 @@ namespace Parsething.Pages
                     }
                 WarrantyPrice.Text = Procurement.WarrantyPrice.ToString();
                 WarrantyDate.Text = Procurement.WarrantyDate.ToString();
-                if (WarrantyState.Text == null || WarrantyState.Text == "Не требуется" || (WarrantyState.Text == ""))
+                if (WarrantyState.Text == null || WarrantyState.Text == "Не требуется" || (WarrantyState.Text == "") || (WarrantyState.Text == "Добросовестность"))
                 {
                     WarrantyPrice.IsEnabled = false;
                     WarrantyPriceLabel.Foreground = Gray;

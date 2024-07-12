@@ -14,6 +14,7 @@ using DatabaseLibrary.Entities.ProcurementProperties;
 using DatabaseLibrary.Entities.EmployeeMuchToMany;
 using System.Windows.Controls.Primitives;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
 
 namespace Parsething.Pages
 {
@@ -40,6 +41,7 @@ namespace Parsething.Pages
             InitializeComponent();
             Procurements = new List<Procurement>(); // Инициализируем пустой список
 
+
             if (procurements != null && procurements.Count > 0)
             {
                 AllProcurements = procurements;
@@ -53,7 +55,6 @@ namespace Parsething.Pages
 
         private async void LoadInitialData()
         {
-            ShowLoadingIndicator(true);
 
             // Загружаем данные для выпадающих списков
             Laws = GET.View.Laws();
@@ -73,13 +74,11 @@ namespace Parsething.Pages
             GET.View.PopulateComponentStates(Procurements);
             SearchLV.ItemsSource = Procurements;
 
-            ShowLoadingIndicator(false);
 
             RestoreSearchCriteria();
         }
         private async void InitializeData()
         {
-            ShowLoadingIndicator(true);
 
             // Загружаем данные для выпадающих списков
             Laws = GET.View.Laws();
@@ -127,13 +126,8 @@ namespace Parsething.Pages
 
             SearchLV.ItemsSource = Procurements;
 
-            ShowLoadingIndicator(false);
 
             RestoreSearchCriteria();
-        }
-        private void ShowLoadingIndicator(bool show)
-        {
-            LoadingGrid.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private bool IsSearchCriteriaEmpty()
@@ -186,25 +180,32 @@ namespace Parsething.Pages
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
-            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = null;
+
+            if (sender is MenuItem menuItem)
+                procurement = menuItem.DataContext as Procurement;
+            else if (sender is Button button)
+                procurement = button.DataContext as Procurement;
+
             if (procurement != null)
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement, Procurements, true));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
         {
-            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
-            if (procurement != null)
+            if (sender is MenuItem menuItem && menuItem.DataContext is Procurement procurement)
             {
-                string url = procurement.RequestUri.ToString();
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                if (procurement.RequestUri != null)
+                {
+                    string url = procurement.RequestUri.ToString();
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
             }
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             CurrentPage = 1;
-            ShowLoadingIndicator(true);
 
             SearchCriteria.Instance.ClearData();
             SearchLV.ItemsSource = null;
@@ -238,7 +239,6 @@ namespace Parsething.Pages
 
             SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate);
 
-            ShowLoadingIndicator(false);
         }
         private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate)
         {
@@ -258,22 +258,21 @@ namespace Parsething.Pages
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!Char.IsDigit(e.Text, 0))
-            {
                 e.Handled = true;
-            }
         }
-
         private void Calculating_Click(object sender, RoutedEventArgs e)
         {
-            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
-            if (procurement != null)
+            MenuItem menuItem = sender as MenuItem;
+
+            if (menuItem?.DataContext is Procurement procurement)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, true, true));
         }
 
         private void Purchase_Click(object sender, RoutedEventArgs e)
         {
-            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
-            if (procurement != null)
+            MenuItem menuItem = sender as MenuItem;
+
+            if (menuItem?.DataContext is Procurement procurement)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, false, true));
         }
 
@@ -332,11 +331,15 @@ namespace Parsething.Pages
 
         private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
         {
-            Procurement? procurement = (sender as Button)?.DataContext as Procurement;
-            if (procurement != null)
+            MenuItem menuItem = sender as MenuItem;
+            if (menuItem != null)
             {
-                AssemblyMap assemblyMap = new AssemblyMap(procurement);
-                assemblyMap.Show();
+                Procurement procurement = menuItem.DataContext as Procurement;
+                if (procurement != null)
+                {
+                    AssemblyMap assemblyMap = new AssemblyMap(procurement);
+                    assemblyMap.Show();
+                }
             }
         }
 
@@ -355,11 +358,15 @@ namespace Parsething.Pages
 
         private void NavigateToEPlatformURL_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
-            if (procurement != null && procurement.Platform.Address != null)
+            MenuItem menuItem = sender as MenuItem;
+
+            if (menuItem?.DataContext is Procurement procurement)
             {
-                string url = procurement.Platform.Address.ToString();
-                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                if (procurement.Platform?.Address != null)
+                {
+                    string url = procurement.Platform.Address.ToString();
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
             }
         }
 

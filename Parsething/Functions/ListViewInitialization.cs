@@ -329,13 +329,11 @@ namespace Parsething.Functions
                             }
                             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30) });
                             Button buttonMoveUp = new Button();
-                            buttonMoveUp.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             buttonMoveUp.Click += ButtonMoveUp_Click;
                             buttonMoveUp.Content = "";
                             buttonMoveUp.Margin = new Thickness(0, 0, 35, 11);
                             buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarAction");
                             Button buttonMoveDown = new Button();
-                            buttonMoveDown.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             buttonMoveDown.Click += ButtonMoveDown_Click;
                             buttonMoveDown.Content = "";
                             buttonMoveDown.Margin = new Thickness(0, 11, 35, 0);
@@ -551,28 +549,36 @@ namespace Parsething.Functions
         {
             Procurement = GET.Entry.ProcurementBy(Procurement.Id);
 
-            if ((IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id) || (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id))
+            if ((IsCalculation && Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id) ||
+                (!IsCalculation && Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id))
             {
-                var parentName = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]);
+                var dataContext = (List<object>)((Grid)((Button)sender).Parent).DataContext;
+                var procurementId = Convert.ToInt32(dataContext[0]);
+                var parentName = Convert.ToInt32(dataContext[1]);
+
+                // Найдите последний элемент с наибольшим IndexOfComponent
+                var lastComponent = ComponentCalculations
+                    .OrderByDescending(cc => cc.IndexOfComponent)
+                    .FirstOrDefault();
+
+                int newIndexOfComponent = lastComponent != null
+                    ? (lastComponent.IndexOfComponent ?? 0) + 1   // Используйте null-coalescing operator для обработки null
+                    : 1;
 
                 ComponentCalculation newComponentCalculation = new ComponentCalculation
                 {
-                    ProcurementId = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[0]),
-                    IndexOfComponent = ComponentCalculations
-                        .Where(cc => cc.ParentName == parentName)
-                        .OrderByDescending(cc => cc.IndexOfComponent)
-                        .Select(cc => cc.IndexOfComponent)
-                        .FirstOrDefault() + 1,
-                    ParentName = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[1]),
+                    ProcurementId = procurementId,
+                    IndexOfComponent = newIndexOfComponent,
+                    ParentName = parentName,
                     IsAdded = IsCalculation ? false : true,
                     IsDeleted = false,
                     IsHeader = false,
                 };
+
                 ComponentCalculations.Add(newComponentCalculation);
                 PUT.ComponentCalculation(newComponentCalculation);
             }
             UpdateComponentCalculationListView(null, null);
-
         }
         private static void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {

@@ -31,7 +31,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -126,7 +126,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -160,7 +160,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -210,7 +210,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -267,7 +267,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>

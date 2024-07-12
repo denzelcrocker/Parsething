@@ -54,12 +54,8 @@
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="250"/>
                             <ColumnDefinition Width="55"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="55"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="55"/>
-                            <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Id" Grid.Column="0" />
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Закон" Grid.Column="1" MouseLeftButtonUp="SortByField" Tag="Law"/>
@@ -75,14 +71,10 @@
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Приемка" Grid.Column="10" MouseLeftButtonUp="SortByField" Tag="MaxAcceptanceDate"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Реальный профит" Grid.Column="11" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчетный профит" Grid.Column="11" Margin="0,0,0,15"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Печать" Grid.Column="12" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="13" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="14" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="ЕИС" Grid.Column="15" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="ЕТР" Grid.Column="16" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Карточка" Grid.Column="17" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Регион" Grid.Column="12" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Опции" Grid.Column="13" />
                     </Grid>
-                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40" ScrollViewer.ScrollChanged="SearchLV_ScrollChanged">
+                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40" ScrollViewer.ScrollChanged="SearchLV_ScrollChanged" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                         <i:Interaction.Behaviors>
                             <cls:SmoothScrollBehavior />
                         </i:Interaction.Behaviors>
@@ -118,15 +110,7 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="50"/>
-                                            <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="250"/>
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="50"/>
                                         </Grid.ColumnDefinitions>
@@ -156,6 +140,7 @@
                                                     <ColumnDefinition/>
                                                     <ColumnDefinition Width="15"/>
                                                 </Grid.ColumnDefinitions>
+                                                <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurement}"/>
                                                 <TextBlock 
                                                     Style="{DynamicResource TableElements}"
                                                     Grid.Column="0"
@@ -470,67 +455,21 @@
                                             </TextBlock>
                                         </Grid>
                                         <Rectangle Grid.Column="23" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Button 
-                                            x:Name="PrintAssemblyMap"
-                                            Grid.Column="24"
-                                            Click="PrintAssemblyMap_Click" 
-                                            Style="{DynamicResource ButtonWithIcon}" Cursor="Hand">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Resources/Images/Printing.png" Stretch="Uniform" Height="30"/>
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
+                                        <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Text="{Binding Path=Region.Title}"
+                                        Grid.Column="24"
+                                        HorizontalAlignment="Center"
+                                        Name="Region"
+                                        FontSize="13"
+                                        VerticalAlignment="Center"
+                                        TextWrapping="Wrap"
+                                        TextTrimming="CharacterEllipsis"
+                                        MaxWidth="200"/>
                                         <Rectangle Grid.Column="25" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Button   
-                                            Grid.Column="26"
-                                            x:Name="Purchase"
-                                            Style="{DynamicResource ButtonWithIcon}" Click="Purchase_Click">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="35"/>
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                        <Rectangle Grid.Column="27" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Button   
-                                            Grid.Column="28"
-                                            x:Name="Calculating"
-                                            Style="{DynamicResource ButtonWithIcon}" Click="Calculating_Click" >
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="30"/>
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                        <Rectangle Grid.Column="29" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Button 
-                                        x:Name="NavigateToProcurementURL"
-                                        Grid.Column="30"
-                                        Click="NavigateToProcurementURL_Click"
-                                        Style="{DynamicResource ButtonWithIcon}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="30"/>
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                        <Rectangle Grid.Column="31" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Button 
-                                            x:Name="NavigateToEPlatformURL"
-                                            Grid.Column="32"
-                                            Click="NavigateToEPlatformURL_Click"
-                                            Style="{DynamicResource ButtonWithIcon}">
-                                            <Button.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Resources/Images/EPlatform.png" Stretch="Uniform" Height="30"/>
-                                                </StackPanel>
-                                            </Button.Content>
-                                        </Button>
-                                        <Rectangle Grid.Column="33" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <Button 
                                         x:Name="EditProcurement"
-                                        Grid.Column="34"
+                                        Grid.Column="26"
                                         Click="EditProcurement_Click"
                                         Style="{DynamicResource ButtonWithIcon}">
                                             <Button.Content>
@@ -540,6 +479,40 @@
                                             </Button.Content>
                                         </Button>
                                     </Grid>
+                                    <Border.ContextMenu>
+                                        <ContextMenu Style="{StaticResource RoundedContextMenuStyle}">
+                                            <MenuItem Header="Печать карты сборки" Click="PrintAssemblyMap_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="/Resources/Images/Printing.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Расчет" Click="Calculating_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Закупка" Click="Purchase_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Перейти на ЕИС" Click="NavigateToProcurementURL_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Перейти на ETP" Click="NavigateToEPlatformURL_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="/Resources/Images/EPlatform.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Редактирование тендера" Click="EditProcurement_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
                                 </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
