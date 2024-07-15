@@ -518,7 +518,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="50"/>
-
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Label Content="Ставка" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="0"/>
                             <TextBox x:Name="Bet" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" MaxHeight="150" Grid.Row="0" TextWrapping="Wrap"/>
@@ -546,6 +546,8 @@
                             <DatePicker Style="{DynamicResource DatePickerStyle}" x:Name="ProtocolDate" Grid.Row="5" Grid.Column="1"  Height="55" />
                             <Label Content="Сумма расчета" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="6"/>
                             <TextBox x:Name="CalculatingAmount" Style="{DynamicResource SingleLineInput.CardOfProcurement}"  Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" IsReadOnly="True"/>
+                            <Label Content="Причина отклонения" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="7"/>
+                            <ComboBox x:Name="RejectionReason" Grid.Row="7" HorizontalAlignment="Left" Grid.Column="1" Width="615" Style="{DynamicResource ComboBoxBase.Card}" Height="45" DisplayMemberPath="Description" SelectedValuePath="Value"/>
                         </Grid>
                     </ListView>
                     <ListView x:Name="SupplyLV" Grid.Column="2" Grid.Row="2" Visibility="Hidden" Style="{DynamicResource ListView}" Margin="30,30,30,80">

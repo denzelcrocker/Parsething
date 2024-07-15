@@ -129,8 +129,6 @@ namespace Parsething.Windows
                         DeliveryDeadline = Procurement.DeliveryDeadline,
                         AcceptanceDeadline = Procurement.AcceptanceDeadline,
                         ContractDeadline = Procurement.ContractDeadline,
-                        Indefinitely = Procurement.Indefinitely,
-                        AnotherDeadline = Procurement.AnotherDeadline,
                         DeadlineAndOrder = Procurement.DeadlineAndOrder,
                         RepresentativeTypeId = Procurement.RepresentativeTypeId,
                         CommissioningWorksId = Procurement.CommissioningWorksId,

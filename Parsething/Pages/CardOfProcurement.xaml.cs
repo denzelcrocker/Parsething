@@ -190,6 +190,9 @@ namespace Parsething.Pages
             ProcurementDocumentsSelectedLV.ItemsSource = DocumentsSelected;
             ProcurementDocumentsNotSelectedLV.ItemsSource = DocumentsNotSelected;
 
+            var rejectionReasons = EnumHelper.GetEnumValuesAndDescriptions<RejectionReason>();
+            RejectionReason.ItemsSource = rejectionReasons;
+
             Calculators = GET.View.EmployeesBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
             Calculator.ItemsSource = Calculators;
             ProcurementsEmployeeCalculators = GET.View.ProcurementsEmployeesBy(procurement, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
@@ -366,6 +369,13 @@ namespace Parsething.Pages
                 IsUnitPriceCB.IsChecked = Procurement.IsUnitPrice;
                 ProtocolDate.SelectedDate = Procurement.ProtocolDate;
                 CalculatingAmount.Text = Procurement.CalculatingAmount.ToString();
+                if (Procurement?.ProcurementState?.Kind == "Отклонен")
+                {
+                    RejectionReason.Visibility = Visibility.Visible;
+                    RejectionReason.SelectedValue = Procurement.RejectionReason;
+                }
+                else
+                    RejectionReason.Visibility = Visibility.Collapsed;
                 HeadOfAcceptance.Text = Procurement.HeadOfAcceptance;
                 foreach (Employee employee in Manager.ItemsSource)
                     if (ProcurementsEmployeeManagers != null)
@@ -689,6 +699,17 @@ namespace Parsething.Pages
                     Procurement.ReserveContractAmount = null;
                 Procurement.IsUnitPrice = IsUnitPriceCB.IsChecked;
                 Procurement.ProtocolDate = ProtocolDate.SelectedDate;
+                if (RejectionReason.SelectedValue is RejectionReason selectedReason)
+                {
+                    Procurement.RejectionReason = selectedReason;
+                }
+                if (Procurement?.ProcurementState?.Kind == "Отклонен")
+                {
+                    RejectionReason.Visibility = Visibility.Visible;
+                    RejectionReason.SelectedValue = Procurement.RejectionReason;
+                }
+                else
+                    RejectionReason.Visibility = Visibility.Collapsed;
                 Procurement.HeadOfAcceptance = HeadOfAcceptance.Text;
                 if (ShipmentPlan.SelectedItem != null)
                     Procurement.ShipmentPlanId = ((ShipmentPlan)ShipmentPlan.SelectedItem).Id;

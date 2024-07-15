@@ -15,11 +15,11 @@
                 <ColumnDefinition Width="1330"/>
                 <ColumnDefinition Width="550"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,0,40" CornerRadius="40">
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,0,30" CornerRadius="40">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
                 </Border.Effect>
-                <Grid Height="850">
+                <Grid Height="845">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="2"/>
@@ -238,7 +238,7 @@
                     </ListView>
                 </Grid>
             </Border>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,40" CornerRadius="45">
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,30" CornerRadius="45">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
                 </Border.Effect>
