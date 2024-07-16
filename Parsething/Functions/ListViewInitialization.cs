@@ -117,6 +117,7 @@ namespace Parsething.Functions
                         Button buttonAdd = new Button();
                         buttonAdd.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                         buttonAdd.Click += ButtonAddPosition_Click;
+                        buttonAdd.MouseRightButtonUp += ButtonAdd_MouseRightButtonUp;
                         buttonAdd.Content = "";
                         buttonAdd.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
                         Button buttonDelete = new Button();
@@ -293,6 +294,7 @@ namespace Parsething.Functions
                         LoadColumnNames(textBoxHeaderCount, 1);
                         Button buttonAdd = new Button();
                         buttonAdd.Click += ButtonAddPosition_Click;
+                        buttonAdd.MouseRightButtonUp += ButtonAdd_MouseRightButtonUp;
                         buttonAdd.Content = "";
                         buttonAdd.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
 
@@ -343,7 +345,7 @@ namespace Parsething.Functions
                             Label replacementLabel = new Label() { Content = "!", Visibility = Visibility.Hidden, Style = (Style)Application.Current.FindResource("ComponentCalculation.Label") };
                             ToolTip tooltip = new ToolTip();
                             tooltip.Style = (Style)Application.Current.FindResource("ComponentCalculation.ToolTip");
-                            tooltip.Content = componentCalculation.ComponentName;
+                            tooltip.Content = string.IsNullOrEmpty(componentCalculation.ComponentName) ? "Добавлено в закупке" : componentCalculation.ComponentName;
                             replacementLabel.ToolTip = tooltip;
                             if (componentCalculation.ComponentName != componentCalculation.ComponentNamePurchase)
                                 replacementLabel.Visibility = Visibility.Visible;
@@ -452,6 +454,101 @@ namespace Parsething.Functions
             }
             ListView.ItemsSource = stackPanels;
         }
+        private static void ButtonAdd_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Button button = sender as Button;
+            if (button != null)
+            {
+                ContextMenu contextMenu = CreateContextMenu();
+                contextMenu.PlacementTarget = button;
+                contextMenu.StaysOpen = true;
+                contextMenu.IsOpen = true;
+
+                contextMenu.DataContext = button.DataContext;
+            }
+        }
+        private static ContextMenu CreateContextMenu()
+        {
+            ContextMenu contextMenu = new ContextMenu
+            {
+                Style = (Style)Application.Current.FindResource("RoundedContextMenuStyle")
+            };
+
+            var componentTypes = GET.View.ComponentTypes();
+
+            foreach (var componentType in componentTypes)
+            {
+                MenuItem typeMenuItem = new MenuItem
+                {
+                    Header = componentType.Kind,
+                };
+
+                foreach (var predefinedComponent in componentType.PredefinedComponent)
+                {
+                    MenuItem componentMenuItem = new MenuItem
+                    {
+                        Header = $"{predefinedComponent.ComponentName} - {predefinedComponent.Price} р.",
+                        DataContext = predefinedComponent,
+                        Style = (Style)Application.Current.FindResource("RoundedMenuItemStyle")
+                         
+                    };
+                    componentMenuItem.Click += PredefinedComponentMenuItem_Click;
+                    typeMenuItem.Items.Add(componentMenuItem);
+                }
+
+                contextMenu.Items.Add(typeMenuItem);
+            }
+
+            return contextMenu;
+        }
+
+        private static void PredefinedComponentMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (sender is MenuItem menuItem)
+            {
+                PredefinedComponent predefinedComponent = menuItem.DataContext as PredefinedComponent;
+                var parentMenuItem = menuItem.Parent as MenuItem;
+                if (parentMenuItem != null)
+                {
+                    var contextMenu = parentMenuItem.Parent as ContextMenu;
+                    var lastComponent = ComponentCalculations
+                    .OrderByDescending(cc => cc.IndexOfComponent)
+                    .FirstOrDefault();
+
+                    int newIndexOfComponent = lastComponent != null
+                        ? (lastComponent.IndexOfComponent ?? 0) + 1
+                        : 1;
+                    if (contextMenu != null)
+                    {
+                        var dataContext = (List<object>)(contextMenu).DataContext;
+                        var procurementId = Convert.ToInt32(dataContext[0]);
+                        var parentName = Convert.ToInt32(dataContext[1]);
+
+                        ComponentCalculation newComponentCalculationHeader = new ComponentCalculation
+                        {
+                            ProcurementId = procurementId,
+                            IndexOfComponent = newIndexOfComponent,
+                            ComponentName = predefinedComponent.ComponentName,
+                            ComponentNamePurchase = predefinedComponent.ComponentName,
+                            ManufacturerId = predefinedComponent.ManufacturerId,
+                            ManufacturerIdPurchase = predefinedComponent.ManufacturerId,
+                            Price = predefinedComponent.Price,
+                            PricePurchase = predefinedComponent.Price,
+                            ParentName = parentName,
+                            IsAdded = IsCalculation ? false : true,
+                            IsDeleted = false,
+                            IsHeader = false
+                        };
+
+                        PUT.ComponentCalculation(newComponentCalculationHeader);
+
+                        UpdateComponentCalculationListView(null, null);
+                    }
+                }
+            }
+        }
+        
         private static void ButtonMoveUp_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -556,18 +653,21 @@ namespace Parsething.Functions
                 var procurementId = Convert.ToInt32(dataContext[0]);
                 var parentName = Convert.ToInt32(dataContext[1]);
 
-                // Найдите последний элемент с наибольшим IndexOfComponent
                 var lastComponent = ComponentCalculations
                     .OrderByDescending(cc => cc.IndexOfComponent)
                     .FirstOrDefault();
 
                 int newIndexOfComponent = lastComponent != null
-                    ? (lastComponent.IndexOfComponent ?? 0) + 1   // Используйте null-coalescing operator для обработки null
+                    ? (lastComponent.IndexOfComponent ?? 0) + 1  
                     : 1;
+
+                int? countOfComponentCalculation = ComponentCalculations.Where(cc => cc.Id == parentName).Select(cc => cc.Count).First();
 
                 ComponentCalculation newComponentCalculation = new ComponentCalculation
                 {
                     ProcurementId = procurementId,
+                    Count = countOfComponentCalculation,
+                    CountPurchase = countOfComponentCalculation,
                     IndexOfComponent = newIndexOfComponent,
                     ParentName = parentName,
                     IsAdded = IsCalculation ? false : true,
