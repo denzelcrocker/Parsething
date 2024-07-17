@@ -98,7 +98,7 @@ namespace Parsething.Pages
         public CardOfProcurement(Procurement procurement, List<Procurement> procurements, bool isSearch)
         {
             InitializeComponent();
-
+            UpdateUIForUserRole();
             procurement = GET.View.ProcurementBy(procurement.Id);
             if (procurement.IsProcurementBlocked == true)
             {
@@ -1261,6 +1261,128 @@ namespace Parsething.Pages
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка при попытке открыть папку: {ex.Message}");
+            }
+        }
+        
+        private void UpdateUIForUserRole()
+        {
+            switch (((Employee)Application.Current.MainWindow.DataContext).Position.Kind)
+            {
+                case "Руководитель отдела расчетов":
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    Distance.IsReadOnly = true;
+                    OrganizationContract.IsReadOnly = true;
+                    PostalAddressContract.IsReadOnly = true;
+                    ContactPerson.IsReadOnly = true;
+                    ContactPhone.IsReadOnly = true;
+                    OrganizationEmail.IsReadOnly = true;
+                    HeadOfAcceptance.IsReadOnly = true;
+                    DeliveryDetails.IsReadOnly = true;
+                    break;
+                case "Заместитель руководителя отдела расчетов":
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    Distance.IsReadOnly = true;
+                    OrganizationContract.IsReadOnly = true;
+                    PostalAddressContract.IsReadOnly = true;
+                    ContactPerson.IsReadOnly = true;
+                    ContactPhone.IsReadOnly = true;
+                    OrganizationEmail.IsReadOnly = true;
+                    HeadOfAcceptance.IsReadOnly = true;
+                    DeliveryDetails.IsReadOnly = true;
+                    break;
+                case "Специалист отдела расчетов":
+                    DeadLine.IsReadOnly = true;
+                    ResultDate.IsReadOnly = true;
+                    Securing.IsReadOnly = true;
+                    Enforcement.IsReadOnly = true;
+                    Warranty.IsReadOnly = true;
+                    ProcurementInfo.IsEnabled = false;
+                    ContractInfo.IsEnabled = false;
+                    ContractNuances.IsEnabled = false;
+                    Calculating.IsEnabled = false;
+                    Sending.IsEnabled = false;
+                    Bargaining.IsEnabled = false;
+                    Supply.IsEnabled = false;
+                    Payment.IsEnabled = false;
+                    Applications.IsEnabled = false;
+                    AddApplicationButton.IsEnabled = false;
+                    break;
+                case "Руководитель тендерного отдела":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    break;
+                case "Заместитель руководителя тендреного отдела":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    break;
+                case "Специалист по работе с электронными площадками":
+                    Calculator.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    break;
+                case "Специалист тендерного отдела":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    break;
+                case "Руководитель отдела закупки":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    break;
+                case "Заместитель руководителя отдела закупок":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    break;
+                case "Специалист закупки":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    break;
+                case "Руководитель отдела производства":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    break;
+                case "Заместитель руководителя отдела производства":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    break;
+                case "Специалист по производству":
+                    DeadLine.IsReadOnly = true;
+                    ResultDate.IsReadOnly = true;
+                    Securing.IsReadOnly = true;
+                    Enforcement.IsReadOnly = true;
+                    Warranty.IsReadOnly = true;
+                    ProcurementInfo.IsEnabled = false;
+                    ContractInfo.IsEnabled = false;
+                    ContractNuances.IsEnabled = false;
+                    Calculating.IsEnabled = false;
+                    Sending.IsEnabled = false;
+                    Bargaining.IsEnabled = false;
+                    Supply.IsEnabled = false;
+                    Payment.IsEnabled = false;
+                    Applications.IsEnabled = false;
+                    AddApplicationButton.IsEnabled = false;
+                    break;
+                case "Юрист":
+                    Calculator.IsEnabled = false;
+                    Sender.IsEnabled = false;
+                    Purchaser.IsEnabled = false;
+                    Manager.IsEnabled = false;
+                    break;
             }
         }
     }

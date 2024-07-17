@@ -78,7 +78,7 @@
                         <i:Interaction.Behaviors>
                             <cls:SmoothScrollBehavior />
                         </i:Interaction.Behaviors>
-                        <ListView.ItemTemplate>
+                        <ListView.ItemTemplate >
                             <DataTemplate>
                                 <Border 
                                 BorderThickness="1"

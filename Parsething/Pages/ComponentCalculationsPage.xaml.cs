@@ -277,5 +277,10 @@ namespace Parsething.Pages
                 CommentsListView.ScrollIntoView(lastItem);
             }
         }
+
+        private void DrawUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonDrawUp_Click(sender, e, Procurement);
+        }
     }
 }

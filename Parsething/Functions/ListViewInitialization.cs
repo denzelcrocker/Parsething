@@ -757,7 +757,38 @@ namespace Parsething.Functions
             }
             UpdateComponentCalculationListView(null, null);
         }
+        public static void ButtonDrawUp_Click(object sender, RoutedEventArgs e, Procurement procurement)
+        {
+            int manufacturerId = 0;
+            Manufacturer? manufacturer = new Manufacturer();
+            string clipboardText = "";
 
+            foreach (StackPanel stackPanel in ListView.Items)
+            {
+                try
+                {
+                    ListView innerListView = (ListView)stackPanel.Children[1];
+                    foreach (Grid grid in innerListView.Items)
+                    {
+                        ComboBox comboBox = (ComboBox)grid.Children[2];
+                        TextBox textBox = (TextBox)grid.Children[1];
+                        if (comboBox.SelectedItem is Manufacturer selectedManufacturer)
+                        {
+                            manufacturerId = selectedManufacturer.Id;
+                            manufacturer = GET.Entry.Manufacturer(manufacturerId);
+
+                            clipboardText += $"{textBox.Text} (производитель «{manufacturer?.FullManufacturerName}», {manufacturer?.ManufacturerCountry?.Name})\n";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            Clipboard.SetText(clipboardText);
+            AutoClosingMessageBox.ShowAutoClosingMessageBox($"Данные скопированы в буфер обмена.", "Оповещение", 1500);
+
+        }
         private static void TextBox_LostFocus(object sender, RoutedEventArgs e, TextBox textBox, int headerId, bool isHeader)
         {
             if (isHeader)
@@ -1200,7 +1231,12 @@ namespace Parsething.Functions
                         grid.ColumnDefinitions.Add(columnDefinition);
                     }
 
-                    TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentHeaderType.Kind, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+                    TextBox textBoxHeader = new TextBox()
+                    {
+                        Text = string.IsNullOrEmpty(componentCalculationHeader?.ComponentHeaderType?.Kind) ? "Необходимо выбрать заголовок!!!" : componentCalculationHeader.ComponentHeaderType.Kind,
+                        Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"),
+                        IsReadOnly = true
+                    };
                     LoadColumnNames(textBoxHeader, 0);
 
                     var parentComponent = componentCalculations.FirstOrDefault(pc => pc.HeaderTypeId == componentCalculationHeader.HeaderTypeId && pc.IsDeleted == false);

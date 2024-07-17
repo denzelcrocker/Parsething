@@ -26,20 +26,20 @@ namespace Parsething.Pages
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<Employee>? Employees { get; set; }
         private List<LegalEntity>? LegalEntities { get; set; }
-        private List<Procurement> AllProcurements { get; set; } = new List<Procurement>();
+        private List<Procurement>? AllProcurements { get; set; } = new List<Procurement>();
 
         private List<Procurement>? FoundProcurements { get; set; }
         private List<Procurement>? Procurements { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
-        private const int PageSize = 20; // Размер страницы для пагинации
-        private int CurrentPage = 1; // Текущая страница
-        private bool _isAscending = false; // Переменная для отслеживания направления сортировки
-        private string _currentSortingField = ""; // Переменная для хранения текущего поля сортировки
+        private const int PageSize = 20;
+        private int CurrentPage = 1;
+        private bool _isAscending = false; 
+        private string _currentSortingField = "";
 
         public SearchPage(List<Procurement>? procurements)
         {
             InitializeComponent();
-            Procurements = new List<Procurement>(); // Инициализируем пустой список
+            Procurements = new List<Procurement>();
 
 
             if (procurements != null && procurements.Count > 0)
@@ -56,7 +56,6 @@ namespace Parsething.Pages
         private async void LoadInitialData()
         {
 
-            // Загружаем данные для выпадающих списков
             Laws = GET.View.Laws();
             Law.ItemsSource = Laws;
 
@@ -560,14 +559,12 @@ namespace Parsething.Pages
             }
         }
 
-        // Вспомогательный метод для извлечения номера закона из строки
         private int ExtractLawNumber(string law)
         {
             var match = Regex.Match(law, @"\d+");
             return match.Success ? int.Parse(match.Value) : 0;
         }
 
-        // Метод для обновления стрелок сортировки на заголовках столбцов
         private void UpdateSortingArrow(Label label, bool isAscending)
         {
             ClearSortingArrows();
@@ -575,7 +572,6 @@ namespace Parsething.Pages
             label.Content = label.Content.ToString().TrimEnd('↑', '↓') + arrow;
         }
 
-        // Метод для очистки стрелок сортировки на всех заголовках столбцов
         private void ClearSortingArrows()
         {
             foreach (var child in SortingHeadersGrid.Children)
