@@ -1348,7 +1348,6 @@ namespace Parsething.Functions
                                 IsHeader = componentCalculationHeader.IsHeader,
                                 IsAdded = componentCalculationHeader.IsAdded,
                             };
-
                             PUT.ComponentCalculation(newComponentCalculationHeader);
                             int newHeaderId = newComponentCalculationHeader.Id;
 

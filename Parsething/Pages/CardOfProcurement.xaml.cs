@@ -5,6 +5,7 @@ using Microsoft.Windows.Themes;
 using Parsething.Classes;
 using Parsething.Functions;
 using Parsething.Windows;
+using ParsingLibrary;
 using PdfSharp.Snippets.Drawing;
 using System;
 using System.Collections.Generic;
@@ -347,6 +348,7 @@ namespace Parsething.Pages
                     ApplicationLabel.Visibility = Visibility.Visible;
                     ApplicationUL.Visibility = Visibility.Visible;
                     Applications.Visibility = Visibility.Visible;
+                    LoadApplications();
                 }
                 else
                 {
@@ -464,7 +466,6 @@ namespace Parsething.Pages
                         }
                 Judgment.IsChecked = Procurement.Judgment;
                 FAS.IsChecked = Procurement.Fas;
-                LoadApplications();
             }
 
             Historylog = ProcurementState.Text;
@@ -1268,6 +1269,9 @@ namespace Parsething.Pages
         {
             switch (((Employee)Application.Current.MainWindow.DataContext).Position.Kind)
             {
+                case "Администратор":
+                    RefreshProcurementButton.Visibility = Visibility.Visible;
+                    break;
                 case "Руководитель отдела расчетов":
                     Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
@@ -1322,6 +1326,7 @@ namespace Parsething.Pages
                     Purchaser.IsEnabled = false;
                     break;
                 case "Специалист по работе с электронными площадками":
+                    RefreshProcurementButton.Visibility = Visibility.Visible;
                     Calculator.IsEnabled = false;
                     Manager.IsEnabled = false;
                     Purchaser.IsEnabled = false;
@@ -1384,6 +1389,73 @@ namespace Parsething.Pages
                     Manager.IsEnabled = false;
                     break;
             }
+        }
+        private void RefreshProcurementInfo()
+        {
+            if (Procurement != null && ProcurementState != null)
+            {
+                Procurement = GET.Entry.ProcurementBy(Procurement.Id);
+                Id.Text = Procurement.Id.ToString();
+                if (Procurement.Number != null)
+                    Number.Text = Procurement.Number.ToString();
+                if (Procurement.Method != null)
+                    Method.Text = Procurement.Method.Text.ToString();
+                if (Procurement.Law != null)
+                    Law.Text = Procurement.Law.Number.ToString();
+                if (Procurement.RequestUri != null)
+                    URL.Text = Procurement.RequestUri.ToString();
+                if (Procurement.Platform != null)
+                {
+                    Platform.Text = Procurement.Platform.Name.ToString();
+                    PlatformURL.Text = Procurement.Platform.Address.ToString();
+                }
+                if (Procurement.StartDate != null && Procurement.TimeZone != null)
+                    StartDate.Text = $"{Procurement.StartDate} ({Procurement.TimeZone.Offset})";
+                if (Procurement.Deadline != null && Procurement.TimeZone != null)
+                    DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";
+                if (Procurement.ResultDate != null)
+                    ResultDate.Text = $"{Procurement.ResultDate}";
+                InitialPrice.Text = Procurement.InitialPrice.ToString();
+                if (Procurement.Organization != null)
+                {
+                    if (Procurement.Organization.Name != null)
+                        Organization.Text = Procurement.Organization.Name.ToString();
+                    if (Procurement.Organization.PostalAddress != null)
+                        PostalAddress.Text = Procurement.Organization.PostalAddress.ToString();
+                }
+                if (Procurement.Object != null)
+                    Object.Text = Procurement.Object.ToString();
+                if (Procurement.Securing != null)
+                    Securing.Text = Procurement.Securing.ToString();
+                if (Procurement.Enforcement != null)
+                    Enforcement.Text = Procurement.Enforcement.ToString();
+                if (Procurement.Warranty != null)
+                    Warranty.Text = Procurement.Warranty.ToString();
+                if (Procurement.Location != null)
+                    Location.Text = Procurement.Location.ToString();
+            }
+        }
+        private void RefreshProcurementButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Обновление закупки в разработке..");
+            //try
+            //{
+            //    _ = new Source(Procurement.RequestUri);
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Иди нахуй");
+            //}
+            //try
+            //{
+            //    foreach (Process process in Process.GetProcessesByName("msedgedriver"))
+            //    {
+            //        process.Kill();
+            //        Thread.Sleep(5000);
+            //    }
+            //}
+            //catch { }
+            //RefreshProcurementInfo();
         }
     }
 }

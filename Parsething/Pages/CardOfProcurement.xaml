@@ -55,6 +55,19 @@
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
+                            <Button 
+                                x:Name="RefreshProcurementButton"
+                                HorizontalAlignment="Left"
+                                Margin="10,0,0,0"
+                                Style="{DynamicResource ButtonWithIcon}"
+                                Visibility="Hidden"
+                                Click="RefreshProcurementButton_Click" >
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Pages/Refresh.png" Stretch="Uniform" Height="50"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
                         </DockPanel>
                         <Label Content="Статус" Style="{DynamicResource Label.CardOfProcurement}" HorizontalAlignment="Right"/>
                         <ComboBox x:Name="ProcurementState" VerticalAlignment="Center" Grid.Column="1"  Width="150" Style="{DynamicResource ComboBoxBase.Card}" Height="45"  StaysOpenOnEdit="True" DisplayMemberPath="Kind"/>
