@@ -192,11 +192,11 @@
                                         <ColumnDefinition Width="2"/>
                                         <ColumnDefinition Width="120"/>
                                         <ColumnDefinition Width="2"/>
-                                        <ColumnDefinition Width="65"/>
+                                        <ColumnDefinition Width="60"/>
                                         <ColumnDefinition Width="2"/>
-                                        <ColumnDefinition Width="65"/>
+                                        <ColumnDefinition Width="60"/>
                                         <ColumnDefinition Width="2"/>
-                                        <ColumnDefinition Width="65"/>
+                                        <ColumnDefinition Width="60"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"

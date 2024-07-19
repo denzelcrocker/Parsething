@@ -39,6 +39,7 @@ namespace Parsething.Pages
         private List<RepresentativeType>? RepresentativeTypes { get; set; }
         private List<CommisioningWork>? CommissioningWorks { get; set; }
         private List<Region>? ProcurementRegions { get; set; }
+        private List<City>? Cities { get; set; }
         private List<Employee>? Calculators { get; set; }
         private ProcurementsEmployee? ProcurementsEmployeeCalculators = new ProcurementsEmployee();
 
@@ -151,6 +152,9 @@ namespace Parsething.Pages
 
             ProcurementRegions = GET.View.Regions();
             Regions.ItemsSource = ProcurementRegions;
+
+            Cities = GET.View.Cities().OrderBy(c => c.Name).ToList();
+            City.ItemsSource = Cities;
 
             int idToGetPreferences = procurement.ParentProcurementId ?? procurement.Id;
                 ProcurementPreferencesSelected = GET.View.ProcurementsPreferencesBy(idToGetPreferences);
@@ -287,6 +291,12 @@ namespace Parsething.Pages
                     if (region.Id == Procurement.RegionId)
                     {
                         Regions.SelectedItem = region;
+                        break;
+                    }
+                foreach (City city in City.ItemsSource)
+                    if (city.Id == Procurement.CityId)
+                    {
+                        City.SelectedItem = city;
                         break;
                     }
                 Distance.Text = Procurement.Distance.ToString();
@@ -558,8 +568,6 @@ namespace Parsething.Pages
             {
                 string warningMessage = null;
 
-                bool isRegionExists = false;
-                List<Region> ProcurementRegion = new List<Region> { new Region() };
                 Procurement.Id = Convert.ToInt32(Id.Text);
                 if (ProcurementState.SelectedItem != null)
                     Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
@@ -585,6 +593,8 @@ namespace Parsething.Pages
 
                 if (DateTime.TryParse(ResultDate.Text, out resultDate))
                     Procurement.ResultDate = resultDate;
+                else
+                    Procurement.ResultDate = null;
 
                 Procurement.Securing = Securing.Text;
                 Procurement.Enforcement = Enforcement.Text;
@@ -596,6 +606,13 @@ namespace Parsething.Pages
                     Procurement.RegionId = null;
                 else
                     warningMessage += " Регион";
+                var selectedCity = City.SelectedItem as City;
+                if (selectedCity != null)
+                    Procurement.CityId = selectedCity.Id;
+                else if (City.Text == "")
+                    Procurement.CityId = null;
+                else
+                    warningMessage += " Город";
                 if (Distance.Text != "")
                 {
                     int distance;
@@ -1437,25 +1454,31 @@ namespace Parsething.Pages
         }
         private void RefreshProcurementButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Обновление закупки в разработке..");
-            //try
-            //{
-            //    _ = new Source(Procurement.RequestUri);
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("Иди нахуй");
-            //}
-            //try
-            //{
-            //    foreach (Process process in Process.GetProcessesByName("msedgedriver"))
-            //    {
-            //        process.Kill();
-            //        Thread.Sleep(5000);
-            //    }
-            //}
-            //catch { }
-            //RefreshProcurementInfo();
+            string requestUri = Procurement.RequestUri;
+            Thread thread = new Thread(() =>
+            {
+                Source source = new(requestUri);
+
+                try
+                {
+                    foreach (Process process in Process.GetProcessesByName("msedgedriver"))
+                    {
+                        process.Kill();
+                        Thread.Sleep(1000);
+                    }
+                }
+                catch { }
+
+                // Выполнить RefreshProcurementInfo на основном потоке
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    RefreshProcurementInfo();
+                });
+            });
+
+            // Запуск потока
+            thread.Start();
+
         }
     }
 }
