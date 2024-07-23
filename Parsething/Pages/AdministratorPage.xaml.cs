@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using Parsething.Classes;
 using System.Net;
 using System.Windows.Media;
 using System.Xml.Linq;
@@ -507,6 +508,17 @@ public partial class AdministratorPage : Page
         if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
         {
             MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+        }
+    }
+
+    private void Image_MouseEnter(object sender, MouseEventArgs e)
+    {
+        var image = sender as FrameworkElement;
+
+        if (image != null)
+        {
+            var parameter = image.Tag as string;
+            ToolTipHelper.SetToolTip(image, parameter);
         }
     }
 }

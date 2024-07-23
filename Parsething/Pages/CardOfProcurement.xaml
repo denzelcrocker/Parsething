@@ -91,15 +91,15 @@
                                             <Grid HorizontalAlignment="Stretch" Margin="5">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="180"/>
-                                                    <ColumnDefinition Width="180"/>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="150"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock 
                                                 Style="{DynamicResource TableElements}"
                                                 Text="{Binding Path=Employee.FullName}"
                                                 Grid.Column="0"
                                                 HorizontalAlignment="Left"
-                                                FontSize="20"
+                                                FontSize="15"
                                                 Margin="5"
                                                 VerticalAlignment="Center"/>
                                                 <TextBlock 
@@ -107,13 +107,13 @@
                                                 Text="{Binding Path=Date, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
                                                 Grid.Column="2"
                                                 HorizontalAlignment="Center"
-                                                FontSize="20"
+                                                FontSize="15"
                                                 VerticalAlignment="Center"/>
                                                 <TextBlock 
                                                 Style="{DynamicResource TableElements}"
                                                 Text="{Binding Path=Text}"
                                                 Grid.Column="1"
-                                                FontSize="20"
+                                                FontSize="15"
                                                 VerticalAlignment="Center"/>
                                             </Grid>
                                         </Border>

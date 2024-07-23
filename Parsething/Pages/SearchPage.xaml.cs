@@ -21,13 +21,11 @@ namespace Parsething.Pages
     public partial class SearchPage : Page
     {
         private Frame MainFrame { get; set; } = null!;
-
         private List<Law>? Laws { get; set; }
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<Employee>? Employees { get; set; }
         private List<LegalEntity>? LegalEntities { get; set; }
         private List<Procurement>? AllProcurements { get; set; } = new List<Procurement>();
-
         private List<Procurement>? FoundProcurements { get; set; }
         private List<Procurement>? Procurements { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
@@ -52,7 +50,40 @@ namespace Parsething.Pages
                 InitializeData();
             }
         }
+        private async Task RefreshData()
+        {
+            if (!IsSearchCriteriaEmpty())
+            {
+                Procurements = GET.View.ProcurementsBy(
+                    SearchCriteria.Instance.ProcurementId,
+                    SearchCriteria.Instance.ProcurementNumber,
+                    SearchCriteria.Instance.Law,
+                    SearchCriteria.Instance.ProcurementState,
+                    SearchCriteria.Instance.INN,
+                    SearchCriteria.Instance.Employee,
+                    SearchCriteria.Instance.OrganizationName,
+                    SearchCriteria.Instance.LegalEntity,
+                    SearchCriteria.Instance.DateType,
+                    SearchCriteria.Instance.StartDate,
+                    SearchCriteria.Instance.EndDate,
+                    PageSize,
+                    CurrentPage,
+                    _currentSortingField,
+                    _isAscending);
+            }
+            else if (AllProcurements != null && AllProcurements.Count > 0)
+            {
+                Procurements = AllProcurements.Take(PageSize).ToList();
+            }
+            else
+            {
+                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
+            }
 
+            GET.View.PopulateComponentStates(Procurements);
+            SearchLV.ItemsSource = Procurements;
+            RestoreSearchCriteria();
+        }
         private async void LoadInitialData()
         {
 
@@ -172,7 +203,7 @@ namespace Parsething.Pages
             try
             {
                 MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
-
+                RefreshData();
             }
             catch { }
         }

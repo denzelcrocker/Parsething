@@ -60,8 +60,10 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Width="250" Text="{Binding Path=Id}"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Width="150" Text="{Binding Path=Id}"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" />
+                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -113,8 +115,10 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="250" HorizontalAlignment="Left"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}"  Width="25" HorizontalAlignment="Right"/>
+                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>

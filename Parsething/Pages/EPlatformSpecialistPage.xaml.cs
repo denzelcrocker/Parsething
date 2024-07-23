@@ -1,4 +1,5 @@
 ﻿using DatabaseLibrary.Queries;
+using Parsething.Classes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -584,5 +585,15 @@ namespace Parsething.Pages
             }
         }
 
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var image = sender as FrameworkElement;
+
+            if (image != null)
+            {
+                var parameter = image.Tag as string;
+                ToolTipHelper.SetToolTip(image, parameter);
+            }
+        }
     }
 }

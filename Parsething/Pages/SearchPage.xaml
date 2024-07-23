@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parsething.Functions"
+      xmlns:db="clr-namespace:DatabaseLibrary.Entities.ProcurementProperties;assembly=DatabaseLibrary"
       xmlns:cls="clr-namespace:Parsething.Classes"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
@@ -19,9 +20,10 @@
         <local:ComponentStateConverter x:Key="ComponentStateConverter"/>
         <local:DateInfoMultiConverter x:Key="DateInfoMultiConverter" />
         <local:DateInfoAdditionalInfoConverter x:Key="DateInfoAdditionalInfoConverter" />
-        <local:ApplicationsVisibilityConverter x:Key="ApplicationsVisibilityConverter"/> 
+        <local:ApplicationsVisibilityConverter x:Key="ApplicationsVisibilityConverter"/>
         <local:ApplicationsOrNumberConverter x:Key="ApplicationsOrNumberConverter"/>
         <local:ParentProcurementIdConverter x:Key="ParentProcurementIdConverter"/>
+        <db:Procurement x:Key="Procurement"/>
         <system:String x:Key="CalculatingString">Calculating</system:String>
         <system:String x:Key="PurchaseString">Purchase</system:String>
     </Page.Resources>
@@ -74,7 +76,7 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Регион" Grid.Column="12" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Опции" Grid.Column="13" />
                     </Grid>
-                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40" ScrollViewer.ScrollChanged="SearchLV_ScrollChanged" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
+                    <ListView x:Name="SearchLV" DataContext="{StaticResource Procurement}" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40" ScrollViewer.ScrollChanged="SearchLV_ScrollChanged" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                         <i:Interaction.Behaviors>
                             <cls:SmoothScrollBehavior />
                         </i:Interaction.Behaviors>
@@ -117,7 +119,7 @@
                                         <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurement}"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
-                                        Text="{Binding Path=Id}"
+                                        Text="{Binding Id}"
                                         HorizontalAlignment="Center"
                                         Name="ServiceId"
                                         FontSize="13"
@@ -222,7 +224,7 @@
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="8"
-                                        Text="{Binding Path=ResultDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
+                                        Text="{Binding ResultDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}', UpdateSourceTrigger=PropertyChanged}"
                                         HorizontalAlignment="Center"
                                         FontSize="12"
                                          VerticalAlignment="Center"
