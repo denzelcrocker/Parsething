@@ -103,6 +103,8 @@
                             <RowDefinition Height="65"/>
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="65"/>
                         </Grid.RowDefinitions>
                         <Button x:Name="BargainingButton" Grid.Row="0" Grid.ColumnSpan="4" Cursor="Hand" Click="BargainingButton_Click" Style="{DynamicResource BaseButton}" Content="Торги:"/>
                         <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -135,6 +137,10 @@
                         <Button x:Name="WonPartOneButton" Grid.Row="10" Grid.ColumnSpan="4" Cursor="Hand" Click="WonPartOneButton_Click" Style="{DynamicResource BaseButton}" Content="Выиграны 1ч:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="30" Grid.Row="10" Grid.Column="3" Tag="Выигран 1ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
+                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Grid.Row="11"/>
+                        <Button x:Name="WonPartTwoButton" Grid.Row="12" Grid.ColumnSpan="4" Cursor="Hand" Click="WonPartTwoButton_Click" Style="{DynamicResource BaseButton}" Content="Выиграны 2ч:"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="30" Grid.Row="12" Grid.Column="3" Tag="Выигран 2ч" MouseEnter="Image_MouseEnter"/>
+                        <TextBlock x:Name="WonPartTwo" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="12" />
                     </Grid>
                  </StackPanel>
                 <Grid Grid.Column="4" x:Name="SortingHeadersGrid">

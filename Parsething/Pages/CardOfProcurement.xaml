@@ -276,7 +276,7 @@
                             <TextBox x:Name="Enforcement" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="14" />
                             <Label Content="Об-е гарантии" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="15"/>
                             <TextBox x:Name="Warranty" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="15" />
-                            <Label Content="Место поставки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="16"/>
+                            <Label Content="Адрес" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="16"/>
                             <TextBox x:Name="Location" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="60" Grid.Column="1" Grid.Row="16" IsReadOnly="True" TextWrapping="Wrap" ToolTipOpening="Location_ToolTipOpening">
                                 <TextBox.ToolTip>
                                     <ToolTip>
@@ -312,7 +312,7 @@
                             <TextBox x:Name="Distance" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="2" PreviewTextInput="Distance_PreviewTextInput"/>
                             <Label Content="Организация (контракт)" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="3"/>
                             <TextBox x:Name="OrganizationContract" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap"/>
-                            <Label Content="Адрес (контракт)" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="4"/>
+                            <Label Content="Место поставки" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="4"/>
                             <TextBox x:Name="PostalAddressContract" Style="{DynamicResource SingleLineInput.CardOfProcurement}" MinHeight="50" Grid.Column="1" Grid.Row="4" TextWrapping="Wrap"/>
                             <Label Content="Контактное лицо" Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="5"/>
                             <TextBox x:Name="ContactPerson" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="5"/>

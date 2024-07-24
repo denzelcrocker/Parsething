@@ -90,6 +90,8 @@ namespace Parsething.Pages
             Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
 
             WonPartOne.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState)); // Выиграны 1ч
+
+            WonPartTwo.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)); // Выиграны 2ч
         }
         private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -187,6 +189,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -209,6 +212,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -231,6 +235,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -253,6 +258,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -275,6 +281,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -297,6 +304,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -319,6 +327,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -341,6 +350,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -363,6 +373,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -385,6 +396,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -407,6 +419,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.LightGray;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -429,6 +442,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.LightGray;
             WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
 
@@ -451,6 +465,30 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.LightGray;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            ClearSortingArrows();
+        }
+
+        private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
+            if (Procurements != null)
+                ProcurementsListView.ItemsSource = Procurements;
+
+            NewButton.Background = Brushes.Transparent;
+            CalculatedButton.Background = Brushes.Transparent;
+            RetreatCalculateButton.Background = Brushes.Transparent;
+            DrawUpButton.Background = Brushes.Transparent;
+            IssuedButton.Background = Brushes.Transparent;
+            ForSendButton.Background = Brushes.Transparent;
+            OverdueIssuedButton.Background = Brushes.Transparent;
+            BargainingButton.Background = Brushes.Transparent;
+            OverdueSendedButton.Background = Brushes.Transparent;
+            CancellationButton.Background = Brushes.Transparent;
+            RejectedButton.Background = Brushes.Transparent;
+            LostButton.Background = Brushes.Transparent;
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.LightGray;
             ClearSortingArrows();
         }
 
@@ -595,5 +633,6 @@ namespace Parsething.Pages
                 ToolTipHelper.SetToolTip(image, parameter);
             }
         }
+
     }
 }

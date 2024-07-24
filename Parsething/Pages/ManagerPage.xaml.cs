@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Parsething.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -387,6 +388,17 @@ namespace Parsething.Pages
             }
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var image = sender as FrameworkElement;
+
+            if (image != null)
+            {
+                var parameter = image.Tag as string;
+                ToolTipHelper.SetToolTipProcurementEmployee(image, parameter);
+            }
         }
     }
 }

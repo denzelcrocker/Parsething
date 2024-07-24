@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Parsething.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -388,6 +389,17 @@ namespace Parsething.Pages
             Procurements = GET.View.ProcurementsBy("Проигран", GET.KindOf.ProcurementState);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var image = sender as FrameworkElement;
+
+            if (image != null)
+            {
+                var parameter = image.Tag as string;
+                ToolTipHelper.SetToolTip(image, parameter);
+            }
         }
     }
 }

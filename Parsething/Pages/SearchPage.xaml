@@ -13,7 +13,8 @@
       Title="SearchPage"
       Loaded="Page_Loaded">
     <Page.Resources>
-        <local:ProfitConverter x:Key="ProfitConverter"/> 
+        <local:ProfitConverter x:Key="ProfitConverter"/>
+        <local:IndicatorProfitConverter x:Key="IndicatorProfitConverter"/>
         <local:PercentageProfitConverter x:Key="PercentageProfitConverter"/>
         <local:DateToStringConverter x:Key="DateToStringConverter"/>
         <local:AmountConverter x:Key="AmountConverter"/>
@@ -51,6 +52,7 @@
                             <ColumnDefinition Width="130"/>
                             <ColumnDefinition Width="110"/>
                             <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="110"/>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="90"/>
@@ -64,17 +66,19 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="В работе" Grid.Column="2" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Комплектующие" Grid.Column="3" />
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата подведения итогов" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="Deadline"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="5" Margin="0,0,0,15"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Контракт" Grid.Column="5" Margin="0,10,0,0"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Статус тендера" Grid.Column="6" />
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Подписание" Grid.Column="7" MouseLeftButtonUp="SortByField" Tag="SigningDeadline"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Проверка" Grid.Column="8" />
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Поставка" Grid.Column="9" MouseLeftButtonUp="SortByField" Tag="ActualDeliveryDate"/>
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Приемка" Grid.Column="10" MouseLeftButtonUp="SortByField" Tag="MaxAcceptanceDate"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Реальный профит" Grid.Column="11" Margin="0,10,0,0"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчетный профит" Grid.Column="11" Margin="0,0,0,15"/>
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Регион" Grid.Column="12" />
-                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Опции" Grid.Column="13" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="5" Margin="0,0,0,15"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="НМЦК" Grid.Column="5" Margin="0,10,0,0"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="6" Margin="0,0,0,15"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Контракт" Grid.Column="6" Margin="0,10,0,0"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Статус тендера" Grid.Column="7" />
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Подписание" Grid.Column="8" MouseLeftButtonUp="SortByField" Tag="SigningDeadline"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Проверка" Grid.Column="9" />
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Поставка" Grid.Column="10" MouseLeftButtonUp="SortByField" Tag="ActualDeliveryDate"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Приемка" Grid.Column="11" MouseLeftButtonUp="SortByField" Tag="MaxAcceptanceDate"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Реальный профит" Grid.Column="12" Margin="0,10,0,0"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчетный профит" Grid.Column="12" Margin="0,0,0,15"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Регион" Grid.Column="13" />
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Опции" Grid.Column="14" />
                     </Grid>
                     <ListView x:Name="SearchLV" DataContext="{StaticResource Procurement}" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40" ScrollViewer.ScrollChanged="SearchLV_ScrollChanged" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                         <i:Interaction.Behaviors>
@@ -100,6 +104,8 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="110"/>
                                             <ColumnDefinition Width="2"/>
+                                            <ColumnDefinition Width="110"/>
+                                            <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="115"/>
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="90"/>
@@ -112,9 +118,9 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="250"/>
+                                            <ColumnDefinition Width="150"/>
                                             <ColumnDefinition Width="2"/>
-                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="40"/>
                                         </Grid.ColumnDefinitions>
                                         <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurement}"/>
                                         <TextBlock 
@@ -233,7 +239,7 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="10"
-                                            Text="{Binding Path=PurchaseAmount, StringFormat={}{0:N2} р.}"
+                                            Text="{Binding Path=CalculatingAmount, StringFormat={}{0:N2} р.}"
                                             FontSize="13"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
@@ -241,6 +247,23 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="10"
+                                            Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
+                                            FontSize="13"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,18,0,0"/>
+                                        <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="12"
+                                            Text="{Binding Path=PurchaseAmount, StringFormat={}{0:N2} р.}"
+                                            FontSize="13"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,0,0,18"/>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="12"
                                             FontSize="13"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
@@ -252,20 +275,20 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource StatusIndicatorStyle}" Grid.Column="12" Margin="2,0,0,0"/>
+                                        <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Ellipse Style="{StaticResource StatusIndicatorStyle}" Grid.Column="14" Margin="2,0,0,0"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
-                                        Grid.Column="12"
+                                        Grid.Column="14"
                                         Text="{Binding Path=ProcurementState.Kind}"
                                         FontSize="12"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Margin="5,0,0,0"/>
-                                        <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
-                                        Grid.Column="14"
+                                        Grid.Column="16"
                                         FontSize="12"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
@@ -280,7 +303,7 @@
                                         </TextBlock>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
-                                            Grid.Column="14"
+                                            Grid.Column="16"
                                             FontSize="12"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -293,9 +316,9 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Rectangle Grid.Column="17" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <DockPanel
-                                            Grid.Column="16">
+                                            Grid.Column="18">
                                             <TextBlock 
                                                 Style="{DynamicResource TableElements}"
                                                 Text="Р:"
@@ -347,11 +370,11 @@
                                                 </Label.Style>
                                             </Label>
                                         </DockPanel>
-                                        <Rectangle Grid.Column="17" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource DeliveryDateIndicatorStyle}" Grid.Column="18" Margin="2,0,0,18"/>
+                                        <Rectangle Grid.Column="19" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Ellipse Style="{StaticResource DeliveryDateIndicatorStyle}" Grid.Column="20" Margin="2,0,0,18"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
-                                            Grid.Column="18"
+                                            Grid.Column="20"
                                             Text="{Binding Path=ActualDeliveryDate, StringFormat='{}{0:dd.MM.yyyy}'}"
                                             FontSize="12"
                                             HorizontalAlignment="Center"
@@ -359,17 +382,17 @@
                                             Margin="0,0,0,18"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
-                                            Grid.Column="18"
+                                            Grid.Column="20"
                                             Text="{Binding ActualDeliveryDate, Converter={StaticResource DateToStringConverter }}"
                                             FontSize="12"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             Margin="0,18,0,0"/>
-                                        <Rectangle Grid.Column="19" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource MaxAcceptanceDateIndicatorStyle}" Grid.Column="20" Margin="2,0,0,18"/>
+                                        <Rectangle Grid.Column="21" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Ellipse Style="{StaticResource MaxAcceptanceDateIndicatorStyle}" Grid.Column="22" Margin="2,0,0,18"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
-                                            Grid.Column="20"
+                                            Grid.Column="22"
                                             Text="{Binding Path=MaxAcceptanceDate, StringFormat='{}{0:dd.MM.yyyy}'}"
                                             FontSize="12"
                                             HorizontalAlignment="Center"
@@ -377,24 +400,25 @@
                                             Margin="0,0,0,18"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
-                                            Grid.Column="20"
+                                            Grid.Column="22"
                                             Text="{Binding MaxAcceptanceDate, Converter={StaticResource DateToStringConverter }}"
                                             FontSize="12"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             Margin="0,18,0,0"/>
-                                        <Rectangle Grid.Column="21" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Grid Grid.Column="22" Margin="0,5">
+                                        <Rectangle Grid.Column="23" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Grid Grid.Column="24" Margin="0,5">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="90"/>
                                                 <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="25"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
                                             <TextBlock 
+                                                x:Name="CalculatingProfit"
                                                 Style="{DynamicResource TableElements}"
                                                 FontSize="13"
                                                 VerticalAlignment="Center"
@@ -410,6 +434,7 @@
                                                 </TextBlock.Text>
                                             </TextBlock>
                                             <TextBlock 
+                                                x:Name="PurchaseProfit"
                                                 Style="{DynamicResource TableElements}"
                                                 Grid.Row="1"
                                                 FontSize="13"
@@ -455,23 +480,24 @@
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
+                                            <Ellipse Style="{StaticResource ProfitIndicator}" Grid.Column="2" Grid.RowSpan="2"/>
                                         </Grid>
-                                        <Rectangle Grid.Column="23" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Rectangle Grid.Column="25" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Text="{Binding Path=Region.Title}"
-                                        Grid.Column="24"
+                                        Grid.Column="26"
                                         HorizontalAlignment="Center"
                                         Name="Region"
-                                        FontSize="13"
+                                        FontSize="10"
                                         VerticalAlignment="Center"
                                         TextWrapping="Wrap"
                                         TextTrimming="CharacterEllipsis"
                                         MaxWidth="200"/>
-                                        <Rectangle Grid.Column="25" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                        <Rectangle Grid.Column="27" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <Button 
                                         x:Name="EditProcurement"
-                                        Grid.Column="26"
+                                        Grid.Column="28"
                                         Click="EditProcurement_Click"
                                         Style="{DynamicResource ButtonWithIcon}">
                                             <Button.Content>

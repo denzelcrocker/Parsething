@@ -1,6 +1,7 @@
 ﻿using DatabaseLibrary.Entities.ComponentCalculationProperties;
 using DatabaseLibrary.Entities.ProcurementProperties;
 using Parsething.Classes;
+using PdfSharp.Drawing.BarCodes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using static Parsething.Pages.ComponentCalculationsPage;
 
 namespace Parsething.Functions
@@ -54,7 +57,7 @@ namespace Parsething.Functions
             ComponentHeaderTypes = GET.View.ComponentHeaderTypes();
             PurchasePriceTextBlock = purchasePriceTextBlock;
             IsCalculation = isCalculation;
-            Manufacturers = GET.View.Manufacturers();
+            Manufacturers = GET.View.Manufacturers().OrderBy(m => m.ManufacturerName).ToList();
             Sellers = GET.View.Sellers();
             ComponentStates = GET.View.ComponentStates();
             ComponentCalculations = componentCalculations.OrderBy(cc => cc.IndexOfComponent).ToList();
@@ -364,6 +367,21 @@ namespace Parsething.Functions
                                     comboBoxComponentState.SelectedItem = componentState;
                                     break;
                                 }
+                            ComponentStatusToColorConverter statusToColorConverter = new ComponentStatusToColorConverter();
+                            Ellipse ellipseComponentState = new Ellipse
+                            {
+                                Width = 8,
+                                Height = 8,
+                                HorizontalAlignment = HorizontalAlignment.Left,
+                                Margin = new Thickness(4,0,0,0),
+                            };
+                            Binding binding = new Binding
+                            {
+                                Path = new PropertyPath("SelectedItem.Kind"),
+                                Source = comboBoxComponentState,
+                                Converter = statusToColorConverter
+                            };
+                            ellipseComponentState.SetBinding(Ellipse.FillProperty, binding);
                             DatePicker datePicker = new DatePicker() { SelectedDate = componentCalculation.Date, Style = (Style)Application.Current.FindResource("ComponentCalculations.DatePickerStyle") };
                             TextBox textBoxPrice = new TextBox() { Text = componentCalculation.PricePurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             if (componentCalculation.PricePurchase != null && componentCalculation.CountPurchase != null)
@@ -396,6 +414,7 @@ namespace Parsething.Functions
                             Grid.SetColumn(replacementLabel, 1);
                             Grid.SetColumn(comboBoxManufacturer, 2);
                             Grid.SetColumn(comboBoxComponentState, 3);
+                            Grid.SetColumn(ellipseComponentState, 3);
                             Grid.SetColumn(datePicker, 4);
                             Grid.SetColumn(textBoxPrice, 5);
                             Grid.SetColumn(textBoxCount, 6);
@@ -410,6 +429,7 @@ namespace Parsething.Functions
                             grid.Children.Add(replacementLabel);
                             grid.Children.Add(comboBoxManufacturer);
                             grid.Children.Add(comboBoxComponentState);
+                            grid.Children.Add(ellipseComponentState);
                             grid.Children.Add(datePicker);
                             grid.Children.Add(textBoxPrice);
                             grid.Children.Add(textBoxCount);
@@ -1047,7 +1067,7 @@ namespace Parsething.Functions
                     if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsDeleted == false)
                     {
                         Grid grid = new Grid();
-                        double[] columnWidths = { 30, 365, 30, 100, 120, 140 };
+                        double[] columnWidths = { 30, 365, 30, 360};
 
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
@@ -1059,28 +1079,16 @@ namespace Parsething.Functions
                         idOfPosition++;
                         TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
                         TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
-                        TextBox textBoxSeller = new TextBox() { Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
-                        foreach (Seller seller in Sellers)
-                            if (seller.Id == componentCalculation.SellerIdPurchase)
-                            {
-                                textBoxSeller.Text = seller.Name;
-                                break;
-                            }
-                        TextBox textBoxNote = new TextBox() { Text = componentCalculation.NotePurchase, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
                         TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
 
                         Grid.SetColumn(textBoxIdOfPosition, 0);
                         Grid.SetColumn(textBoxComponentName, 1);
                         Grid.SetColumn(textBoxCount, 2);
-                        Grid.SetColumn(textBoxSeller, 3);
-                        Grid.SetColumn(textBoxNote, 4);
-                        Grid.SetColumn(textBoxAssemblyMap, 5);
+                        Grid.SetColumn(textBoxAssemblyMap, 3);
 
                         grid.Children.Add(textBoxIdOfPosition);
                         grid.Children.Add(textBoxComponentName);
                         grid.Children.Add(textBoxCount);
-                        grid.Children.Add(textBoxSeller);
-                        grid.Children.Add(textBoxNote);
                         grid.Children.Add(textBoxAssemblyMap);
 
                         listView.Items.Add(grid);
@@ -1492,5 +1500,6 @@ namespace Parsething.Functions
 
             return exceededComponents;
         }
+
     }
 }

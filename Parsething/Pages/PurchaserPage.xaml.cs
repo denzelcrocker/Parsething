@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
+using Parsething.Classes;
 
 namespace Parsething.Pages
 {
@@ -94,6 +95,7 @@ namespace Parsething.Pages
             ProcurementsThisWeek = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane);
             if (ProcurementsThisWeek != null)
             {
+                GET.View.PopulateComponentStates(ProcurementsThisWeek);
                 View.ItemsSource = ProcurementsThisWeek;
                 ThisWeek.Text = ProcurementsThisWeek.Count.ToString();
             }
@@ -389,6 +391,17 @@ namespace Parsething.Pages
                         popup.IsOpen = false;
                     }
                 }
+            }
+        }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var image = sender as FrameworkElement;
+
+            if (image != null)
+            {
+                var parameter = image.Tag as string;
+                ToolTipHelper.SetToolTip(image, parameter);
             }
         }
     }

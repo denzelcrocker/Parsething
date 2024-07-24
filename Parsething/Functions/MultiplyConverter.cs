@@ -565,5 +565,52 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class IndicatorProfitConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values.Length == 2 && values[0] is string value1 && values[1] is string value2)
+            {
+                if (TryParseCurrency(value1, out decimal number1) && TryParseCurrency(value2, out decimal number2))
+                {
+                    if (number1 < number2)
+                        return "Green";
+                    else if (number1 == number2)
+                        return "Orange";
+                    else if (number1 > number2)
+                        return "Red";
+                }
+            }
+            return "Transparency";
+        }
 
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool TryParseCurrency(string value, out decimal result)
+        {
+            var cleanedValue = value.Replace("р.", "").Replace(" ", "").Trim();
+
+            var culture = new CultureInfo("ru-RU");
+            return decimal.TryParse(cleanedValue, NumberStyles.Any, culture, out result);
+        }
+    }
+    public class ComponentStatusToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string status)
+            {
+                return StatusColorProvider.GetColor(status);
+            }
+            return Brushes.Gray; // Цвет по умолчанию
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

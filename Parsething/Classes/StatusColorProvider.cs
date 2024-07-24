@@ -31,7 +31,7 @@ namespace Parsething.Classes
             {
                 return color;
             }
-            return new SolidColorBrush(Colors.Gray); // Цвет по умолчанию, если статус не найден
+            return new SolidColorBrush(Colors.Gray);
         }
     }
 }

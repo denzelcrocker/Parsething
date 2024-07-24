@@ -5,6 +5,7 @@
     <local:DateColorConverter x:Key="DateColorConverter"/>
     <local:ShipmentPlanColorConverter x:Key="ShipmentPlanColorConverter"/>
     <local:RepeatedStatusColorConverter x:Key="RepeatedStatusColorConverter"/>
+    <local:IndicatorProfitConverter x:Key="IndicatorProfitConverter"/>
 
     <Style x:Key="DeadlineIndicatorStyle" TargetType="Ellipse">
         <Setter Property="Width" Value="12"/>
@@ -303,6 +304,53 @@
                 <Setter Property="Fill" Value="#BD1414"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Procurement, Converter={StaticResource RepeatedStatusColorConverter}}" Value="Transparent">
+                <Setter Property="Fill" Value="Transparent"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ProfitIndicator" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Style.Triggers>
+            <DataTrigger Value="Green">
+                <DataTrigger.Binding>
+                    <MultiBinding Converter="{StaticResource IndicatorProfitConverter}">
+                        <Binding ElementName="CalculatingProfit" Path="Text"/>
+                        <Binding ElementName="PurchaseProfit" Path="Text"/>
+                    </MultiBinding>
+                </DataTrigger.Binding>
+                <Setter Property="Fill" Value="Green"/>
+            </DataTrigger>
+            <DataTrigger Value="Orange">
+                <DataTrigger.Binding>
+                    <MultiBinding Converter="{StaticResource IndicatorProfitConverter}">
+                        <Binding ElementName="CalculatingProfit" Path="Text"/>
+                        <Binding ElementName="PurchaseProfit" Path="Text"/>
+                    </MultiBinding>
+                </DataTrigger.Binding>
+                <Setter Property="Fill" Value="#ff8800"/>
+            </DataTrigger>
+            <DataTrigger Value="Red">
+                <DataTrigger.Binding>
+                    <MultiBinding Converter="{StaticResource IndicatorProfitConverter}">
+                        <Binding ElementName="CalculatingProfit" Path="Text"/>
+                        <Binding ElementName="PurchaseProfit" Path="Text"/>
+                    </MultiBinding>
+                </DataTrigger.Binding>
+                <Setter Property="Fill" Value="#BD1414"/>
+            </DataTrigger>
+            <DataTrigger Value="Transparency">
+                <DataTrigger.Binding>
+                    <MultiBinding Converter="{StaticResource IndicatorProfitConverter}">
+                        <Binding ElementName="CalculatingProfit" Path="Text"/>
+                        <Binding ElementName="PurchaseProfit" Path="Text"/>
+                    </MultiBinding>
+                </DataTrigger.Binding>
                 <Setter Property="Fill" Value="Transparent"/>
             </DataTrigger>
         </Style.Triggers>

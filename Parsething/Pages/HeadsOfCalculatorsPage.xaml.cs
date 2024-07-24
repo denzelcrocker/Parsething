@@ -1,4 +1,5 @@
 ﻿using DatabaseLibrary.Entities.ProcurementProperties;
+using Parsething.Classes;
 using Parsething.Windows;
 using System;
 using System.Collections.Generic;
@@ -357,6 +358,17 @@ namespace Parsething.Pages
             Procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
+        }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var image = sender as FrameworkElement;
+
+            if (image != null)
+            {
+                var parameter = image.Tag as string;
+                ToolTipHelper.SetToolTip(image, parameter);
+            }
         }
     }
 }

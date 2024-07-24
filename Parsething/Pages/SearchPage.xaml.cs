@@ -329,33 +329,50 @@ namespace Parsething.Pages
 
         private void CalculateOverallInfo(Procurement procurement, ref decimal? overallAmount, ref decimal? profitCalculate, ref decimal? profitReal, ref decimal? calculatingAmount, ref decimal? purchaseAmount, ref decimal? overallAmountCalculate)
         {
-            if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
+            decimal contractAmount = procurement.ContractAmount ?? 0m;
+            decimal reserveContractAmount = procurement.ReserveContractAmount ?? 0m;
+            decimal calculatingAmountVal = procurement.CalculatingAmount ?? 0m;
+            decimal purchaseAmountVal = procurement.PurchaseAmount ?? 0m;
+
+            if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.CalculatingAmount != null)
             {
-                overallAmount += procurement.ContractAmount;
-                profitReal += procurement.ContractAmount - procurement.PurchaseAmount;
-                profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
-                calculatingAmount += procurement.CalculatingAmount;
-                purchaseAmount += procurement.PurchaseAmount;
-                overallAmountCalculate += procurement.ContractAmount;
+                overallAmount += contractAmount;
+                profitReal += contractAmount - purchaseAmountVal;
+                profitCalculate += contractAmount - calculatingAmountVal;
+                calculatingAmount += calculatingAmountVal;
+                purchaseAmount += purchaseAmountVal;
+                overallAmountCalculate += contractAmount;
             }
-            else if (procurement.ReserveContractAmount != null && procurement.PurchaseAmount != null && procurement.CalculatingAmount != null)
+            else if (procurement.ReserveContractAmount != null && procurement.CalculatingAmount != null)
             {
-                overallAmount += procurement.ReserveContractAmount;
-                profitReal += procurement.ReserveContractAmount - procurement.PurchaseAmount;
-                profitCalculate += procurement.ContractAmount - procurement.CalculatingAmount;
-                calculatingAmount += procurement.CalculatingAmount;
-                purchaseAmount += procurement.PurchaseAmount;
-                overallAmountCalculate += procurement.ContractAmount;
+                overallAmount += reserveContractAmount;
+                profitReal += reserveContractAmount - purchaseAmountVal;
+                profitCalculate += contractAmount - calculatingAmountVal;
+                calculatingAmount += calculatingAmountVal;
+                purchaseAmount += purchaseAmountVal;
+                overallAmountCalculate += contractAmount;
             }
         }
 
         private void DisplayOverallInfo(decimal? overallAmount, decimal? overallAmountCalculate, decimal? calculatingAmount, decimal? purchaseAmount, decimal? profitCalculate, decimal? profitReal)
         {
-            OverallAmount.Text = ((decimal)overallAmount).ToString("N2") + " р.";
-            if (calculatingAmount != 0 && purchaseAmount != 0)
+            decimal overallAmountVal = overallAmount ?? 0m;
+            decimal overallAmountCalculateVal = overallAmountCalculate ?? 0m;
+            decimal calculatingAmountVal = calculatingAmount ?? 0m;
+            decimal purchaseAmountVal = purchaseAmount ?? 0m;
+            decimal profitCalculateVal = profitCalculate ?? 0m;
+            decimal profitRealVal = profitReal ?? 0m;
+
+            OverallAmount.Text = overallAmountVal.ToString("N2") + " р.";
+            if (calculatingAmountVal != 0 && purchaseAmountVal != 0)
             {
-                AvgCalculationProfit.Text = $"{profitCalculate} р. ({(double?)((overallAmountCalculate - calculatingAmount) / calculatingAmount * 100):N1} %)";
-                AvgPurchaseProfit.Text = $"{profitReal} р. ({(double?)((overallAmount - purchaseAmount) / purchaseAmount * 100):N1} %)";
+                AvgCalculationProfit.Text = $"{profitCalculateVal:N2} р. ({((overallAmountCalculateVal - calculatingAmountVal) / calculatingAmountVal * 100):N1} %)";
+                AvgPurchaseProfit.Text = $"{profitRealVal:N2} р. ({((overallAmountVal - purchaseAmountVal) / purchaseAmountVal * 100):N1} %)";
+            }
+            else
+            {
+                AvgCalculationProfit.Text = "0 р. (0.0 %)";
+                AvgPurchaseProfit.Text = "0 р. (0.0 %)";
             }
         }
 
@@ -493,11 +510,11 @@ namespace Parsething.Pages
                 }
             }
         }
-        private void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        private async void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.VerticalOffset == e.ExtentHeight - e.ViewportHeight)
             {
-                LoadMoreItems();
+                await LoadMoreItems();
             }
         }
         private void GoToApplicationsButton_Click(object sender, RoutedEventArgs e)
@@ -578,7 +595,7 @@ namespace Parsething.Pages
                 case "Law":
                     return isAscending ? procurements.OrderBy(p => p.Law.Number).ToList() : procurements.OrderByDescending(p => p.Law.Number).ToList();
                 case "Deadline":
-                    return isAscending ? procurements.OrderBy(p => p.Deadline).ToList() : procurements.OrderByDescending(p => p.Deadline).ToList();
+                    return isAscending ? procurements.OrderBy(p => p.Deadline).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
                 case "SigningDeadline":
                     return isAscending ? procurements.OrderBy(p => p.SigningDeadline).ToList() : procurements.OrderByDescending(p => p.SigningDeadline).ToList();
                 case "ActualDeliveryDate":

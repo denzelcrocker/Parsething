@@ -53,12 +53,15 @@
                             <RowDefinition Height="2"/>
                         </Grid.RowDefinitions>
                         <Button x:Name="WonPartOneButton" Grid.ColumnSpan="5" Grid.Row="0" Cursor="Hand" Click="WonPartOneButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 1ч:"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="0" Grid.Column="4" Tag="Выигран 1ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Text="0" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="1"/>
                         <Button x:Name="WonPartTwoButton" Grid.ColumnSpan="5" Grid.Row="2" Cursor="Hand" Click="WonPartTwoButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 2ч:"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="2" Grid.Column="4" Tag="Выигран 2ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartTwo" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="2" Text="0" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="3"/>
                         <Button x:Name="AcceptanceButton" Grid.ColumnSpan="5" Grid.Row="4" Cursor="Hand" Click="AcceptanceButton_Click" Style="{DynamicResource BaseButton}" Content="Приемка:"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="4" Grid.Column="4" Tag="Приемка" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="4" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="5"/>
                     </Grid>
@@ -97,12 +100,16 @@
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
                         <Label Content="План отгрузки:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
                         <Button x:Name="PreviousWeekButton" Grid.ColumnSpan="5" Grid.Row="7" Cursor="Hand" Click="PreviousWeekButton_Click"  Style="{DynamicResource BaseButton}" Content="Пред. неделя:" Padding="25,0"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="7" Grid.Column="3" Tag="Предыдущая" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="PreviousWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="7" />
                         <Button x:Name="ThisWeekButton" Grid.ColumnSpan="5" Grid.Row="8" Cursor="Hand" Click="ThisWeekButton_Click"  Style="{DynamicResource BaseButton}" Content="Текущая неделя:" Padding="25,0"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="8" Grid.Column="3" Tag="Текущая" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="ThisWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
                         <Button x:Name="NextWeekButton" Grid.ColumnSpan="5" Grid.Row="9" Cursor="Hand" Click="NextWeekButton_Click"  Style="{DynamicResource BaseButton}" Content="След. неделя:" Padding="25,0"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="9" Grid.Column="3" Tag="Следующая" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="NextWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="9" />
                         <Button x:Name="AWeekLaterButton" Grid.ColumnSpan="5" Grid.Row="10" Cursor="Hand" Click="AWeekLaterButton_Click"  Style="{DynamicResource BaseButton}" Content="Через неделю:" Padding="25,0"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="10" Grid.Column="3" Tag="Через одну" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
                         <Label Content="Проверка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
@@ -360,7 +367,7 @@
                                     <Grid Grid.Column="16" Margin="0, 5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
-                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="30"/>
                                             <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -368,6 +375,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock 
+                                            x:Name="CalculatingProfit"
                                             Style="{DynamicResource TableElements}"
                                             FontSize="13"
                                             VerticalAlignment="Center"
@@ -383,6 +391,7 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <TextBlock 
+                                            x:Name="PurchaseProfit"
                                             Style="{DynamicResource TableElements}"
                                             Grid.Row="1"
                                             FontSize="13"
@@ -428,6 +437,7 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
+                                        <Ellipse Style="{StaticResource ProfitIndicator}" Grid.Column="2" Grid.RowSpan="2"/>
                                     </Grid>
                                     <Rectangle Grid.Column="17" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Ellipse Style="{StaticResource ShipmentPlanIndicatorStyle}" Grid.Column="18" />
