@@ -1,5 +1,6 @@
 ﻿using DatabaseLibrary.Entities.ProcurementProperties;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
+using Parsething.Classes;
 using Parsething.Functions;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace Parsething.Pages
         public ComponentCalculationsPage(Procurement procurement, List<Procurement> procurements, bool isCalculation, bool isSearch)
         {
             InitializeComponent();
+            procurement = GET.View.ProcurementBy(procurement.Id);
             IsSearch = isSearch;
             IsCalculation = isCalculation;
             Procurements = procurements;
@@ -83,6 +85,20 @@ namespace Parsething.Pages
                         CalculationPrice.Foreground = Red;
                     MaxPrice.Text = Procurement.InitialPrice.ToString();
                     CalculationPrice.Text = calculatingAmount.ToString();
+                    var visibleEmployeeIds = new[] { 1, 2, 3, 4 };
+                    var currentPositionId = ((Employee)Application.Current.MainWindow.DataContext).PositionId;
+
+                    if (visibleEmployeeIds.Contains(currentPositionId))
+                    {
+                        if (Procurement.ProcurementState.Kind == "Новый")
+                        {
+                            CalculatedButton.Visibility = Visibility.Visible;
+                        }
+                        else if (Procurement.ProcurementState.Kind == "Оформить")
+                        {
+                            IssuedButton.Visibility = Visibility.Visible;
+                        }
+                    }
                 }
                 else
                 {
@@ -219,9 +235,11 @@ namespace Parsething.Pages
             SavePassportButton.Visibility = Visibility.Visible;
 
             MonitorPassportTextBox.Text = Procurement.PassportOfMonitor;
-            PCPassportTextBox.Text = Procurement.PassportOfPC;
+            PcPassportTextBox.Text = Procurement.PassportOfPc;
             MonoblockPassportTextBox.Text = Procurement.PassportOfMonoblock;
             NotebookPassportTextBox.Text = Procurement.PassportOfNotebook;
+            AwPassportTextBox.Text = Procurement.PassportOfAw;
+            UpsPassportTextBox.Text = Procurement.PassportOfUps;
         }
 
         private void GoToComments_Click(object sender, RoutedEventArgs e)
@@ -236,17 +254,23 @@ namespace Parsething.Pages
         private void SavePassportButton_Click(object sender, RoutedEventArgs e)
         {
             Procurement.PassportOfMonitor = MonitorPassportTextBox.Text;
-            Procurement.PassportOfPC = PCPassportTextBox.Text;
+            Procurement.PassportOfPc = PcPassportTextBox.Text;
             Procurement.PassportOfMonoblock = MonoblockPassportTextBox.Text;
             Procurement.PassportOfNotebook = NotebookPassportTextBox.Text;
+            Procurement.PassportOfUps = UpsPassportTextBox.Text;
+            Procurement.PassportOfAw = AwPassportTextBox.Text;
             PULL.Procurement(Procurement);
+            AutoClosingMessageBox.ShowAutoClosingMessageBox("Паспорта успешно сохранены", "Информация", 1000);
         }
 
         private void SavePurchaseButton_Click(object sender, RoutedEventArgs e)
         {
             Procurement = GET.Entry.ProcurementBy(Procurement.Id);
             if (Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.PurchaseUserId == null)
-                UpdateComponentCalculationListView(SameDate, SameComponentState);
+            {
+                if (UpdateComponentCalculationListView(SameDate, SameComponentState))
+                    AutoClosingMessageBox.ShowAutoClosingMessageBox($"Успешно сохранено!", "Информация", 1000);
+            }
             else
                 MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.PurchaseUserId).First().FullName}");
             SameDate.SelectedDate = null;
@@ -262,7 +286,10 @@ namespace Parsething.Pages
                 if (result == MessageBoxResult.Yes)
                 {
                     if (Procurement.CalculatingUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.CalculatingUserId == null)
-                        UpdateComponentCalculationListView(null, null);
+                    {
+                        if (UpdateComponentCalculationListView(null, null))
+                            AutoClosingMessageBox.ShowAutoClosingMessageBox($"Успешно сохранено!", "Информация", 1000);
+                    }
                     else
                         MessageBox.Show($"Расчет сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.CalculatingUserId).First().FullName}");
                 }
@@ -278,9 +305,30 @@ namespace Parsething.Pages
             }
         }
 
-        private void DrawUpButton_Click(object sender, RoutedEventArgs e)
+        private void CalculatedButton_Click(object sender, RoutedEventArgs e)
         {
-            ButtonDrawUp_Click(sender, e, Procurement);
+            if (Procurement != null)
+            {
+                Procurement.ProcurementStateId = 2;
+                PULL.Procurement(Procurement);
+                CalculatedButton.Visibility = Visibility.Hidden;
+                History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Посчитан" };
+                PUT.History(history);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Какой молодец. Точно все правильно посчитал?", "Информация", 1500);
+            }
+        }
+
+        private void IssuedButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null)
+            {
+                Procurement.ProcurementStateId = 4;
+                PULL.Procurement(Procurement);
+                IssuedButton.Visibility = Visibility.Hidden;
+                History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Оформлен" };
+                PUT.History(history);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Какой молодец. Точно все правильно оформил?", "Информация", 1500);
+            }
         }
     }
 }

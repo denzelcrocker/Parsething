@@ -385,9 +385,24 @@ namespace Parsething.Pages
                 {
                     RejectionReason.Visibility = Visibility.Visible;
                     RejectionReason.SelectedValue = Procurement.RejectionReason;
+                    RejectionReasonLabel.Visibility = Visibility.Visible;
                 }
                 else
-                    RejectionReason.Visibility = Visibility.Collapsed;
+                {
+                    RejectionReason.Visibility = Visibility.Hidden;
+                    RejectionReasonLabel.Visibility = Visibility.Hidden;
+                }
+                if (Procurement?.ProcurementState?.Kind == "Проигран")
+                {
+                    CompetitorSum.Visibility = Visibility.Visible;
+                    CompetitorSum.Text = Procurement.CompetitorSum.ToString();
+                    CompetitorSumLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CompetitorSum.Visibility = Visibility.Hidden;
+                    CompetitorSumLabel.Visibility = Visibility.Hidden;
+                }
                 HeadOfAcceptance.Text = Procurement.HeadOfAcceptance;
                 foreach (Employee employee in Manager.ItemsSource)
                     if (ProcurementsEmployeeManagers != null)
@@ -492,7 +507,7 @@ namespace Parsething.Pages
         {
             if (ExecutionState.SelectedItem != null)
             {
-                if (((ExecutionState)ExecutionState.SelectedItem).Kind == null || ((ExecutionState)ExecutionState.SelectedItem).Kind == "Не требуется" || ((ExecutionState)ExecutionState.SelectedItem).Kind == "")
+                if (((ExecutionState)ExecutionState.SelectedItem).Kind == null || ((ExecutionState)ExecutionState.SelectedItem).Kind == "Не требуется" || ((ExecutionState)ExecutionState.SelectedItem).Kind == "" || ((ExecutionState)ExecutionState.SelectedItem).Kind == "Добросовестность")
                 {
                     ExecutionPrice.IsEnabled = false;
                     ExecutionPriceLabel.Foreground = Gray;
@@ -517,7 +532,7 @@ namespace Parsething.Pages
         {
             if (WarrantyState.SelectedItem != null)
             {
-                if (((WarrantyState)WarrantyState.SelectedItem).Kind == null || ((WarrantyState)WarrantyState.SelectedItem).Kind == "Не требуется" || ((WarrantyState)WarrantyState.SelectedItem).Kind == "")
+                if (((WarrantyState)WarrantyState.SelectedItem).Kind == null || ((WarrantyState)WarrantyState.SelectedItem).Kind == "Не требуется" || ((WarrantyState)WarrantyState.SelectedItem).Kind == "" || ((ExecutionState)ExecutionState.SelectedItem).Kind == "Добросовестность")
                 {
                     WarrantyPrice.IsEnabled = false;
                     WarrantyPriceLabel.Foreground = Gray;
@@ -718,16 +733,37 @@ namespace Parsething.Pages
                 Procurement.IsUnitPrice = IsUnitPriceCB.IsChecked;
                 Procurement.ProtocolDate = ProtocolDate.SelectedDate;
                 if (RejectionReason.SelectedValue is RejectionReason selectedReason)
-                {
                     Procurement.RejectionReason = selectedReason;
-                }
-                if (Procurement?.ProcurementState?.Kind == "Отклонен")
+                if (ProcurementState.Text == "Отклонен")
                 {
                     RejectionReason.Visibility = Visibility.Visible;
+                    RejectionReasonLabel.Visibility = Visibility.Visible;
                     RejectionReason.SelectedValue = Procurement.RejectionReason;
                 }
                 else
-                    RejectionReason.Visibility = Visibility.Collapsed;
+                {
+                    RejectionReason.Visibility = Visibility.Hidden;
+                    RejectionReasonLabel.Visibility = Visibility.Hidden;
+                }
+                if (CompetitorSum.Text != "")
+                {
+                    decimal competitorSum;
+                    if (decimal.TryParse(CompetitorSum.Text, out competitorSum))
+                        Procurement.CompetitorSum = competitorSum;
+                    else
+                        warningMessage += " Сумма конкурентов";
+                }
+                if (ProcurementState.Text == "Проигран")
+                {
+                    CompetitorSum.Visibility = Visibility.Visible;
+                    CompetitorSumLabel.Visibility = Visibility.Visible;
+                    CompetitorSum.Text = Procurement.CompetitorSum.ToString();
+                }
+                else
+                {
+                    CompetitorSum.Visibility = Visibility.Hidden;
+                    CompetitorSumLabel.Visibility = Visibility.Hidden;
+                }
                 Procurement.HeadOfAcceptance = HeadOfAcceptance.Text;
                 if (ShipmentPlan.SelectedItem != null)
                     Procurement.ShipmentPlanId = ((ShipmentPlan)ShipmentPlan.SelectedItem).Id;

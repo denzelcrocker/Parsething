@@ -182,10 +182,6 @@ public partial class AdministratorPage : Page
         ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
 
         Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
-
-        await UpdateRatesFromCBRAsync();
-
-
         // Рублей в обороте
 
         Acceptance.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState)); // Приемка
@@ -203,6 +199,9 @@ public partial class AdministratorPage : Page
         Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
         FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
+
+        await UpdateRatesFromCBRAsync();
+
     }
     private async Task UpdateRatesFromCBRAsync()
     {

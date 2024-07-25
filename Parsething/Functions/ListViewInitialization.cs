@@ -93,7 +93,7 @@ namespace Parsething.Functions
                     if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsAdded == false)
                     {
                         Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded } };
-                        double[] columnWidths = { 628, 500, 90, 90 };
+                        double[] columnWidths = { 628, 523, 105, 105 };
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
                             ColumnDefinition columnDefinition = new ColumnDefinition();
@@ -150,7 +150,7 @@ namespace Parsething.Functions
                         if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsAdded == false)
                         {
                             Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded, componentCalculation.ComponentNamePurchase, componentCalculation.ManufacturerIdPurchase, componentCalculation.PricePurchase, componentCalculation.CountPurchase, componentCalculation.SellerIdPurchase, componentCalculation.ReservePurchase, componentCalculation.NotePurchase, componentCalculation.ComponentStateId } };
-                            double[] columnWidths = { 60, 450, 115, 70, 50, 115, 90, 175, 150 };
+                            double[] columnWidths = { 60, 450, 115, 75, 40, 115, 115, 177, 150 };
 
                             for (int i = 0; i < columnWidths.Length; i++)
                             {
@@ -158,6 +158,7 @@ namespace Parsething.Functions
                                 columnDefinition.Width = new GridLength(columnWidths[i]);
                                 grid.ColumnDefinitions.Add(columnDefinition);
                             }
+                            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30) });
                             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30) });
                             Button buttonMoveUp = new Button();
                             buttonMoveUp.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
@@ -219,6 +220,10 @@ namespace Parsething.Functions
                             buttonDelete.Click += ButtonDelete_Click;
                             buttonDelete.Content = "";
                             buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
+                            Button buttonCopy = new Button();
+                            buttonCopy.Click += ButtonCopy_Click;
+                            buttonCopy.Content = "";
+                            buttonCopy.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
 
                             Grid.SetColumn(textBoxIndex, 0);
                             Grid.SetColumn(buttonMoveUp, 0);
@@ -232,6 +237,7 @@ namespace Parsething.Functions
                             Grid.SetColumn(textBoxNote, 7);
                             Grid.SetColumn(textBoxAssemblyMap, 8);
                             Grid.SetColumn(buttonDelete, 9);
+                            Grid.SetColumn(buttonCopy, 10);
 
                             grid.Children.Add(textBoxIndex);
                             grid.Children.Add(textBoxComponentName);
@@ -245,6 +251,7 @@ namespace Parsething.Functions
                             grid.Children.Add(buttonDelete);
                             grid.Children.Add(buttonMoveUp);
                             grid.Children.Add(buttonMoveDown);
+                            grid.Children.Add(buttonCopy);
 
                             listView.Items.Add(grid);
 
@@ -274,7 +281,7 @@ namespace Parsething.Functions
                     if (componentCalculationHeader.IsHeader == true && componentCalculationHeader.IsDeleted == false)
                     {
                         Grid grid = new Grid() { DataContext = new List<object> { componentCalculationHeader.ProcurementId, componentCalculationHeader.Id, componentCalculationHeader.IsHeader, componentCalculationHeader.IsDeleted, componentCalculationHeader.IsAdded } };
-                        double[] columnWidths = { 628, 500, 90, 90 };
+                        double[] columnWidths = { 628, 523, 105, 105 };
                         for (int i = 0; i < columnWidths.Length; i++)
                         {
                             ColumnDefinition columnDefinition = new ColumnDefinition();
@@ -325,7 +332,7 @@ namespace Parsething.Functions
                         if (componentCalculation.ParentName == componentCalculationHeader.Id && componentCalculation.ParentName != null && componentCalculation.IsDeleted == false)
                         {
                             Grid grid = new Grid() { DataContext = new List<object> { componentCalculation.Id, componentCalculation.ProcurementId, componentCalculation.IsHeader, componentCalculation.ParentName, componentCalculation.IsDeleted, componentCalculation.IsAdded, componentCalculation.ComponentName, componentCalculation.ManufacturerId, componentCalculation.Price, componentCalculation.Count, componentCalculation.SellerId, componentCalculation.Reserve, componentCalculation.Note } };
-                            double[] columnWidths = { 55, 300, 100, 125, 100, 75, 40, 105, 100, 125, 150 };
+                            double[] columnWidths = { 55, 300, 100, 125, 100, 75, 40, 105, 122, 125, 178 };
                             for (int i = 0; i < columnWidths.Length; i++)
                             {
                                 ColumnDefinition columnDefinition = new ColumnDefinition();
@@ -730,14 +737,29 @@ namespace Parsething.Functions
                             ComponentCalculations[i].IsDeleted = true;
                             PULL.ComponentCalculation(ComponentCalculations[i]);
                             ComponentCalculations.RemoveAt(i);
-                            ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+                            //ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
                             break;
                         }
                     }
                 }
-                UpdateComponentCalculationListView(null, null);
+                ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement); // на всякий оставлю коммент
+
+                //UpdateComponentCalculationListView(null, null);
             }
             else { }
+        }
+        private static void ButtonCopy_Click(object sender, RoutedEventArgs e)
+        {
+            string componentCalculationName = (((Grid)((Button)sender).Parent)?.DataContext as List<object>)?[6]?.ToString() ?? "Пустое значение"; int manufacturerId = Convert.ToInt32(((List<object>)((Grid)((Button)sender).Parent).DataContext)[7]);
+            if (componentCalculationName != "" && manufacturerId != null)
+            {
+                string clipboardText = "";
+                Manufacturer? manufacturer = GET.Entry.Manufacturer(manufacturerId);
+                clipboardText += $"{componentCalculationName} (производитель «{manufacturer?.FullManufacturerName}», {manufacturer?.ManufacturerCountry?.Name})";
+                Clipboard.SetText(clipboardText);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Данные скопированы в буфер обмена.", "Оповещение", 1500);
+            }
+
         }
         public static void ButtonAddDivision_Click(object sender, RoutedEventArgs e, Procurement procurement)
         {
@@ -776,38 +798,6 @@ namespace Parsething.Functions
                 }
             }
             UpdateComponentCalculationListView(null, null);
-        }
-        public static void ButtonDrawUp_Click(object sender, RoutedEventArgs e, Procurement procurement)
-        {
-            int manufacturerId = 0;
-            Manufacturer? manufacturer = new Manufacturer();
-            string clipboardText = "";
-
-            foreach (StackPanel stackPanel in ListView.Items)
-            {
-                try
-                {
-                    ListView innerListView = (ListView)stackPanel.Children[1];
-                    foreach (Grid grid in innerListView.Items)
-                    {
-                        ComboBox comboBox = (ComboBox)grid.Children[2];
-                        TextBox textBox = (TextBox)grid.Children[1];
-                        if (comboBox.SelectedItem is Manufacturer selectedManufacturer)
-                        {
-                            manufacturerId = selectedManufacturer.Id;
-                            manufacturer = GET.Entry.Manufacturer(manufacturerId);
-
-                            clipboardText += $"{textBox.Text} (производитель «{manufacturer?.FullManufacturerName}», {manufacturer?.ManufacturerCountry?.Name})\n";
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                }
-            }
-            Clipboard.SetText(clipboardText);
-            AutoClosingMessageBox.ShowAutoClosingMessageBox($"Данные скопированы в буфер обмена.", "Оповещение", 1500);
-
         }
         private static void TextBox_LostFocus(object sender, RoutedEventArgs e, TextBox textBox, int headerId, bool isHeader)
         {
@@ -863,8 +853,9 @@ namespace Parsething.Functions
                 comboBox.Foreground = Brushes.Gray;
             }
         }
-        public static void UpdateComponentCalculationListView(DatePicker? sameDatePicker, ComboBox? sameComboBox)
+        public static bool UpdateComponentCalculationListView(DatePicker? sameDatePicker, ComboBox? sameComboBox)
         {
+            bool successSave = true;
             foreach (StackPanel stackPanel in ListView.Items)
             {
                 ComponentCalculation componentCalculationHeader = new ComponentCalculation();
@@ -957,12 +948,12 @@ namespace Parsething.Functions
                             ComponentCalculation componentCalculationItem = new ComponentCalculation();
                             TextBox textBoxIndex = (TextBox)grid.Children[0];
                             TextBox textBoxComponentName = (TextBox)grid.Children[1];
-                            DatePicker datePicker = (DatePicker)grid.Children[5];
-                            TextBox textBoxPrice = (TextBox)grid.Children[6];
-                            TextBox textBoxCount = (TextBox)grid.Children[7];
-                            TextBox textBoxReserve = (TextBox)grid.Children[9];
-                            TextBox textBoxNote = (TextBox)grid.Children[10];
-                            TextBox textBoxAssemblyMap = (TextBox)grid.Children[11];
+                            DatePicker datePicker = (DatePicker)grid.Children[6];
+                            TextBox textBoxPrice = (TextBox)grid.Children[7];
+                            TextBox textBoxCount = (TextBox)grid.Children[8];
+                            TextBox textBoxReserve = (TextBox)grid.Children[10];
+                            TextBox textBoxNote = (TextBox)grid.Children[11];
+                            TextBox textBoxAssemblyMap = (TextBox)grid.Children[12];
 
                             componentCalculationItem.Id = (int)((List<object>)grid.DataContext)[0];
                             componentCalculationItem.ProcurementId = (int)((List<object>)grid.DataContext)[1];
@@ -997,9 +988,9 @@ namespace Parsething.Functions
                                 componentCalculationItem.CountPurchase = Convert.ToInt32(textBoxCount.Text);
                             }
                             componentCalculationItem.Count = (int?)((List<object>)grid.DataContext)[9];
-                            if ((Seller)((ComboBox)grid.Children[8]).SelectedItem != null)
+                            if ((Seller)((ComboBox)grid.Children[9]).SelectedItem != null)
                             {
-                                componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[8]).SelectedItem).Id;
+                                componentCalculationItem.SellerIdPurchase = ((Seller)((ComboBox)grid.Children[9]).SelectedItem).Id;
                             }
                             componentCalculationItem.SellerId = (int?)((List<object>)grid.DataContext)[10];
                             componentCalculationItem.ReservePurchase = textBoxReserve.Text;
@@ -1017,10 +1008,13 @@ namespace Parsething.Functions
                 }
                 catch
                 {
+                    successSave = false;
                     AutoClosingMessageBox.ShowAutoClosingMessageBox($"Дружище, ты сделал что-то неправильно...", "Информация", 1000);
+                    break;
                 }
             }
             ComponentCalculationsListViewInitialization(IsCalculation, ComponentCalculations, ListView, CalculationPriceTextBlock, PurchasePriceTextBlock, Procurement);
+            return successSave;
         }
         public static void AssemblyMapListViewInitialization(Procurement procurement, List<ComponentCalculation> componentCalculations, ListView listViewToInitialization)
         {

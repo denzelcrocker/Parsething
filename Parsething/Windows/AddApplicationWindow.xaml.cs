@@ -167,9 +167,11 @@ namespace Parsething.Windows
                         CalculatingAmount = Procurement.CalculatingAmount,
                         PurchaseAmount = Procurement.PurchaseAmount,
                         PassportOfMonitor = Procurement.PassportOfMonitor,
-                        PassportOfPC = Procurement.PassportOfPC,
+                        PassportOfPc = Procurement.PassportOfPc,
                         PassportOfMonoblock = Procurement.PassportOfMonoblock,
                         PassportOfNotebook = Procurement.PassportOfNotebook,
+                        PassportOfAw = Procurement.PassportOfAw,
+                        PassportOfUps = Procurement.PassportOfUps,
                     };
 
                     var exceededComponents = ListViewInitialization.CheckComponentCalculationsLimits(ComponentCalculationsListView);
