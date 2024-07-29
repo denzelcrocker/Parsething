@@ -121,7 +121,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
-                                        Text="{Binding Path=Id}"
+                                        Text="{Binding Path=DisplayId}"
                                         HorizontalAlignment="Center"
                                         Name="ServiceId"
                                         FontSize="20"

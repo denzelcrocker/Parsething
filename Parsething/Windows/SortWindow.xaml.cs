@@ -62,7 +62,7 @@ namespace Parsething.Windows
                     Procurements = Procurements.OrderBy(p => p.Deadline).ToList();
                     Procurement = Procurements.First();
 
-                    Id.Text = Procurement.Id.ToString();
+                    Id.Text = Procurement.DisplayId.ToString();
                     Number.Text = Procurement.Number.ToString();
                     if (Procurement.Deadline != null && Procurement.TimeZone != null)
                         DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";

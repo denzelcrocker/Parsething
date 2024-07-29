@@ -1104,7 +1104,7 @@ namespace Parsething.Functions
 
 
             // Получаем все дочерние тендеры и их компоненты
-            var childProcurements = GET.View.ApplicationsBy(procurement.Id);
+            var childProcurements = GET.View.ApplicationsBy(procurement.DisplayId);
             var childProcurementComponents = new List<ComponentCalculation>();
             foreach (var childProcurement in childProcurements)
             {
@@ -1208,7 +1208,7 @@ namespace Parsething.Functions
             int counterOfComponentCalculations = 1;
 
 
-            var childProcurements = GET.View.ApplicationsBy(procurement.Id);
+            var childProcurements = GET.View.ApplicationsBy(procurement.DisplayId);
             var childProcurementComponents = new List<ComponentCalculation>();
             foreach (var childProcurement in childProcurements)
             {
@@ -1399,8 +1399,18 @@ namespace Parsething.Functions
                                         totalCalculatingAmount += componentCalculation.Price * childCountPurchase;
                                         totalPurchaseAmount += componentCalculation.Price * childCountPurchase;
                                     }
+                                    else
+                                    {
+                                        // Handle case where childCountTextBox.Text is empty or not a valid integer
+                                        // You may choose to log this or handle it differently based on your application's logic
+                                    }
                                 }
                             }
+                        }
+                        else
+                        {
+                            // Handle case where countTextBox.Text is empty or not a valid integer
+                            // You may choose to log this or handle it differently based on your application's logic
                         }
                     }
                 }
@@ -1449,6 +1459,10 @@ namespace Parsething.Functions
                                     exceededComponents.Add($"{componentCalculationHeader.ComponentNamePurchase}: количество {countPurchase}, остаток {remainingCountPurchase}");
                                 }
                             }
+                            else if (countTextBox.Text == "")
+                            {
+                                exceededComponents.Add($"В позиции {componentCalculationHeader.ComponentHeaderType.Kind} не указано количество. Если остаток пустой, укажите 0");
+                            }
                         }
 
                         if (stackPanel.Children.OfType<ListView>().FirstOrDefault() is ListView innerListView)
@@ -1484,6 +1498,10 @@ namespace Parsething.Functions
                                         {
                                             exceededComponents.Add($"{componentCalculation.ComponentNamePurchase}: количество {childCountPurchase}, остаток {childRemainingCountPurchase}");
                                         }
+                                    }
+                                    else if (childCountTextBox.Text == "")
+                                    {
+                                        exceededComponents.Add($"В позиции {componentCalculation.ComponentName} не указано количество. Если остаток пустой, укажите 0");
                                     }
                                 }
                             }

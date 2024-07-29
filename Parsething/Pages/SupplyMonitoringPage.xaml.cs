@@ -203,7 +203,7 @@ namespace Parsething.Pages
                         TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                        Button button = new Button() { Content = GET.Aggregate.DisplayId(supplyMonitoring.TenderNumber).ToString(), Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
 

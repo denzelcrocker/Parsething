@@ -6,8 +6,12 @@ namespace Parsething.Pages;
 
 public partial class CalculatorPage : Page
 {
-    public CalculatorPage() =>
+    public CalculatorPage()
+    {
         InitializeComponent();
+        LoadPageData();
+    }
+
 
     private Frame MainFrame { get; set; } = null!;
 
@@ -19,7 +23,6 @@ public partial class CalculatorPage : Page
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
-        LoadPageData();
     }
 
     private void LoadPageData()

@@ -203,7 +203,6 @@ namespace Parsething.Pages
             try
             {
                 MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
-                RefreshData();
             }
             catch { }
         }
@@ -526,7 +525,7 @@ namespace Parsething.Pages
                 if (procurement.ParentProcurementId != null) 
                     procurements = GET.View.ApplicationsBy(procurement.ParentProcurementId);
                 else
-                    procurements = GET.View.ApplicationsBy(procurement.Id);
+                    procurements = GET.View.ApplicationsBy(procurement.DisplayId);
                 MainFrame.Navigate(new SearchPage(procurements));
             }
         }

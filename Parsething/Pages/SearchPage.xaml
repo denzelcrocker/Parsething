@@ -58,7 +58,7 @@
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="55"/>
                         </Grid.ColumnDefinitions>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Id" Grid.Column="0" />
@@ -125,7 +125,7 @@
                                         <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurement}"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
-                                        Text="{Binding Id}"
+                                        Text="{Binding DisplayId}"
                                         HorizontalAlignment="Center"
                                         Name="ServiceId"
                                         FontSize="13"
@@ -148,7 +148,6 @@
                                                     <ColumnDefinition/>
                                                     <ColumnDefinition Width="15"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurement}"/>
                                                 <TextBlock 
                                                     Style="{DynamicResource TableElements}"
                                                     Grid.Column="0"
@@ -160,7 +159,7 @@
                                                     <Button.Content>
                                                         <MultiBinding Converter="{StaticResource ApplicationsOrNumberConverter}">
                                                             <Binding Path="Applications"/>
-                                                            <Binding Path="Id"/>
+                                                            <Binding Path="DisplayId"/>
                                                             <Binding Path="ApplicationNumber"/>
                                                         </MultiBinding>
                                                     </Button.Content>

@@ -36,7 +36,7 @@ namespace Parsething.Windows
             InitializeComponent();
 
             Procurement = procurement;
-            ProcurementId.Text = procurement.Id.ToString();
+            ProcurementId.Text = procurement.DisplayId.ToString();
             OrganizationNameTextBlock.Text = "Организация: " + procurement.Organization.Name;
             PostalAddressTextBlock.Text = "Адрес доставки: " + procurement.Location;
 

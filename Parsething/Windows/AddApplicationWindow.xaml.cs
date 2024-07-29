@@ -28,6 +28,8 @@ namespace Parsething.Windows
         private List<ComponentCalculation>? ComponentCalculations { get; set; }
         private Procurement? Procurement { get; set; }
         private List<Procurement?> Applications { get; set; }
+        private List<ProcurementsEmployee?> procurementsEmployees { get; set; }
+
 
 
         public AddApplicationWindow(Procurement procurement)
@@ -50,7 +52,7 @@ namespace Parsething.Windows
                 remainingAmount = 0;
             else
             {
-                Applications = GET.View.ApplicationsBy(procurement.Id);
+                Applications = GET.View.ApplicationsBy(procurement.DisplayId);
                 foreach (Procurement application in Applications)
                 {
                     if (procurement.IsUnitPrice == true)
@@ -60,9 +62,9 @@ namespace Parsething.Windows
                 }
             }
             ApplicationRemaining.Text = remainingAmount.ToString();
-
+            int displayId = Procurement.DisplayId.GetValueOrDefault(0);
             ComponentCalculations = GET.View.ComponentCalculationsBy(Procurement.Id);
-            NumberOfApplicationTextBlock.Text = GET.Aggregate.NumberOfApplication(Procurement.Id).ToString();
+            NumberOfApplicationTextBlock.Text = GET.Aggregate.NumberOfApplication(displayId).ToString();
 
             if (procurement.IsUnitPrice == true)
             {
@@ -101,7 +103,8 @@ namespace Parsething.Windows
                 {
                     Procurement newProcurement = new Procurement()
                     {
-                        ParentProcurementId = Procurement.Id,
+                        ParentProcurementId = Procurement.DisplayId != null && Procurement.DisplayId != 0 ? Procurement.DisplayId : (int?)null,
+                        DisplayId = GET.Aggregate.MaxDisplayId() + 1,
                         RequestUri = Procurement.RequestUri,
                         Number = Procurement.Number,
                         LawId = Procurement.LawId,
@@ -174,6 +177,7 @@ namespace Parsething.Windows
                         PassportOfUps = Procurement.PassportOfUps,
                     };
 
+
                     var exceededComponents = ListViewInitialization.CheckComponentCalculationsLimits(ComponentCalculationsListView);
                     if (exceededComponents.Any())
                     {
@@ -183,6 +187,19 @@ namespace Parsething.Windows
                     else
                     {
                         PUT.Procurement(newProcurement);
+                        procurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(Procurement.Id);
+                        if (procurementsEmployees.Any())
+                        {
+                            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+                            foreach (var procurement in procurementsEmployees)
+                            {
+                                procurementsEmployee.ProcurementId = newProcurement.Id;
+                                procurementsEmployee.Procurement = newProcurement;
+                                procurementsEmployee.Employee = procurement.Employee;
+                                procurementsEmployee.EmployeeId = procurement.EmployeeId;
+                                PUT.ProcurementsEmployees(procurementsEmployee);
+                            }
+                        }
                         ListViewInitialization.CopyComponentCalculationsToNewProcurement(newProcurement, ComponentCalculationsListView);
                         AutoClosingMessageBox.ShowAutoClosingMessageBox($"Заявка успешно создана.", "Информация", 1500);
                         CloseCurrentWindow();

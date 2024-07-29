@@ -29,10 +29,7 @@ namespace Parsething.Pages
         public LawyerPage()
         {
             InitializeComponent();
-        }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            try  {   MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
+            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
 
             Procurements = GET.View.ProcurementsNotPaid();
@@ -48,6 +45,10 @@ namespace Parsething.Pages
             Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
             FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
+        }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private void NotPaidButton_Click(object sender, RoutedEventArgs e)

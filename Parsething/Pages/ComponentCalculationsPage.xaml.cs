@@ -4,6 +4,7 @@ using Parsething.Classes;
 using Parsething.Functions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -60,7 +61,7 @@ namespace Parsething.Pages
             if (procurement != null)
             {
                 Procurement = procurement;
-                Id.Text = Procurement.Id.ToString();
+                Id.Text = Procurement.DisplayId.ToString();
 
                 Comments = GET.View.CommentsBy(procurement.Id);
                 CommentsListView.ItemsSource = Comments;
@@ -97,6 +98,7 @@ namespace Parsething.Pages
                         else if (Procurement.ProcurementState.Kind == "Оформить")
                         {
                             IssuedButton.Visibility = Visibility.Visible;
+                            GoToProcurementFolderButton.Visibility = Visibility.Visible;
                         }
                     }
                 }
@@ -181,39 +183,54 @@ namespace Parsething.Pages
 
             if (IsSearch)
             {
+                Procurement existingProcurement = Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
+                if (existingProcurement != null)
+                {
+                    existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
+                    existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
+                    existingProcurement.ContractAmount = Procurement.ContractAmount;
+                    existingProcurement.ReserveContractAmount = Procurement.ReserveContractAmount;
+                    existingProcurement.ProcurementStateId = Procurement.ProcurementStateId;
+                    existingProcurement.ProcurementState = Procurement.ProcurementState;
+
+                }
                 _ = MainFrame.Navigate(new SearchPage(Procurements));
                 return;
             }
-
-            var employee = (Employee)Application.Current.MainWindow.DataContext;
-            var positionKind = employee.Position.Kind;
-
-            var navigationMap = new Dictionary<string, Page>
-                {
-                    { "Администратор", new Pages.AdministratorPage() },
-                    { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-                    { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-                    { "Специалист отдела расчетов", new Pages.CalculatorPage() },
-                    { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
-                    { "Заместитель руководителя тендреного отдела", new Pages.HeadsOfManagersPage() },
-                    { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
-                    { "Специалист тендерного отдела", new Pages.ManagerPage() },
-                    { "Руководитель отдела закупки", new Pages.PurchaserPage() },
-                    { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
-                    { "Специалист закупки", new Pages.PurchaserPage() },
-                    { "Руководитель отдела производства", new Pages.AssemblyPage() },
-                    { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
-                    { "Специалист по производству", new Pages.AssemblyPage() },
-                    { "Юрист", new Pages.LawyerPage() }
-                };
-
-            if (navigationMap.TryGetValue(positionKind, out var page))
-            {
-                _ = MainFrame.Navigate(page);
-            }
             else
             {
+                MainFrame.GoBack();
             }
+
+            //var employee = (Employee)Application.Current.MainWindow.DataContext;
+            //var positionKind = employee.Position.Kind;
+
+            //var navigationMap = new Dictionary<string, Page>
+            //    {
+            //        { "Администратор", new Pages.AdministratorPage() },
+            //        { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+            //        { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+            //        { "Специалист отдела расчетов", new Pages.CalculatorPage() },
+            //        { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
+            //        { "Заместитель руководителя тендреного отдела", new Pages.HeadsOfManagersPage() },
+            //        { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
+            //        { "Специалист тендерного отдела", new Pages.ManagerPage() },
+            //        { "Руководитель отдела закупки", new Pages.PurchaserPage() },
+            //        { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
+            //        { "Специалист закупки", new Pages.PurchaserPage() },
+            //        { "Руководитель отдела производства", new Pages.AssemblyPage() },
+            //        { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
+            //        { "Специалист по производству", new Pages.AssemblyPage() },
+            //        { "Юрист", new Pages.LawyerPage() }
+            //    };
+
+            //if (navigationMap.TryGetValue(positionKind, out var page))
+            //{
+            //    _ = MainFrame.Navigate(page);
+            //}
+            //else
+            //{
+            //}
         }
 
         private void AddDivisionCalculating_Click(object sender, RoutedEventArgs e)
@@ -328,6 +345,21 @@ namespace Parsething.Pages
                 History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Оформлен" };
                 PUT.History(history);
                 AutoClosingMessageBox.ShowAutoClosingMessageBox($"Какой молодец. Точно все правильно оформил?", "Информация", 1500);
+                GoToProcurementFolderButton.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void GoToProcurementFolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            string networkPath = $@"\\192.168.1.128\Parsething\Tender_files\{Procurement.DisplayId}";
+
+            try
+            {
+                Process.Start("explorer.exe", networkPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при попытке открыть папку: {ex.Message}");
             }
         }
     }

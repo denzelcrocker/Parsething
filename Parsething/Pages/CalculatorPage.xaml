@@ -138,7 +138,7 @@
                                         <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurementsEmployee}"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
-                                            Text="{Binding Path=Procurement.Id}"
+                                            Text="{Binding Path=Procurement.DisplayId}"
                                             HorizontalAlignment="Center"
                                             Name="ServiceId"
                                             FontSize="15"

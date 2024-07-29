@@ -249,7 +249,7 @@ namespace Parsething.Pages
                         ProcurementState.SelectedItem = procurementState;
                         break;
                     }
-                Id.Text = Procurement.Id.ToString();
+                Id.Text = Procurement.DisplayId.ToString();
                 if(Procurement.Number != null)
                 Number.Text = Procurement.Number.ToString();
                 if (Procurement.Method != null)
@@ -583,12 +583,13 @@ namespace Parsething.Pages
             {
                 string warningMessage = null;
 
-                Procurement.Id = Convert.ToInt32(Id.Text);
                 if (ProcurementState.SelectedItem != null)
+                {
                     Procurement.ProcurementStateId = ((ProcurementState)ProcurementState.SelectedItem).Id;
+                    Procurement.ProcurementState = ((ProcurementState)ProcurementState.SelectedItem);
+                }
 
-
-                if(ProcurementState.SelectedItem != null)
+                if (ProcurementState.SelectedItem != null)
                     CreateFolderIfNeeded(((ProcurementState)ProcurementState.SelectedItem).Kind);
 
                 DateTime deadline;
@@ -748,7 +749,7 @@ namespace Parsething.Pages
                 if (CompetitorSum.Text != "")
                 {
                     decimal competitorSum;
-                    if (decimal.TryParse(CompetitorSum.Text, out competitorSum))
+                    if (decimal.TryParse(CompetitorSum.Text.Replace(".",","), out competitorSum))
                         Procurement.CompetitorSum = competitorSum;
                     else
                         warningMessage += " Сумма конкурентов";
@@ -857,7 +858,7 @@ namespace Parsething.Pages
             if (procurementState == "Оформить")
             {
                 string networkPath = @"\\192.168.1.128\Parsething\Tender_files";
-                string newFolderPath = System.IO.Path.Combine(networkPath, Procurement.Id.ToString());
+                string newFolderPath = System.IO.Path.Combine(networkPath, Procurement.DisplayId.ToString());
 
                 try
                 {
@@ -1104,42 +1105,67 @@ namespace Parsething.Pages
                 Procurement.ProcurementUserId = null;
                 PULL.Procurement(Procurement);
             }
-
             if (IsSearch)
             {
+                Procurement existingProcurement = Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
+                if (existingProcurement != null)
+                {
+                    existingProcurement.ResultDate = Procurement.ResultDate;
+                    existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
+                    existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
+                    existingProcurement.ContractAmount = Procurement.ContractAmount;
+                    existingProcurement.ReserveContractAmount = Procurement.ReserveContractAmount;
+                    existingProcurement.ProcurementStateId = Procurement.ProcurementStateId;
+                    existingProcurement.ProcurementState = Procurement.ProcurementState;
+                    existingProcurement.Applications = Procurement.Applications;
+                    existingProcurement.SigningDeadline = Procurement.SigningDeadline;
+                    existingProcurement.SigningDate = Procurement.SigningDate;
+                    existingProcurement.ConclusionDate = Procurement.ConclusionDate;
+                    existingProcurement.Calculating = Procurement.Calculating;
+                    existingProcurement.Purchase = Procurement.Purchase;
+                    existingProcurement.ActualDeliveryDate = Procurement.ActualDeliveryDate;
+                    existingProcurement.MaxAcceptanceDate = Procurement.MaxAcceptanceDate;
+                    existingProcurement.Region = Procurement.Region;
+                    existingProcurement.RegionId = Procurement.RegionId;
+                }
                 _ = MainFrame.Navigate(new SearchPage(Procurements));
                 return;
             }
-
-            var employee = (Employee)Application.Current.MainWindow.DataContext;
-            var positionKind = employee.Position.Kind;
-
-            var navigationMap = new Dictionary<string, Page>
-                {
-                    { "Администратор", new Pages.AdministratorPage() },
-                    { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-                    { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-                    { "Специалист отдела расчетов", new Pages.CalculatorPage() },
-                    { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
-                    { "Заместитель руководителя тендерного отдела", new Pages.HeadsOfManagersPage() },
-                    { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
-                    { "Специалист тендерного отдела", new Pages.ManagerPage() },
-                    { "Руководитель отдела закупки", new Pages.PurchaserPage() },
-                    { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
-                    { "Специалист закупки", new Pages.PurchaserPage() },
-                    { "Руководитель отдела производства", new Pages.AssemblyPage() },
-                    { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
-                    { "Специалист по производству", new Pages.AssemblyPage() },
-                    { "Юрист", new Pages.LawyerPage() }
-                };
-
-            if (navigationMap.TryGetValue(positionKind, out var page))
-            {
-                _ = MainFrame.Navigate(page);
-            }
             else
             {
+                MainFrame.GoBack();
             }
+
+
+            //var employee = (Employee)Application.Current.MainWindow.DataContext;
+            //var positionKind = employee.Position.Kind;
+
+            //var navigationMap = new Dictionary<string, Page>
+            //    {
+            //        { "Администратор", new Pages.AdministratorPage() },
+            //        { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+            //        { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
+            //        { "Специалист отдела расчетов", new Pages.CalculatorPage() },
+            //        { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
+            //        { "Заместитель руководителя тендерного отдела", new Pages.HeadsOfManagersPage() },
+            //        { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
+            //        { "Специалист тендерного отдела", new Pages.ManagerPage() },
+            //        { "Руководитель отдела закупки", new Pages.PurchaserPage() },
+            //        { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
+            //        { "Специалист закупки", new Pages.PurchaserPage() },
+            //        { "Руководитель отдела производства", new Pages.AssemblyPage() },
+            //        { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
+            //        { "Специалист по производству", new Pages.AssemblyPage() },
+            //        { "Юрист", new Pages.LawyerPage() }
+            //    };
+
+            //if (navigationMap.TryGetValue(positionKind, out var page))
+            //{
+            //    _ = MainFrame.Navigate(page);
+            //}
+            //else
+            //{
+            //}
         }
         private void ResetAll()
         {
@@ -1241,7 +1267,7 @@ namespace Parsething.Pages
         }
         private void LoadApplications()
         {
-            var applications = GET.View.ApplicationsBy(Procurement.Id);
+            var applications = GET.View.ApplicationsBy(Procurement.DisplayId);
 
             decimal? applicationAmount = 0;
 
@@ -1251,7 +1277,8 @@ namespace Parsething.Pages
             }
 
             ApplicationAmount.Text = applicationAmount.ToString();
-            ApplicationCount.Text = GET.Aggregate.CountOfApplications(Procurement.Id).ToString();
+            int displayId = Procurement.DisplayId.GetValueOrDefault(0);
+            ApplicationCount.Text = GET.Aggregate.CountOfApplications(displayId).ToString();
             RemainingApplicationAmount.Text = (Procurement.ContractAmount - applicationAmount).ToString();
             Grid grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(300) });
@@ -1306,7 +1333,7 @@ namespace Parsething.Pages
 
         private void GoToProcurementFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            string networkPath = $@"\\192.168.1.128\Parsething\Tender_files\{Procurement.Id}";
+            string networkPath = $@"\\192.168.1.128\Parsething\Tender_files\{Procurement.DisplayId}";
 
             try
             {

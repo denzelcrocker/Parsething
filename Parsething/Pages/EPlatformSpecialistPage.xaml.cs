@@ -38,10 +38,6 @@ namespace Parsething.Pages
         public EPlatformSpecialistPage()
         {
             InitializeComponent();
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
 
@@ -92,6 +88,11 @@ namespace Parsething.Pages
             WonPartOne.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState)); // Выиграны 1ч
 
             WonPartTwo.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)); // Выиграны 2ч
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            
         }
         private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
