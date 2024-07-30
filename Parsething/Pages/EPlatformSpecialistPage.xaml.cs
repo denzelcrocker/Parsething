@@ -31,6 +31,7 @@ namespace Parsething.Pages
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
 
         private List<Procurement>? Procurements = new List<Procurement>();
+        private DateTime StartDate = new DateTime();
         private bool _isAscendingDeadline = true;
         private bool _isAscendingLaw = true;
         private bool _isAscendingResultDate = true;
@@ -40,6 +41,9 @@ namespace Parsething.Pages
             InitializeComponent();
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
+
+            var globalUsingValues = Classes.GlobalUsingValues.Instance;
+            StartDate = globalUsingValues.StartDate;
 
             int countOfMethods = 0;
 
@@ -52,7 +56,7 @@ namespace Parsething.Pages
 
             Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState)); // Посчитан
 
-            RetreatCalculate.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState)); // Посчитан
+            RetreatCalculate.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", StartDate)); // Отбой
 
             DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
 
@@ -79,11 +83,11 @@ namespace Parsething.Pages
 
             OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.ResultDate)); // Просрочены
 
-            Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState)); // Отменены
+            Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", StartDate)); // Отменены
 
-            Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState)); // Отклонены
+            Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", StartDate)); // Отклонены
 
-            Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
+            Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", StartDate)); // Проиграны
 
             WonPartOne.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState)); // Выиграны 1ч
 
@@ -219,7 +223,7 @@ namespace Parsething.Pages
 
         private void RetreatCalculateButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отбой", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Отбой", StartDate);
             if (Procurements != null)
                 ProcurementsListView.ItemsSource = Procurements;
 
@@ -380,7 +384,7 @@ namespace Parsething.Pages
 
         private void CancellationButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отмена", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Отмена", StartDate);
             if (Procurements != null)
                 ProcurementsListView.ItemsSource = Procurements;
 
@@ -403,7 +407,7 @@ namespace Parsething.Pages
 
         private void RejectedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отклонен", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Отклонен", StartDate);
             if (Procurements != null)
                 ProcurementsListView.ItemsSource = Procurements;
 
@@ -426,7 +430,7 @@ namespace Parsething.Pages
 
         private void LostButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Проигран", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Проигран", StartDate);
             if (Procurements != null)
                 ProcurementsListView.ItemsSource = Procurements;
 

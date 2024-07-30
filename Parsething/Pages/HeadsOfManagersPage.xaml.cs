@@ -34,6 +34,8 @@ namespace Parsething.Pages
 
         private List<Procurement>? Procurements = new List<Procurement>();
 
+        private DateTime StartDate = new DateTime();
+
         public HeadsOfManagersPage()
         {
             InitializeComponent();
@@ -42,6 +44,9 @@ namespace Parsething.Pages
         {
             try{ MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
+
+            var globalUsingValues = GlobalUsingValues.Instance;
+            StartDate = globalUsingValues.StartDate;
 
             int countOfManagers = 0;
             int countOfMethods = 0;
@@ -372,7 +377,7 @@ namespace Parsething.Pages
 
         private void CancellationButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отмена", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Отмена", StartDate);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }

@@ -20,6 +20,9 @@ public partial class CalculatorPage : Page
     private List<ProcurementsEmployee>? ProcurementsEmployeesNew { get; set; }
     private List<ProcurementsEmployee>? ProcurementsEmployeesCalculated { get; set; }
     private List<ProcurementsEmployee>? ProcurementsEmployeesDrawUp { get; set; }
+    private List<ProcurementsEmployee>? ProcurementsEmployeesWonPartOne { get; set; }
+
+    private DateTime StartDate = new DateTime();
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
@@ -29,6 +32,9 @@ public partial class CalculatorPage : Page
     {
         try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
         catch { }
+
+        var globalUsingValues = Classes.GlobalUsingValues.Instance;
+        StartDate = globalUsingValues.StartDate;
 
         ProcurementsEmployeesNew = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый");
         if (ProcurementsEmployeesNew != null)
@@ -54,6 +60,10 @@ public partial class CalculatorPage : Page
         if (ProcurementsEmployeesDrawUp != null)
             DrawUp.Text = ProcurementsEmployeesDrawUp.Count.ToString();
 
+        ProcurementsEmployeesWonPartOne = GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id);
+        if (ProcurementsEmployeesWonPartOne != null)
+            WonPartOne.Text = ProcurementsEmployeesWonPartOne.Count.ToString();
+
         NewButton.Background = Brushes.LightGray;
     }
 
@@ -75,6 +85,7 @@ public partial class CalculatorPage : Page
         NewButton.Background = Brushes.LightGray;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;
+        WonPartOneButton.Background = Brushes.Transparent;
     }
 
     private void CalculatedButton_Click(object sender, RoutedEventArgs e)
@@ -83,6 +94,7 @@ public partial class CalculatorPage : Page
         NewButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.LightGray;
         DrawUpButton.Background = Brushes.Transparent;
+        WonPartOneButton.Background = Brushes.Transparent;
     }
 
     private void DrawUpButton_Click(object sender, RoutedEventArgs e)
@@ -91,6 +103,7 @@ public partial class CalculatorPage : Page
         NewButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.LightGray;
+        WonPartOneButton.Background = Brushes.Transparent;
     }
 
     private void EditProcurement_Click(object sender, RoutedEventArgs e)
@@ -117,5 +130,14 @@ public partial class CalculatorPage : Page
             Procurement procurement = procurementsEmployee.Procurement;
             _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement,null, true, false));
         }
+    }
+
+    private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
+    {
+        View.ItemsSource = ProcurementsEmployeesWonPartOne;
+        NewButton.Background = Brushes.Transparent;
+        CalculatedButton.Background = Brushes.Transparent;
+        DrawUpButton.Background = Brushes.Transparent;
+        WonPartOneButton.Background = Brushes.LightGray;
     }
 }

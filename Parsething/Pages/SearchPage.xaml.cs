@@ -593,8 +593,8 @@ namespace Parsething.Pages
             {
                 case "Law":
                     return isAscending ? procurements.OrderBy(p => p.Law.Number).ToList() : procurements.OrderByDescending(p => p.Law.Number).ToList();
-                case "Deadline":
-                    return isAscending ? procurements.OrderBy(p => p.Deadline).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
+                case "ResultDate":
+                    return isAscending ? procurements.OrderBy(p => p.ReserveContractAmount).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
                 case "SigningDeadline":
                     return isAscending ? procurements.OrderBy(p => p.SigningDeadline).ToList() : procurements.OrderByDescending(p => p.SigningDeadline).ToList();
                 case "ActualDeliveryDate":

@@ -65,7 +65,7 @@
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Закон" Grid.Column="1" MouseLeftButtonUp="SortByField" Tag="Law"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="В работе" Grid.Column="2" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Комплектующие" Grid.Column="3" />
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата подведения итогов" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="Deadline"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата подведения итогов" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="ResultDate"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="5" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="НМЦК" Grid.Column="5" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="6" Margin="0,0,0,15"/>

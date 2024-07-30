@@ -31,6 +31,8 @@ namespace Parsething.Pages
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesEPSpecialistGroupings { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
 
+        private DateTime StartDate = new DateTime();
+
 
         private List<Procurement>? Procurements = new List<Procurement>();
 
@@ -43,6 +45,9 @@ namespace Parsething.Pages
             try{ MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
 
+            var globalUsingValues = Classes.GlobalUsingValues.Instance;
+            StartDate = globalUsingValues.StartDate;
+
             int countOfCalculationsNew = 0;
             int countOfCalculationsDrawUp = 0;
             int countOfSended = 0;
@@ -52,7 +57,7 @@ namespace Parsething.Pages
 
             Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState)); // Неразобранные
 
-            Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState)); // Отбой
+            Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", StartDate)); // Отбой
 
             CalculationQueue.Text = Convert.ToString(GET.Aggregate.ProcurementsQueueCount());// Очередь расчета
 
@@ -142,11 +147,11 @@ namespace Parsething.Pages
 
             OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.ResultDate)); // Просрочены
 
-            Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState)); // Отменены
+            Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", StartDate)); // Отменены
 
-            Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState)); // Отклонены
+            Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", StartDate)); // Отклонены
 
-            Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
+            Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", StartDate)); // Проиграны
 
             PreviousWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane));// Предыдущая неделя отгрузки
 
@@ -211,7 +216,7 @@ namespace Parsething.Pages
 
         private void RetreatButton_Click(object sender, RoutedEventArgs e) // отбой
         {
-            Procurements = GET.View.ProcurementsBy("Отбой", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Отбой", StartDate);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }
@@ -299,21 +304,21 @@ namespace Parsething.Pages
 
         private void CancellationButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отмена", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Отмена", StartDate);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void RejectedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отклонен", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Отклонен", StartDate);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void LostButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Проигран", GET.KindOf.ProcurementState);
+            Procurements = GET.View.ProcurementsBy("Проигран", StartDate);
             if (Procurements != null)
                 MainFrame.Navigate(new SearchPage(Procurements));
         }

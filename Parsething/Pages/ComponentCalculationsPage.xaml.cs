@@ -362,5 +362,11 @@ namespace Parsething.Pages
                 MessageBox.Show($"Ошибка при попытке открыть папку: {ex.Message}");
             }
         }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Clipboard.SetText(Id.Text);
+            AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 1500);
+        }
     }
 }
