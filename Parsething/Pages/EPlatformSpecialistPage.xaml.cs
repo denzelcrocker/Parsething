@@ -102,7 +102,10 @@ namespace Parsething.Pages
         {
             if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
             {
-                MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+                var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
+                GlobalUsingValues.Instance.AddProcurements(procurements);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
         }
         private void SortByDeadline(object sender, MouseButtonEventArgs e)
@@ -501,7 +504,7 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement, null, false));
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)

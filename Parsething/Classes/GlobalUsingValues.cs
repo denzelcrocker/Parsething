@@ -21,11 +21,19 @@ namespace Parsething.Classes
         public DateTime StartDate { get; private set; }
         public List<Procurement> Procurements { get; private set; }
 
-        //public void AddProcurement(Procurement procurement)
-        //{
-        //    Procurements.Add(procurement);
-        //}
+        public void AddProcurements(List<Procurement> procurements)
+        {
+            Procurements.Clear();
 
+            if (procurements != null && procurements.Any())
+            {
+                Procurements.AddRange(procurements);
+            }
+        }
+        public void AddProcurement(Procurement procurement)
+        {
+            Procurements.Add(procurement);
+        }
         //public Procurement GetProcurementById(int id)
         //{
         //    return Procurements.FirstOrDefault(p => p.Id == id);

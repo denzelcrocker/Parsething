@@ -89,7 +89,7 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement, null, false));
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)

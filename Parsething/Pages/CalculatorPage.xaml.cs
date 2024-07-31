@@ -112,7 +112,7 @@ public partial class CalculatorPage : Page
         if(procurementsEmployee != null)
         {
             Procurement procurement = procurementsEmployee.Procurement;
-            _ = MainFrame.Navigate(new CardOfProcurement(procurement, null, false));
+            _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
         }
     }
 
@@ -128,7 +128,7 @@ public partial class CalculatorPage : Page
         if (procurementsEmployee != null)
         {
             Procurement procurement = procurementsEmployee.Procurement;
-            _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement,null, true, false));
+            _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true, false));
         }
     }
 

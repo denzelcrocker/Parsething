@@ -15,10 +15,11 @@ using DatabaseLibrary.Entities.EmployeeMuchToMany;
 using System.Windows.Controls.Primitives;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
+using System.ComponentModel;
 
 namespace Parsething.Pages
 {
-    public partial class SearchPage : Page
+    public partial class SearchPage : Page, INotifyPropertyChanged
     {
         private Frame MainFrame { get; set; } = null!;
         private List<Law>? Laws { get; set; }
@@ -27,22 +28,40 @@ namespace Parsething.Pages
         private List<LegalEntity>? LegalEntities { get; set; }
         private List<Procurement>? AllProcurements { get; set; } = new List<Procurement>();
         private List<Procurement>? FoundProcurements { get; set; }
-        private List<Procurement>? Procurements { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
-        private const int PageSize = 20;
-        private int CurrentPage = 1;
+        private const int PageSize = 15;
+        private int _currentPage = 1;
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (_currentPage != value)
+                {
+                    _currentPage = value;
+                    OnPropertyChanged(nameof(CurrentPage));
+                }
+            }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private bool _isAscending = false; 
         private string _currentSortingField = "";
 
-        public SearchPage(List<Procurement>? procurements)
+        public SearchPage()
         {
             InitializeComponent();
-            Procurements = new List<Procurement>();
+            DataContext = this;
 
 
-            if (procurements != null && procurements.Count > 0)
+            if (GlobalUsingValues.Instance.Procurements != null && GlobalUsingValues.Instance.Procurements.Count > 0)
             {
-                AllProcurements = procurements;
+                AllProcurements = GlobalUsingValues.Instance.Procurements;
                 LoadInitialData();
             }
             else
@@ -54,7 +73,7 @@ namespace Parsething.Pages
         {
             if (!IsSearchCriteriaEmpty())
             {
-                Procurements = GET.View.ProcurementsBy(
+                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy(
                     SearchCriteria.Instance.ProcurementId,
                     SearchCriteria.Instance.ProcurementNumber,
                     SearchCriteria.Instance.Law,
@@ -69,20 +88,41 @@ namespace Parsething.Pages
                     PageSize,
                     CurrentPage,
                     _currentSortingField,
-                    _isAscending);
+                    _isAscending));
             }
             else if (AllProcurements != null && AllProcurements.Count > 0)
             {
-                Procurements = AllProcurements.Take(PageSize).ToList();
+                GlobalUsingValues.Instance.AddProcurements(AllProcurements
+                        .Skip((CurrentPage - 1) * PageSize)
+                        .Take(PageSize)
+                        .ToList());
             }
             else
             {
-                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
+                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy("", "", "", "", "", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending));
             }
 
-            GET.View.PopulateComponentStates(Procurements);
-            SearchLV.ItemsSource = Procurements;
+            GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+            SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
             RestoreSearchCriteria();
+        }
+        private async void PreviousPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentPage > 1)
+            {
+                CurrentPage--;
+                await RefreshData();
+            }
+        }
+        private async void NextPage_Click(object sender, RoutedEventArgs e)
+        {
+            // Предположим, что можно узнать общее количество страниц из ответа или другой логики.
+            var totalPages = (AllProcurements?.Count ?? 0) / PageSize + 1;
+            if (CurrentPage < totalPages)
+            {
+                CurrentPage++;
+                await RefreshData();
+            }
         }
         private async void LoadInitialData()
         {
@@ -100,9 +140,9 @@ namespace Parsething.Pages
             LegalEntity.ItemsSource = LegalEntities;
 
 
-            Procurements = AllProcurements.Take(PageSize).ToList();
-            GET.View.PopulateComponentStates(Procurements);
-            SearchLV.ItemsSource = Procurements;
+            GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
+            GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+            SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
 
 
             RestoreSearchCriteria();
@@ -127,11 +167,11 @@ namespace Parsething.Pages
             // Проверяем, есть ли переданные тендеры
             if (AllProcurements != null && AllProcurements.Count > 0)
             {
-                Procurements = AllProcurements.Take(PageSize).ToList();
+                GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
             }
             else if (!IsSearchCriteriaEmpty())
             {
-                Procurements = GET.View.ProcurementsBy(
+                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy(
                     SearchCriteria.Instance.ProcurementId,
                     SearchCriteria.Instance.ProcurementNumber,
                     SearchCriteria.Instance.Law,
@@ -146,15 +186,15 @@ namespace Parsething.Pages
                     PageSize,
                     CurrentPage,
                     _currentSortingField,
-                    _isAscending);
+                    _isAscending));
             }
             else
             {
-                Procurements = GET.View.ProcurementsBy("", "", "", "", "", "", "","","", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending);
+                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy("", "", "", "", "", "", "","","", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending));
             }
-            GET.View.PopulateComponentStates(Procurements);
+            GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
 
-            SearchLV.ItemsSource = Procurements;
+            SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
 
 
             RestoreSearchCriteria();
@@ -185,7 +225,9 @@ namespace Parsething.Pages
             Employee.SelectedItem = Employees?.FirstOrDefault(e => e.FullName == SearchCriteria.Instance.Employee);
             OrganizationName.Text = SearchCriteria.Instance.OrganizationName;
             LegalEntity.SelectedItem = LegalEntities?.FirstOrDefault(l => l.Name == SearchCriteria.Instance.LegalEntity);
-            DateType.SelectedItem = SearchCriteria.Instance.DateType;
+
+            var dateType = SearchCriteria.Instance.DateType;
+            DateType.SelectedValue = dateType;
 
             if (DateTime.TryParse(SearchCriteria.Instance.StartDate, out DateTime startDate))
                 StartDate.SelectedDate = startDate;
@@ -217,7 +259,7 @@ namespace Parsething.Pages
                 procurement = button.DataContext as Procurement;
 
             if (procurement != null)
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement, Procurements, true));
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement, true));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
@@ -263,7 +305,7 @@ namespace Parsething.Pages
                 GET.View.PopulateComponentStates(FoundProcurements);
                 
                 SearchLV.ItemsSource = FoundProcurements;
-                Procurements = FoundProcurements;
+                GlobalUsingValues.Instance.AddProcurements(FoundProcurements);
             }
 
             SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate);
@@ -294,7 +336,7 @@ namespace Parsething.Pages
             MenuItem menuItem = sender as MenuItem;
 
             if (menuItem?.DataContext is Procurement procurement)
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, true, true));
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true, true));
         }
 
         private void Purchase_Click(object sender, RoutedEventArgs e)
@@ -302,7 +344,7 @@ namespace Parsething.Pages
             MenuItem menuItem = sender as MenuItem;
 
             if (menuItem?.DataContext is Procurement procurement)
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, Procurements, false, true));
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false, true));
         }
 
         private void OverallInfo_Click(object sender, RoutedEventArgs e)
@@ -315,10 +357,10 @@ namespace Parsething.Pages
             decimal? purchaseAmount = 0;
 
             OverallInfoPopUp.IsOpen = !OverallInfoPopUp.IsOpen;
-            if (Procurements != null)
+            if (GlobalUsingValues.Instance.Procurements != null)
             {
-                OverallCount.Text = Procurements.Count.ToString();
-                foreach (Procurement procurement in Procurements)
+                OverallCount.Text = GlobalUsingValues.Instance.Procurements.Count.ToString();
+                foreach (Procurement procurement in GlobalUsingValues.Instance.Procurements)
                 {
                     CalculateOverallInfo(procurement, ref overallAmount, ref profitCalculate, ref profitReal, ref calculatingAmount, ref purchaseAmount, ref overallAmountCalculate);
                 }
@@ -460,73 +502,73 @@ namespace Parsething.Pages
             }
         }
 
-        private async Task LoadMoreItems()
-        {
-            CurrentPage++;
+        //private async Task LoadMoreItems()
+        //{
+        //    CurrentPage++;
 
-            if (AllProcurements != null && AllProcurements.Count > 0) // обязательно посмотреть!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            {
-                var newItems = AllProcurements.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-                if (newItems.Count > 0)
-                {
-                    foreach (var item in newItems)
-                    {
-                        Procurements.Add(item);
-                    }
+        //    if (AllProcurements != null && AllProcurements.Count > 0) // обязательно посмотреть!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //    {
+        //        var newItems = AllProcurements.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+        //        if (newItems.Count > 0)
+        //        {
+        //            foreach (var item in newItems)
+        //            {
+        //                Procurements.Add(item);
+        //            }
 
-                    SearchLV.ItemsSource = null;
-                    SearchLV.ItemsSource = Procurements;
-                }
-            }
-            else 
-            {
-                var newItems = GET.View.ProcurementsBy(
-                        SearchCriteria.Instance.ProcurementId,
-                        SearchCriteria.Instance.ProcurementNumber,
-                        SearchCriteria.Instance.Law,
-                        SearchCriteria.Instance.ProcurementState,
-                        SearchCriteria.Instance.INN,
-                        SearchCriteria.Instance.Employee,
-                        SearchCriteria.Instance.OrganizationName,
-                        SearchCriteria.Instance.LegalEntity,
-                        SearchCriteria.Instance.DateType,
-                        SearchCriteria.Instance.StartDate,
-                        SearchCriteria.Instance.EndDate,
-                        PageSize,
-                        CurrentPage,
-                        _currentSortingField,
-                        _isAscending);
+        //            SearchLV.ItemsSource = null;
+        //            SearchLV.ItemsSource = Procurements;
+        //        }
+        //    }
+        //    else 
+        //    {
+        //        var newItems = GET.View.ProcurementsBy(
+        //                SearchCriteria.Instance.ProcurementId,
+        //                SearchCriteria.Instance.ProcurementNumber,
+        //                SearchCriteria.Instance.Law,
+        //                SearchCriteria.Instance.ProcurementState,
+        //                SearchCriteria.Instance.INN,
+        //                SearchCriteria.Instance.Employee,
+        //                SearchCriteria.Instance.OrganizationName,
+        //                SearchCriteria.Instance.LegalEntity,
+        //                SearchCriteria.Instance.DateType,
+        //                SearchCriteria.Instance.StartDate,
+        //                SearchCriteria.Instance.EndDate,
+        //                PageSize,
+        //                CurrentPage,
+        //                _currentSortingField,
+        //                _isAscending);
 
-                if (newItems != null && newItems.Count > 0)
-                {
-                    foreach (var item in newItems)
-                    {
-                        Procurements.Add(item);
-                    }
+        //        if (newItems != null && newItems.Count > 0)
+        //        {
+        //            foreach (var item in newItems)
+        //            {
+        //                Procurements.Add(item);
+        //            }
 
-                    SearchLV.ItemsSource = null; // Обновляем источник данных
-                    SearchLV.ItemsSource = Procurements;
-                }
-            }
-        }
-        private async void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (e.VerticalOffset == e.ExtentHeight - e.ViewportHeight)
-            {
-                await LoadMoreItems();
-            }
-        }
+        //            SearchLV.ItemsSource = null; // Обновляем источник данных
+        //            SearchLV.ItemsSource = Procurements;
+        //        }
+        //    }
+        //}
+        //private async void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        //{
+        //    if (e.VerticalOffset == e.ExtentHeight - e.ViewportHeight)
+        //    {
+        //        await LoadMoreItems();
+        //    }
+        //}
         private void GoToApplicationsButton_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
             {
                 List<Procurement> procurements = new List<Procurement> ();
-                if (procurement.ParentProcurementId != null) 
-                    procurements = GET.View.ApplicationsBy(procurement.ParentProcurementId);
+                if (procurement.ParentProcurementId != null)
+                    GlobalUsingValues.Instance.AddProcurements(GET.View.ApplicationsBy(procurement.ParentProcurementId));
                 else
-                    procurements = GET.View.ApplicationsBy(procurement.DisplayId);
-                MainFrame.Navigate(new SearchPage(procurements));
+                    GlobalUsingValues.Instance.AddProcurements(GET.View.ApplicationsBy(procurement.DisplayId));
+                MainFrame.Navigate(new SearchPage());
             }
         }
         private void SortByField(object sender, MouseButtonEventArgs e)
@@ -567,21 +609,21 @@ namespace Parsething.Pages
                         _currentSortingField,
                         _isAscending);
 
-                    Procurements = AllProcurements.Take(PageSize).ToList();
+                    GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
                 }
                 else if (AllProcurements != null && AllProcurements.Count > 0)
                 {
                     AllProcurements = SortProcurements(AllProcurements, field, _isAscending);
-                    Procurements = AllProcurements.Take(PageSize).ToList();
+                    GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
                 }
                 else
                 {
                     AllProcurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", "", "", "", "", int.MaxValue, 1, _currentSortingField, _isAscending);
-                    Procurements = AllProcurements.Take(PageSize).ToList();
+                    GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
                 }
 
-                GET.View.PopulateComponentStates(Procurements);
-                SearchLV.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
 
                 UpdateSortingArrow(label, _isAscending);
             }

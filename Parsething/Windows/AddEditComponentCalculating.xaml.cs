@@ -30,7 +30,6 @@ namespace Parsething.Windows
         private bool IsSearch;
 
         private Procurement Procurement;
-        private List<Procurement>? Procurements { get; set; }
 
 
         private ComponentCalculation ComponentCalculation;
@@ -42,12 +41,11 @@ namespace Parsething.Windows
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
         }
-        public AddEditComponentCalculating(ComponentCalculation componentCalculation, Procurement procurement, List<Procurement> procurements ,bool isCalculation, bool isPosition, bool isSearch)
+        public AddEditComponentCalculating(ComponentCalculation componentCalculation, Procurement procurement ,bool isCalculation, bool isPosition, bool isSearch)
         {
             InitializeComponent();
             IsSearch = isSearch;
             Procurement = procurement;
-            Procurements = procurements;
 
             ComponentCalculation = componentCalculation;
             IsCalculation = isCalculation;
@@ -152,7 +150,7 @@ namespace Parsething.Windows
                 componentCalculation.Reserve = Reserve.Text;
                 componentCalculation.Note = Note.Text;
                 PUT.ComponentCalculation(componentCalculation);
-                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, Procurements, IsCalculation, IsSearch));
+                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation, IsSearch));
                 DialogResult = true;
             }
             else
@@ -191,7 +189,7 @@ namespace Parsething.Windows
                 componentCalculation.Reserve = Reserve.Text;
                 componentCalculation.Note = Note.Text;
                 PULL.ComponentCalculation(componentCalculation);
-                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, Procurements, IsCalculation, IsSearch));
+                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation, IsSearch));
                 DialogResult = true;
             }
             else
@@ -211,7 +209,7 @@ namespace Parsething.Windows
         {
             if(ComponentCalculation != null)
                 DELETE.ComponentCalculation(ComponentCalculation);
-            _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, Procurements, IsCalculation, IsSearch));
+            _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation, IsSearch));
             DialogResult = true;
         }
     }

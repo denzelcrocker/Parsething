@@ -246,7 +246,7 @@ namespace Parsething
             PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
             SearchCriteria.Instance.ClearData();
 
-            _ = MainFrame.Navigate(new Pages.SearchPage(null));
+            _ = MainFrame.Navigate(new Pages.SearchPage());
         }
     }
 }

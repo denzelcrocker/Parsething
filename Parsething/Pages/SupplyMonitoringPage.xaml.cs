@@ -113,7 +113,7 @@ namespace Parsething.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = Entry.ProcurementBy(Convert.ToInt32(((Button)sender).DataContext));
-            NavigationService.Navigate(new ComponentCalculationsPage(procurement, null, false, false));
+            NavigationService.Navigate(new ComponentCalculationsPage(procurement, false, false));
         }
 
         private void BySuppliersButton_Click(object sender, RoutedEventArgs e)

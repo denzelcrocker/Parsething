@@ -42,6 +42,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
                         <RowDefinition />
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <Grid x:Name="SortingHeadersGrid">
                         <Grid.ColumnDefinitions>
@@ -80,7 +81,7 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Регион" Grid.Column="13" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Опции" Grid.Column="14" />
                     </Grid>
-                    <ListView x:Name="SearchLV" DataContext="{StaticResource Procurement}" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" Margin="0,0,0,40" ScrollViewer.ScrollChanged="SearchLV_ScrollChanged" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
+                    <ListView x:Name="SearchLV" DataContext="{StaticResource Procurement}" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                         <i:Interaction.Behaviors>
                             <cls:SmoothScrollBehavior />
                         </i:Interaction.Behaviors>
@@ -544,12 +545,11 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Grid Name="LoadingGrid"  Grid.Column="2" Grid.Row="1" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="Загрузка..." Foreground="Black" FontSize="20" HorizontalAlignment="Center"/>
-                            <ProgressBar IsIndeterminate="True" Width="200" Height="20" Margin="0,20,0,0"/>
-                        </StackPanel>
-                    </Grid>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+                        <Button Content="Предыдущая страница" Click="PreviousPage_Click" />
+                        <TextBlock Text="{Binding CurrentPage, StringFormat='Страница {0}'}" VerticalAlignment="Center" Margin="10,0"/>
+                        <Button Content="Следующая страница" Click="NextPage_Click" />
+                    </StackPanel>
                 </Grid>
             </Border>
             <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="30,15,0,15" CornerRadius="45">
@@ -605,13 +605,13 @@
                             <ComboBox x:Name="LegalEntity" Grid.Row="15" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="40" DisplayMemberPath="Name" FontSize="15"/>
                             <Label Content="Тип даты" Style="{DynamicResource Label.Search}" Grid.Column="0" Grid.Row="16" HorizontalAlignment="Left"/>
                             <ComboBox x:Name="DateType"
-                                    Grid.Row="17"
-                                    HorizontalAlignment="Left"
-                                    Style="{DynamicResource ComboBoxBase.Search}"
-                                    Height="40"
-                                    FontSize="15"
-                                    SelectedValuePath="Content"
-                                    SelectedValue="{Binding SelectedDateType, Mode=TwoWay}">
+                                Grid.Row="17"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource ComboBoxBase.Search}"
+                                Height="40"
+                                FontSize="15"
+                                SelectedValuePath="Tag"
+                                DisplayMemberPath="Content">
                                 <ComboBoxItem Content="Дата начала подачи" Tag="StartDate"/>
                                 <ComboBoxItem Content="Дата окончания подачи" Tag="Deadline"/>
                                 <ComboBoxItem Content="Дата подведения итогов" Tag="ResultDate"/>

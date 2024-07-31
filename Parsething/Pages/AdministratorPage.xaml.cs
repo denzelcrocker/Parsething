@@ -11,7 +11,6 @@ public partial class AdministratorPage : Page
 {
     private Frame MainFrame { get; set; } = null!;
 
-    private List<Procurement>? Procurements = new List<Procurement>();
     private List<ProcurementsEmployee>? ProcurementsEmployees = new List<ProcurementsEmployee>();
 
     private DateTime StartDate = new DateTime();
@@ -223,273 +222,312 @@ public partial class AdministratorPage : Page
     }
     private void UnsortedButton_Click(object sender, RoutedEventArgs e) // неразобранные 
     {
-        Procurements = GET.View.ProcurementsBy("Неразобранный", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Неразобранный", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void RetreatButton_Click(object sender, RoutedEventArgs e) // отбой
     {
-        Procurements = GET.View.ProcurementsBy("Отбой", StartDate);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Отбой", StartDate) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void CalculationQueueButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsQueue();
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsQueue() ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void SendedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Отправлен", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Отправлен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void BargainingButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.ResultDate);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.ResultDate) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.ResultDate);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.ResultDate) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void CancellationButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Отмена", StartDate);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Отмена", StartDate) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void RejectedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Отклонен", StartDate);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Отклонен", StartDate) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void LostButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Проигран", StartDate);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Проигран", StartDate) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void NewButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Новый", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Новый", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void CalculatedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Посчитан", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Посчитан", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void DrawUpButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Оформить", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Оформить", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void IssuedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Оформлен", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Оформлен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ForSendButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.Deadline);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.Deadline) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.Deadline);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.Deadline) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void WonByApplicationsButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("", GET.KindOf.Applications);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("", GET.KindOf.Applications) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ProblemButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsProblem);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsProblem) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void InWorkButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsInWork);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsInWork) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void AgreedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsAgreed);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = Functions.Conversion.ConponentCalculationsConversion(ComponentCalculationsAgreed) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Предыдущая", GET.KindOf.ShipmentPlane);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Предыдущая", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void NextWeekButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
     private void ApproveCalculatingYesButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Calculating);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(true, GET.KindOf.Calculating) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ApproveCalculatingNoButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Calculating);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(false, GET.KindOf.Calculating) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(true, GET.KindOf.Purchase);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(true, GET.KindOf.Purchase) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ReceivedButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Принят", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Принят", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
     private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.CorrectionDate);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.CorrectionDate) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void NotPaidButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsNotPaid();
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsNotPaid() ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(false);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(false) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(true);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(true) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void JudgementButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(GET.KindOf.Judgement);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(GET.KindOf.Judgement) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void FASButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy(GET.KindOf.FAS);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy(GET.KindOf.FAS) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ContractYesButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("", true, GET.KindOf.ContractConclusion);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("", true, GET.KindOf.ContractConclusion) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void ContractNoButton_Click(object sender, RoutedEventArgs e)
     {
-        Procurements = GET.View.ProcurementsBy("", false, GET.KindOf.ContractConclusion);
-        if (Procurements != null)
-            MainFrame.Navigate(new SearchPage(Procurements));
+        var procurements = GET.View.ProcurementsBy("", false, GET.KindOf.ContractConclusion) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -502,7 +540,10 @@ public partial class AdministratorPage : Page
         var selectedGrouping = (sender as FrameworkElement)?.DataContext as ProcurementsEmployeesGrouping;
         if (selectedGrouping != null)
         {
-            MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+            var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
     }
 
@@ -510,7 +551,10 @@ public partial class AdministratorPage : Page
     {
         if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
         {
-            MainFrame.Navigate(new SearchPage(selectedGrouping.Procurements));
+            var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
     }
 

@@ -82,7 +82,6 @@ namespace Parsething.Pages
 
         private Procurement? Procurement { get; set; }
 
-        private List<Procurement> Procurements { get; set; }
         private List<ComponentCalculation> ComponentCalculations { get; set; }
         private bool IsSearch;
 
@@ -97,7 +96,7 @@ namespace Parsething.Pages
             catch { }
         }
 
-        public CardOfProcurement(Procurement procurement, List<Procurement> procurements, bool isSearch)
+        public CardOfProcurement(Procurement procurement, bool isSearch)
         {
             InitializeComponent();
             UpdateUIForUserRole();
@@ -138,7 +137,6 @@ namespace Parsething.Pages
             PaymentUL.Fill = Gray;
             PaymentLV.Visibility = Visibility.Hidden;
 
-            Procurements = procurements;
             IsSearch = isSearch;
 
             ProcurementStates = GET.View.DistributionOfProcurementStates(((Employee)Application.Current.MainWindow.DataContext).Position.Kind);
@@ -1107,7 +1105,7 @@ namespace Parsething.Pages
             }
             if (IsSearch)
             {
-                Procurement existingProcurement = Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
+                Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
                 if (existingProcurement != null)
                 {
                     existingProcurement.ResultDate = Procurement.ResultDate;
@@ -1128,7 +1126,7 @@ namespace Parsething.Pages
                     existingProcurement.Region = Procurement.Region;
                     existingProcurement.RegionId = Procurement.RegionId;
                 }
-                _ = MainFrame.Navigate(new SearchPage(Procurements));
+                _ = MainFrame.Navigate(new SearchPage());
                 return;
             }
             else
@@ -1542,6 +1540,15 @@ namespace Parsething.Pages
             // Запуск потока
             thread.Start();
 
+        }
+
+        private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null && Procurement.RequestUri != null)
+            {
+                string url = Procurement.RequestUri.ToString();
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
         }
     }
 }

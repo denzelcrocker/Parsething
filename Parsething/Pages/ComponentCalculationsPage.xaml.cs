@@ -36,7 +36,6 @@ namespace Parsething.Pages
 
         private List<ComponentState>? ComponentStates = new List<ComponentState>();
 
-        private List<Procurement>? Procurements = new List<Procurement>();
 
         private Procurement? Procurement { get; set; }
 
@@ -49,13 +48,12 @@ namespace Parsething.Pages
         static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен" };
 
 
-        public ComponentCalculationsPage(Procurement procurement, List<Procurement> procurements, bool isCalculation, bool isSearch)
+        public ComponentCalculationsPage(Procurement procurement, bool isCalculation, bool isSearch)
         {
             InitializeComponent();
             procurement = GET.View.ProcurementBy(procurement.Id);
             IsSearch = isSearch;
             IsCalculation = isCalculation;
-            Procurements = procurements;
             decimal? calculatingAmount = 0;
             decimal? purchaseAmount = 0;
             if (procurement != null)
@@ -183,7 +181,7 @@ namespace Parsething.Pages
 
             if (IsSearch)
             {
-                Procurement existingProcurement = Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
+                Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
                 if (existingProcurement != null)
                 {
                     existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
@@ -194,7 +192,7 @@ namespace Parsething.Pages
                     existingProcurement.ProcurementState = Procurement.ProcurementState;
 
                 }
-                _ = MainFrame.Navigate(new SearchPage(Procurements));
+                _ = MainFrame.Navigate(new SearchPage());
                 return;
             }
             else

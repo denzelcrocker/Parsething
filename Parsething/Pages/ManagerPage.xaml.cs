@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DatabaseLibrary.Entities.EmployeeMuchToMany;
+using DatabaseLibrary.Entities.ProcurementProperties;
+using Microsoft.EntityFrameworkCore;
 using Parsething.Classes;
 using System;
 using System.Collections.Generic;
@@ -107,10 +109,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 1ч", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
@@ -118,21 +120,21 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 2ч", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void WonByApplicationsTwoButton_Click(object sender, RoutedEventArgs e)
         {
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("", GET.KindOf.Applications, ((Employee)Application.Current.MainWindow.DataContext).Id);
-            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            foreach(ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ContractYesButton_Click(object sender, RoutedEventArgs e)
@@ -140,10 +142,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("", true, GET.KindOf.ContractConclusion, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ContractNoButton_Click(object sender, RoutedEventArgs e)
@@ -151,10 +153,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("", false, GET.KindOf.ContractConclusion, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
@@ -162,10 +164,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Приемка", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void PartialAcceptanceButton_Click(object sender, RoutedEventArgs e)
@@ -178,10 +180,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Приемка", GET.KindOf.CorrectionDate, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void NotPaidButton_Click(object sender, RoutedEventArgs e)
@@ -189,10 +191,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesNotPaid(((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
@@ -200,10 +202,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
@@ -211,10 +213,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void JudgementButton_Click(object sender, RoutedEventArgs e)
@@ -222,10 +224,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(GET.KindOf.Judgement, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void FASButton_Click(object sender, RoutedEventArgs e)
@@ -233,40 +235,40 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(GET.KindOf.FAS, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsProblem)
             {
-                Procurements.Add(componentCalculation.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsInWork)
             {
-                Procurements.Add(componentCalculation.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsAgreed)
             {
-                Procurements.Add(componentCalculation.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
@@ -274,10 +276,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Текущая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
@@ -285,10 +287,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Предыдущая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
@@ -296,10 +298,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Следующая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
@@ -307,10 +309,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Через одну", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ExecutionStateButton_Click(object sender, RoutedEventArgs e)
@@ -318,10 +320,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(null, GET.KindOf.ExecutionState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void WarrantyStateButton_Click(object sender, RoutedEventArgs e)
@@ -329,10 +331,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(null, GET.KindOf.WarrantyState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ReceivedButton_Click(object sender, RoutedEventArgs e)
@@ -340,10 +342,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Принят", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ApproveCalculatingYesButton_Click(object sender, RoutedEventArgs e)
@@ -351,10 +353,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, GET.KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ApproveCalculatingNoButton_Click(object sender, RoutedEventArgs e)
@@ -362,10 +364,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, GET.KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
@@ -373,10 +375,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, GET.KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
@@ -384,10 +386,10 @@ namespace Parsething.Pages
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, GET.KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
-                Procurements.Add(procurementsEmployee.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+                if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                    MainFrame.Navigate(new SearchPage());
             }
-            if (Procurements != null)
-                MainFrame.Navigate(new SearchPage(Procurements));
         }
 
         private void Image_MouseEnter(object sender, MouseEventArgs e)
