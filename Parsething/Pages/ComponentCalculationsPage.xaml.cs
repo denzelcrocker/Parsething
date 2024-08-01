@@ -178,27 +178,19 @@ namespace Parsething.Pages
                 Procurement.PurchaseUserId = null;
                 PULL.Procurement(Procurement);
             }
-
-            if (IsSearch)
+            Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
+            if (existingProcurement != null)
             {
-                Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
-                if (existingProcurement != null)
-                {
-                    existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
-                    existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
-                    existingProcurement.ContractAmount = Procurement.ContractAmount;
-                    existingProcurement.ReserveContractAmount = Procurement.ReserveContractAmount;
-                    existingProcurement.ProcurementStateId = Procurement.ProcurementStateId;
-                    existingProcurement.ProcurementState = Procurement.ProcurementState;
+                existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
+                existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
+                existingProcurement.ContractAmount = Procurement.ContractAmount;
+                existingProcurement.ReserveContractAmount = Procurement.ReserveContractAmount;
+                existingProcurement.ProcurementStateId = Procurement.ProcurementStateId;
+                existingProcurement.ProcurementState = Procurement.ProcurementState;
 
-                }
-                _ = MainFrame.Navigate(new SearchPage());
-                return;
             }
-            else
-            {
-                MainFrame.GoBack();
-            }
+            GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+            MainFrame.GoBack();
 
             //var employee = (Employee)Application.Current.MainWindow.DataContext;
             //var positionKind = employee.Position.Kind;

@@ -24,17 +24,9 @@ namespace Parsething.Pages
     {
         private Frame MainFrame { get; set; } = null!;
 
-        private List<Procurement>? Procurements = new List<Procurement>();
-
         public LawyerPage()
         {
             InitializeComponent();
-            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
-            catch { }
-
-            Procurements = GET.View.ProcurementsNotPaid();
-            if (Procurements != null)
-                View.ItemsSource = Procurements;
 
             NotPaidOnTime.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(false)); // В срок
 
@@ -48,53 +40,59 @@ namespace Parsething.Pages
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
+            catch { }
         }
 
         private void NotPaidButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsNotPaid();
-            if (Procurements != null)
-                View.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsNotPaid() ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
         }
 
         private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy(false);
-            if (Procurements != null)
-                View.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy(false) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
         }
 
         private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy(true);
-            if (Procurements != null)
-                View.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy(true) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
         }
 
         private void JudgementButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy(GET.KindOf.Judgement);
-            if (Procurements != null)
-                View.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy(GET.KindOf.Judgement) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
         }
 
         private void FASButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy(GET.KindOf.FAS);
-            if (Procurements != null)
-                View.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy(GET.KindOf.FAS) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
         }
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
             {
                 string url = procurement.RequestUri.ToString();

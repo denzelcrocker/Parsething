@@ -197,6 +197,7 @@ namespace Parsething
 
         private void GoHome_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
             SearchCriteria.Instance.ClearData();
 
@@ -243,6 +244,7 @@ namespace Parsething
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
             SearchCriteria.Instance.ClearData();
 

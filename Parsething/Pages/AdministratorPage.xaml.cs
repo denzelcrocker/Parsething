@@ -542,9 +542,9 @@ public partial class AdministratorPage : Page
         {
             var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
-            if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                MainFrame.Navigate(new SearchPage());
         }
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -553,9 +553,9 @@ public partial class AdministratorPage : Page
         {
             var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
-            if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                MainFrame.Navigate(new SearchPage());
         }
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
     }
 
     private void Image_MouseEnter(object sender, MouseEventArgs e)

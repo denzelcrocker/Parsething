@@ -1103,36 +1103,29 @@ namespace Parsething.Pages
                 Procurement.ProcurementUserId = null;
                 PULL.Procurement(Procurement);
             }
-            if (IsSearch)
+            Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
+            if (existingProcurement != null)
             {
-                Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
-                if (existingProcurement != null)
-                {
-                    existingProcurement.ResultDate = Procurement.ResultDate;
-                    existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
-                    existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
-                    existingProcurement.ContractAmount = Procurement.ContractAmount;
-                    existingProcurement.ReserveContractAmount = Procurement.ReserveContractAmount;
-                    existingProcurement.ProcurementStateId = Procurement.ProcurementStateId;
-                    existingProcurement.ProcurementState = Procurement.ProcurementState;
-                    existingProcurement.Applications = Procurement.Applications;
-                    existingProcurement.SigningDeadline = Procurement.SigningDeadline;
-                    existingProcurement.SigningDate = Procurement.SigningDate;
-                    existingProcurement.ConclusionDate = Procurement.ConclusionDate;
-                    existingProcurement.Calculating = Procurement.Calculating;
-                    existingProcurement.Purchase = Procurement.Purchase;
-                    existingProcurement.ActualDeliveryDate = Procurement.ActualDeliveryDate;
-                    existingProcurement.MaxAcceptanceDate = Procurement.MaxAcceptanceDate;
-                    existingProcurement.Region = Procurement.Region;
-                    existingProcurement.RegionId = Procurement.RegionId;
-                }
-                _ = MainFrame.Navigate(new SearchPage());
-                return;
+                existingProcurement.ResultDate = Procurement.ResultDate;
+                existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
+                existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
+                existingProcurement.ContractAmount = Procurement.ContractAmount;
+                existingProcurement.ReserveContractAmount = Procurement.ReserveContractAmount;
+                existingProcurement.ProcurementStateId = Procurement.ProcurementStateId;
+                existingProcurement.ProcurementState = Procurement.ProcurementState;
+                existingProcurement.Applications = Procurement.Applications;
+                existingProcurement.SigningDeadline = Procurement.SigningDeadline;
+                existingProcurement.SigningDate = Procurement.SigningDate;
+                existingProcurement.ConclusionDate = Procurement.ConclusionDate;
+                existingProcurement.Calculating = Procurement.Calculating;
+                existingProcurement.Purchase = Procurement.Purchase;
+                existingProcurement.ActualDeliveryDate = Procurement.ActualDeliveryDate;
+                existingProcurement.MaxAcceptanceDate = Procurement.MaxAcceptanceDate;
+                existingProcurement.Region = Procurement.Region;
+                existingProcurement.RegionId = Procurement.RegionId;
+
             }
-            else
-            {
-                MainFrame.GoBack();
-            }
+            MainFrame.GoBack();
 
 
             //var employee = (Employee)Application.Current.MainWindow.DataContext;

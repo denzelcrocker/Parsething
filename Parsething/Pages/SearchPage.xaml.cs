@@ -26,11 +26,11 @@ namespace Parsething.Pages
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<Employee>? Employees { get; set; }
         private List<LegalEntity>? LegalEntities { get; set; }
-        private List<Procurement>? AllProcurements { get; set; } = new List<Procurement>();
-        private List<Procurement>? FoundProcurements { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
         private const int PageSize = 15;
         private int _currentPage = 1;
+        private const int VisiblePagesCount = 5; // Количество видимых страниц
+
         public int CurrentPage
         {
             get => _currentPage;
@@ -58,73 +58,140 @@ namespace Parsething.Pages
             InitializeComponent();
             DataContext = this;
 
-
             if (GlobalUsingValues.Instance.Procurements != null && GlobalUsingValues.Instance.Procurements.Count > 0)
             {
-                AllProcurements = GlobalUsingValues.Instance.Procurements;
                 LoadInitialData();
             }
             else
             {
                 InitializeData();
             }
+            UpdateProcurements();
         }
-        private async Task RefreshData()
-        {
-            if (!IsSearchCriteriaEmpty())
-            {
-                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy(
-                    SearchCriteria.Instance.ProcurementId,
-                    SearchCriteria.Instance.ProcurementNumber,
-                    SearchCriteria.Instance.Law,
-                    SearchCriteria.Instance.ProcurementState,
-                    SearchCriteria.Instance.INN,
-                    SearchCriteria.Instance.Employee,
-                    SearchCriteria.Instance.OrganizationName,
-                    SearchCriteria.Instance.LegalEntity,
-                    SearchCriteria.Instance.DateType,
-                    SearchCriteria.Instance.StartDate,
-                    SearchCriteria.Instance.EndDate,
-                    PageSize,
-                    CurrentPage,
-                    _currentSortingField,
-                    _isAscending));
-            }
-            else if (AllProcurements != null && AllProcurements.Count > 0)
-            {
-                GlobalUsingValues.Instance.AddProcurements(AllProcurements
-                        .Skip((CurrentPage - 1) * PageSize)
-                        .Take(PageSize)
-                        .ToList());
-            }
-            else
-            {
-                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy("", "", "", "", "", "", "", "", "", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending));
-            }
-
-            GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
-            SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
-            RestoreSearchCriteria();
-        }
-        private async void PreviousPage_Click(object sender, RoutedEventArgs e)
+        private void PreviousPage_Click(object sender, RoutedEventArgs e)
         {
             if (CurrentPage > 1)
             {
                 CurrentPage--;
-                await RefreshData();
+                UpdateProcurements();
             }
         }
-        private async void NextPage_Click(object sender, RoutedEventArgs e)
+        private void NextPage_Click(object sender, RoutedEventArgs e)
         {
             // Предположим, что можно узнать общее количество страниц из ответа или другой логики.
-            var totalPages = (AllProcurements?.Count ?? 0) / PageSize + 1;
+            var totalPages = (GlobalUsingValues.Instance.Procurements?.Count ?? 0) / PageSize + 1;
             if (CurrentPage < totalPages)
             {
                 CurrentPage++;
-                await RefreshData();
+                UpdateProcurements();
             }
         }
-        private async void LoadInitialData()
+        private void UpdatePagesPanel()
+        {
+            // Очистить существующие элементы в панели страниц
+            PagesPanel.Children.Clear();
+
+            int totalPages = GetTotalPages(GlobalUsingValues.Instance.Procurements?.Count ?? 0, PageSize);
+            int startPage = Math.Max(1, CurrentPage - VisiblePagesCount / 2);
+            int endPage = Math.Min(totalPages, CurrentPage + VisiblePagesCount / 2);
+
+            // Убедитесь, что отображается нужное количество страниц
+            if (endPage - startPage + 1 < VisiblePagesCount)
+            {
+                if (startPage > 1)
+                    startPage = Math.Max(1, endPage - VisiblePagesCount + 1);
+                else
+                    endPage = Math.Min(totalPages, startPage + VisiblePagesCount - 1);
+            }
+
+            // Добавить кнопку предыдущей страницы, если это не первая страница
+            if (CurrentPage > 1)
+            {
+                Button prevPageButton = new Button
+                {
+                    Content = "‹",
+                    Tag = CurrentPage - 1
+                };
+                prevPageButton.Style = (Style)FindResource("Button.SearchNavigation");
+                prevPageButton.Click += PageButton_Click;
+                PagesPanel.Children.Add(prevPageButton);
+            }
+
+            // Добавить кнопки для каждой страницы в видимом диапазоне
+            for (int i = startPage; i <= endPage; i++)
+            {
+                Button pageButton = new Button
+                {
+                    Content = i.ToString(),
+                    Tag = i
+                };
+                pageButton.Style = (Style)FindResource("Button.SearchNavigation");
+
+                if (i == CurrentPage)
+                {
+                    pageButton.FontWeight = FontWeights.Bold;
+                }
+
+                pageButton.Click += PageButton_Click;
+                PagesPanel.Children.Add(pageButton);
+            }
+
+            // Добавить кнопку следующей страницы, если это не последняя страница
+            if (CurrentPage < totalPages)
+            {
+                Button nextPageButton = new Button
+                {
+                    Content = "›",
+                    Tag = CurrentPage + 1
+                };
+                nextPageButton.Style = (Style)FindResource("Button.SearchNavigation");
+                nextPageButton.Click += PageButton_Click;
+                PagesPanel.Children.Add(nextPageButton);
+            }
+        }
+
+        private void PageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is int pageNumber)
+            {
+                if (pageNumber != CurrentPage)
+                {
+                    CurrentPage = pageNumber;
+                    UpdateProcurements();
+                }
+            }
+        }
+
+        private void FirstPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentPage > 1)
+            {
+                CurrentPage = 1;
+                UpdateProcurements();
+            }
+        }
+
+        private void LastPage_Click(object sender, RoutedEventArgs e)
+        {
+            int totalPages = (GlobalUsingValues.Instance.Procurements?.Count ?? 0 + PageSize - 1) / PageSize;
+            if (CurrentPage < totalPages)
+            {
+                CurrentPage = totalPages + 1;
+                UpdateProcurements();
+            }
+        }
+        private int GetTotalPages(int itemCount, int pageSize)
+        {
+            return (int)Math.Ceiling((double)itemCount / pageSize);
+        }
+        private void UpdateProcurements()
+        {
+            var procurements = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
+            SearchLV.ItemsSource = procurements;
+            UpdatePagesPanel();
+            PageNumberTextBlock.Text = $"Страница {CurrentPage}";
+        }
+        private void LoadInitialData()
         {
 
             Laws = GET.View.Laws();
@@ -139,15 +206,15 @@ namespace Parsething.Pages
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
 
-
-            GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
-            GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
-            SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
+            var procurements = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
+            GET.View.PopulateComponentStates(procurements);
+            
+            SearchLV.ItemsSource = procurements;
 
 
             RestoreSearchCriteria();
         }
-        private async void InitializeData()
+        private void InitializeData()
         {
 
             // Загружаем данные для выпадающих списков
@@ -162,42 +229,6 @@ namespace Parsething.Pages
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
-
-
-            // Проверяем, есть ли переданные тендеры
-            if (AllProcurements != null && AllProcurements.Count > 0)
-            {
-                GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
-            }
-            else if (!IsSearchCriteriaEmpty())
-            {
-                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy(
-                    SearchCriteria.Instance.ProcurementId,
-                    SearchCriteria.Instance.ProcurementNumber,
-                    SearchCriteria.Instance.Law,
-                    SearchCriteria.Instance.ProcurementState,
-                    SearchCriteria.Instance.INN,
-                    SearchCriteria.Instance.Employee,
-                    SearchCriteria.Instance.OrganizationName,
-                    SearchCriteria.Instance.LegalEntity,
-                    SearchCriteria.Instance.DateType,
-                    SearchCriteria.Instance.StartDate,
-                    SearchCriteria.Instance.EndDate,
-                    PageSize,
-                    CurrentPage,
-                    _currentSortingField,
-                    _isAscending));
-            }
-            else
-            {
-                GlobalUsingValues.Instance.AddProcurements(GET.View.ProcurementsBy("", "", "", "", "", "", "","","", "", "", PageSize, CurrentPage, _currentSortingField, _isAscending));
-            }
-            GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
-
-            SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
-
-
-            RestoreSearchCriteria();
         }
 
         private bool IsSearchCriteriaEmpty()
@@ -247,6 +278,19 @@ namespace Parsething.Pages
                 MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
             }
             catch { }
+
+            if (NavigationState.LastSelectedProcurement != null)
+            {
+                var selectedProcurement = GlobalUsingValues.Instance.Procurements
+                    .FirstOrDefault(p => p.Id == NavigationState.LastSelectedProcurement.Id);
+
+                if (selectedProcurement != null)
+                {
+                    SearchLV.SelectedItem = selectedProcurement;
+                }
+
+                NavigationState.LastSelectedProcurement = null;
+            }
         }
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
@@ -259,7 +303,11 @@ namespace Parsething.Pages
                 procurement = button.DataContext as Procurement;
 
             if (procurement != null)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement, true));
+            }
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
@@ -274,13 +322,12 @@ namespace Parsething.Pages
             }
         }
 
-        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             CurrentPage = 1;
 
             SearchCriteria.Instance.ClearData();
             SearchLV.ItemsSource = null;
-            FoundProcurements?.Clear();
 
             string id = SearchId.Text;
             string number = SearchNumber.Text;
@@ -300,16 +347,16 @@ namespace Parsething.Pages
                 !string.IsNullOrEmpty(legalEntity) || !string.IsNullOrEmpty(dateType) ||
                 !string.IsNullOrEmpty(startDate) || !string.IsNullOrEmpty(endDate))
             {
-                FoundProcurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, PageSize, CurrentPage, _currentSortingField, _isAscending);
+                var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending) ?? new List<Procurement>();
+                GlobalUsingValues.Instance.AddProcurements(procurements);
                 
-                GET.View.PopulateComponentStates(FoundProcurements);
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
                 
-                SearchLV.ItemsSource = FoundProcurements;
-                GlobalUsingValues.Instance.AddProcurements(FoundProcurements);
+                SearchLV.ItemsSource = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             }
 
             SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate);
-
+            UpdatePagesPanel();
         }
         private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate)
         {
@@ -433,10 +480,9 @@ namespace Parsething.Pages
 
         private void SupplyMonitoringButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SearchLV.Items.Count > 0)
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
             {
-                var procurements = SearchLV.ItemsSource.Cast<Procurement>().ToList();
-                _ = MainFrame.Navigate(new SupplyMonitoringPage(procurements));
+                _ = MainFrame.Navigate(new SupplyMonitoringPage());
             }
             else
             {
@@ -501,63 +547,6 @@ namespace Parsething.Pages
                 }
             }
         }
-
-        //private async Task LoadMoreItems()
-        //{
-        //    CurrentPage++;
-
-        //    if (AllProcurements != null && AllProcurements.Count > 0) // обязательно посмотреть!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //    {
-        //        var newItems = AllProcurements.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
-        //        if (newItems.Count > 0)
-        //        {
-        //            foreach (var item in newItems)
-        //            {
-        //                Procurements.Add(item);
-        //            }
-
-        //            SearchLV.ItemsSource = null;
-        //            SearchLV.ItemsSource = Procurements;
-        //        }
-        //    }
-        //    else 
-        //    {
-        //        var newItems = GET.View.ProcurementsBy(
-        //                SearchCriteria.Instance.ProcurementId,
-        //                SearchCriteria.Instance.ProcurementNumber,
-        //                SearchCriteria.Instance.Law,
-        //                SearchCriteria.Instance.ProcurementState,
-        //                SearchCriteria.Instance.INN,
-        //                SearchCriteria.Instance.Employee,
-        //                SearchCriteria.Instance.OrganizationName,
-        //                SearchCriteria.Instance.LegalEntity,
-        //                SearchCriteria.Instance.DateType,
-        //                SearchCriteria.Instance.StartDate,
-        //                SearchCriteria.Instance.EndDate,
-        //                PageSize,
-        //                CurrentPage,
-        //                _currentSortingField,
-        //                _isAscending);
-
-        //        if (newItems != null && newItems.Count > 0)
-        //        {
-        //            foreach (var item in newItems)
-        //            {
-        //                Procurements.Add(item);
-        //            }
-
-        //            SearchLV.ItemsSource = null; // Обновляем источник данных
-        //            SearchLV.ItemsSource = Procurements;
-        //        }
-        //    }
-        //}
-        //private async void SearchLV_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        //{
-        //    if (e.VerticalOffset == e.ExtentHeight - e.ViewportHeight)
-        //    {
-        //        await LoadMoreItems();
-        //    }
-        //}
         private void GoToApplicationsButton_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
@@ -573,7 +562,6 @@ namespace Parsething.Pages
         }
         private void SortByField(object sender, MouseButtonEventArgs e)
         {
-            CurrentPage = 1;
 
             if (sender is Label label && label.Tag is string field)
             {
@@ -589,42 +577,11 @@ namespace Parsething.Pages
                 }
 
                 _currentSortingField = field;
-                
-                if (!IsSearchCriteriaEmpty())
-                {
-                    AllProcurements = GET.View.ProcurementsBy(
-                        SearchCriteria.Instance.ProcurementId,
-                        SearchCriteria.Instance.ProcurementNumber,
-                        SearchCriteria.Instance.Law,
-                        SearchCriteria.Instance.ProcurementState,
-                        SearchCriteria.Instance.INN,
-                        SearchCriteria.Instance.Employee,
-                        SearchCriteria.Instance.OrganizationName,
-                        SearchCriteria.Instance.LegalEntity,
-                        SearchCriteria.Instance.DateType,
-                        SearchCriteria.Instance.StartDate,
-                        SearchCriteria.Instance.EndDate,
-                        PageSize,
-                        CurrentPage,
-                        _currentSortingField,
-                        _isAscending);
 
-                    GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
-                }
-                else if (AllProcurements != null && AllProcurements.Count > 0)
-                {
-                    AllProcurements = SortProcurements(AllProcurements, field, _isAscending);
-                    GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
-                }
-                else
-                {
-                    AllProcurements = GET.View.ProcurementsBy("", "", "", "", "", "", "", "", "", "", "", int.MaxValue, 1, _currentSortingField, _isAscending);
-                    GlobalUsingValues.Instance.AddProcurements(AllProcurements.Take(PageSize).ToList());
-                }
-
-                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
-                SearchLV.ItemsSource = GlobalUsingValues.Instance.Procurements;
-
+                GlobalUsingValues.Instance.AddProcurements(SortProcurements(GlobalUsingValues.Instance.Procurements, field, _isAscending));
+                var procurements = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
+                GET.View.PopulateComponentStates(procurements);
+                SearchLV.ItemsSource = procurements;
                 UpdateSortingArrow(label, _isAscending);
             }
         }
@@ -636,7 +593,7 @@ namespace Parsething.Pages
                 case "Law":
                     return isAscending ? procurements.OrderBy(p => p.Law.Number).ToList() : procurements.OrderByDescending(p => p.Law.Number).ToList();
                 case "ResultDate":
-                    return isAscending ? procurements.OrderBy(p => p.ReserveContractAmount).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
+                    return isAscending ? procurements.OrderBy(p => p.ResultDate).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
                 case "SigningDeadline":
                     return isAscending ? procurements.OrderBy(p => p.SigningDeadline).ToList() : procurements.OrderByDescending(p => p.SigningDeadline).ToList();
                 case "ActualDeliveryDate":
@@ -670,6 +627,18 @@ namespace Parsething.Pages
                     label.Content = label.Content.ToString().TrimEnd('↑', '↓');
                 }
             }
+        }
+        public static List<Procurement> GetProcurementsForPage(List<Procurement> procurements, int pageNumber, int pageSize)
+        {
+            if (pageNumber <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page number and page size must be greater than zero.");
+            }
+
+            return procurements
+                .Skip((pageNumber - 1) * pageSize) // Пропускаем элементы до нужной страницы
+                .Take(pageSize) // Берем элементы для текущей страницы
+                .ToList();
         }
     }
 }

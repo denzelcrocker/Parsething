@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DatabaseLibrary.Entities.ProcurementProperties;
+using DatabaseLibrary.Queries;
+using Parsething.Classes;
 using Parsething.Windows;
 
 namespace Parsething.Pages
@@ -29,24 +31,10 @@ namespace Parsething.Pages
         private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
         private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
 
-        private List<Procurement>? Procurements = new List<Procurement>();
-
 
         public AssemblyPage()
         {
             InitializeComponent();
-        }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
-            catch { }
-
-            Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
-            if (Procurements != null)
-            {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
-            }
 
             ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
             if (ComponentCalculationsProblem != null)
@@ -70,107 +58,125 @@ namespace Parsething.Pages
 
             WonPartTwo.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)); // Выигран 2ч
         }
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
+            catch { }
+        }
 
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = null;
-            Procurements.Clear();
+            GlobalUsingValues.Instance.Procurements.Clear();
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsProblem)
             {
-                Procurements.Add(componentCalculation.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
             }
-            if (Procurements != null)
+            if (GlobalUsingValues.Instance.Procurements != null)
             {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
             }
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = null;
-            Procurements.Clear();
+            GlobalUsingValues.Instance.Procurements.Clear();
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsInWork)
             {
-                Procurements.Add(componentCalculation.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
             }
-            if (Procurements != null)
+            if (GlobalUsingValues.Instance.Procurements != null)
             {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
             }
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
             View.ItemsSource = null;
-            Procurements.Clear();
+            GlobalUsingValues.Instance.Procurements.Clear();
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsAgreed)
             {
-                Procurements.Add(componentCalculation.Procurement);
+                GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
             }
-            if (Procurements != null)
+            if (GlobalUsingValues.Instance.Procurements != null)
             {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
             }
         }
 
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Предыдущая", GET.KindOf.ShipmentPlane);
-            if (Procurements != null)
-                View.ItemsSource = Procurements;
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Предыдущая", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements != null)
+            {
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+            }
         }
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane);
-            if (Procurements != null)
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Текущая", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements != null)
             {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
             }
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane);
-            if(Procurements != null)
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Следующая", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if(GlobalUsingValues.Instance.Procurements != null)
             {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
             }
         }
 
         private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane);
-            if (Procurements != null)
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements != null)
             {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
             }
         }
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
-            if (Procurements != null)
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements != null)
             {
-                GET.View.PopulateComponentStates(Procurements);
-                View.ItemsSource = Procurements;
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
             }
         }
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
         }
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
             {
                 string url = procurement.RequestUri.ToString();
@@ -179,14 +185,14 @@ namespace Parsething.Pages
         }
         private void Purchase_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false, false));
         }
 
         private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
             { 
                 AssemblyMap assemblyMap = new AssemblyMap(procurement);

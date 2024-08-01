@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Parsething.Pages"
       mc:Ignorable="d" 
+      Loaded="Page_Loaded"
       Title="SupplyMonitoringPage">
 
     <Grid>
@@ -24,6 +25,7 @@
                         <Label Content="Мониторинг поставок" Style="{DynamicResource Header.1}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -31,33 +33,44 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="70" />
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="CommonListButton"
+                            <Button   
                                 Grid.Column="0"
+                                x:Name="GoBackButton"
+                                Style="{DynamicResource ButtonWithIcon}" 
+                                Click="GoBackButton_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/Images/Back.png" Stretch="Uniform" Height="45"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button x:Name="CommonListButton"
+                                Grid.Column="1"
                                 Content="Общий список"
                                 Style="{DynamicResource SupplyMonitoringButton}"
                                 Margin="10" Click="CommonListButton_Click"/>
                             <Button x:Name="BySuppliersButton"
-                                Grid.Column="1"
+                                Grid.Column="2"
                                 Content="По поставщикам"
                                 Style="{DynamicResource SupplyMonitoringButton}"
                                 Margin="10" Click="BySuppliersButton_Click"/>
                             <Button x:Name="WarehouseAndReserveButton"
-                                Grid.Column="2"
+                                Grid.Column="3"
                                 Content="Склад и резерв"
                                 Style="{DynamicResource SupplyMonitoringButton}"
                                 Margin="10" Click="WarehouseAndReserveButton_Click"/>
                             <Button x:Name="OnTheWayButton"
-                                Grid.Column="3"
+                                Grid.Column="4"
                                 Content="В пути"
                                 Style="{DynamicResource SupplyMonitoringButton}"
                                 Margin="10" Click="OnTheWayButton_Click"/>
                             <Button x:Name="ExportToExcelButton"
-                                Grid.Column="4"
+                                Grid.Column="5"
                                 Content="Экспорт в Excel"
                                 Style="{DynamicResource SupplyMonitoringButton}"
                                 Margin="10" Click="ExportToExcelButton_Click"/>
                             <Button x:Name="OverallInfoButton"
-                                Grid.Column="5"
+                                Grid.Column="6"
                                 Width="50"
                                 Content="i"
                                 Style="{DynamicResource SupplyMonitoringButton}"

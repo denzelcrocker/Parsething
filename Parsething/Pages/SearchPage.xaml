@@ -40,9 +40,9 @@
                 </Border.Effect>
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="37"/>
                         <RowDefinition />
-                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="43"/>
                     </Grid.RowDefinitions>
                     <Grid x:Name="SortingHeadersGrid">
                         <Grid.ColumnDefinitions>
@@ -123,7 +123,7 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="40"/>
                                         </Grid.ColumnDefinitions>
-                                        <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurement}"/>
+                                        <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyle}"/>
                                         <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Text="{Binding DisplayId}"
@@ -545,10 +545,11 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
-                        <Button Content="Предыдущая страница" Click="PreviousPage_Click" />
-                        <TextBlock Text="{Binding CurrentPage, StringFormat='Страница {0}'}" VerticalAlignment="Center" Margin="10,0"/>
-                        <Button Content="Следующая страница" Click="NextPage_Click" />
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button x:Name="FirstPageButton" Content="«" Width="33" Height="33" Click="FirstPage_Click" ToolTip="Первая страница" Style="{DynamicResource Button.SearchNavigation}"/>
+                        <WrapPanel x:Name="PagesPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button x:Name="LastPageButton" Content="»" Width="33" Height="33" Click="LastPage_Click" ToolTip="Последняя страница" Style="{DynamicResource Button.SearchNavigation}"/>
+                        <TextBlock x:Name="PageNumberTextBlock" VerticalAlignment="Center" Margin="10,0" Style="{DynamicResource TableElements}"/>
                     </StackPanel>
                 </Grid>
             </Border>

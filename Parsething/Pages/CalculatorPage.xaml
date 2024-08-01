@@ -140,10 +140,10 @@
                                             <ColumnDefinition Width="2"/>
                                             <ColumnDefinition Width="80"/>
                                         </Grid.ColumnDefinitions>
-                                        <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyleProcurementsEmployee}"/>
+                                        <Ellipse Style="{StaticResource RepeatedStatusIndicatorStyle}"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
-                                            Text="{Binding Path=Procurement.DisplayId}"
+                                            Text="{Binding Path=DisplayId}"
                                             HorizontalAlignment="Center"
                                             Name="ServiceId"
                                             FontSize="15"
@@ -152,7 +152,7 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="2"
-                                            Text="{Binding Path=Procurement.Law.Number}"
+                                            Text="{Binding Path=Law.Number}"
                                             FontSize="13"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"/>
@@ -160,16 +160,16 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="4"
-                                            Text="{Binding Procurement.Id, Converter={StaticResource CalculatingCountConverter }}"
+                                            Text="{Binding Id, Converter={StaticResource CalculatingCountConverter }}"
                                             FontSize="13"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"/>
                                         <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource DeadlineIndicatorStyleProcurementEmployee}" Grid.Column="6"/>
+                                        <Ellipse Style="{StaticResource DeadlineIndicatorStyle}" Grid.Column="6"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="6"
-                                            Text="{Binding Path=Procurement.Deadline, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
+                                            Text="{Binding Path=Deadline, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
                                             HorizontalAlignment="Center"
                                             FontSize="13"
                                             VerticalAlignment="Center"
@@ -178,7 +178,7 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="8"
-                                            Text="{Binding Path=Procurement.InitialPrice, StringFormat={}{0:N2} р.}"
+                                            Text="{Binding Path=InitialPrice, StringFormat={}{0:N2} р.}"
                                             FontSize="13"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
@@ -186,17 +186,17 @@
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="8"
-                                            Text="{Binding Path=Procurement.CalculatingAmount, StringFormat={}{0:N2} р.}"
+                                            Text="{Binding Path=CalculatingAmount, StringFormat={}{0:N2} р.}"
                                             FontSize="13"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Center"
                                             Margin="0,0,0,18"/>
                                         <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource StatusIndicatorStyleProcurementEmployee}" Grid.Column="10"/>
+                                        <Ellipse Style="{StaticResource StatusIndicatorStyle}" Grid.Column="10"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
                                             Grid.Column="10"
-                                            Text="{Binding Path=Procurement.ProcurementState.Kind}"
+                                            Text="{Binding Path=ProcurementState.Kind}"
                                             FontSize="13"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"

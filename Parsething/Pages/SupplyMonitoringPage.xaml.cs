@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using DatabaseLibrary.Queries;
 using static DatabaseLibrary.Queries.GET;
 using System.Windows.Controls.Primitives;
+using Parsething.Classes;
 
 namespace Parsething.Pages
 {
@@ -24,27 +25,30 @@ namespace Parsething.Pages
     /// </summary>
     public partial class SupplyMonitoringPage : Page
     {
-        private List<Procurement> procurementsList { get; set; }
         private List<SupplyMonitoringList> supplyMonitoringList { get; set; }
         private List<ComponentState> componentStates { get; set; }
         private List<Seller> sellers { get; set; }
         private decimal? overAllPrice = 0;
+        private Frame MainFrame { get; set; } = null!;
 
 
-        public SupplyMonitoringPage(List<Procurement> procurements)
+        public SupplyMonitoringPage()
         {
             InitializeComponent();
-            procurementsList = procurements;
             componentStates = GET.View.ComponentStates();
             sellers = GET.View.Sellers();
         }
-
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
+            catch { }
+        }
         private void CommonListButton_Click(object sender, RoutedEventArgs e)
         {
             var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
             overAllPrice = 0;
 
-            supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses).OrderBy(x => x.ComponentName).ToList();
+            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses).OrderBy(x => x.ComponentName).ToList();
             List<StackPanel> stackPanels = new();
             StackPanel stackPanel = new();
             
@@ -121,7 +125,7 @@ namespace Parsething.Pages
             var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
             overAllPrice = 0;
 
-            supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
+            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
             List<string> headers = new();
             List<StackPanel> stackPanels = new();
             foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
@@ -312,7 +316,7 @@ namespace Parsething.Pages
             var componentStatuses = new List<string> { "На складе", "В резерве"};
             overAllPrice = 0;
 
-            supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
+            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
             List<string> headers = new();
             List<StackPanel> stackPanels = new();
             foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
@@ -437,7 +441,7 @@ namespace Parsething.Pages
             var componentStatuses = new List<string> {"В пути"};
             overAllPrice = 0;
 
-            supplyMonitoringList = View.GetSupplyMonitoringLists(procurementsList, componentStatuses);
+            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
             List<string> headers = new();
             List<StackPanel> stackPanels = new();
             foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
@@ -629,6 +633,11 @@ namespace Parsething.Pages
         private void OverallInfoButton_Click(object sender, RoutedEventArgs e)
         {
             OverAllInfoPopUp.IsOpen = !OverAllInfoPopUp.IsOpen;
+        }
+
+        private void GoBackButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.GoBack();
         }
     }
 }

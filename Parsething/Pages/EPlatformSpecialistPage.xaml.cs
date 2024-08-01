@@ -30,7 +30,6 @@ namespace Parsething.Pages
 
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
 
-        private List<Procurement>? Procurements = new List<Procurement>();
         private DateTime StartDate = new DateTime();
         private bool _isAscendingDeadline = true;
         private bool _isAscendingLaw = true;
@@ -39,18 +38,12 @@ namespace Parsething.Pages
         public EPlatformSpecialistPage()
         {
             InitializeComponent();
-            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
-            catch { }
+            
 
             var globalUsingValues = Classes.GlobalUsingValues.Instance;
             StartDate = globalUsingValues.StartDate;
 
             int countOfMethods = 0;
-
-            Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.Deadline);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
-            ForSendButton.Background = Brushes.LightGray;
 
             New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState)); // Новый
 
@@ -96,7 +89,8 @@ namespace Parsething.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
+            catch { }
         }
         private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -104,21 +98,21 @@ namespace Parsething.Pages
             {
                 var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
                 GlobalUsingValues.Instance.AddProcurements(procurements);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
         private void SortByDeadline(object sender, MouseButtonEventArgs e)
         {
             ClearSortingArrows();
             if (_isAscendingDeadline)
             {
-                ProcurementsListView.ItemsSource = Procurements.OrderBy(p => p.Deadline).ToList();
+                ProcurementsListView.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline).ToList();
                 _isAscendingDeadline = false;
             }
             else
             {
-                ProcurementsListView.ItemsSource = Procurements.OrderByDescending(p => p.Deadline).ToList();
+                ProcurementsListView.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderByDescending(p => p.Deadline).ToList();
                 _isAscendingDeadline = true;
             }
             UpdateSortingArrow((Label)sender, _isAscendingDeadline);
@@ -129,12 +123,12 @@ namespace Parsething.Pages
             ClearSortingArrows();
             if (_isAscendingResultDate)
             {
-                ProcurementsListView.ItemsSource = Procurements.OrderBy(p => p.ResultDate).ToList();
+                ProcurementsListView.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.ResultDate).ToList();
                 _isAscendingResultDate = false;
             }
             else
             {
-                ProcurementsListView.ItemsSource = Procurements.OrderByDescending(p => p.ResultDate).ToList();
+                ProcurementsListView.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderByDescending(p => p.ResultDate).ToList();
                 _isAscendingResultDate = true;
             }
             UpdateSortingArrow((Label)sender, _isAscendingResultDate);
@@ -145,12 +139,12 @@ namespace Parsething.Pages
             ClearSortingArrows();
             if (_isAscendingLaw)
             {
-                ProcurementsListView.ItemsSource = Procurements.OrderBy(p => ExtractLawNumber(p.Law.Number)).ToList();
+                ProcurementsListView.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => ExtractLawNumber(p.Law.Number)).ToList();
                 _isAscendingLaw = false;
             }
             else
             {
-                ProcurementsListView.ItemsSource = Procurements.OrderByDescending(p => ExtractLawNumber(p.Law.Number)).ToList();
+                ProcurementsListView.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderByDescending(p => ExtractLawNumber(p.Law.Number)).ToList();
                 _isAscendingLaw = true;
             }
             UpdateSortingArrow((Label)sender, _isAscendingLaw);
@@ -180,9 +174,10 @@ namespace Parsething.Pages
         }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Новый", GET.KindOf.ProcurementState);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Новый", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.LightGray;
             CalculatedButton.Background = Brushes.Transparent;
@@ -203,9 +198,10 @@ namespace Parsething.Pages
 
         private void CalculatedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Посчитан", GET.KindOf.ProcurementState);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Посчитан", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.LightGray;
@@ -226,9 +222,10 @@ namespace Parsething.Pages
 
         private void RetreatCalculateButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отбой", StartDate);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Отбой", StartDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -249,9 +246,10 @@ namespace Parsething.Pages
 
         private void DrawUpButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Оформить", GET.KindOf.ProcurementState);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Оформить", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -272,9 +270,10 @@ namespace Parsething.Pages
 
         private void IssuedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Оформлен", GET.KindOf.ProcurementState);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Оформлен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -295,9 +294,10 @@ namespace Parsething.Pages
 
         private void ForSendButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.Deadline);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Оформлен", false, GET.KindOf.Deadline) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -318,9 +318,10 @@ namespace Parsething.Pages
 
         private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.Deadline);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Оформлен", true, GET.KindOf.Deadline) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -341,9 +342,10 @@ namespace Parsething.Pages
 
         private void BargainingButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.ResultDate);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Отправлен", false, GET.KindOf.ResultDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -364,9 +366,10 @@ namespace Parsething.Pages
 
         private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.ResultDate);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Отправлен", true, GET.KindOf.ResultDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -387,9 +390,10 @@ namespace Parsething.Pages
 
         private void CancellationButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отмена", StartDate);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Отмена", StartDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -410,9 +414,10 @@ namespace Parsething.Pages
 
         private void RejectedButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Отклонен", StartDate);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Отклонен", StartDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -433,9 +438,10 @@ namespace Parsething.Pages
 
         private void LostButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Проигран", StartDate);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Проигран", StartDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -456,9 +462,10 @@ namespace Parsething.Pages
 
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Выигран 1ч", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -479,9 +486,10 @@ namespace Parsething.Pages
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
         {
-            Procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState);
-            if (Procurements != null)
-                ProcurementsListView.ItemsSource = Procurements;
+            var procurements = GET.View.ProcurementsBy("Выигран 2ч", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (procurements != null)
+                ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
@@ -502,14 +510,14 @@ namespace Parsething.Pages
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
             {
                 string url = procurement.RequestUri.ToString();
@@ -518,7 +526,7 @@ namespace Parsething.Pages
         }
         private void NavigateToProcurementEPlatform_Click(object sender, RoutedEventArgs e)
         {
-            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null && procurement.Platform.Address != null)
             {
                 string url = procurement.Platform.Address.ToString();

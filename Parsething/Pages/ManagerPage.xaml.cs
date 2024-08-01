@@ -31,7 +31,6 @@ namespace Parsething.Pages
         private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
         private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
 
-        private List<Procurement>? Procurements = new List<Procurement>();
         private List<ProcurementsEmployee>? ProcurementsEmployees = new List<ProcurementsEmployee>();
 
         public ManagerPage()
@@ -106,68 +105,74 @@ namespace Parsething.Pages
        
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 1ч", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 2ч", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void WonByApplicationsTwoButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("", GET.KindOf.Applications, ((Employee)Application.Current.MainWindow.DataContext).Id);
-            foreach(ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ContractYesButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("", true, GET.KindOf.ContractConclusion, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ContractNoButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("", false, GET.KindOf.ContractConclusion, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void AcceptanceButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Приемка", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void PartialAcceptanceButton_Click(object sender, RoutedEventArgs e)
@@ -177,219 +182,239 @@ namespace Parsething.Pages
 
         private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Приемка", GET.KindOf.CorrectionDate, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void NotPaidButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesNotPaid(((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void JudgementButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(GET.KindOf.Judgement, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void FASButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(GET.KindOf.FAS, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsProblem)
             {
                 GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void InWorkButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsInWork)
             {
                 GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void AgreedButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             foreach (ComponentCalculation componentCalculation in ComponentCalculationsAgreed)
             {
                 GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ThisWeekButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Текущая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Предыдущая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Следующая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void AWeekLaterButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();  
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Через одну", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ExecutionStateButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(null, GET.KindOf.ExecutionState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void WarrantyStateButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(null, GET.KindOf.WarrantyState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ReceivedButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Принят", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ApproveCalculatingYesButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, GET.KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ApproveCalculatingNoButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, GET.KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ApprovePurchaseYesButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, GET.KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
         {
+            GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(false, GET.KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id);
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void Image_MouseEnter(object sender, MouseEventArgs e)

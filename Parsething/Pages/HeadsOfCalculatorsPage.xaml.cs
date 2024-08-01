@@ -350,9 +350,9 @@ namespace Parsething.Pages
             {
                 var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
                 GlobalUsingValues.Instance.AddProcurements(procurements);
-                if (GlobalUsingValues.Instance.Procurements.Count > 0)
-                    MainFrame.Navigate(new SearchPage());
             }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
         }
 
         private void AddProcurementButton_Click(object sender, RoutedEventArgs e)
