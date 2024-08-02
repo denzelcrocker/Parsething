@@ -1543,5 +1543,11 @@ namespace Parsething.Pages
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
         }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Clipboard.SetText(Id.Text);
+            AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 1500);
+        }
     }
 }

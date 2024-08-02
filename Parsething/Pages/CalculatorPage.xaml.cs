@@ -43,13 +43,24 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     {
         var globalUsingValues = Classes.GlobalUsingValues.Instance;
         StartDate = globalUsingValues.StartDate;
-
-        NewCount.Text = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый").Count.ToString();
-        Queue.Text = GET.View.ProcurementsQueue().Count.ToString();
-        Overall.Text = GET.View.ProcurementsEmployeesGroupBy(((Employee)Application.Current.MainWindow.DataContext).Id)[0].CountOfProcurements.ToString();
-        Calculated.Text = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан").Count.ToString();
-        DrawUp.Text = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить").Count.ToString();
-        WonPartOne.Text = GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id).Count.ToString();
+        var procurementsEmployeesNew = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый");
+        if (procurementsEmployeesNew != null && procurementsEmployeesNew.Count > 0)
+            NewCount.Text = procurementsEmployeesNew.Count.ToString();
+        var procurementsQueue = GET.View.ProcurementsQueue();
+        if (procurementsQueue != null && procurementsQueue.Count > 0)
+            Queue.Text = procurementsQueue.Count.ToString();
+        var procurementGroup = GET.View.ProcurementsEmployeesGroupBy(((Employee)Application.Current.MainWindow.DataContext).Id);
+        if (procurementGroup != null && procurementGroup.Count > 0)
+            Overall.Text = procurementGroup[0].CountOfProcurements.ToString();
+        var procurementsEmployeeCalculated = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан");
+        if (procurementsEmployeeCalculated != null && procurementsEmployeeCalculated.Count > 0)
+            Calculated.Text = procurementsEmployeeCalculated.Count.ToString();
+        var procurementsEmployeeDrawUp = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить");
+        if (procurementsEmployeeDrawUp != null && procurementsEmployeeDrawUp.Count > 0)
+            DrawUp.Text = procurementsEmployeeDrawUp.Count.ToString();
+        var procurementsEmployeeWonPartOne = GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id);
+        if (procurementsEmployeeWonPartOne != null && procurementsEmployeeWonPartOne.Count > 0)
+            WonPartOne.Text = procurementsEmployeeWonPartOne.Count.ToString();
         View.ItemsSource = GlobalUsingValues.Instance.Procurements;
     }
 
