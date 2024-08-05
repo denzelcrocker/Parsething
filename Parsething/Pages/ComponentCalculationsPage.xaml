@@ -124,10 +124,10 @@
                     </Grid>
                     <StackPanel x:Name="PurchasePanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
                         <Label Content="Закупка: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
-                        <TextBlock x:Name="PurchasePrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
+                        <TextBlock x:Name="PurchasePrice" Text="0" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Контракт: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
-                        <TextBlock x:Name="ContractPrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
+                        <TextBlock x:Name="ContractPrice" Text="0" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <Button x:Name="AddDivisionPurchase" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionPurchase_Click" />

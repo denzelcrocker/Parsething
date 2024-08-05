@@ -27,7 +27,7 @@ namespace Parsething.Pages
         private List<Employee>? Employees { get; set; }
         private List<LegalEntity>? LegalEntities { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
-        private const int PageSize = 15;
+        private const int PageSize = 35;
         private int _currentPage = 1;
         private const int VisiblePagesCount = 5; // Количество видимых страниц
 

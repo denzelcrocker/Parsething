@@ -170,12 +170,14 @@ namespace Parsething.Pages
             {
                 Procurement.IsCalculationBlocked = false;
                 Procurement.CalculatingUserId = null;
+                Procurement.CalculatingAmount = Convert.ToDecimal(CalculationPrice.Text);
                 PULL.Procurement(Procurement);
             }
             else if (Procurement.IsPurchaseBlocked == true && Procurement.PurchaseUserId == currentUserId && IsCalculation == false)
             {
                 Procurement.IsPurchaseBlocked = false;
                 Procurement.PurchaseUserId = null;
+                Procurement.PurchaseAmount = Convert.ToDecimal(PurchasePrice.Text);
                 PULL.Procurement(Procurement);
             }
             Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
@@ -191,36 +193,6 @@ namespace Parsething.Pages
             }
             GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
             MainFrame.GoBack();
-
-            //var employee = (Employee)Application.Current.MainWindow.DataContext;
-            //var positionKind = employee.Position.Kind;
-
-            //var navigationMap = new Dictionary<string, Page>
-            //    {
-            //        { "Администратор", new Pages.AdministratorPage() },
-            //        { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-            //        { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-            //        { "Специалист отдела расчетов", new Pages.CalculatorPage() },
-            //        { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
-            //        { "Заместитель руководителя тендреного отдела", new Pages.HeadsOfManagersPage() },
-            //        { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
-            //        { "Специалист тендерного отдела", new Pages.ManagerPage() },
-            //        { "Руководитель отдела закупки", new Pages.PurchaserPage() },
-            //        { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
-            //        { "Специалист закупки", new Pages.PurchaserPage() },
-            //        { "Руководитель отдела производства", new Pages.AssemblyPage() },
-            //        { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
-            //        { "Специалист по производству", new Pages.AssemblyPage() },
-            //        { "Юрист", new Pages.LawyerPage() }
-            //    };
-
-            //if (navigationMap.TryGetValue(positionKind, out var page))
-            //{
-            //    _ = MainFrame.Navigate(page);
-            //}
-            //else
-            //{
-            //}
         }
 
         private void AddDivisionCalculating_Click(object sender, RoutedEventArgs e)
