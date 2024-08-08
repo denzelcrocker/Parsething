@@ -89,6 +89,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
                         <Button   
                             Grid.Column="0"
@@ -107,10 +108,10 @@
                             <TextBlock x:Name="Id" Text="000000" Foreground="{DynamicResource Text.Foreground}" Style="{DynamicResource TextBlock.Number}" Padding="15,10"/>
                         </Border>
                         <TextBlock Grid.Column="2" Name="PurchaseOrCalculatiing" Text="Режим" Style="{DynamicResource TextBlock.ComboFirst}" Margin="20,0,0,0"/>
-                        <Button Grid.Column="4" x:Name="CalculatedButton" Content="Я посчиталь" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="CalculatedButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
+                        <Button Grid.Column="4" x:Name="CalculatedButton" Content="Посчитан" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="CalculatedButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
                         <Button 
                             x:Name="GoToProcurementFolderButton"
-                            Grid.Column="4"
+                            Grid.Column="3"
                             Visibility="Hidden"
                             Style="{DynamicResource ButtonWithIcon}"
                             Click="GoToProcurementFolderButton_Click" >
@@ -120,7 +121,18 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <Button Grid.Column="5" x:Name="IssuedButton" Content="Я оформиль" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="IssuedButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
+                        <Button Grid.Column="4" x:Name="IssuedButton" Content="Оформлен" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="IssuedButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
+                        <Button 
+                            x:Name="NavigateToProcurementURL"
+                            Style="{DynamicResource ButtonWithIcon}"
+                            Grid.Column="5"
+                            Click="NavigateToProcurementURL_Click" >
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="40"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
                     </Grid>
                     <StackPanel x:Name="PurchasePanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
                         <Label Content="Закупка: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>

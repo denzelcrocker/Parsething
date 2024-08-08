@@ -1135,7 +1135,7 @@ namespace Parsething.Functions
 
                     // Вычисляем остаток для заголовка
                     var parentComponent = componentCalculations.FirstOrDefault(pc => pc.HeaderTypeId == componentCalculationHeader.HeaderTypeId && pc.IsDeleted == false);
-                    var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.IsDeleted == false).Sum(c => c.Count);
+                    var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.Count == componentCalculationHeader.Count && c.IsDeleted == false).Sum(c => c.Count);
                     var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculationHeader.Count;
 
                     TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
@@ -1166,14 +1166,16 @@ namespace Parsething.Functions
                             columnDefinition.Width = new GridLength(columnWidths[i]);
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
-                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
-                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
-                        TextBox textBoxCount = new TextBox() { Text = componentCalculation.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                        
 
                         // Вычисляем остаток для компонента
-                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentName == componentCalculation.ComponentName && pc.IsDeleted == false && pc.SellerId == componentCalculation.SellerId);
-                        var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
+                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentName == componentCalculation.ComponentName && pc.Count == componentCalculation.Count && pc.IsDeleted == false && pc.SellerId == componentCalculation.SellerId);
+                        var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.Count == componentCalculation.Count && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
                         var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculation.Count;
+
+                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxCount = new TextBox() { Text = remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
 
                         TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
 
@@ -1242,7 +1244,7 @@ namespace Parsething.Functions
                     LoadColumnNames(textBoxHeader, 0);
 
                     var parentComponent = componentCalculations.FirstOrDefault(pc => pc.HeaderTypeId == componentCalculationHeader.HeaderTypeId && pc.IsDeleted == false);
-                    var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.IsDeleted == false).Sum(c => c.Count);
+                    var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.Count == componentCalculationHeader.Count && c.IsDeleted == false).Sum(c => c.Count);
                     var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculationHeader.Count;
 
                     TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
@@ -1274,8 +1276,8 @@ namespace Parsething.Functions
                         TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
                         TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
 
-                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentName == componentCalculation.ComponentName && pc.IsDeleted == false && pc.SellerId == componentCalculation.SellerId);
-                        var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
+                        var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentName == componentCalculation.ComponentName && pc.Count == componentCalculation.Count && pc.IsDeleted == false && pc.SellerId == componentCalculation.SellerId);
+                        var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.Count == componentCalculation.Count && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
                         var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculation.Count;
 
                         TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };

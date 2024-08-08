@@ -330,5 +330,14 @@ namespace Parsething.Pages
             Clipboard.SetText(Id.Text);
             AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 1500);
         }
+
+        private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null && Procurement.RequestUri != null)
+            {
+                string url = Procurement.RequestUri.ToString();
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+        }
     }
 }

@@ -816,7 +816,7 @@ namespace Parsething.Pages
                 if (Amount.Text != "")
                 {
                     decimal amountDecimal;
-                    if (decimal.TryParse(Amount.Text, out amountDecimal))
+                    if (decimal.TryParse(Amount.Text.Replace(".", ","), out amountDecimal))
                         Procurement.Amount = amountDecimal;
                     else
                         warningMessage += " Оплаченная сумма";

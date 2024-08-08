@@ -23,6 +23,7 @@
     <None Remove="Pages\Purchase.png" />
     <None Remove="Pages\Refresh.png" />
     <None Remove="Resources\Fonts\Noah-Regular.ttf" />
+    <None Remove="Resources\Images\Refresh.png" />
     <None Remove="Search.png" />
     <None Remove="Send.png" />
     <None Remove="Windows\printing %281%29.png" />
@@ -59,7 +60,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Pages\Refresh.png" />
     <Resource Include="Resources\Images\Printing.png" />
     <Resource Include="Resources\Images\Assembly.png" />
     <Resource Include="Resources\Images\Info.png" />
