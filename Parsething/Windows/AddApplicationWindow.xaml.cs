@@ -148,7 +148,7 @@ namespace Parsething.Windows
                         AssemblyNeed = Procurement.AssemblyNeed,
                         MinopttorgId = Procurement.MinopttorgId,
                         LegalEntityId = Procurement.LegalEntityId,
-                        ApplicationNumber = GET.Aggregate.NumberOfApplication(Procurement.Id),
+                        ApplicationNumber = GET.Aggregate.NumberOfApplication(Procurement.DisplayId),
                         Bet = Procurement.Bet,
                         MinimalPrice = Procurement.MinimalPrice,
                         ContractAmount = applicationAmountValue,
