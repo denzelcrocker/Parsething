@@ -429,6 +429,22 @@ namespace Parsething.Pages
                 ToolTipHelper.SetToolTip(image, parameter);
             }
         }
+
+        private void GoToApplicationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = (sender as Button)?.DataContext as Procurement;
+            if (procurement != null)
+            {
+                List<Procurement> procurements = new List<Procurement>();
+                if (procurement.ParentProcurementId != null)
+                    GlobalUsingValues.Instance.AddProcurements(GET.View.ApplicationsBy(procurement.ParentProcurementId));
+                else
+                    GlobalUsingValues.Instance.AddProcurements(GET.View.ApplicationsBy(procurement.DisplayId));
+                View.ItemsSource = null;
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+
+            }
+        }
     }
     
 }

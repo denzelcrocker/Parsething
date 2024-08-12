@@ -88,8 +88,8 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
                         <Button   
                             Grid.Column="0"
@@ -111,8 +111,8 @@
                         <Button Grid.Column="4" x:Name="CalculatedButton" Content="Посчитан" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="CalculatedButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
                         <Button 
                             x:Name="GoToProcurementFolderButton"
-                            Grid.Column="3"
-                            Visibility="Hidden"
+                            Grid.Column="5"
+                            Visibility="Visible"
                             Style="{DynamicResource ButtonWithIcon}"
                             Click="GoToProcurementFolderButton_Click" >
                             <Button.Content>
@@ -125,7 +125,7 @@
                         <Button 
                             x:Name="NavigateToProcurementURL"
                             Style="{DynamicResource ButtonWithIcon}"
-                            Grid.Column="5"
+                            Grid.Column="6"
                             Click="NavigateToProcurementURL_Click" >
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">

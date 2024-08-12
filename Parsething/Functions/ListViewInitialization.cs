@@ -86,7 +86,7 @@ namespace Parsething.Functions
             }
             if (IsCalculation)
             {
-
+                 
                 foreach (ComponentCalculation componentCalculationHeader in componentCalculations)
                 {
                     StackPanel stackPanel = new StackPanel();

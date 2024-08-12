@@ -13,11 +13,11 @@
             </Border.Effect>
             <Grid Width="1810" Height="820">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="310"/>
+                    <ColumnDefinition Width="315"/>
                     <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="310"/>
+                    <ColumnDefinition Width="315"/>
                     <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="310"/>
+                    <ColumnDefinition Width="315"/>
                     <ColumnDefinition Width="2"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>

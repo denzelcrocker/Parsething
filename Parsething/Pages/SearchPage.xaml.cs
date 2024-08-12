@@ -635,10 +635,16 @@ namespace Parsething.Pages
                 throw new ArgumentException("Page number and page size must be greater than zero.");
             }
 
-            return procurements
+            // Разбиваем список на страницы
+            var pagedProcurements = procurements
                 .Skip((pageNumber - 1) * pageSize) // Пропускаем элементы до нужной страницы
                 .Take(pageSize) // Берем элементы для текущей страницы
                 .ToList();
+
+            // Применяем метод подгрузки статусов
+            GET.View.PopulateComponentStates(pagedProcurements);
+
+            return pagedProcurements;
         }
     }
 }

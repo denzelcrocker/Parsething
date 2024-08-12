@@ -5,6 +5,7 @@ using Parsething.Functions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -60,8 +61,8 @@ namespace Parsething.Pages
             {
                 Procurement = procurement;
                 Id.Text = Procurement.DisplayId.ToString();
-
-                Comments = GET.View.CommentsBy(procurement.Id);
+                int actualProcurementId = GET.Aggregate.GetActualProcurementId(procurement.Id, procurement.ParentProcurementId);
+                Comments = GET.View.CommentsBy(actualProcurementId);
                 CommentsListView.ItemsSource = Comments;
                 ScrollToBottom();
                 ComponentCalculations = GET.View.ComponentCalculationsBy(procurement.Id);
@@ -82,8 +83,8 @@ namespace Parsething.Pages
 
                     if (calculatingAmount > Procurement.InitialPrice)
                         CalculationPrice.Foreground = Red;
-                    MaxPrice.Text = Procurement.InitialPrice.ToString();
-                    CalculationPrice.Text = calculatingAmount.ToString();
+                    MaxPrice.Text = Procurement.InitialPrice.ToString("N2", CultureInfo.CurrentCulture);
+                    CalculationPrice.Text = calculatingAmount.HasValue ? calculatingAmount.Value.ToString("N2") : "0.00";
                     var visibleEmployeeIds = new[] { 1, 2, 3, 4 };
                     var currentPositionId = ((Employee)Application.Current.MainWindow.DataContext).PositionId;
 
@@ -96,7 +97,6 @@ namespace Parsething.Pages
                         else if (Procurement.ProcurementState.Kind == "Оформить")
                         {
                             IssuedButton.Visibility = Visibility.Visible;
-                            GoToProcurementFolderButton.Visibility = Visibility.Visible;
                         }
                     }
                 }
@@ -118,17 +118,17 @@ namespace Parsething.Pages
 
                     if (Procurement.ReserveContractAmount != null)
                     {
-                        ContractPrice.Text = Procurement.ReserveContractAmount.ToString();
+                        ContractPrice.Text = Procurement.ReserveContractAmount.HasValue ? Procurement.ReserveContractAmount.Value.ToString("N2") : "0.00";
                         if (purchaseAmount > Procurement.ReserveContractAmount)
                             PurchasePrice.Foreground = Red;
                     }
                     else
                     {
-                        ContractPrice.Text = Procurement.ContractAmount.ToString();
+                        ContractPrice.Text = Procurement.ContractAmount.HasValue ? Procurement.ContractAmount.Value.ToString("N2") : "0.00";
                         if (purchaseAmount > Procurement.ContractAmount)
                             PurchasePrice.Foreground = Red;
                     }
-                    PurchasePrice.Text = purchaseAmount.ToString();
+                    PurchasePrice.Text = purchaseAmount.HasValue ? purchaseAmount.Value.ToString("N2") : "0.00";
                 }
                 ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView, CalculationPrice, PurchasePrice, Procurement);
             }
@@ -149,13 +149,14 @@ namespace Parsething.Pages
         {
             if (CommentsTextBox.Text != "")
             {
-                Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = CommentsTextBox.Text, IsTechnical = IsTechnical.IsChecked };
+                Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = GET.Aggregate.GetActualProcurementId(Procurement.Id, Procurement.ParentProcurementId), Text = CommentsTextBox.Text, IsTechnical = IsTechnical.IsChecked };
                 CommentsTextBox.Clear();
                 IsTechnical.IsChecked = false;
                 PUT.Comment(comment);
                 CommentsListView.ItemsSource = null;
                 Comments.Clear();
-                Comments = GET.View.CommentsBy(Procurement.Id);
+                int actualProcurementId = GET.Aggregate.GetActualProcurementId(Procurement.Id, Procurement.ParentProcurementId);
+                Comments = GET.View.CommentsBy(actualProcurementId);
                 CommentsListView.ItemsSource = Comments;
                 ScrollToBottom();
             }

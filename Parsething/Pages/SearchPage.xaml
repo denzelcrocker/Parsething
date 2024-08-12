@@ -622,6 +622,7 @@
                                 FontSize="15"
                                 SelectedValuePath="Tag"
                                 DisplayMemberPath="Content">
+                                <ComboBoxItem Content="Дата проставления статуса" Tag="HistoryDate"/>
                                 <ComboBoxItem Content="Дата начала подачи" Tag="StartDate"/>
                                 <ComboBoxItem Content="Дата окончания подачи" Tag="Deadline"/>
                                 <ComboBoxItem Content="Дата подведения итогов" Tag="ResultDate"/>

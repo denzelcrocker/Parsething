@@ -104,7 +104,9 @@
                             <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Сумма" Grid.Column="6" />
                             <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Закупка" Grid.Column="7" />
                         </Grid>
-                        <ListView Grid.Row="3" x:Name="listViewSupplyMonitoring"/>
+                        <ScrollViewer Grid.Row="3" VirtualizingPanel.VirtualizationMode="Recycling" SnapsToDevicePixels="False">
+                            <ListView x:Name="listViewSupplyMonitoring"/>
+                        </ScrollViewer>
                     </Grid>
                 </Border>
             </ScrollViewer>

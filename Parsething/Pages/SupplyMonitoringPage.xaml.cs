@@ -624,7 +624,7 @@ namespace Parsething.Pages
             clipboardText.AppendLine($"{header} - {totalAmount}");
             foreach (var record in recordsForHeader)
             {
-                clipboardText.AppendLine($"{record.ComponentName}        {record.AveragePrice}      {record.TotalCount}");
+                clipboardText.AppendLine($"{record.ComponentName}      {record.TotalCount}");
             }
 
             Clipboard.SetText(clipboardText.ToString());

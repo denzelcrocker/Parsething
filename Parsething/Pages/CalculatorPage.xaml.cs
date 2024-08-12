@@ -78,7 +78,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         View.ItemsSource = null;
         var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
-        View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+        View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.LightGray;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;
@@ -91,7 +91,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         View.ItemsSource = null;
         var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
-        View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+        View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.LightGray;
         DrawUpButton.Background = Brushes.Transparent;
@@ -104,7 +104,8 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         View.ItemsSource = null;
         var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
-        View.ItemsSource = GlobalUsingValues.Instance.Procurements; NewButton.Background = Brushes.Transparent;
+        View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
+        NewButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.LightGray;
         WonPartOneButton.Background = Brushes.Transparent;
@@ -140,7 +141,8 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         View.ItemsSource = null;
         var procurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id) ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
-        View.ItemsSource = GlobalUsingValues.Instance.Procurements; NewButton.Background = Brushes.Transparent;
+        View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline); 
+        NewButton.Background = Brushes.Transparent;
         NewButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -234,7 +235,8 @@ namespace Parsething.Pages
             Lawyer.ItemsSource = Lawyers;
             ProcurementsEmployeeLawyers = GET.View.ProcurementsEmployeesBy(procurement, "Юрист", "", "");
 
-            Comments = GET.View.CommentsBy(procurement.Id);
+            int actualProcurementId = GET.Aggregate.GetActualProcurementId(procurement.Id, procurement.ParentProcurementId);
+            Comments = GET.View.CommentsBy(actualProcurementId);
             CommentsListView.ItemsSource = Comments;
             ScrollToBottom();
 
@@ -267,7 +269,7 @@ namespace Parsething.Pages
                     DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";
                 if (Procurement.ResultDate != null)
                     ResultDate.Text = $"{Procurement.ResultDate}";
-                InitialPrice.Text = Procurement.InitialPrice.ToString();
+                InitialPrice.Text = Procurement.InitialPrice.ToString("N2", CultureInfo.CurrentCulture);
                 if(Procurement.Organization != null)
                 {
                     if (Procurement.Organization.Name != null)
@@ -372,13 +374,13 @@ namespace Parsething.Pages
                             Sender.SelectedItem = employee;
                             break;
                         }
-                Bet.Text = Procurement.Bet.ToString();
-                MinimalPrice.Text = Procurement.MinimalPrice.ToString();
-                ContractAmount.Text = Procurement.ContractAmount.ToString();
-                ReserveContractAmount.Text = Procurement.ReserveContractAmount.ToString();
+                Bet.Text = Procurement.Bet.HasValue ? Procurement.Bet.Value.ToString("N2") : "0.00";
+                MinimalPrice.Text = Procurement.MinimalPrice.HasValue ? Procurement.MinimalPrice.Value.ToString("N2") : "0.00";
+                ContractAmount.Text = Procurement.ContractAmount.HasValue ? Procurement.ContractAmount.Value.ToString("N2") : "0.00";
+                ReserveContractAmount.Text = Procurement.ReserveContractAmount.HasValue ? Procurement.ReserveContractAmount.Value.ToString("N2") : "0.00";
                 IsUnitPriceCB.IsChecked = Procurement.IsUnitPrice;
                 ProtocolDate.SelectedDate = Procurement.ProtocolDate;
-                CalculatingAmount.Text = Procurement.CalculatingAmount.ToString();
+                CalculatingAmount.Text = Procurement.CalculatingAmount.HasValue ? Procurement.CalculatingAmount.Value.ToString("N2") : "0.00";
                 if (Procurement?.ProcurementState?.Kind == "Отклонен")
                 {
                     RejectionReason.Visibility = Visibility.Visible;
@@ -393,7 +395,7 @@ namespace Parsething.Pages
                 if (Procurement?.ProcurementState?.Kind == "Проигран")
                 {
                     CompetitorSum.Visibility = Visibility.Visible;
-                    CompetitorSum.Text = Procurement.CompetitorSum.ToString();
+                    CompetitorSum.Text = Procurement.CompetitorSum.HasValue ? Procurement.CompetitorSum.Value.ToString("N2") : "0.00";
                     CompetitorSumLabel.Visibility = Visibility.Visible;
                 }
                 else
@@ -431,7 +433,7 @@ namespace Parsething.Pages
                         ExecutionState.SelectedItem = executionState;
                         break;
                     }
-                ExecutionPrice.Text = Procurement.ExecutionPrice.ToString();
+                ExecutionPrice.Text = Procurement.ExecutionPrice.HasValue ? Procurement.ExecutionPrice.Value.ToString("N2") : "0.00";
                 ExecutionDate.Text = Procurement.ExecutionDate.ToString();
                 if (ExecutionState.Text == null || ExecutionState.Text == "Не требуется" || ExecutionState.Text == "" || ExecutionState.Text == "Добросовестность")
                 {
@@ -449,7 +451,7 @@ namespace Parsething.Pages
                         WarrantyState.SelectedItem = warrantyState;
                         break;
                     }
-                WarrantyPrice.Text = Procurement.WarrantyPrice.ToString();
+                WarrantyPrice.Text = Procurement.WarrantyPrice.HasValue ? Procurement.WarrantyPrice.Value.ToString("N2") : "0.00";
                 WarrantyDate.Text = Procurement.WarrantyDate.ToString();
                 if (WarrantyState.Text == null || WarrantyState.Text == "Не требуется" || (WarrantyState.Text == "") || (WarrantyState.Text == "Добросовестность"))
                 {
@@ -473,7 +475,7 @@ namespace Parsething.Pages
                 MaxDueDate.SelectedDate = Procurement.MaxDueDate;
                 ClosingDate.SelectedDate = Procurement.ClosingDate;
                 RealDueDate.SelectedDate = Procurement.RealDueDate;
-                Amount.Text = Procurement.Amount.ToString();
+                Amount.Text = Procurement.Amount.HasValue ? Procurement.Amount.Value.ToString("N2") : "0.00";
                 foreach (SignedOriginal signedOriginal in SignedOriginal.ItemsSource)
                     if (signedOriginal.Id == Procurement.SignedOriginalId)
                     {
@@ -692,7 +694,7 @@ namespace Parsething.Pages
                 if (Bet.Text != "")
                 {
                     decimal betDecimal;
-                    if (decimal.TryParse(Bet.Text, out betDecimal))
+                    if (decimal.TryParse(Bet.Text.Replace(".", ","), out betDecimal))
                         Procurement.Bet = betDecimal;
                     else
                         warningMessage += " Ставка";
@@ -702,7 +704,7 @@ namespace Parsething.Pages
                 if (MinimalPrice.Text != "")
                 {
                     decimal minimalPriceDecimal;
-                    if (decimal.TryParse(MinimalPrice.Text, out minimalPriceDecimal))
+                    if (decimal.TryParse(MinimalPrice.Text.Replace(".", ","), out minimalPriceDecimal))
                         Procurement.MinimalPrice = minimalPriceDecimal;
                     else
                         warningMessage += " Минимальная цена";
@@ -712,7 +714,7 @@ namespace Parsething.Pages
                 if (ContractAmount.Text != "")
                 {
                     decimal contractAmountDecimal;
-                    if (decimal.TryParse(ContractAmount.Text, out contractAmountDecimal))
+                    if (decimal.TryParse(ContractAmount.Text.Replace(".", ","), out contractAmountDecimal))
                         Procurement.ContractAmount = contractAmountDecimal;
                     else
                         warningMessage += " Сумма контракта";
@@ -722,7 +724,7 @@ namespace Parsething.Pages
                 if (ReserveContractAmount.Text != "")
                 {
                     decimal reserveContractAmountDecimal;
-                    if (decimal.TryParse(ReserveContractAmount.Text, out reserveContractAmountDecimal))
+                    if (decimal.TryParse(ReserveContractAmount.Text.Replace(".", ","), out reserveContractAmountDecimal))
                         Procurement.ReserveContractAmount = reserveContractAmountDecimal;
                     else
                         warningMessage += " Измененная сумма контракта";
@@ -778,7 +780,7 @@ namespace Parsething.Pages
                 if (ExecutionPrice.Text != "")
                 {
                     decimal executionPriceDecimal;
-                    if (decimal.TryParse(ExecutionPrice.Text, out executionPriceDecimal))
+                    if (decimal.TryParse(ExecutionPrice.Text.Replace(".", ","), out executionPriceDecimal))
                         Procurement.ExecutionPrice = executionPriceDecimal;
                     else
                         warningMessage += " Стоимость БГ";
@@ -793,7 +795,7 @@ namespace Parsething.Pages
                 if (WarrantyPrice.Text != "")
                 {
                     decimal warrantyPriceDecimal;
-                    if (decimal.TryParse(WarrantyPrice.Text, out warrantyPriceDecimal))
+                    if (decimal.TryParse(WarrantyPrice.Text.Replace(".", ","), out warrantyPriceDecimal))
                         Procurement.WarrantyPrice = warrantyPriceDecimal;
                     else
                         warningMessage += " Стоимость БГ";
@@ -1068,13 +1070,14 @@ namespace Parsething.Pages
         {
             if (CommentsTextBox.Text != "")
             {
-                Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = CommentsTextBox.Text, IsTechnical = IsTechnical.IsChecked };
+                Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = GET.Aggregate.GetActualProcurementId(Procurement.Id, Procurement.ParentProcurementId), Text = CommentsTextBox.Text, IsTechnical = IsTechnical.IsChecked };
                 CommentsTextBox.Clear();
                 IsTechnical.IsChecked = false;
                 PUT.Comment(comment);
                 CommentsListView.ItemsSource = null;
                 Comments.Clear();
-                Comments = GET.View.CommentsBy(Procurement.Id);
+                int actualProcurementId = GET.Aggregate.GetActualProcurementId(Procurement.Id, Procurement.ParentProcurementId);
+                Comments = GET.View.CommentsBy(actualProcurementId);
                 CommentsListView.ItemsSource = Comments;
                 ScrollToBottom();
             }
