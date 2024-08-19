@@ -70,7 +70,7 @@ namespace Parsething.Pages
                     Grid.SetColumn(border, i);
                     grid.Children.Add(border);
                 }
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
 
                 TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                 TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
@@ -79,7 +79,7 @@ namespace Parsething.Pages
                 TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                 TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                 TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                 button.Click += Button_Click;
                 button.DataContext = supplyMonitoring.TenderNumber;
 
@@ -198,7 +198,7 @@ namespace Parsething.Pages
                             Grid.SetColumn(border, i);
                             grid.Children.Add(border);
                         }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
+                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
 
                         TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
@@ -207,7 +207,7 @@ namespace Parsething.Pages
                         TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        Button button = new Button() { Content = GET.Aggregate.DisplayId(supplyMonitoring.TenderNumber).ToString(), Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                        Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
 
@@ -389,7 +389,7 @@ namespace Parsething.Pages
                             Grid.SetColumn(border, i);
                             grid.Children.Add(border);
                         }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
+                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
 
                         TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
@@ -398,7 +398,7 @@ namespace Parsething.Pages
                         TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                        Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
 
@@ -514,7 +514,7 @@ namespace Parsething.Pages
                             Grid.SetColumn(border, i);
                             grid.Children.Add(border);
                         }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(70) });
+                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
 
                         TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
@@ -523,7 +523,7 @@ namespace Parsething.Pages
                         TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
                         TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        Button button = new Button() { Content = supplyMonitoring.TenderNumber, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                        Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
                         button.Click += Button_Click;
                         button.DataContext = supplyMonitoring.TenderNumber;
 

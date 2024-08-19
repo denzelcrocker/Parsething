@@ -21,6 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Controls.Primitives;
 using Parsething.Classes;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages
 {
@@ -56,6 +57,7 @@ namespace Parsething.Pages
             {
                 Agreed.Text = ComponentCalculationsAgreed.Count.ToString();
             }
+            OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", KindOf.CorrectionDate)); // На исправлении
             Acceptance.Text = GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState).ToString();
             PreviousWeek.Text = GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane).ToString();
             ThisWeek.Text = GET.Aggregate.ProcurementsCountBy("Текущая", GET.KindOf.ShipmentPlane).ToString();
@@ -87,6 +89,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background= Brushes.Transparent;
             NextWeekButton.Background = Brushes.LightGray;
@@ -109,6 +112,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.LightGray;
             NextWeekButton.Background = Brushes.Transparent;
@@ -131,6 +135,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -153,6 +158,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -175,6 +181,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -199,6 +206,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.LightGray;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -224,6 +232,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.LightGray;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -249,6 +258,29 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.LightGray;
+            OnTheFixButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
+        }
+        private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.CorrectionDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements != null)
+            {
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+            }
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.LightGray;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -270,6 +302,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -291,6 +324,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.LightGray;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -312,6 +346,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -334,6 +369,7 @@ namespace Parsething.Pages
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
             PreviousWeekButton.Background = Brushes.Transparent;
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
@@ -445,6 +481,8 @@ namespace Parsething.Pages
 
             }
         }
+
+        
     }
     
 }

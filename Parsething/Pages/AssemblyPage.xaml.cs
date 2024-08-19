@@ -17,6 +17,7 @@ using DatabaseLibrary.Entities.ProcurementProperties;
 using DatabaseLibrary.Queries;
 using Parsething.Classes;
 using Parsething.Windows;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages
 {
@@ -47,6 +48,8 @@ namespace Parsething.Pages
             ComponentCalculationsAgreed = GET.View.ComponentCalculationsBy("ТО: Согласовано").Distinct(new Functions.MyClassComparer()).ToList(); // Согласовано
             if (ComponentCalculationsAgreed != null)
                 Agreed.Text = ComponentCalculationsAgreed.Count.ToString();
+
+            OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", KindOf.CorrectionDate)); // На исправлении
 
             PreviousWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane));// Предыдущая неделя отгрузки
 
@@ -103,6 +106,18 @@ namespace Parsething.Pages
                 GlobalUsingValues.Instance.AddProcurement(componentCalculation.Procurement);
             }
             if (GlobalUsingValues.Instance.Procurements != null)
+            {
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+            }
+        }
+
+        private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.CorrectionDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
             {
                 GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
                 View.ItemsSource = GlobalUsingValues.Instance.Procurements;
@@ -199,5 +214,6 @@ namespace Parsething.Pages
                 assemblyMap.Show();
             }
         }
+
     }
 }

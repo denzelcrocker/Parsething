@@ -82,7 +82,7 @@ namespace Parsething.Pages
                         LabelFormatter = value => value.ToString(),
                         Separator = new LiveCharts.Wpf.Separator
                         {
-                            Step = 10,
+                            Step = 30,
                             IsEnabled = true
                         },
                         Foreground = Brushes.Black // Черный цвет текста для оси X
@@ -147,7 +147,7 @@ namespace Parsething.Pages
                         LabelFormatter = value => value.ToString(),
                         Separator = new LiveCharts.Wpf.Separator
                         {
-                            Step = 10,
+                            Step = 30,
                             IsEnabled = true
                         },
                         Foreground = System.Windows.Media.Brushes.Black // Черный цвет текста для оси X

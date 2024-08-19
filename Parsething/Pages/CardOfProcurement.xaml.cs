@@ -374,13 +374,13 @@ namespace Parsething.Pages
                             Sender.SelectedItem = employee;
                             break;
                         }
-                Bet.Text = Procurement.Bet.HasValue ? Procurement.Bet.Value.ToString("N2") : "0.00";
-                MinimalPrice.Text = Procurement.MinimalPrice.HasValue ? Procurement.MinimalPrice.Value.ToString("N2") : "0.00";
-                ContractAmount.Text = Procurement.ContractAmount.HasValue ? Procurement.ContractAmount.Value.ToString("N2") : "0.00";
-                ReserveContractAmount.Text = Procurement.ReserveContractAmount.HasValue ? Procurement.ReserveContractAmount.Value.ToString("N2") : "0.00";
+                Bet.Text = Procurement.Bet.HasValue ? Procurement.Bet.Value.ToString("N2") : "";
+                MinimalPrice.Text = Procurement.MinimalPrice.HasValue ? Procurement.MinimalPrice.Value.ToString("N2") : "";
+                ContractAmount.Text = Procurement.ContractAmount.HasValue ? Procurement.ContractAmount.Value.ToString("N2") : "";
+                ReserveContractAmount.Text = Procurement.ReserveContractAmount.HasValue ? Procurement.ReserveContractAmount.Value.ToString("N2") : "";
                 IsUnitPriceCB.IsChecked = Procurement.IsUnitPrice;
                 ProtocolDate.SelectedDate = Procurement.ProtocolDate;
-                CalculatingAmount.Text = Procurement.CalculatingAmount.HasValue ? Procurement.CalculatingAmount.Value.ToString("N2") : "0.00";
+                CalculatingAmount.Text = Procurement.CalculatingAmount.HasValue ? Procurement.CalculatingAmount.Value.ToString("N2") : "";
                 if (Procurement?.ProcurementState?.Kind == "Отклонен")
                 {
                     RejectionReason.Visibility = Visibility.Visible;
@@ -395,7 +395,7 @@ namespace Parsething.Pages
                 if (Procurement?.ProcurementState?.Kind == "Проигран")
                 {
                     CompetitorSum.Visibility = Visibility.Visible;
-                    CompetitorSum.Text = Procurement.CompetitorSum.HasValue ? Procurement.CompetitorSum.Value.ToString("N2") : "0.00";
+                    CompetitorSum.Text = Procurement.CompetitorSum.HasValue ? Procurement.CompetitorSum.Value.ToString("N2") : "";
                     CompetitorSumLabel.Visibility = Visibility.Visible;
                 }
                 else
@@ -433,7 +433,7 @@ namespace Parsething.Pages
                         ExecutionState.SelectedItem = executionState;
                         break;
                     }
-                ExecutionPrice.Text = Procurement.ExecutionPrice.HasValue ? Procurement.ExecutionPrice.Value.ToString("N2") : "0.00";
+                ExecutionPrice.Text = Procurement.ExecutionPrice.HasValue ? Procurement.ExecutionPrice.Value.ToString("N2") : "";
                 ExecutionDate.Text = Procurement.ExecutionDate.ToString();
                 if (ExecutionState.Text == null || ExecutionState.Text == "Не требуется" || ExecutionState.Text == "" || ExecutionState.Text == "Добросовестность")
                 {
@@ -451,7 +451,7 @@ namespace Parsething.Pages
                         WarrantyState.SelectedItem = warrantyState;
                         break;
                     }
-                WarrantyPrice.Text = Procurement.WarrantyPrice.HasValue ? Procurement.WarrantyPrice.Value.ToString("N2") : "0.00";
+                WarrantyPrice.Text = Procurement.WarrantyPrice.HasValue ? Procurement.WarrantyPrice.Value.ToString("N2") : "";
                 WarrantyDate.Text = Procurement.WarrantyDate.ToString();
                 if (WarrantyState.Text == null || WarrantyState.Text == "Не требуется" || (WarrantyState.Text == "") || (WarrantyState.Text == "Добросовестность"))
                 {
@@ -475,7 +475,7 @@ namespace Parsething.Pages
                 MaxDueDate.SelectedDate = Procurement.MaxDueDate;
                 ClosingDate.SelectedDate = Procurement.ClosingDate;
                 RealDueDate.SelectedDate = Procurement.RealDueDate;
-                Amount.Text = Procurement.Amount.HasValue ? Procurement.Amount.Value.ToString("N2") : "0.00";
+                Amount.Text = Procurement.Amount.HasValue ? Procurement.Amount.Value.ToString("N2") : "";
                 foreach (SignedOriginal signedOriginal in SignedOriginal.ItemsSource)
                     if (signedOriginal.Id == Procurement.SignedOriginalId)
                     {
@@ -1273,7 +1273,10 @@ namespace Parsething.Pages
             ApplicationAmount.Text = applicationAmount.ToString();
             int displayId = Procurement.DisplayId.GetValueOrDefault(0);
             ApplicationCount.Text = GET.Aggregate.CountOfApplications(displayId).ToString();
-            RemainingApplicationAmount.Text = (Procurement.ContractAmount - applicationAmount).ToString();
+            if (Procurement.ContractAmount != null || Procurement.ContractAmount != 0)
+                RemainingApplicationAmount.Text = (Procurement.ContractAmount - applicationAmount).ToString();
+            if (Procurement.ReserveContractAmount != null || Procurement.ReserveContractAmount != 0)
+                RemainingApplicationAmount.Text = (Procurement.ReserveContractAmount - applicationAmount).ToString();
             Grid grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(300) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(615) });
