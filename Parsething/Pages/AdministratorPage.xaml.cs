@@ -16,6 +16,7 @@ public partial class AdministratorPage : Page
     private DateTime StartDate = new DateTime();
 
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsNew { get; set; }
+    private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsCheck { get; set; }
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsDrawUp { get; set; }
 
     private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesEPSpecialistGroupings { get; set; }
@@ -42,11 +43,12 @@ public partial class AdministratorPage : Page
         StartDate = globalUsingValues.StartDate;
 
         int countOfCalculationsNew = 0;
+        int countOfCalculationsCheck = 0;
         int countOfCalculationsDrawUp = 0;
         int countOfMethods = 0;
         int countOfSended = 0;
         int countOfManagers = 0;
-        Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState)); // Спаршены
+        Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState)); // Спаршены 
 
         Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState)); // Неразобранные
 
@@ -96,7 +98,18 @@ public partial class AdministratorPage : Page
         {
             CalculationsCombobox.Items.Add(item); // Расчет (по сотрудникам)
         }
-
+        CheckCombobox.Items.Clear();
+        CheckCombobox.Text = "На проверке:";
+        ProcurementsEmployeesCalculatorsGroupingsCheck = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Проверка", "", "", "");
+        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
+        {
+            countOfCalculationsCheck += item.CountOfProcurements;
+        }
+        CheckOverAll.Text = countOfCalculationsCheck.ToString(); // Расчет (общее количество)
+        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
+        {
+            CheckCombobox.Items.Add(item); // Расчет (по сотрудникам)
+        }
         DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
 
         DrawUpCombobox.Items.Clear();

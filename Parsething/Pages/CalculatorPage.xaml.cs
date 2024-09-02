@@ -37,6 +37,8 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     {
         try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
         catch { }
+
+        NavigationState.AddLastSelectedProcurement(View);
     }
 
     private void LoadPageData()
@@ -46,6 +48,9 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         var procurementsEmployeesNew = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый");
         if (procurementsEmployeesNew != null && procurementsEmployeesNew.Count > 0)
             NewCount.Text = procurementsEmployeesNew.Count.ToString();
+        var procurementsEmployeesCheck = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Проверка");
+        if (procurementsEmployeesCheck != null && procurementsEmployeesCheck.Count > 0)
+            CheckCount.Text = procurementsEmployeesCheck.Count.ToString();
         var procurementsQueue = GET.View.ProcurementsQueue();
         if (procurementsQueue != null && procurementsQueue.Count > 0)
             Queue.Text = procurementsQueue.Count.ToString();
@@ -80,6 +85,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.LightGray;
+        CheckButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;
         WonPartOneButton.Background = Brushes.Transparent;
@@ -93,6 +99,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;
+        CheckButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.LightGray;
         DrawUpButton.Background = Brushes.Transparent;
         WonPartOneButton.Background = Brushes.Transparent;
@@ -106,6 +113,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;
+        CheckButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.LightGray;
         WonPartOneButton.Background = Brushes.Transparent;
@@ -117,7 +125,9 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
         if (procurement != null)
         {
-            _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
+            NavigationState.LastSelectedProcurement = procurement;
+
+            _ = MainFrame.Navigate(new CardOfProcurement(procurement, true));
         }
     }
 
@@ -132,6 +142,8 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
         if (procurement != null)
         {
+            NavigationState.LastSelectedProcurement = procurement;
+
             _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true, false));
         }
     }
@@ -143,10 +155,25 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline); 
         NewButton.Background = Brushes.Transparent;
+        CheckButton.Background = Brushes.Transparent;
         NewButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;
         WonPartOneButton.Background = Brushes.LightGray;
+        LoadPageData();
+    }
+
+    private void CheckButton_Click(object sender, RoutedEventArgs e)
+    {
+        View.ItemsSource = null;
+        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Проверка") ?? new List<ProcurementsEmployee>();
+        GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
+        View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
+        NewButton.Background = Brushes.Transparent;
+        CheckButton.Background = Brushes.LightGray;
+        CalculatedButton.Background = Brushes.Transparent;
+        DrawUpButton.Background = Brushes.Transparent;
+        WonPartOneButton.Background = Brushes.Transparent;
         LoadPageData();
     }
 }

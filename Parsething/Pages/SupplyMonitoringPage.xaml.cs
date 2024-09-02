@@ -438,29 +438,34 @@ namespace Parsething.Pages
 
         private void OnTheWayButton_Click(object sender, RoutedEventArgs e)
         {
-            var componentStatuses = new List<string> {"В пути"};
+            var componentStatuses = new List<string> { "В пути" };
             overAllPrice = 0;
 
             supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
             List<string> headers = new();
             List<StackPanel> stackPanels = new();
+
             foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
             {
-                if (!headers.Contains(supplyMonitoring.SupplierName))
+                var supplierName = supplyMonitoring.SupplierName ?? "Без поставщика";
+                if (!headers.Contains(supplierName))
                 {
-                    headers.Add(supplyMonitoring.SupplierName);
+                    headers.Add(supplierName);
                 }
             }
+
+            headers = headers.OrderBy(h => h == "Без поставщика" ? "" : h).ToList();
 
             foreach (string header in headers)
             {
                 DockPanel dockPanel = new();
                 StackPanel stackPanel = new();
                 decimal? totalAmount = 0;
-                foreach (SupplyMonitoringList supplyMonitoringList in supplyMonitoringList)
+
+                foreach (SupplyMonitoringList supplyMonitoringItem in supplyMonitoringList)
                 {
-                    if (supplyMonitoringList.SupplierName == header)
-                        totalAmount += supplyMonitoringList.TotalAmount;
+                    if (supplyMonitoringItem.SupplierName == header)
+                        totalAmount += supplyMonitoringItem.TotalAmount;
                 }
                 stackPanel.Children.Add(dockPanel);
                 dockPanel.Children.Add(new TextBlock()
@@ -483,6 +488,7 @@ namespace Parsething.Pages
                     popup.IsOpen = true;
                 };
                 dockPanel.Children.Add(saveButton);
+
                 Button сopyToClipBoardButton = new Button()
                 {
                     Content = "Copy",
@@ -496,6 +502,8 @@ namespace Parsething.Pages
 
                 ListView list = new();
                 list.Style = (Style)Application.Current.FindResource("ListView");
+
+
                 foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
                 {
                     if (supplyMonitoring.SupplierName == header)
@@ -559,6 +567,33 @@ namespace Parsething.Pages
 
             listViewSupplyMonitoring.ItemsSource = stackPanels;
             OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
+        }
+
+        // Обработчик события PreviewMouseWheel для ListView
+        private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // Получаем родительский ScrollViewer
+            var scrollViewer = FindVisualParent<ScrollViewer>((DependencyObject)sender);
+
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta / 3);
+                e.Handled = true;
+            }
+        }
+
+        // Метод для поиска родительского элемента указанного типа в визуальном дереве
+        private T FindVisualParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+
+            if (parentObject == null)
+                return null;
+
+            if (parentObject is T parent)
+                return parent;
+
+            return FindVisualParent<T>(parentObject);
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e, List<SupplyMonitoringList> supplyMonitoringList, DatePicker datePicker, ComboBox comboBox)
         {

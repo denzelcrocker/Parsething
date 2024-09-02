@@ -63,11 +63,13 @@ namespace Parsething.Windows
                     Procurement = Procurements.First();
 
                     Id.Text = Procurement.DisplayId.ToString();
-                    Number.Text = Procurement.Number.ToString();
+                    if (Procurement.PostingDate != null && Procurement.TimeZone != null)
+                        PostingDate.Text = $"{Procurement.PostingDate} ({Procurement.TimeZone.Offset})";
                     if (Procurement.Deadline != null && Procurement.TimeZone != null)
                         DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";
                     if (Procurement.ResultDate != null)
                         ResultDate.Text = $"{Procurement.ResultDate}";
+                    Number.Text = Procurement.Number.ToString();
                     foreach (Law law in LawCombobox.ItemsSource)
                         if (law.Id == Procurement.LawId)
                         {

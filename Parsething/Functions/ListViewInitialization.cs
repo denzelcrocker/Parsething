@@ -44,7 +44,7 @@ namespace Parsething.Functions
         static SolidColorBrush Red = new SolidColorBrush(Colors.Red);
         static SolidColorBrush Black = new SolidColorBrush(Colors.Black);
 
-        static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен" };
+        static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен", "Проверка" };
 
         private static string[] columnNames = { "Заголовок", "Количество" };
 

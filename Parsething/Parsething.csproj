@@ -80,6 +80,7 @@
     <Resource Include="Resources\Images\Send.png" />
     <Resource Include="Resources\Images\GrayPrinting.png" />
     <Resource Include="Resources\Images\Folder.png" />
+    <Resource Include="Resources\Images\Charts.png" />
   </ItemGroup>
 
   <ItemGroup>

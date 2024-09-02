@@ -21,12 +21,21 @@
             <Border x:Name="InfoBar" Background="{DynamicResource InfoBar.Background}" Grid.Row="1" Margin="15" Padding="40,12.5" CornerRadius="40">
                 <DockPanel VerticalAlignment="Center">
                     <Button x:Name="GoHome"
-                        Margin="0,0,15,0"
+                        Margin="0,0,10,0"
                         DockPanel.Dock="Left"
                         Style="{DynamicResource ButtonWithIcon}" Click="GoHome_Click" Cursor="Hand">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/Resources/Images/Home.png" Stretch="Uniform" Height="45"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="GoCharts"
+                        DockPanel.Dock="Left"
+                        Style="{DynamicResource ButtonWithIcon}" Click="GoCharts_Click" Cursor="Hand">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="/Resources/Images/Charts.png" Stretch="Uniform" Height="55"/>
                             </StackPanel>
                         </Button.Content>
                     </Button>

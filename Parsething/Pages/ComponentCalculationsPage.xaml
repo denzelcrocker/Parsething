@@ -80,7 +80,7 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="9" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Карта сборки" Grid.Column="10" />
                     </Grid>
-                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0"/>
+                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0" PreviewMouseWheel="ListView_PreviewMouseWheel"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -108,6 +108,7 @@
                             <TextBlock x:Name="Id" Text="000000" Foreground="{DynamicResource Text.Foreground}" Style="{DynamicResource TextBlock.Number}" Padding="15,10"/>
                         </Border>
                         <TextBlock Grid.Column="2" Name="PurchaseOrCalculatiing" Text="Режим" Style="{DynamicResource TextBlock.ComboFirst}" Margin="20,0,0,0"/>
+                        <Button Grid.Column="3" x:Name="ForCheckButton" Content="На проверку" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="ForCheckButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
                         <Button Grid.Column="4" x:Name="CalculatedButton" Content="Посчитан" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand" Click="CalculatedButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
                         <Button 
                             x:Name="GoToProcurementFolderButton"

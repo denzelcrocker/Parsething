@@ -42,10 +42,13 @@ namespace Parsething.Pages
         {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
+
+            NavigationState.AddLastSelectedProcurement(View);
         }
 
         private void NotPaidButton_Click(object sender, RoutedEventArgs e)
         {
+            View.ItemsSource = null;
             var procurements = GET.View.ProcurementsNotPaid() ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
@@ -54,6 +57,7 @@ namespace Parsething.Pages
 
         private void NotPaidOnTimeButton_Click(object sender, RoutedEventArgs e)
         {
+            View.ItemsSource = null;
             var procurements = GET.View.ProcurementsBy(false) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
@@ -62,6 +66,7 @@ namespace Parsething.Pages
 
         private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
         {
+            View.ItemsSource = null;
             var procurements = GET.View.ProcurementsBy(true) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
@@ -70,6 +75,7 @@ namespace Parsething.Pages
 
         private void JudgementButton_Click(object sender, RoutedEventArgs e)
         {
+            View.ItemsSource = null;
             var procurements = GET.View.ProcurementsBy(GET.KindOf.Judgement) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
@@ -78,6 +84,7 @@ namespace Parsething.Pages
 
         private void FASButton_Click(object sender, RoutedEventArgs e)
         {
+            View.ItemsSource = null;
             var procurements = GET.View.ProcurementsBy(GET.KindOf.FAS) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
@@ -87,7 +94,10 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
                 _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
+            }
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)

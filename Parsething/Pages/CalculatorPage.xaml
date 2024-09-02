@@ -51,6 +51,8 @@
                                 <RowDefinition Height="2"/>
                                 <RowDefinition Height="65"/>
                                 <RowDefinition Height="2"/>
+                                <RowDefinition Height="65"/>
+                                <RowDefinition Height="2"/>
                                 <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -61,22 +63,25 @@
                             <Button x:Name="NewButton" Grid.ColumnSpan="4" Grid.Row="2" Click="NewButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="Новый:"/>
                             <TextBlock x:Name="NewCount" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Text="0"/>
                             <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
-                            <Button x:Name="CalculatedButton" Grid.ColumnSpan="4" Grid.Row="4" Click="CalculatedButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="Посчитан:"/>
-                            <TextBlock x:Name="Calculated" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Text="0"/>
+                            <Button x:Name="CheckButton" Grid.ColumnSpan="4" Grid.Row="4" Click="CheckButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="На проверке:"/>
+                            <TextBlock x:Name="CheckCount" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Text="0"/>
                             <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                            <Button x:Name="DrawUpButton" Grid.ColumnSpan="4" Grid.Row="6" Click="DrawUpButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="Оформить:"/>
-                            <TextBlock x:Name="DrawUp" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Text="0"/>
+                            <Button x:Name="CalculatedButton" Grid.ColumnSpan="4" Grid.Row="6" Click="CalculatedButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="Посчитан:"/>
+                            <TextBlock x:Name="Calculated" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Text="0"/>
                             <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
-                            <Button x:Name="WonPartOneButton" Grid.ColumnSpan="4" Grid.Row="8 " Click="WonPartOneButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="Выигранные за месяц:"/>
-                            <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Text="0"/>
+                            <Button x:Name="DrawUpButton" Grid.ColumnSpan="4" Grid.Row="8" Click="DrawUpButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="Оформить:"/>
+                            <TextBlock x:Name="DrawUp" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Text="0"/>
                             <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="9"/>
-                            <Label Content="Результаты:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="10"/>
-                            <Label Content="Расчёт:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="11"/>
-                            <TextBlock x:Name="Overall" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="11" Text="0"/>
+                            <Button x:Name="WonPartOneButton" Grid.ColumnSpan="4" Grid.Row="10 " Click="WonPartOneButton_Click" Cursor="Hand" Style="{DynamicResource BaseButton}" Content="Выигранные за месяц:"/>
+                            <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" Text="0"/>
+                            <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
+                            <Label Content="Результаты:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
+                            <Label Content="Расчёт:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="13"/>
+                            <TextBlock x:Name="Overall" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="13" Text="0"/>
                             <Button x:Name="QueueButton"
                                 Content="Тендер из очереди"
                                 Style="{DynamicResource SupplyMonitoringButton}" 
-                                Grid.Row="12"
+                                Grid.Row="14"
                                 Grid.ColumnSpan="3"
                                 Click="QueueButton_Click"
                                 Width="255"/>
@@ -108,7 +113,7 @@
                         <Label Style="{DynamicResource ColumnNames}" Content="ЕИС" Grid.Column="7" />
                         <Label Style="{DynamicResource ColumnNames}" Content="Ред-ть" Grid.Column="8" />
                     </Grid>
-                    <ListView x:Name="View" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1">
+                    <ListView x:Name="View" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border 

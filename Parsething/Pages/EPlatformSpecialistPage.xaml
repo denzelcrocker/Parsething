@@ -171,7 +171,7 @@
                     <Label Style="{DynamicResource ColumnNames}" Content="ЕИС" Grid.Column="9" />
                     <Label Style="{DynamicResource ColumnNames}" Content="Ред-ть" Grid.Column="10" />
                 </Grid>
-                <ListView x:Name="ProcurementsListView" Grid.Column="4" Grid.Row="1" BorderThickness="0" Style="{DynamicResource ListView}">
+                <ListView x:Name="ProcurementsListView" Grid.Column="4" Grid.Row="1" BorderThickness="0" Style="{DynamicResource ListView}" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border 

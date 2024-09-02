@@ -105,7 +105,7 @@
                             <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Закупка" Grid.Column="7" />
                         </Grid>
                         <ScrollViewer Grid.Row="3" VirtualizingPanel.VirtualizationMode="Recycling" SnapsToDevicePixels="False">
-                            <ListView x:Name="listViewSupplyMonitoring"/>
+                            <ListView x:Name="listViewSupplyMonitoring" PreviewMouseWheel="ListView_PreviewMouseWheel"/>
                         </ScrollViewer>
                     </Grid>
                 </Border>

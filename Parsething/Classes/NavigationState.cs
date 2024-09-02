@@ -9,11 +9,11 @@ namespace Parsething.Classes
     public static class NavigationState
     {
         public static Procurement? LastSelectedProcurement { get; set; }
-        public static void RestoreSelection(IEnumerable<Procurement> procurements, ListView listView)
+        public static void AddLastSelectedProcurement(ListView listView)
         {
             if (LastSelectedProcurement != null)
             {
-                var selectedProcurement = procurements
+                var selectedProcurement = GlobalUsingValues.Instance.Procurements
                     .FirstOrDefault(p => p.Id == LastSelectedProcurement.Id);
 
                 if (selectedProcurement != null)

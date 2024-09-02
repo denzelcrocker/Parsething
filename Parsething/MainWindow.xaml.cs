@@ -250,5 +250,10 @@ namespace Parsething
 
             _ = MainFrame.Navigate(new Pages.SearchPage());
         }
+
+        private void GoCharts_Click(object sender, RoutedEventArgs e)
+        {
+            _ = MainFrame.Navigate(new Pages.Charts());
+        }
     }
 }

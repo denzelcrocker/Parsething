@@ -46,7 +46,7 @@ namespace Parsething.Pages
 
         SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
 
-        static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен" };
+        static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен", "Проверка" };
 
 
         public ComponentCalculationsPage(Procurement procurement, bool isCalculation, bool isSearch)
@@ -93,6 +93,7 @@ namespace Parsething.Pages
                         if (Procurement.ProcurementState.Kind == "Новый")
                         {
                             CalculatedButton.Visibility = Visibility.Visible;
+                            ForCheckButton.Visibility = Visibility.Visible;
                         }
                         else if (Procurement.ProcurementState.Kind == "Оформить")
                         {
@@ -138,7 +139,45 @@ namespace Parsething.Pages
             PassportsListView.Visibility = Visibility.Hidden;
             SavePassportButton.Visibility = Visibility.Hidden;
         }
+        private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // Получаем ListView
+            var listView = sender as ListView;
 
+            if (listView != null)
+            {
+                // Получаем текущий ScrollViewer, связанный с ListView
+                var scrollViewer = GetScrollViewer(listView);
+
+                if (scrollViewer != null)
+                {
+                    // Прокручиваем ListView на величину, пропорциональную дельте события
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta / 3);
+                    e.Handled = true;
+                }
+            }
+        }
+
+        // Метод для получения ScrollViewer из ListView
+        private ScrollViewer GetScrollViewer(DependencyObject depObj)
+        {
+            if (depObj == null)
+                return null;
+
+            // Проходим по визуальному дереву, чтобы найти ScrollViewer
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(depObj, i);
+                if (child is ScrollViewer scrollViewer)
+                    return scrollViewer;
+
+                var result = GetScrollViewer(child);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
@@ -291,10 +330,25 @@ namespace Parsething.Pages
             {
                 Procurement.ProcurementStateId = 2;
                 PULL.Procurement(Procurement);
+                ForCheckButton.Visibility = Visibility.Hidden;
                 CalculatedButton.Visibility = Visibility.Hidden;
                 History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Посчитан" };
                 PUT.History(history);
-                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Какой молодец. Точно все правильно посчитал?", "Информация", 1500);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Отправлено в посчитанные", "Информация", 900);
+            }
+        }
+
+        private void ForCheckButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null)
+            {
+                Procurement.ProcurementStateId = 16;
+                PULL.Procurement(Procurement);
+                ForCheckButton.Visibility = Visibility.Hidden;
+                CalculatedButton.Visibility = Visibility.Hidden;
+                History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Проверка" };
+                PUT.History(history);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Отправлено на проверку", "Информация", 900);
             }
         }
 
@@ -307,7 +361,7 @@ namespace Parsething.Pages
                 IssuedButton.Visibility = Visibility.Hidden;
                 History? history = new History { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = Procurement.Id, Text = "Оформлен" };
                 PUT.History(history);
-                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Какой молодец. Точно все правильно оформил?", "Информация", 1500);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Отправлено в оформленные", "Информация", 900);
                 GoToProcurementFolderButton.Visibility = Visibility.Hidden;
             }
         }
@@ -329,7 +383,7 @@ namespace Parsething.Pages
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Clipboard.SetText(Id.Text);
-            AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 1500);
+            AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
@@ -340,5 +394,6 @@ namespace Parsething.Pages
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
         }
+
     }
 }

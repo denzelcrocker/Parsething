@@ -91,6 +91,8 @@ namespace Parsething.Pages
         {
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
+
+            NavigationState.AddLastSelectedProcurement(ProcurementsListView);
         }
         private void Combobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -512,7 +514,11 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement, true));
+            }
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)

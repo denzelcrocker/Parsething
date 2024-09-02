@@ -71,6 +71,8 @@ namespace Parsething.Pages
 
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
+
+            NavigationState.AddLastSelectedProcurement(View);
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
@@ -380,7 +382,11 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement,false));
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
+            }
         }
 
         private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
@@ -397,7 +403,11 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false, false));
+            }
         }
 
         private void SupplyMonitoringButton_Click(object sender, RoutedEventArgs e)
@@ -412,7 +422,11 @@ namespace Parsething.Pages
         {
             Procurement procurement = (sender as Button)?.DataContext as Procurement ?? new Procurement();
             if (procurement != null)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true, false));
+            }
         }
 
         private void EmployeeInfoButton_MouseEnter(object sender, RoutedEventArgs e)

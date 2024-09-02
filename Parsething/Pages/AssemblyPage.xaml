@@ -118,7 +118,7 @@
                         <Label Style="{DynamicResource ColumnNames}" Content="Редактировать" Grid.Column="8" />
                         <Label Style="{DynamicResource ColumnNames}" Content="Печать" Grid.Column="9" />
                     </Grid>
-                    <ListView x:Name="View" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1">
+                    <ListView x:Name="View" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border 

@@ -27,6 +27,7 @@ namespace Parsething.Pages
         private Frame MainFrame { get; set; } = null!;
 
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsNew { get; set; }
+        private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsCheck { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsDrawUp { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesEPSpecialistGroupings { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
@@ -48,6 +49,7 @@ namespace Parsething.Pages
             StartDate = globalUsingValues.StartDate;
 
             int countOfCalculationsNew = 0;
+            int countOfCalculationsCheck = 0;
             int countOfCalculationsDrawUp = 0;
             int countOfSended = 0;
             int countOfMethods = 0;
@@ -76,9 +78,19 @@ namespace Parsething.Pages
             {
                 CalculationsCombobox.Items.Add(item); // Расчет (по сотрудникам)
             }
-
+            CheckCombobox.Items.Clear();
+            CheckCombobox.Text = "На проверке:";
+            ProcurementsEmployeesCalculatorsGroupingsCheck = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Проверка", "", "", "");
+            foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
+            {
+                countOfCalculationsCheck += item.CountOfProcurements;
+            }
+            CheckOverAll.Text = countOfCalculationsCheck.ToString(); // Расчет (общее количество)
+            foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
+            {
+                CheckCombobox.Items.Add(item); // Расчет (по сотрудникам)
+            }
             DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
-
             DrawUpCombobox.Items.Clear();
             DrawUpCombobox.Text = "Оформление:";
             ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить", "", "", "");

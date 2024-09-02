@@ -1450,7 +1450,6 @@ namespace Parsething.Pages
                     Warranty.IsReadOnly = true;
                     ProcurementInfo.IsEnabled = false;
                     ContractInfo.IsEnabled = false;
-                    ContractNuances.IsEnabled = false;
                     Calculating.IsEnabled = false;
                     Sending.IsEnabled = false;
                     Bargaining.IsEnabled = false;

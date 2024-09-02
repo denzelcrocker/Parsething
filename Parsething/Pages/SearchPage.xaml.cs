@@ -279,18 +279,7 @@ namespace Parsething.Pages
             }
             catch { }
 
-            if (NavigationState.LastSelectedProcurement != null)
-            {
-                var selectedProcurement = GlobalUsingValues.Instance.Procurements
-                    .FirstOrDefault(p => p.Id == NavigationState.LastSelectedProcurement.Id);
-
-                if (selectedProcurement != null)
-                {
-                    SearchLV.SelectedItem = selectedProcurement;
-                }
-
-                NavigationState.LastSelectedProcurement = null;
-            }
+            NavigationState.AddLastSelectedProcurement(SearchLV);
         }
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)
@@ -383,7 +372,10 @@ namespace Parsething.Pages
             MenuItem menuItem = sender as MenuItem;
 
             if (menuItem?.DataContext is Procurement procurement)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true, true));
+            }
         }
 
         private void Purchase_Click(object sender, RoutedEventArgs e)
@@ -391,7 +383,10 @@ namespace Parsething.Pages
             MenuItem menuItem = sender as MenuItem;
 
             if (menuItem?.DataContext is Procurement procurement)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
                 _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false, true));
+            }
         }
 
         private void OverallInfo_Click(object sender, RoutedEventArgs e)
@@ -592,6 +587,8 @@ namespace Parsething.Pages
             {
                 case "Law":
                     return isAscending ? procurements.OrderBy(p => p.Law.Number).ToList() : procurements.OrderByDescending(p => p.Law.Number).ToList();
+                case "Deadline":
+                    return isAscending ? procurements.OrderBy(p => p.Deadline).ToList() : procurements.OrderByDescending(p => p.Deadline).ToList();
                 case "ResultDate":
                     return isAscending ? procurements.OrderBy(p => p.ResultDate).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
                 case "SigningDeadline":
