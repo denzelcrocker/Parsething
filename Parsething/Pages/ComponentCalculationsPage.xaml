@@ -80,7 +80,7 @@
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Примечание" Grid.Column="9" />
                         <Label Style="{DynamicResource ColumnNames.Purchase}" Content="Карта сборки" Grid.Column="10" />
                     </Grid>
-                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0" PreviewMouseWheel="ListView_PreviewMouseWheel"/>
+                    <ListView Grid.Row="2" x:Name="ComponentCalculationsListView" Style="{DynamicResource ListView.Preferences}" Margin="10,0" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -88,6 +88,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="80"/>
                             <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
@@ -131,6 +132,17 @@
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="40"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button 
+                            x:Name="GoToEditProcurement"
+                            Style="{DynamicResource ButtonWithIcon}"
+                            Grid.Column="7"
+                            Click="GoToEditProcurement_Click" >
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Resources/Images/Gear.png" Stretch="Uniform" Height="40"/>
                                 </StackPanel>
                             </Button.Content>
                         </Button>

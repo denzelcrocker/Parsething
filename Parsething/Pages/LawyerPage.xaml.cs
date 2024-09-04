@@ -96,7 +96,7 @@ namespace Parsething.Pages
             if (procurement != null)
             {
                 NavigationState.LastSelectedProcurement = procurement;
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement, false));
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement));
             }
         }
 
@@ -119,6 +119,20 @@ namespace Parsething.Pages
             {
                 var parameter = image.Tag as string;
                 ToolTipHelper.SetToolTip(image, parameter);
+            }
+        }
+
+        private void ServiceId_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock? textBlock = sender as TextBlock;
+            if (textBlock != null)
+            {
+                Procurement? procurement = textBlock.DataContext as Procurement;
+                if (procurement != null)
+                {
+                    Clipboard.SetText(procurement.DisplayId.ToString());
+                    AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
+                }
             }
         }
     }

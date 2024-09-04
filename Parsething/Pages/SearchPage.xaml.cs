@@ -26,6 +26,7 @@ namespace Parsething.Pages
         private List<ProcurementState>? ProcurementStates { get; set; }
         private List<Employee>? Employees { get; set; }
         private List<LegalEntity>? LegalEntities { get; set; }
+        private List<ShipmentPlan>? ShipmentPlans { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
         private const int PageSize = 35;
         private int _currentPage = 1;
@@ -206,6 +207,9 @@ namespace Parsething.Pages
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
 
+            ShipmentPlans = GET.View.ShipmentPlans();
+            ShipmentPlan.ItemsSource = ShipmentPlans;
+
             var procurements = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             GET.View.PopulateComponentStates(procurements);
             
@@ -229,6 +233,9 @@ namespace Parsething.Pages
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
+
+            ShipmentPlans = GET.View.ShipmentPlans();
+            ShipmentPlan.ItemsSource = ShipmentPlans;
         }
 
         private bool IsSearchCriteriaEmpty()
@@ -243,7 +250,9 @@ namespace Parsething.Pages
                    string.IsNullOrEmpty(SearchCriteria.Instance.LegalEntity) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.DateType) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.StartDate) &&
-                   string.IsNullOrEmpty(SearchCriteria.Instance.EndDate);
+                   string.IsNullOrEmpty(SearchCriteria.Instance.EndDate) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ComponentCalculation) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ShipmentPlan);
         }
 
         private void RestoreSearchCriteria()
@@ -269,6 +278,9 @@ namespace Parsething.Pages
                 EndDate.SelectedDate = endDate;
             else
                 EndDate.SelectedDate = null;
+
+            ShipmentPlan.SelectedItem = ShipmentPlans?.FirstOrDefault(s => s.Kind == SearchCriteria.Instance.ShipmentPlan);
+            SearchComponentCalculation.Text = SearchCriteria.Instance.ComponentCalculation;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -295,7 +307,7 @@ namespace Parsething.Pages
             {
                 NavigationState.LastSelectedProcurement = procurement;
 
-                _ = MainFrame.Navigate(new CardOfProcurement(procurement, true));
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement));
             }
         }
 
@@ -329,14 +341,17 @@ namespace Parsething.Pages
             string dateType = (DateType.SelectedItem as ComboBoxItem)?.Tag as string ?? string.Empty;
             string startDate = StartDate.SelectedDate?.ToString("yyyy-MM-dd") ?? string.Empty;
             string endDate = EndDate.SelectedDate?.ToString("yyyy-MM-dd") ?? string.Empty;
+            string componentCalculation = SearchComponentCalculation.Text;
+            string shipmentPlan = (ShipmentPlan.SelectedItem as ShipmentPlan)?.Kind ?? string.Empty;
 
             if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(number) || !string.IsNullOrEmpty(law) ||
                 !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(inn) ||
                 !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName) ||
                 !string.IsNullOrEmpty(legalEntity) || !string.IsNullOrEmpty(dateType) ||
-                !string.IsNullOrEmpty(startDate) || !string.IsNullOrEmpty(endDate))
+                !string.IsNullOrEmpty(startDate) || !string.IsNullOrEmpty(endDate) ||
+                !string.IsNullOrEmpty(componentCalculation) || !string.IsNullOrEmpty(shipmentPlan))
             {
-                var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending) ?? new List<Procurement>();
+                var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending, componentCalculation, shipmentPlan) ?? new List<Procurement>();
                 GlobalUsingValues.Instance.AddProcurements(procurements);
                 
                 GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
@@ -344,10 +359,10 @@ namespace Parsething.Pages
                 SearchLV.ItemsSource = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             }
 
-            SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate);
+            SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, componentCalculation, shipmentPlan);
             UpdatePagesPanel();
         }
-        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate)
+        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate, string componentCalculation, string shipmentPlan)
         {
             SearchCriteria.Instance.ProcurementId = id;
             SearchCriteria.Instance.ProcurementNumber = number;
@@ -360,6 +375,8 @@ namespace Parsething.Pages
             SearchCriteria.Instance.DateType = dateType;
             SearchCriteria.Instance.StartDate = startDate;
             SearchCriteria.Instance.EndDate = endDate;
+            SearchCriteria.Instance.ComponentCalculation = componentCalculation;
+            SearchCriteria.Instance.ShipmentPlan = shipmentPlan;
         }
 
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -374,7 +391,7 @@ namespace Parsething.Pages
             if (menuItem?.DataContext is Procurement procurement)
             {
                 NavigationState.LastSelectedProcurement = procurement;
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true, true));
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true));
             }
         }
 
@@ -385,7 +402,7 @@ namespace Parsething.Pages
             if (menuItem?.DataContext is Procurement procurement)
             {
                 NavigationState.LastSelectedProcurement = procurement;
-                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false, true));
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false));
             }
         }
 
@@ -642,6 +659,20 @@ namespace Parsething.Pages
             GET.View.PopulateComponentStates(pagedProcurements);
 
             return pagedProcurements;
+        }
+
+        private void DisplayId_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock? textBlock = sender as TextBlock;
+            if (textBlock != null)
+            {
+                Procurement? procurement = textBlock.DataContext as Procurement;
+                if (procurement != null)
+                {
+                    Clipboard.SetText(procurement.DisplayId.ToString());
+                    AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
+                }
+            }
         }
     }
 }

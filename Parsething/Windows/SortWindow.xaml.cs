@@ -27,6 +27,7 @@ namespace Parsething.Windows
         private List<Employee>? Calculators { get; set; }
         private List<Procurement> Procurements { get; set; }
         private List<Region> Regions { get; set; }
+        private List<DatabaseLibrary.Entities.ProcurementProperties.TimeZone> TimeZones { get; set; }
         private List<Law> Laws { get; set; }
         private List<Organization> Organizations { get; set; }
 
@@ -39,6 +40,8 @@ namespace Parsething.Windows
 
             Calculators = GET.View.EmployeesBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
             AssignComboBox.ItemsSource = Calculators;
+            TimeZones = GET.View.TimeZones();
+            TimeZoneCombobox.ItemsSource = TimeZones;
             Laws = GET.View.Laws();
             LawCombobox.ItemsSource = Laws;
             Organizations = GET.View.Organizations();
@@ -69,6 +72,12 @@ namespace Parsething.Windows
                         DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";
                     if (Procurement.ResultDate != null)
                         ResultDate.Text = $"{Procurement.ResultDate}";
+                    foreach (DatabaseLibrary.Entities.ProcurementProperties.TimeZone timeZone in TimeZoneCombobox.ItemsSource)
+                        if (timeZone.Id == Procurement.TimeZoneId)
+                        {
+                            TimeZoneCombobox.SelectedItem = timeZone;
+                            break;
+                        }
                     Number.Text = Procurement.Number.ToString();
                     foreach (Law law in LawCombobox.ItemsSource)
                         if (law.Id == Procurement.LawId)
@@ -105,9 +114,9 @@ namespace Parsething.Windows
                 AddButton.Visibility = Visibility.Visible;
 
                 Number.IsReadOnly = false;
-
                 DeadLine.IsReadOnly = false;
                 ResultDate.IsReadOnly = false;
+                TimeZoneCombobox.IsEnabled = true;
                 LawCombobox.IsEnabled = true;
                 RequestUri.IsReadOnly = false;
                 InitialPrice.IsReadOnly = false;
@@ -200,6 +209,15 @@ namespace Parsething.Windows
             else
             {
                 warningMessage += "Некорректная дата результатов тендера.\n";
+            }
+
+            if (TimeZoneCombobox.SelectedItem != null)
+            {
+                Procurement.TimeZoneId = ((DatabaseLibrary.Entities.ProcurementProperties.TimeZone)TimeZoneCombobox.SelectedItem).Id;
+            }
+            else
+            {
+                warningMessage += "Выберите Часовой пояс закупки.\n";
             }
 
             if (LawCombobox.SelectedItem != null)

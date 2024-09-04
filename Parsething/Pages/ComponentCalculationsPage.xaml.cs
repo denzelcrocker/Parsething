@@ -49,11 +49,10 @@ namespace Parsething.Pages
         static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен", "Проверка" };
 
 
-        public ComponentCalculationsPage(Procurement procurement, bool isCalculation, bool isSearch)
+        public ComponentCalculationsPage(Procurement procurement, bool isCalculation)
         {
             InitializeComponent();
             procurement = GET.View.ProcurementBy(procurement.Id);
-            IsSearch = isSearch;
             IsCalculation = isCalculation;
             decimal? calculatingAmount = 0;
             decimal? purchaseAmount = 0;
@@ -395,5 +394,10 @@ namespace Parsething.Pages
             }
         }
 
+        private void GoToEditProcurement_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null)
+                _ = MainFrame.Navigate(new CardOfProcurement(Procurement));
+        }
     }
 }

@@ -199,6 +199,8 @@
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Text="{Binding Path=DisplayId}"
+                                        Cursor="Hand"
+                                        MouseDown="ServiceId_MouseDown"
                                         HorizontalAlignment="Center"
                                         Name="ServiceId"
                                         FontSize="15"

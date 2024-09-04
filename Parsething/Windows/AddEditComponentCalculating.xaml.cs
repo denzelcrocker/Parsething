@@ -150,7 +150,7 @@ namespace Parsething.Windows
                 componentCalculation.Reserve = Reserve.Text;
                 componentCalculation.Note = Note.Text;
                 PUT.ComponentCalculation(componentCalculation);
-                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation, IsSearch));
+                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation));
                 DialogResult = true;
             }
             else
@@ -189,7 +189,7 @@ namespace Parsething.Windows
                 componentCalculation.Reserve = Reserve.Text;
                 componentCalculation.Note = Note.Text;
                 PULL.ComponentCalculation(componentCalculation);
-                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation, IsSearch));
+                _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation));
                 DialogResult = true;
             }
             else
@@ -209,7 +209,7 @@ namespace Parsething.Windows
         {
             if(ComponentCalculation != null)
                 DELETE.ComponentCalculation(ComponentCalculation);
-            _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation, IsSearch));
+            _ = MainFrame.Navigate(new Pages.ComponentCalculationsPage(Procurement, IsCalculation));
             DialogResult = true;
         }
     }

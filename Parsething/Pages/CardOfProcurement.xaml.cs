@@ -84,7 +84,6 @@ namespace Parsething.Pages
         private Procurement? Procurement { get; set; }
 
         private List<ComponentCalculation> ComponentCalculations { get; set; }
-        private bool IsSearch;
 
 
         SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
@@ -97,7 +96,7 @@ namespace Parsething.Pages
             catch { }
         }
 
-        public CardOfProcurement(Procurement procurement, bool isSearch)
+        public CardOfProcurement(Procurement procurement)
         {
             InitializeComponent();
             UpdateUIForUserRole();
@@ -137,8 +136,6 @@ namespace Parsething.Pages
             PaymentLabel.Foreground = Gray;
             PaymentUL.Fill = Gray;
             PaymentLV.Visibility = Visibility.Hidden;
-
-            IsSearch = isSearch;
 
             ProcurementStates = GET.View.DistributionOfProcurementStates(((Employee)Application.Current.MainWindow.DataContext).Position.Kind);
             ProcurementState.ItemsSource = ProcurementStates;
@@ -1091,6 +1088,18 @@ namespace Parsething.Pages
             }
         }
 
+        private void GoToCalculation_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null)
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(Procurement, true));
+        }
+
+        private void GoToPurchase_Click(object sender, RoutedEventArgs e)
+        {
+            if (Procurement != null)
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(Procurement, false));
+        }
+
         private void History_Click(object sender, RoutedEventArgs e)
         {
             Histories = GET.View.HistoriesBy(Procurement.Id);
@@ -1109,6 +1118,8 @@ namespace Parsething.Pages
             Procurement existingProcurement = GlobalUsingValues.Instance.Procurements.FirstOrDefault(p => p.Id == Procurement.Id);
             if (existingProcurement != null)
             {
+                existingProcurement.StartDate = Procurement.StartDate;
+                existingProcurement.StartDate = Procurement.Deadline;
                 existingProcurement.ResultDate = Procurement.ResultDate;
                 existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
                 existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
@@ -1552,7 +1563,8 @@ namespace Parsething.Pages
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Clipboard.SetText(Id.Text);
-            AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 1500);
+            AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
         }
+
     }
 }

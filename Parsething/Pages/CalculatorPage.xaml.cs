@@ -127,7 +127,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         {
             NavigationState.LastSelectedProcurement = procurement;
 
-            _ = MainFrame.Navigate(new CardOfProcurement(procurement, true));
+            _ = MainFrame.Navigate(new CardOfProcurement(procurement));
         }
     }
 
@@ -144,7 +144,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         {
             NavigationState.LastSelectedProcurement = procurement;
 
-            _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true, false));
+            _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true));
         }
     }
 
@@ -175,5 +175,19 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         DrawUpButton.Background = Brushes.Transparent;
         WonPartOneButton.Background = Brushes.Transparent;
         LoadPageData();
+    }
+
+    private void ServiceId_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        TextBlock? textBlock = sender as TextBlock;
+        if (textBlock != null)
+        {
+            Procurement? procurement = textBlock.DataContext as Procurement;
+            if (procurement != null)
+            {
+                Clipboard.SetText(procurement.DisplayId.ToString());
+                AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
+            }
+        }
     }
 }

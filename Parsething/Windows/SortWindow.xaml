@@ -56,6 +56,8 @@
                 <TextBox x:Name="DeadLine" Style="{DynamicResource SingleLineInput.SortWindow}"/>
                 <Label Content="Дата аукциона" Style="{DynamicResource  Label.SortWindow}"/>
                 <TextBox x:Name="ResultDate" Style="{DynamicResource SingleLineInput.SortWindow}"/>
+                <Label Content="Часовой пояс" Style="{DynamicResource  Label.SortWindow}"/>
+                <ComboBox x:Name="TimeZoneCombobox" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Offset" IsEnabled="False"/>
             </DockPanel>
             <Label Content="Номер закупки" Style="{DynamicResource  Label.SortWindow}"/>
             <TextBox x:Name="Number" Style="{DynamicResource SingleLineInput.SortWindow}"/>

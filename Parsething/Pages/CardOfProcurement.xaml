@@ -51,20 +51,41 @@
                                 Click="GoToProcurementFolderButton_Click" >
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Resources/Images/Folder.png" Stretch="Uniform" Height="50"/>
+                                        <Image Source="/Resources/Images/Folder.png" Stretch="Uniform" Height="40"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button 
+                                x:Name="GoToCalculation"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource ButtonWithIcon}"
+                                Click="GoToCalculation_Click" >
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="35"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button 
+                                x:Name="GoToPurchase"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource ButtonWithIcon}"
+                                Click="GoToPurchase_Click" >
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="40"/>
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
                             <Button 
                                 x:Name="RefreshProcurementButton"
                                 HorizontalAlignment="Left"
-                                Margin="10,0,0,0"
                                 Style="{DynamicResource ButtonWithIcon}"
                                 Visibility="Hidden"
                                 Click="RefreshProcurementButton_Click" >
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Pages/Refresh.png" Stretch="Uniform" Height="50"/>
+                                        <Image Source="/Resources/Images/Refresh.png" Stretch="Uniform" Height="40"/>
                                     </StackPanel>
                                 </Button.Content>
                             </Button>

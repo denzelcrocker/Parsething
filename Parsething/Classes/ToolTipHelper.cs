@@ -49,7 +49,7 @@ namespace Parsething.Classes
                 case "NotPaid":
                     procurements = GET.View.ProcurementsNotPaid();
                     break;
-                case "NotPaidInTime":
+                case "NotPaidOnTime":
                     procurements = GET.View.ProcurementsBy(false);
                     break;
                 case "NotPaidDelay":

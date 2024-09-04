@@ -40,6 +40,8 @@ namespace Parsething.Classes
             DateType = null;
             StartDate = null;
             EndDate = null;
+            ComponentCalculation = null;
+            ShipmentPlan = null;
         }
 
         public string? ProcurementId { get; set; }
@@ -53,5 +55,8 @@ namespace Parsething.Classes
         public string? DateType { get; set; }
         public string? StartDate { get; set; }
         public string? EndDate { get; set; }
+        public string? ComponentCalculation { get; set; }
+        public string? ShipmentPlan { get; set; }
+
     }
 }
