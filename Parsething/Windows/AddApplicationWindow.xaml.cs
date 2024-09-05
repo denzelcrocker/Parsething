@@ -43,10 +43,14 @@ namespace Parsething.Windows
                 remainingAmount = procurement.InitialPrice;
             else if (procurement.IsUnitPrice == false || procurement.IsUnitPrice == null)
             {
-                if (procurement.ContractAmount != null || procurement.ContractAmount != 0)
-                    remainingAmount = procurement.ContractAmount.Value;
-                if (procurement.ReserveContractAmount != null || procurement.ReserveContractAmount != 0)
+                if (procurement.ReserveContractAmount != null && procurement.ReserveContractAmount != 0)
+                {
                     remainingAmount = procurement.ReserveContractAmount.Value;
+                }
+                else if (procurement.ContractAmount != null && procurement.ContractAmount != 0)
+                {
+                    remainingAmount = procurement.ContractAmount.Value;
+                }
             }
             if (remainingAmount == null)
                 remainingAmount = 0;

@@ -180,7 +180,7 @@ namespace Parsething.Functions
                             ComboBox comboBoxManufacturer = new ComboBox()
                             {
                                 Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),
-                                ItemsSource = Manufacturers,
+                                //ItemsSource = Manufacturers,
                                 DisplayMemberPath = "ManufacturerName"
                             };
                             comboBoxManufacturer.SelectedValuePath = "Id";
@@ -688,8 +688,15 @@ namespace Parsething.Functions
                     ? (lastComponent.IndexOfComponent ?? 0) + 1  
                     : 1;
 
-                int? countOfComponentCalculation = ComponentCalculations.Where(cc => cc.Id == parentName).Select(cc => cc.Count).First();
+                var countHeaderTextBox = ((Grid)((Button)sender).Parent).Children[1] as TextBox;
 
+
+                int? countOfComponentCalculation = null;
+
+                if (int.TryParse(countHeaderTextBox.Text, out int result))
+                {
+                    countOfComponentCalculation = result;
+                }
                 ComponentCalculation newComponentCalculation = new ComponentCalculation
                 {
                     ProcurementId = procurementId,
@@ -757,7 +764,7 @@ namespace Parsething.Functions
                 Manufacturer? manufacturer = GET.Entry.Manufacturer(manufacturerId);
                 clipboardText += $"{componentCalculationName} (производитель «{manufacturer?.FullManufacturerName}», {manufacturer?.ManufacturerCountry?.Name})";
                 Clipboard.SetText(clipboardText);
-                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Данные скопированы в буфер обмена.", "Оповещение", 1500);
+                AutoClosingMessageBox.ShowAutoClosingMessageBox($"Данные скопированы в буфер обмена.", "Оповещение", 900);
             }
 
         }
