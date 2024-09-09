@@ -122,4 +122,8 @@
     <None Include="C:\Users\zelen\source\repos\Parsething\Parsething\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Styles\" />
+  </ItemGroup>
+
 </Project>

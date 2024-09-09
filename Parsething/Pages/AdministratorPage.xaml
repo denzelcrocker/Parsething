@@ -2,16 +2,61 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:vm="clr-namespace:Parsething.ViewModels"
+      xmlns:fnc="clr-namespace:Parsething.Functions"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
       Title="AdministratorPage" Loaded="Page_Loaded">
+      <Page.DataContext>
+          <vm:AdministratorPageViewModel />
+    </Page.DataContext>
+    <Page.Resources>
+        <fnc:NullVisibilityConverter x:Key="NullVisibilityConverter" />
+    </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
-        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
+        <Border Background="{DynamicResource SubFrame.Background}" Grid.Row="1" Margin="20" CornerRadius="40">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
             </Border.Effect>
-            <Grid Width="1810" Height="820">
+            <Grid MaxWidth="2000" MaxHeight="1000">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition MaxWidth="250" MinWidth="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Menu Grid.Column="0" ItemsSource="{Binding MenuItems}">
+                    <Menu.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Header}" />
+                                <TextBlock Text="{Binding RecordCount, StringFormat=' ({0})'}" Visibility="{Binding RecordCount, Converter={StaticResource NullVisibilityConverter}}"/>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </Menu.ItemTemplate>
+                    <Menu.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <EventSetter Event="Click" Handler="MenuItem_Click"/>
+                        </Style>
+                    </Menu.ItemContainerStyle>
+                </Menu>
+                <Border Grid.Column="1" Background="{DynamicResource MainFrame.Background}" CornerRadius="40">
+                    <ListView x:Name="ProcurementsListView" ItemsSource="{Binding Procurements}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock 
+                                        Style="{DynamicResource TableElements}"
+                                        Text="{Binding Path=DisplayId}"
+                                        Cursor="Hand"
+                                        HorizontalAlignment="Center"
+                                        Name="ServiceId"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+                <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="360"/>
                     <ColumnDefinition Width="2"/>
                     <ColumnDefinition Width="360"/>
@@ -462,7 +507,7 @@
                     <Label Content="Логистика" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
                     <Button Content="Логистика" Style="{DynamicResource SumbitAction}" Cursor="Hand"/>
-                </StackPanel>
+                </StackPanel>-->
             </Grid>
         </Border>
     </ScrollViewer>

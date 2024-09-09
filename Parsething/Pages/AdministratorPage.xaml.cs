@@ -4,6 +4,8 @@ using System.Net;
 using System.Windows.Media;
 using System.Xml.Linq;
 using static DatabaseLibrary.Queries.GET;
+using Parsething.ViewModels;
+using Parsething.Models;
 
 namespace Parsething.Pages;
 
@@ -27,8 +29,21 @@ public partial class AdministratorPage : Page
     private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
     private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
 
-    public AdministratorPage() =>
+    public AdministratorPage()
+    {
         InitializeComponent();
+        DataContext = new AdministratorPageViewModel();
+    }
+    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var menuItem = sender as MenuItem;
+        if (menuItem != null)
+        {
+            var menuItemModel = menuItem.DataContext as MenuItemModel;
+            menuItemModel?.Command?.Execute(null);
+        }
+    }
+
 
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
@@ -39,184 +54,184 @@ public partial class AdministratorPage : Page
         }
         catch { }
 
-        var globalUsingValues = GlobalUsingValues.Instance;
-        StartDate = globalUsingValues.StartDate;
+        //var globalUsingValues = GlobalUsingValues.Instance;
+        //StartDate = globalUsingValues.StartDate;
 
-        int countOfCalculationsNew = 0;
-        int countOfCalculationsCheck = 0;
-        int countOfCalculationsDrawUp = 0;
-        int countOfMethods = 0;
-        int countOfSended = 0;
-        int countOfManagers = 0;
-        Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState)); // Спаршены 
+        //int countOfCalculationsNew = 0;
+        //int countOfCalculationsCheck = 0;
+        //int countOfCalculationsDrawUp = 0;
+        //int countOfMethods = 0;
+        //int countOfSended = 0;
+        //int countOfManagers = 0;
+        //Parsed.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Получен", GET.KindOf.ProcurementState)); // Спаршены 
 
-        Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState)); // Неразобранные
+        //Unsorted.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Неразобранный", GET.KindOf.ProcurementState)); // Неразобранные
 
-        Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", StartDate)); // Отбой
+        //Retreat.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отбой", StartDate)); // Отбой
 
-        CalculationQueue.Text  =  Convert.ToString(GET.Aggregate.ProcurementsQueueCount());// Очередь расчета
+        //CalculationQueue.Text  =  Convert.ToString(GET.Aggregate.ProcurementsQueueCount());// Очередь расчета
 
-        Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
+        //Sended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", GET.KindOf.ProcurementState)); // Отправлены
 
-        Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.ResultDate)); // Торги
+        //Bargaining.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", false, GET.KindOf.ResultDate)); // Торги
 
 
-        QuotesCombobox.Items.Clear();
-        QuotesCombobox.Text = "Сп-бы опр-я:";
-        ProcurementsMethodsGroupings = GET.View.ProcurementsGroupByMethod();
-        foreach (var item in ProcurementsMethodsGroupings)
-        {
-            countOfMethods += item.CountOfProcurements;
-        }
-        Quotes.Text = countOfMethods.ToString(); // Котировки (общее количество)
-        foreach (var item in ProcurementsMethodsGroupings)
-        {
-            QuotesCombobox.Items.Add(item); // Котировки (по методам)
-        }// Котировки
+        //QuotesCombobox.Items.Clear();
+        //QuotesCombobox.Text = "Сп-бы опр-я:";
+        //ProcurementsMethodsGroupings = GET.View.ProcurementsGroupByMethod();
+        //foreach (var item in ProcurementsMethodsGroupings)
+        //{
+        //    countOfMethods += item.CountOfProcurements;
+        //}
+        //Quotes.Text = countOfMethods.ToString(); // Котировки (общее количество)
+        //foreach (var item in ProcurementsMethodsGroupings)
+        //{
+        //    QuotesCombobox.Items.Add(item); // Котировки (по методам)
+        //}// Котировки
 
-        OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.ResultDate)); // Просрочены
+        //OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.ResultDate)); // Просрочены
 
-        Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", StartDate)); // Отменены
+        //Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", StartDate)); // Отменены
 
-        Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", StartDate)); // Отклонены
+        //Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", StartDate)); // Отклонены
 
-        Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", StartDate)); // Проиграны
+        //Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", StartDate)); // Проиграны
 
-        New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState)); // Новый
+        //New.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Новый", GET.KindOf.ProcurementState)); // Новый
 
-        Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState)); // Посчитан
+        //Calculated.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Посчитан", GET.KindOf.ProcurementState)); // Посчитан
 
-        CalculationsCombobox.Items.Clear();
-        CalculationsCombobox.Text = "Расчет:";
-        ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый","","", "");
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
-        {
-            countOfCalculationsNew += item.CountOfProcurements;
-        }
-        CalculationsOverAll.Text = countOfCalculationsNew.ToString(); // Расчет (общее количество)
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
-        {
-            CalculationsCombobox.Items.Add(item); // Расчет (по сотрудникам)
-        }
-        CheckCombobox.Items.Clear();
-        CheckCombobox.Text = "На проверке:";
-        ProcurementsEmployeesCalculatorsGroupingsCheck = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Проверка", "", "", "");
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
-        {
-            countOfCalculationsCheck += item.CountOfProcurements;
-        }
-        CheckOverAll.Text = countOfCalculationsCheck.ToString(); // Расчет (общее количество)
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
-        {
-            CheckCombobox.Items.Add(item); // Расчет (по сотрудникам)
-        }
-        DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
+        //CalculationsCombobox.Items.Clear();
+        //CalculationsCombobox.Text = "Расчет:";
+        //ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый","","", "");
+        //foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
+        //{
+        //    countOfCalculationsNew += item.CountOfProcurements;
+        //}
+        //CalculationsOverAll.Text = countOfCalculationsNew.ToString(); // Расчет (общее количество)
+        //foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
+        //{
+        //    CalculationsCombobox.Items.Add(item); // Расчет (по сотрудникам)
+        //}
+        //CheckCombobox.Items.Clear();
+        //CheckCombobox.Text = "На проверке:";
+        //ProcurementsEmployeesCalculatorsGroupingsCheck = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Проверка", "", "", "");
+        //foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
+        //{
+        //    countOfCalculationsCheck += item.CountOfProcurements;
+        //}
+        //CheckOverAll.Text = countOfCalculationsCheck.ToString(); // Расчет (общее количество)
+        //foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
+        //{
+        //    CheckCombobox.Items.Add(item); // Расчет (по сотрудникам)
+        //}
+        //DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
 
-        DrawUpCombobox.Items.Clear();
-        DrawUpCombobox.Text = "Оформление:";
-        ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить","","", "");
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
-        {
-            countOfCalculationsDrawUp += item.CountOfProcurements;
-        }
-        DrawUpOverAll.Text = countOfCalculationsDrawUp.ToString(); // Оформление (общее количество)
-        foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
-        {
-            DrawUpCombobox.Items.Add(item); // Оформление (по сотрудникам)
-        }// Оформление
+        //DrawUpCombobox.Items.Clear();
+        //DrawUpCombobox.Text = "Оформление:";
+        //ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить","","", "");
+        //foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
+        //{
+        //    countOfCalculationsDrawUp += item.CountOfProcurements;
+        //}
+        //DrawUpOverAll.Text = countOfCalculationsDrawUp.ToString(); // Оформление (общее количество)
+        //foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
+        //{
+        //    DrawUpCombobox.Items.Add(item); // Оформление (по сотрудникам)
+        //}// Оформление
 
-        Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState)); // Оформллены
+        //Issued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", GET.KindOf.ProcurementState)); // Оформллены
 
-        ForSend.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", false, GET.KindOf.Deadline));  // К отправке
+        //ForSend.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", false, GET.KindOf.Deadline));  // К отправке
 
-        OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true, GET.KindOf.Deadline));// Просрочены
+        //OverdueIssued.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформлен", true, GET.KindOf.Deadline));// Просрочены
 
-        SendingCombobox.Items.Clear();
-        SendingCombobox.Text = "Отправка:";
-        ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками","","", "Отправлен","","", "");
-        foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
-        {
-            countOfSended += item.CountOfProcurements;
-        }
-        SendingOverAll.Text = countOfSended.ToString(); // Подачицы (общее количество)
-        foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
-        {
-            SendingCombobox.Items.Add(item); // Подачицы (по сотрудникам)
-        } // Отправка
+        //SendingCombobox.Items.Clear();
+        //SendingCombobox.Text = "Отправка:";
+        //ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками","","", "Отправлен","","", "");
+        //foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
+        //{
+        //    countOfSended += item.CountOfProcurements;
+        //}
+        //SendingOverAll.Text = countOfSended.ToString(); // Подачицы (общее количество)
+        //foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
+        //{
+        //    SendingCombobox.Items.Add(item); // Подачицы (по сотрудникам)
+        //} // Отправка
 
-        WonPartOne.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState));// Выигран 1ч
+        //WonPartOne.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState));// Выигран 1ч
 
-        WonPartTwo.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState));// Выигран 2ч
+        //WonPartTwo.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState));// Выигран 2ч
 
-        WonByApplications.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)); // По заявкам
+        //WonByApplications.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)); // По заявкам
 
-        WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)).ToString(); // Выиграны всего
+        //WonByOverAll.Text = (GET.Aggregate.ProcurementsCountBy("Выигран 1ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState) + GET.Aggregate.ProcurementsCountBy("", GET.KindOf.Applications)).ToString(); // Выиграны всего
 
-        ManagersCombobox.Items.Clear();
-        ManagersCombobox.Text = "Менеджеры:";
-        ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка", "Принят");
-        foreach (var item in ProcurementsEmployeesManagersGroupings)
-        {
-            countOfManagers += item.CountOfProcurements;
-        }
-        ManagersOverAll.Text = countOfManagers.ToString(); // Расчет (общее количество)
-        foreach (var item in ProcurementsEmployeesManagersGroupings)
-        {
-            ManagersCombobox.Items.Add(item); // Расчет (по сотрудникам)
-        }// Менеджеры выпадающий список
+        //ManagersCombobox.Items.Clear();
+        //ManagersCombobox.Text = "Менеджеры:";
+        //ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка", "Принят");
+        //foreach (var item in ProcurementsEmployeesManagersGroupings)
+        //{
+        //    countOfManagers += item.CountOfProcurements;
+        //}
+        //ManagersOverAll.Text = countOfManagers.ToString(); // Расчет (общее количество)
+        //foreach (var item in ProcurementsEmployeesManagersGroupings)
+        //{
+        //    ManagersCombobox.Items.Add(item); // Расчет (по сотрудникам)
+        //}// Менеджеры выпадающий список
 
-        ContractYes.Text = GET.Aggregate.ProcurementsCountBy("", true, GET.KindOf.ContractConclusion).ToString(); // Контракт Подписан
+        //ContractYes.Text = GET.Aggregate.ProcurementsCountBy("", true, GET.KindOf.ContractConclusion).ToString(); // Контракт Подписан
 
-        ContractNo.Text = GET.Aggregate.ProcurementsCountBy("", false, GET.KindOf.ContractConclusion).ToString();// Контракт Не подписан
+        //ContractNo.Text = GET.Aggregate.ProcurementsCountBy("", false, GET.KindOf.ContractConclusion).ToString();// Контракт Не подписан
 
-        ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
-        if (ComponentCalculationsProblem != null)
-                Problem.Text = ComponentCalculationsProblem.Count.ToString();
+        //ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
+        //if (ComponentCalculationsProblem != null)
+        //        Problem.Text = ComponentCalculationsProblem.Count.ToString();
 
-            ComponentCalculationsInWork = GET.View.ComponentCalculationsBy("ТО: Обработка").Distinct(new Functions.MyClassComparer()).ToList(); // В работе
-        if (ComponentCalculationsInWork != null)
-                InWork.Text = ComponentCalculationsInWork.Count.ToString();
+        //    ComponentCalculationsInWork = GET.View.ComponentCalculationsBy("ТО: Обработка").Distinct(new Functions.MyClassComparer()).ToList(); // В работе
+        //if (ComponentCalculationsInWork != null)
+        //        InWork.Text = ComponentCalculationsInWork.Count.ToString();
 
-            ComponentCalculationsAgreed = GET.View.ComponentCalculationsBy("ТО: Согласовано").Distinct(new Functions.MyClassComparer()).ToList(); // Согласовано
-        if (ComponentCalculationsAgreed != null)
-                Agreed.Text = ComponentCalculationsAgreed.Count.ToString();
+        //    ComponentCalculationsAgreed = GET.View.ComponentCalculationsBy("ТО: Согласовано").Distinct(new Functions.MyClassComparer()).ToList(); // Согласовано
+        //if (ComponentCalculationsAgreed != null)
+        //        Agreed.Text = ComponentCalculationsAgreed.Count.ToString();
 
-        PreviousWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane));// Предыдущая неделя отгрузки
+        //PreviousWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane));// Предыдущая неделя отгрузки
 
-        ThisWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Текущая", GET.KindOf.ShipmentPlane));// Текущая неделя отгрузки
+        //ThisWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Текущая", GET.KindOf.ShipmentPlane));// Текущая неделя отгрузки
 
-        NextWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Следующая", GET.KindOf.ShipmentPlane));// Следующая неделя отгрузки
+        //NextWeek.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Следующая", GET.KindOf.ShipmentPlane));// Следующая неделя отгрузки
 
-        AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
+        //AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
-        ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Calculating).ToString(); // Проверка расчета проведена
+        //ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Calculating).ToString(); // Проверка расчета проведена
         
-        ApproveCalculatingNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Calculating).ToString(); // Проверка расчета не проведена
+        //ApproveCalculatingNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Calculating).ToString(); // Проверка расчета не проведена
 
-        ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Purchase).ToString(); // Проверка закупки проведена
+        //ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Purchase).ToString(); // Проверка закупки проведена
         
-        ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
+        //ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
 
-        Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
-        // Рублей в обороте
+        //Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
+        //// Рублей в обороте
 
-        Acceptance.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState)); // Приемка
+        //Acceptance.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState)); // Приемка
 
-        // Частичная отправка
+        //// Частичная отправка
 
-        OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", KindOf.CorrectionDate)); // На исправлении
+        //OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", KindOf.CorrectionDate)); // На исправлении
 
-        NotPaidOnTime.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(false)); // В срок
+        //NotPaidOnTime.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(false)); // В срок
 
-        NotPaidDelay.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(true));// Просрочка
+        //NotPaidDelay.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(true));// Просрочка
 
-        NotPaid.Text = (GET.Aggregate.ProcurementsCountBy(true) + GET.Aggregate.ProcurementsCountBy(false)).ToString(); // Не оплачены
+        //NotPaid.Text = (GET.Aggregate.ProcurementsCountBy(true) + GET.Aggregate.ProcurementsCountBy(false)).ToString(); // Не оплачены
 
-        Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
+        //Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
-        FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
+        //FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
 
-        await UpdateRatesFromCBRAsync();
+        //await UpdateRatesFromCBRAsync();
 
     }
     private async Task UpdateRatesFromCBRAsync()
@@ -229,7 +244,7 @@ public partial class AdministratorPage : Page
             var el = xdoc.Element("ValCurs").Elements("Valute");
             string dollar = el.Where(x => x.Attribute("ID").Value == "R01235").Select(x => x.Element("Value").Value).FirstOrDefault();
             dollar = dollar.RemoveEnd(2) + " ₽";
-            RateForCentralBank.Text = dollar;
+            //RateForCentralBank.Text = dollar;
         }
         catch { }
     }

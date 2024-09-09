@@ -180,7 +180,7 @@ namespace Parsething.Functions
                             ComboBox comboBoxManufacturer = new ComboBox()
                             {
                                 Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),
-                                //ItemsSource = Manufacturers,
+                                ItemsSource = Manufacturers,
                                 DisplayMemberPath = "ManufacturerName"
                             };
                             comboBoxManufacturer.SelectedValuePath = "Id";

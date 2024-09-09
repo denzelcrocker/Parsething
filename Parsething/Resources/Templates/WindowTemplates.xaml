@@ -42,7 +42,15 @@
         <Setter Property="Width" Value="1400"/>
         <Setter Property="Height" Value="900"/>
         <Setter Property="Background" Value="#0000"/>
-        <Setter Property="Padding" Value="8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="#D9D9D9" BorderThickness="1" CornerRadius="16" SnapsToDevicePixels="true" >
+                        <ContentPresenter Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style x:Key="AddEditComponentCalculating" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
         <Setter Property="Width" Value="800"/>
