@@ -51,7 +51,7 @@ namespace Parsething.Pages
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private bool _isAscending = false; 
+        private bool _isAscending = false;
         private string _currentSortingField = "";
 
         public SearchPage()
@@ -212,7 +212,7 @@ namespace Parsething.Pages
 
             var procurements = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             GET.View.PopulateComponentStates(procurements);
-            
+
             SearchLV.ItemsSource = procurements;
 
 
@@ -228,7 +228,7 @@ namespace Parsething.Pages
             Employees = GET.View.Employees().Where(e => e.IsAvailable != false).ToList();
             Employee.ItemsSource = Employees;
 
-            ProcurementStates =  GET.View.ProcurementStates();
+            ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
 
             LegalEntities = GET.View.LegalEntities();
@@ -353,9 +353,9 @@ namespace Parsething.Pages
             {
                 var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending, componentCalculation, shipmentPlan) ?? new List<Procurement>();
                 GlobalUsingValues.Instance.AddProcurements(procurements);
-                
+
                 GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
-                
+
                 SearchLV.ItemsSource = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             }
 
@@ -408,6 +408,7 @@ namespace Parsething.Pages
 
         private void OverallInfo_Click(object sender, RoutedEventArgs e)
         {
+            decimal? overallInitialPrice = 0;
             decimal? overallAmount = 0;
             decimal? overallAmountCalculate = 0;
             decimal? profitCalculate = 0;
@@ -421,19 +422,21 @@ namespace Parsething.Pages
                 OverallCount.Text = GlobalUsingValues.Instance.Procurements.Count.ToString();
                 foreach (Procurement procurement in GlobalUsingValues.Instance.Procurements)
                 {
-                    CalculateOverallInfo(procurement, ref overallAmount, ref profitCalculate, ref profitReal, ref calculatingAmount, ref purchaseAmount, ref overallAmountCalculate);
+                    CalculateOverallInfo(procurement, ref overallInitialPrice, ref overallAmount, ref profitCalculate, ref profitReal, ref calculatingAmount, ref purchaseAmount, ref overallAmountCalculate);
                 }
-                DisplayOverallInfo(overallAmount, overallAmountCalculate, calculatingAmount, purchaseAmount, profitCalculate, profitReal);
+                DisplayOverallInfo(overallInitialPrice, overallAmount, overallAmountCalculate, calculatingAmount, purchaseAmount, profitCalculate, profitReal);
             }
         }
 
-        private void CalculateOverallInfo(Procurement procurement, ref decimal? overallAmount, ref decimal? profitCalculate, ref decimal? profitReal, ref decimal? calculatingAmount, ref decimal? purchaseAmount, ref decimal? overallAmountCalculate)
+        private void CalculateOverallInfo(Procurement procurement, ref decimal? overallInitialPrice, ref decimal? overallAmount, ref decimal? profitCalculate, ref decimal? profitReal, ref decimal? calculatingAmount, ref decimal? purchaseAmount, ref decimal? overallAmountCalculate)
         {
+            decimal initialPrice = procurement.InitialPrice;
             decimal contractAmount = procurement.ContractAmount ?? 0m;
             decimal reserveContractAmount = procurement.ReserveContractAmount ?? 0m;
             decimal calculatingAmountVal = procurement.CalculatingAmount ?? 0m;
             decimal purchaseAmountVal = procurement.PurchaseAmount ?? 0m;
 
+            overallInitialPrice += initialPrice;
             if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.CalculatingAmount != null)
             {
                 overallAmount += contractAmount;
@@ -454,16 +457,19 @@ namespace Parsething.Pages
             }
         }
 
-        private void DisplayOverallInfo(decimal? overallAmount, decimal? overallAmountCalculate, decimal? calculatingAmount, decimal? purchaseAmount, decimal? profitCalculate, decimal? profitReal)
+        private void DisplayOverallInfo(decimal? overallInitialPrice, decimal? overallAmount, decimal? overallAmountCalculate, decimal? calculatingAmount, decimal? purchaseAmount, decimal? profitCalculate, decimal? profitReal)
         {
             decimal overallAmountVal = overallAmount ?? 0m;
+            decimal overallInitialPriceVal = overallInitialPrice ?? 0m;
             decimal overallAmountCalculateVal = overallAmountCalculate ?? 0m;
             decimal calculatingAmountVal = calculatingAmount ?? 0m;
             decimal purchaseAmountVal = purchaseAmount ?? 0m;
             decimal profitCalculateVal = profitCalculate ?? 0m;
             decimal profitRealVal = profitReal ?? 0m;
 
+
             OverallAmount.Text = overallAmountVal.ToString("N2") + " р.";
+            OverallInitialPrice.Text = overallInitialPriceVal.ToString("N2") + " р.";
             if (calculatingAmountVal != 0 && purchaseAmountVal != 0)
             {
                 AvgCalculationProfit.Text = $"{profitCalculateVal:N2} р. ({((overallAmountCalculateVal - calculatingAmountVal) / calculatingAmountVal * 100):N1} %)";
@@ -564,7 +570,7 @@ namespace Parsething.Pages
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
             {
-                List<Procurement> procurements = new List<Procurement> ();
+                List<Procurement> procurements = new List<Procurement>();
                 if (procurement.ParentProcurementId != null)
                     GlobalUsingValues.Instance.AddProcurements(GET.View.ApplicationsBy(procurement.ParentProcurementId));
                 else
@@ -608,8 +614,24 @@ namespace Parsething.Pages
                     return isAscending ? procurements.OrderBy(p => p.Deadline).ToList() : procurements.OrderByDescending(p => p.Deadline).ToList();
                 case "ResultDate":
                     return isAscending ? procurements.OrderBy(p => p.ResultDate).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
-                case "SigningDeadline":
-                    return isAscending ? procurements.OrderBy(p => p.SigningDeadline).ToList() : procurements.OrderByDescending(p => p.SigningDeadline).ToList();
+                case "Signing":
+                    return isAscending
+                        ? procurements.OrderBy(p => p.SigningDeadline == null && p.SigningDate == null && p.ConclusionDate == null ? 0
+                                           : p.SigningDeadline != null && p.SigningDate == null && p.ConclusionDate == null ? 1
+                                           : p.SigningDeadline != null && p.SigningDate != null && p.ConclusionDate == null ? 2
+                                           : 3)
+                                       .ThenBy(p => p.SigningDeadline)
+                                       .ThenBy(p => p.SigningDate)
+                                       .ThenBy(p => p.ConclusionDate)
+                                       .ToList()
+                        : procurements.OrderByDescending(p => p.SigningDeadline == null && p.SigningDate == null && p.ConclusionDate == null ? 0
+                                                 : p.SigningDeadline != null && p.SigningDate == null && p.ConclusionDate == null ? 1
+                                                 : p.SigningDeadline != null && p.SigningDate != null && p.ConclusionDate == null ? 2
+                                                 : 3)
+                                       .ThenByDescending(p => p.SigningDeadline)
+                                       .ThenByDescending(p => p.SigningDate)
+                                       .ThenByDescending(p => p.ConclusionDate)
+                                       .ToList();
                 case "ActualDeliveryDate":
                     return isAscending ? procurements.OrderBy(p => p.ActualDeliveryDate).ToList() : procurements.OrderByDescending(p => p.ActualDeliveryDate).ToList();
                 case "MaxAcceptanceDate":

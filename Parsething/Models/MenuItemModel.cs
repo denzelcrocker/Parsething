@@ -1,16 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace Parsething.Models
 {
-    public class MenuItemModel
+    public class MenuItemModel : INotifyPropertyChanged
     {
-        public string Header { get; set; } // Текст пункта меню
-        public List<MenuItemModel> SubItems { get; set; } // Подменю
-        public int? RecordCount { get; set; }  // Количество записей для подменю
-        public ICommand Command { get; set; }  // Команда для выполнения действия
+        public string Header { get; set; }
+        public string ImageSource { get; set; }
+        public List<MenuItemModel> SubItems { get; set; }
+        public ICommand Command { get; set; }
+        public int RecordCount { get; set; }
+
+        public bool HasSubItems => SubItems != null && SubItems.Any();
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

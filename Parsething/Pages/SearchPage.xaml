@@ -29,15 +29,12 @@
         <system:String x:Key="PurchaseString">Purchase</system:String>
     </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid Width="1810" Height="900">
+        <Grid Width="1815" Height="900">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1500"/>
-                <ColumnDefinition Width="310"/>
+                <ColumnDefinition Width="315"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15"  CornerRadius="45">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15"  CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
                 <Grid Margin="0,10,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="37"/>
@@ -72,7 +69,7 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="6" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Контракт" Grid.Column="6" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Статус тендера" Grid.Column="7" />
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Подписание" Grid.Column="8" MouseLeftButtonUp="SortByField" Tag="SigningDeadline"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Подписание" Grid.Column="8" MouseLeftButtonUp="SortByField" Tag="Signing"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Проверка" Grid.Column="9" />
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Поставка" Grid.Column="10" MouseLeftButtonUp="SortByField" Tag="ActualDeliveryDate"/>
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Приемка" Grid.Column="11" MouseLeftButtonUp="SortByField" Tag="MaxAcceptanceDate"/>
@@ -564,10 +561,7 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="30,15,0,15" CornerRadius="45">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="30,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
                 <Grid Margin="10,30,0,20">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -676,15 +670,18 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                         <RowDefinition/>
+                                        <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <Label Content="Всего тендеров: " Style="{DynamicResource OwerAllInfo.Search}"/>
-                                    <Label Content="Сумма контрактов: " Grid.Row="1" Style="{DynamicResource OwerAllInfo.Search}"/>
-                                    <Label Content="Расчетный профит: " Grid.Row="2" Style="{DynamicResource OwerAllInfo.Search}"/>
-                                    <Label Content="Реальный профит: " Grid.Row="3" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                    <Label Content="Сумма НМЦК: " Grid.Row="1" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                    <Label Content="Сумма контрактов: " Grid.Row="2" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                    <Label Content="Расчетный профит: " Grid.Row="3" Style="{DynamicResource OwerAllInfo.Search}"/>
+                                    <Label Content="Реальный профит: " Grid.Row="4" Style="{DynamicResource OwerAllInfo.Search}"/>
                                     <TextBlock x:Name="OverallCount" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                    <TextBlock x:Name="OverallAmount" Grid.Column="1" Grid.Row="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                    <TextBlock x:Name="AvgCalculationProfit" Grid.Column="1" Grid.Row="2" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                    <TextBlock x:Name="AvgPurchaseProfit" Grid.Column="1" Grid.Row="3" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="OverallInitialPrice" Grid.Column="1" Grid.Row="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="OverallAmount" Grid.Column="1" Grid.Row="2" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="AvgCalculationProfit" Grid.Column="1" Grid.Row="3" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="AvgPurchaseProfit" Grid.Column="1" Grid.Row="4" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
                                 </Grid>
                             </Border>
                         </Popup>
@@ -695,7 +692,7 @@
                             Style="{DynamicResource StatisticsButton}" 
                             Cursor="Hand"
                             Click="SupplyMonitoringButton_Click" />
-                    </DockPanel> 
+                    </DockPanel>
                 </Grid>
             </Border>
         </Grid>

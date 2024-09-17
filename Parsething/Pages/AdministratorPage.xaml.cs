@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using static DatabaseLibrary.Queries.GET;
 using Parsething.ViewModels;
 using Parsething.Models;
+using System.Windows.Media.Animation;
 
 namespace Parsething.Pages;
 
@@ -29,11 +30,13 @@ public partial class AdministratorPage : Page
     private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
     private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
 
+
     public AdministratorPage()
     {
         InitializeComponent();
         DataContext = new AdministratorPageViewModel();
     }
+
     private void MenuItem_Click(object sender, RoutedEventArgs e)
     {
         var menuItem = sender as MenuItem;
@@ -43,8 +46,17 @@ public partial class AdministratorPage : Page
             menuItemModel?.Command?.Execute(null);
         }
     }
+    private void Menu_MouseEnter(object sender, MouseEventArgs e)
+    {
+        var expandMenu = (Storyboard)this.FindResource("ExpandMenu");
+        expandMenu.Begin();
+    }
 
-
+    private void Menu_MouseLeave(object sender, MouseEventArgs e)
+    {
+        var collapseMenu = (Storyboard)this.FindResource("CollapseMenu");
+        collapseMenu.Begin();
+    }
     private async void Page_Loaded(object sender, RoutedEventArgs e)
     {
 

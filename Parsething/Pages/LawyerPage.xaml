@@ -7,10 +7,7 @@
       mc:Ignorable="d" 
       Title="LawyerPage" Loaded="Page_Loaded">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-            </Border.Effect>
+        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
             <Grid Width="1810" Height="820">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="360"/>

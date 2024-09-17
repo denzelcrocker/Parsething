@@ -7,507 +7,218 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" 
       Title="AdministratorPage" Loaded="Page_Loaded">
-      <Page.DataContext>
-          <vm:AdministratorPageViewModel />
+    <Page.DataContext>
+        <vm:AdministratorPageViewModel />
     </Page.DataContext>
     <Page.Resources>
         <fnc:NullVisibilityConverter x:Key="NullVisibilityConverter" />
-    </Page.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
-        <Border Background="{DynamicResource SubFrame.Background}" Grid.Row="1" Margin="20" CornerRadius="40">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-            </Border.Effect>
-            <Grid MaxWidth="2000" MaxHeight="1000">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition MaxWidth="250" MinWidth="50"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Menu Grid.Column="0" ItemsSource="{Binding MenuItems}">
-                    <Menu.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Header}" />
-                                <TextBlock Text="{Binding RecordCount, StringFormat=' ({0})'}" Visibility="{Binding RecordCount, Converter={StaticResource NullVisibilityConverter}}"/>
+        <fnc:NullImageConverter x:Key="NullImageConverter"/>
+        <fnc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <Storyboard x:Key="ExpandMenu">
+            <DoubleAnimation Storyboard.TargetName="menuBorder"
+                             Storyboard.TargetProperty="Width"
+                             To="200" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Key="CollapseMenu">
+            <DoubleAnimation Storyboard.TargetName="menuBorder"
+                             Storyboard.TargetProperty="Width"
+                             To="50" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Style x:Key="NoArrowExpanderStyle" TargetType="Expander">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Expander">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <StackPanel>
+                                <!-- Header content -->
+                                <ContentPresenter ContentSource="Header"/>
+                                <!-- Content, visible or collapsed based on IsExpanded -->
+                                <ContentPresenter ContentSource="Content" Visibility="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </StackPanel>
-                        </HierarchicalDataTemplate>
-                    </Menu.ItemTemplate>
-                    <Menu.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <EventSetter Event="Click" Handler="MenuItem_Click"/>
-                        </Style>
-                    </Menu.ItemContainerStyle>
-                </Menu>
-                <Border Grid.Column="1" Background="{DynamicResource MainFrame.Background}" CornerRadius="40">
-                    <ListView x:Name="ProcurementsListView" ItemsSource="{Binding Procurements}">
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ExpanderHeaderFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border>
+                            <Rectangle Margin="0" SnapsToDevicePixels="true" Stroke="Red" StrokeThickness="1" StrokeDashArray="1 2"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
+            <!-- Белый текст по умолчанию -->
+            <Setter Property="Foreground" Value="White"/>
+            <!-- Темно-красный фон по умолчанию -->
+            <Setter Property="Background" Value="DarkRed"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <!-- Убираем границы -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Left" RecognizesAccessKey="True" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <!-- Триггеры для изменения фона и текста -->
+            <Style.Triggers>
+                <!-- При наведении мыши -->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <!-- Более темный красный фон при наведении -->
+                    <Setter Property="Background" Value="Azure"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+
+                <!-- При нажатии -->
+                <Trigger Property="IsPressed" Value="True">
+                    <!-- Еще темнее при нажатии -->
+                    <Setter Property="Background" Value="Maroon"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="MainMenu.ExpanderStyle" TargetType="{x:Type Expander}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Expander}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="3" SnapsToDevicePixels="true">
+                            <DockPanel>
+                                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" Content="{TemplateBinding Header}" DockPanel.Dock="Top" Foreground="{TemplateBinding Foreground}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="0" MinWidth="0" MinHeight="0" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" Visibility="Collapsed" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="true">
+                                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Page.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Border Background="{DynamicResource SubFrame.Background}" Margin="20" CornerRadius="40" BorderThickness="0" BorderBrush="#C6BDBF">
+            <Grid x:Name="MainGrid" MaxWidth="2000" MaxHeight="1000">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <!-- Область меню -->
+                <Border Grid.Column="0" Background="Transparent" 
+                    MouseEnter="Menu_MouseEnter" 
+                    MouseLeave="Menu_MouseLeave"
+                    x:Name="menuBorder"
+                    Width="50">
+                    <!-- Меню с элементами -->
+                    <ItemsControl ItemsSource="{Binding MenuItems}" Margin="0,35,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <!-- Если элемент имеет подменю -->
+                                <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
+                                    <Expander.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
+                                            <TextBlock Text="{Binding Header}" FontSize="16" Margin="5"/>
+                                            <TextBlock Text="{Binding RecordCount, StringFormat={}{0}}" Margin="5,0,0,0"
+                                                Visibility="{Binding RecordCount, Converter={StaticResource NullVisibilityConverter}}"/>
+                                        </StackPanel>
+                                    </Expander.Header>
+                                    <!-- Вложенные подменю -->
+                                    <ItemsControl ItemsSource="{Binding SubItems}">
+                                        <ItemsControl.ItemTemplate>
+                                            <!-- Шаблон для подменю -->
+                                            <HierarchicalDataTemplate ItemsSource="{Binding SubItems}" ItemContainerStyle="{StaticResource NoArrowExpanderStyle}">
+                                                <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
+                                                    <Expander.Header>
+                                                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                                                            <!-- Добавляем картинку -->
+                                                            <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
+
+                                                            <!-- Заголовок элемента -->
+                                                            <TextBlock Text="{Binding Header}" FontSize="16" Margin="5"/>
+
+                                                            <!-- Количество записей -->
+                                                            <TextBlock Text="{Binding RecordCount, StringFormat={}{0}}" Margin="5,0,0,0"
+                                                                Visibility="{Binding RecordCount, Converter={StaticResource NullVisibilityConverter}}"/>
+                                                            <!-- Добавляем триггер для изменения фона при наведении -->
+                                                            
+                                                        </StackPanel>
+                                                    </Expander.Header>
+
+                                                    <!-- Вложенные подменю -->
+                                                    <ItemsControl ItemsSource="{Binding SubItems}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
+                                                                <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
+                                                                    <Expander.Header>
+                                                                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                                                                            <!-- Добавляем картинку во вложенные подменю -->
+                                                                            <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
+
+                                                                            <!-- Заголовок вложенного подменю -->
+                                                                            <TextBlock Text="{Binding Header}" FontSize="14" />
+
+                                                                            <!-- Количество записей вложенного подменю -->
+                                                                            <TextBlock Text="{Binding RecordCount, StringFormat={}{0}}" Margin="5,0,0,0"
+                                                                                Visibility="{Binding RecordCount, Converter={StaticResource NullVisibilityConverter}}"/>
+                                                                            <!-- Добавляем триггер для изменения фона при наведении -->
+                                                                        </StackPanel>
+                                                                    </Expander.Header>
+
+                                                                    <!-- Дополнительные уровни вложенности -->
+                                                                    <ItemsControl ItemsSource="{Binding SubItems}">
+                                                                        <ItemsControl.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBlock Text="{Binding Header}" Margin="40,0,0,0"/>
+                                                                            </DataTemplate>
+                                                                        </ItemsControl.ItemTemplate>
+                                                                    </ItemsControl>
+                                                                </Expander>
+                                                            </HierarchicalDataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </Expander>
+                                            </HierarchicalDataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+                <!-- Основной контент -->
+                <Border Grid.Column="1" Background="LightGray" CornerRadius="40">
+                    <ListView Visibility="Hidden" x:Name="ProcurementsListView" ItemsSource="{Binding Procurements}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock 
-                                        Style="{DynamicResource TableElements}"
-                                        Text="{Binding Path=DisplayId}"
-                                        Cursor="Hand"
-                                        HorizontalAlignment="Center"
-                                        Name="ServiceId"
-                                        FontSize="15"
-                                        VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Path=DisplayId}" FontSize="15"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </Border>
-                <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="360"/>
-                    <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="360"/>
-                    <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="360"/>
-                    <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="360"/>
-                    <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="360"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
-                <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
-                <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
-                <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
-                <StackPanel Grid.Column="0" Margin="10" >
-                    <Label Content="Сортировка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}"  Grid.RowSpan="2" Height="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Получены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="Parsed" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Label Content="Неразобранные:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock x:Name="Unsorted" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
-                        <Button x:Name="UnsortedButton" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0" Click="UnsortedButton_Click" Cursor="Hand"/>
-                        <Label Content="Отбой:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock x:Name="Retreat" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2"/>
-                        <Button x:Name="RetreatButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0"  Cursor="Hand" Click="RetreatButton_Click"/>
-                        <Label Content="Очередь расчета:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="3"/>
-                        <TextBlock x:Name="CalculationQueue" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3"/>
-                        <Button x:Name="CalculationQueueButton" Grid.Row="3" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CalculationQueueButton_Click" />
-                    </Grid>
-                    <Label Content="Торги" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}"  Grid.RowSpan="2" Height="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Отправлены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="Sended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="SendedButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="SendedButton_Click"  />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
-                        <Label Content="Торги:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
-                        <Button x:Name="BargainingButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="BargainingButton_Click"  />
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="3" Margin="160,0,0,0"/>
-                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Сп-бы опр-я: " Grid.Column="0" Grid.Row="3" SelectionChanged="Combobox_SelectionChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}"  Width="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock x:Name="Quotes" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
-                        <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock x:Name="OverdueSended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
-                        <Button x:Name="OverdueSendedButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueSendedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                        <Label Content="Отменены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <TextBlock x:Name="Cancellation" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
-                        <Button x:Name="CancellationButton" Grid.Row="6" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CancellationButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
-                        <Label Content="Отклонены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock x:Name="Rejected" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
-                        <Button x:Name="RejectedButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="RejectedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Grid.Row="9"/>
-                        <Label Content="Проиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="10"/>
-                        <TextBlock x:Name="Lost" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
-                        <Button x:Name="LostButton" Grid.Row="10" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="LostButton_Click" />
-                    </Grid>
-                </StackPanel>
-                <StackPanel Grid.Column="2" Margin="10">
-                    <Label Content="Расчёт и подача" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Новые:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="New" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="NewButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="NewButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="2" Margin="150,0,0,0"/>
-                        <ComboBox x:Name="CheckCombobox" Style="{DynamicResource InfoBox}" Text="На проверке: " Grid.Column="0" Grid.Row="2" SelectionChanged="Combobox_SelectionChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
-                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock x:Name="CheckOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Text="0"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
-                        <Label Content="Посчитаны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock x:Name="Calculated" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Text="0"/>
-                        <Button x:Name="CalculatedButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CalculatedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="6" Margin="90,0,0,0"/>
-                        <ComboBox x:Name="CalculationsCombobox" Style="{DynamicResource InfoBox}" Text="Расчёт: " Grid.Column="0" Grid.Row="6" SelectionChanged="Combobox_SelectionChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
-                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock x:Name="CalculationsOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="6" Text="0"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
-                        <Label Content="Оформить:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock x:Name ="DrawUp"  Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Text="0"/>
-                        <Button x:Name="DrawUpButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="DrawUpButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="9"/>
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;"  Grid.Column="0" Grid.Row="10" Margin="160,0,0,0"/>
-                        <ComboBox x:Name="DrawUpCombobox" Style="{DynamicResource InfoBox}" Text="Оформление:" Grid.Column="0" Grid.Row="10" SelectionChanged="Combobox_SelectionChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
-                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock x:Name="DrawUpOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="10" Text="0"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
-                        <Label Content="Оформлены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
-                        <TextBlock  x:Name="Issued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="12" Text="0"/>
-                        <Button x:Name="IssuedButton" Grid.Row="12" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="IssuedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="13"/>
-                        <Label Content="К отправке:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="14"/>
-                        <TextBlock x:Name="ForSend" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="14" Text="0"/>
-                        <Button x:Name="ForSendButton" Grid.Row="14" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ForSendButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="15"/>
-                        <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="16"/>
-                        <TextBlock x:Name="OverdueIssued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="16" Text="0"/>
-                        <Button x:Name="OverdueIssuedButton" Grid.Row="16" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueIssuedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="17"/>
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;"  Grid.Column="0" Grid.Row="18" Margin="120,0,0,0"/>
-                        <ComboBox x:Name="SendingCombobox" Style="{DynamicResource InfoBox}" Text="Отправка:" Grid.Column="0" Grid.Row="18" SelectionChanged="Combobox_SelectionChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
-                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock x:Name="SendingOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="18" Text="0"/>
-                    </Grid>
-                </StackPanel>
-                <StackPanel Grid.Column="4" Margin="10">
-                    <Label Content="Подписание" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="65"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Выигран 1ч:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="WonPartOneButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="WonPartOneButton_Click" />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="0" Grid.Column="3" Tag="Выигран 1ч" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="Выигран 2ч:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock x:Name="WonPartTwo" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
-                        <Button x:Name="WonPartTwoButton" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="WonPartTwoButton_Click" />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="1" Grid.Column="3" Tag="Выигран 2ч" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="По заявкам:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock x:Name="WonByApplications" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2"/>
-                        <Button x:Name="WonByApplicationsButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="WonByApplicationsButton_Click"/>
-                        <Image Source="/Resources/Images/info.png" Stretch="Uniform" Height="25" Grid.Row="2" Grid.Column="3" Tag="Applications" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
-                        <Label Content="Выиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock x:Name="WonByOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
-                        <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="6" Margin="150,0,0,0"/>
-                        <ComboBox x:Name="ManagersCombobox" Style="{DynamicResource InfoBox}" Text="Менеджеры: " Grid.Column="0" Grid.Row="6" SelectionChanged="Combobox_SelectionChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}"  Width="25" HorizontalAlignment="Right"/>
-                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <TextBlock x:Name="ManagersOverAll" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
-                        <Label Content="Контракт Y / N:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock x:Name="ContractYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="8" />
-                        <Button x:Name="ContractYesButton" Grid.Row="8" Grid.Column="1" Opacity="0" Cursor="Hand" Click="ContractYesButton_Click"  />
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="8" />
-                        <TextBlock x:Name="ContractNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="8" />
-                        <Button x:Name="ContractNoButton" Grid.Row="8" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ContractNoButton_Click" />
-                    </Grid>
-                    <Label Content="Статистика" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Button Content="По месяцам" Style="{DynamicResource StatisticsButton}" Cursor="Hand" Click="Button_Click"/>
-                    <Button Content="Отчёты" Style="{DynamicResource StatisticsButton}"/>
-                    <Button Content="Журнал" Style="{DynamicResource StatisticsButton}"/>
-                </StackPanel>
-                <StackPanel Grid.Column="6" Margin="10">
-                    <Label Content="Поставка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition Height="6"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="6"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Проблема:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="Problem" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="ProblemButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ProblemButton_Click" />
-                        <Label Content="В работе:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock x:Name="InWork" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
-                        <Button x:Name="InWorkButton" Grid.Row="1" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="InWorkButton_Click" />
-                        <Label Content="Согласовано:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock x:Name="Agreed" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
-                        <Button x:Name="AgreedButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="AgreedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
-                        <Label Content="План отгрузки:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <Label Content="Пред. неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="7"/>
-                        <TextBlock x:Name="PreviousWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="7" />
-                        <Button x:Name="PreviousWeekButton" Grid.ColumnSpan="5" Grid.Row="7" Opacity="0" Cursor="Hand" Click="PreviousWeekButton_Click"/>
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="7" Grid.Column="3" Tag="Предыдущая" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="Текущая неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock x:Name="ThisWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
-                        <Button x:Name="ThisWeekButton" Grid.ColumnSpan="5" Grid.Row="8" Opacity="0" Cursor="Hand" Click="ThisWeekButton_Click"/>
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="8" Grid.Column="3" Tag="Текущая" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="След. неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="9"/>
-                        <TextBlock x:Name="NextWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="9" />
-                        <Button x:Name="NextWeekButton" Grid.ColumnSpan="5" Grid.Row="9" Opacity="0" Cursor="Hand" Click="NextWeekButton_Click"/>
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="9" Grid.Column="3" Tag="Следующая" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="Через неделю:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="10"/>
-                        <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
-                        <Button x:Name="AWeekLaterButton" Grid.ColumnSpan="5" Grid.Row="10" Opacity="0" Cursor="Hand" Click="AWeekLaterButton_Click"/>
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="10" Grid.Column="3" Tag="Через одну" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
-                        <Label Content="Проверка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
-                        <Label Content="Расчёт Y / N:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="13"/>
-                        <TextBlock x:Name="ApproveCalculatingYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="13" />
-                        <Button x:Name="ApproveCalculatingYesButton" Grid.Row="13" Grid.Column="1" Opacity="0" Cursor="Hand" Click="ApproveCalculatingYesButton_Click"  />
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="13" />
-                        <TextBlock x:Name="ApproveCalculatingNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="13" />
-                        <Button x:Name="ApproveCalculatingNoButton" Grid.Row="13" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ApproveCalculatingNoButton_Click" />
-                        <Label Content="Закупка Y / N:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="14"/>
-                        <TextBlock x:Name="ApprovePurchaseYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="14" />
-                        <Button x:Name="ApprovePurchaseYesButton" Grid.Row="14" Grid.Column="1" Opacity="0" Cursor="Hand" Click="ApprovePurchaseYesButton_Click"  />
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="14" />
-                        <TextBlock x:Name="ApprovePurchaseNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="14" />
-                        <Button x:Name="ApprovePurchaseNoButton" Grid.Row="14" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ApprovePurchaseNoButton_Click" />
-                    </Grid>
-                    <Label Content="Анализ" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="45"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition/>
-                            <RowDefinition Height="45"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="45"/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Принят:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="Received" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="ReceivedButton" Grid.ColumnSpan="5" Grid.Row="0" Opacity="0" Cursor="Hand" Click="ReceivedButton_Click" />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="0" Grid.Column="3" Tag="Принят" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
-                        <Label Content="ЦБ РФ:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="3"/>
-                        <TextBlock x:Name="RateForCentralBank" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="6"/>
-                        <Label Content="₽ в обороте:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="7"/>
-                        <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="7" />
-                    </Grid>
-                </StackPanel>
-                <StackPanel Grid.Column="8" Margin="10">
-                    <Label Content="Приёмка и оплата" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition Height="6"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="6"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition Height="6"/>
-                            <RowDefinition Height="2"/>
-                            <RowDefinition Height="6"/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Content="Приёмка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="AcceptanceButton" Grid.ColumnSpan="5" Grid.Row="0" Opacity="0" Cursor="Hand" Click="AcceptanceButton_Click" />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="0" Grid.Column="3" Tag="Приемка" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="Частич. отправка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock x:Name="PartialAcceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="1" Grid.Column="3" Tag="PartialAcceptance" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="На исправлении:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock x:Name="OnTheFix" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
-                        <Button x:Name="OnTheFixButton" Grid.ColumnSpan="5" Grid.Row="2" Opacity="0" Cursor="Hand" Click="OnTheFixButton_Click" />
-                        <Image Source="/Resources/Images/info.png" Stretch="Uniform" Height="25" Grid.Row="2" Grid.Column="3" Tag="CorrectionDate" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
-                        <Label Content="Не оплачены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
-                        <TextBlock x:Name="NotPaid" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
-                        <Button x:Name="NotPaidButton" Grid.ColumnSpan="5" Grid.Row="6" Opacity="0" Cursor="Hand" Click="NotPaidButton_Click"/>
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="6" Grid.Column="3" Tag="NotPaid" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="В срок:" Style="{DynamicResource Title.MainFrame.4.Foreground}" Grid.Column="0" Grid.Row="7"/>
-                        <TextBlock x:Name="NotPaidOnTime" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="7" />
-                        <Button x:Name="NotPaidOnTimeButton" Grid.ColumnSpan="5" Grid.Row="7" Opacity="0" Cursor="Hand" Click="NotPaidOnTimeButton_Click" />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="7" Grid.Column="3" Tag="NotPaidOnTime" MouseEnter="Image_MouseEnter"/>
-                        <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.5.Foreground}" Grid.Column="0" Grid.Row="8"/>
-                        <TextBlock x:Name="NotPaidDelay" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
-                        <Button x:Name="NotPaidDelayButton" Grid.ColumnSpan="5" Grid.Row="8" Opacity="0" Cursor="Hand" Click="NotPaidDelayButton_Click"  />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="8" Grid.Column="3" Tag="NotPaidDelay" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="10"/>
-                        <Label Content="Суд:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
-                        <TextBlock x:Name="Judgement" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="12" />
-                        <Button x:Name="JudgementButton" Grid.ColumnSpan="5" Grid.Row="12" Opacity="0" Cursor="Hand" Click="JudgementButton_Click" />
-                        <Label Content="ФАС:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="13"/>
-                        <TextBlock x:Name="FAS" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="13" />
-                        <Button x:Name="FASButton" Grid.ColumnSpan="5" Grid.Row="13" Opacity="0" Cursor="Hand" Click="FASButton_Click" />
-                    </Grid>
-                    <Label Content="Логистика" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
-                    <Button Content="Логистика" Style="{DynamicResource SumbitAction}" Cursor="Hand"/>
-                </StackPanel>-->
             </Grid>
         </Border>
     </ScrollViewer>

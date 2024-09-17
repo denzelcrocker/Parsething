@@ -16,10 +16,7 @@
         <system:String x:Key="PurchaseString">Purchase</system:String>
     </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-            </Border.Effect>
+        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
             <Grid Width="1810" Height="820">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
@@ -142,7 +139,7 @@
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="30" Grid.Row="12" Grid.Column="3" Tag="Выигран 2ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartTwo" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="12" />
                     </Grid>
-                 </StackPanel>
+                </StackPanel>
                 <Grid Grid.Column="4" x:Name="SortingHeadersGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>

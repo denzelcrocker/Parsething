@@ -2,7 +2,7 @@
     <WindowChrome.WindowChrome>
         <WindowChrome ResizeBorderThickness="16"/>
     </WindowChrome.WindowChrome>
-    <Border x:Name="WindowPresenter" Background="{DynamicResource WindowPresenter.Background}" CornerRadius="16">
+    <Border x:Name="WindowPresenter" Background="#F0F0F0" CornerRadius="16">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>

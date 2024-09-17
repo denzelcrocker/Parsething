@@ -18,10 +18,7 @@
                 <ColumnDefinition Width="1400"/>
                 <ColumnDefinition Width="460"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15" CornerRadius="45">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1400"/>
@@ -29,7 +26,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="30"/>
-                        <RowDefinition Height="660"/>
+                        <RowDefinition Height="655"/>
                         <RowDefinition Height="80"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="1" x:Name="ColumnsNamesCalculating" Visibility="Visible">
@@ -178,10 +175,7 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -219,7 +213,7 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border LayoutTransform="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=Content, Converter={StaticResource InverseScaleYConverter}}" BorderThickness="1" BorderBrush="{DynamicResource TitleBar.Background}" CornerRadius="15" Margin="15,1,0,1">
-                                        <Grid HorizontalAlignment="Left" Margin="3" Width="335">
+                                        <Grid HorizontalAlignment="Left" Margin="3" Width="330">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="40"/>
                                                 <RowDefinition />

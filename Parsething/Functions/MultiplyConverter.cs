@@ -625,4 +625,38 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class NullImageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || string.IsNullOrEmpty(value.ToString()))
+            {
+                // Возвращаем путь к изображению по умолчанию
+                return new BitmapImage(new Uri("/Resources/Images/default.png", UriKind.Relative));
+            }
+
+            return new BitmapImage(new Uri(value.ToString(), UriKind.RelativeOrAbsolute));
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool booleanValue)
+            {
+                return booleanValue ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed; // В случае если value не является bool, скрыть элемент
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException(); // Конвертация в обратном направлении не поддерживается
+        }
+    }
 }

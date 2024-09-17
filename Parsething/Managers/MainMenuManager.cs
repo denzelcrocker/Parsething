@@ -26,23 +26,44 @@ namespace Parsething.Managers
                 return new List<MenuItemModel>
             {
                 new MenuItemModel
+            {
+                Header = "Сортировка",
+                ImageSource = "/Resources/Images/Gear.png",
+                Command = new RelayCommand(() => LoadList("Получены")),
+                SubItems = new List<MenuItemModel>
                 {
-                    Header = "Сортировка",
-                    SubItems = new List<MenuItemModel>
+                    new MenuItemModel { Header = "Получены" , RecordCount = 15},
+                    new MenuItemModel
                     {
-                        new MenuItemModel { Header = "Получены", RecordCount = GET.Aggregate.ProcurementsCountBy("Отбой", GET.KindOf.ProcurementState), Command = new RelayCommand(() => LoadList("Получены")) },
-                        new MenuItemModel { Header = "Неразобранные", RecordCount = 5, Command = new RelayCommand(() => LoadList("Unsorted")) }
+                        Header = "План отгрузки",
+
+                        RecordCount = 15,
+                        SubItems = new List<MenuItemModel>
+                        {
+                            new MenuItemModel { Header = "Текущая неделя", RecordCount = 15 },
+                            new MenuItemModel { Header = "Следующая неделя" }
+                        }
                     }
-                },
-                new MenuItemModel
+                }
+            },
+            new MenuItemModel
+            { 
+                Header = "Расчет и подача",
+                SubItems = new List<MenuItemModel>
                 {
-                    Header = "Расчет и подача",
-                    SubItems = new List<MenuItemModel>
+                    new MenuItemModel { Header = "Получены" },
+                    new MenuItemModel
                     {
-                        new MenuItemModel { Header = "Получены", RecordCount = 10, Command = new RelayCommand(() => LoadList("Получены")) },
-                        new MenuItemModel { Header = "Неразобранные", RecordCount = 5, Command = new RelayCommand(() => LoadList("Получены")) },
+                        Header = "План отгрузки",
+                        SubItems = new List<MenuItemModel>
+                        {
+                            new MenuItemModel { Header = "Текущая неделя" , RecordCount = 15},
+                            new MenuItemModel { Header = "Следующая неделя" }
+                        }
                     }
-                },
+                }
+            }
+
             };
             }
             else if (userType == "Specialist")
