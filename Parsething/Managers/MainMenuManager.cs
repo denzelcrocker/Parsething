@@ -19,70 +19,62 @@ namespace Parsething.Managers
         {
             _viewModel = viewModel;
         }
-        public List<MenuItemModel> GetMenuForUser(string userType)
+        public void GetMenuForUser(string userType)
         {
+            GlobalUsingValues.Instance.MainMenuItems.Clear();
             if (userType == "Администратор")
             {
-                return new List<MenuItemModel>
+                GlobalUsingValues.Instance.AddMainMenuItem(new MenuItemModel
+                {
+                    Header = "Сортировка",
+                    ImageSource = "/Resources/Images/Gear.png",
+                    Command = new RelayCommand(() => LoadList("Получены")),
+                    SubItems = new List<MenuItemModel>
             {
+                new MenuItemModel { Header = "Получены", RecordCount = 15 },
                 new MenuItemModel
-            {
-                Header = "Сортировка",
-                ImageSource = "/Resources/Images/Gear.png",
-                Command = new RelayCommand(() => LoadList("Получены")),
-                SubItems = new List<MenuItemModel>
                 {
-                    new MenuItemModel { Header = "Получены" , RecordCount = 15},
-                    new MenuItemModel
+                    Header = "План отгрузки",
+                    RecordCount = 15,
+                    SubItems = new List<MenuItemModel>
                     {
-                        Header = "План отгрузки",
-
-                        RecordCount = 15,
-                        SubItems = new List<MenuItemModel>
-                        {
-                            new MenuItemModel { Header = "Текущая неделя", RecordCount = 15 },
-                            new MenuItemModel { Header = "Следующая неделя" }
-                        }
-                    }
-                }
-            },
-            new MenuItemModel
-            { 
-                Header = "Расчет и подача",
-                SubItems = new List<MenuItemModel>
-                {
-                    new MenuItemModel { Header = "Получены" },
-                    new MenuItemModel
-                    {
-                        Header = "План отгрузки",
-                        SubItems = new List<MenuItemModel>
-                        {
-                            new MenuItemModel { Header = "Текущая неделя" , RecordCount = 15},
-                            new MenuItemModel { Header = "Следующая неделя" }
-                        }
+                        new MenuItemModel { Header = "Текущая неделя", RecordCount = 15 },
+                        new MenuItemModel { Header = "Следующая неделя" }
                     }
                 }
             }
+                });
 
-            };
+                GlobalUsingValues.Instance.AddMainMenuItem(new MenuItemModel
+                {
+                    Header = "Расчет и подача",
+                    SubItems = new List<MenuItemModel>
+            {
+                new MenuItemModel { Header = "Получены" },
+                new MenuItemModel
+                {
+                    Header = "План отгрузки",
+                    SubItems = new List<MenuItemModel>
+                    {
+                        new MenuItemModel { Header = "Текущая неделя", RecordCount = 15 },
+                        new MenuItemModel { Header = "Следующая неделя" }
+                    }
+                }
+            }
+                });
             }
             else if (userType == "Specialist")
             {
-                return new List<MenuItemModel>
-            {
-                new MenuItemModel
+                GlobalUsingValues.Instance.AddMainMenuItem(new MenuItemModel
                 {
                     Header = "Расчет",
                     SubItems = new List<MenuItemModel>
-                    {
-                        new MenuItemModel { Header = "В работе", RecordCount = 15, Command = new RelayCommand(() => LoadList("Получены")) },
-                        new MenuItemModel { Header = "На рассмотрении", RecordCount = 7, Command = new RelayCommand(() => LoadList("Получены")) }
-                    }
-                }
-            };
+            {
+                new MenuItemModel { Header = "В работе", RecordCount = 15, Command = new RelayCommand(() => LoadList("Получены")) },
+                new MenuItemModel { Header = "На рассмотрении", RecordCount = 7, Command = new RelayCommand(() => LoadList("Получены")) }
             }
-
-            return new List<MenuItemModel>();
+                });
+            }
         }
 
         private void LoadList(string listName)

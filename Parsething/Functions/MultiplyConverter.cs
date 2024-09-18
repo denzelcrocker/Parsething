@@ -659,4 +659,20 @@ namespace Parsething.Functions
             throw new NotImplementedException(); // Конвертация в обратном направлении не поддерживается
         }
     }
+    public class IsSelectedToBorderVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool isSelected)
+            {
+                return isSelected ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

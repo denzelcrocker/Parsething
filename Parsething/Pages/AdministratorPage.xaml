@@ -13,6 +13,7 @@
     <Page.Resources>
         <fnc:NullVisibilityConverter x:Key="NullVisibilityConverter" />
         <fnc:NullImageConverter x:Key="NullImageConverter"/>
+        <fnc:IsSelectedToBorderVisibilityConverter x:Key="IsSelectedToBorderVisibilityConverter"/>
         <fnc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Storyboard x:Key="ExpandMenu">
             <DoubleAnimation Storyboard.TargetName="menuBorder"
@@ -22,7 +23,7 @@
         <Storyboard x:Key="CollapseMenu">
             <DoubleAnimation Storyboard.TargetName="menuBorder"
                              Storyboard.TargetProperty="Width"
-                             To="50" Duration="0:0:0.2"/>
+                             To="200" Duration="0:0:0.2"/>
         </Storyboard>
         <Style x:Key="NoArrowExpanderStyle" TargetType="Expander">
             <Setter Property="Template">
@@ -110,6 +111,7 @@
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                             </Trigger>
+                            
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -137,7 +139,9 @@
                                 <!-- Если элемент имеет подменю -->
                                 <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
                                     <Expander.Header>
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" MouseLeftButtonDown="StackPanel_MouseLeftButtonUp">
+                                            <Border Width="2" Background="Black" Margin="0,0,5,0"
+                                                Visibility="{Binding IsSelected, Converter={StaticResource IsSelectedToBorderVisibilityConverter}}"/>
                                             <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
                                             <TextBlock Text="{Binding Header}" FontSize="16" Margin="5"/>
                                             <TextBlock Text="{Binding RecordCount, StringFormat={}{0}}" Margin="5,0,0,0"
@@ -151,7 +155,9 @@
                                             <HierarchicalDataTemplate ItemsSource="{Binding SubItems}" ItemContainerStyle="{StaticResource NoArrowExpanderStyle}">
                                                 <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
                                                     <Expander.Header>
-                                                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                                                        <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="StackPanel_MouseLeftButtonUp">
+                                                            <Border Width="2" Background="Black" Margin="0,0,5,0"
+                                                                    Visibility="{Binding IsSelected, Converter={StaticResource IsSelectedToBorderVisibilityConverter}}"/>
                                                             <!-- Добавляем картинку -->
                                                             <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
 
@@ -162,17 +168,18 @@
                                                             <TextBlock Text="{Binding RecordCount, StringFormat={}{0}}" Margin="5,0,0,0"
                                                                 Visibility="{Binding RecordCount, Converter={StaticResource NullVisibilityConverter}}"/>
                                                             <!-- Добавляем триггер для изменения фона при наведении -->
-                                                            
+
                                                         </StackPanel>
                                                     </Expander.Header>
-
                                                     <!-- Вложенные подменю -->
                                                     <ItemsControl ItemsSource="{Binding SubItems}">
                                                         <ItemsControl.ItemTemplate>
                                                             <HierarchicalDataTemplate ItemsSource="{Binding SubItems}">
                                                                 <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
                                                                     <Expander.Header>
-                                                                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                                                                        <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="StackPanel_MouseLeftButtonUp">
+                                                                            <Border Width="2" Background="Black" Margin="0,0,5,0"
+                                                                                Visibility="{Binding IsSelected, Converter={StaticResource IsSelectedToBorderVisibilityConverter}}"/>
                                                                             <!-- Добавляем картинку во вложенные подменю -->
                                                                             <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
 

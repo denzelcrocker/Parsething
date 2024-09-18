@@ -46,6 +46,16 @@ public partial class AdministratorPage : Page
             menuItemModel?.Command?.Execute(null);
         }
     }
+    private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        var clickedItem = (MenuItemModel)((FrameworkElement)sender).DataContext;
+
+        // Сбрасываем выбор со всех элементов
+        GlobalUsingValues.Instance.DeselectAll(GlobalUsingValues.Instance.MainMenuItems);
+
+        // Устанавливаем IsSelected для текущего элемента
+        clickedItem.IsSelected = true;
+    }
     private void Menu_MouseEnter(object sender, MouseEventArgs e)
     {
         var expandMenu = (Storyboard)this.FindResource("ExpandMenu");

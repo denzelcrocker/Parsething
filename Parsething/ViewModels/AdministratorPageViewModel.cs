@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Parsething.Managers;
 using System.Collections.ObjectModel;
 using Parsething.Interfaces;
+using Parsething.Classes;
 
 namespace Parsething.ViewModels
 {
@@ -19,7 +20,8 @@ namespace Parsething.ViewModels
         public AdministratorPageViewModel()
         {
             _mainMenuManager = new MainMenuManager(this);
-            MenuItems = _mainMenuManager.GetMenuForUser("Администратор");
+            _mainMenuManager.GetMenuForUser("Администратор");
+            MenuItems = GlobalUsingValues.Instance.MainMenuItems;
         }
 
         private List<MenuItemModel> _menuItems;
