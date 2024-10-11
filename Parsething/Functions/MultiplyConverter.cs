@@ -236,7 +236,7 @@ namespace Parsething.Functions
 
             if (values[0] is DateTime deadline && values[1] is string timeZoneOffset)
             {
-                if (timeZoneOffset == "МСК" && !timeZoneOffset.Contains("МСК+") && !timeZoneOffset.Contains("МСК-") || timeZoneOffset == "стандартное")
+                if (timeZoneOffset == "МСК" && !timeZoneOffset.Contains("МСК+") && !timeZoneOffset.Contains("МСК-") || timeZoneOffset == "стандартное" || timeZoneOffset == "см. zakupki.gov.ru")
                 {
                     return deadline.ToString("dd.MM.yyyy HH:mm:ss");
                 }

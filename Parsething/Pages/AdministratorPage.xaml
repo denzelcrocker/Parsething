@@ -18,12 +18,12 @@
         <Storyboard x:Key="ExpandMenu">
             <DoubleAnimation Storyboard.TargetName="menuBorder"
                              Storyboard.TargetProperty="Width"
-                             To="200" Duration="0:0:0.2"/>
+                             To="200" Duration="0:0:0.350"/>
         </Storyboard>
         <Storyboard x:Key="CollapseMenu">
             <DoubleAnimation Storyboard.TargetName="menuBorder"
                              Storyboard.TargetProperty="Width"
-                             To="200" Duration="0:0:0.2"/>
+                             To="50" Duration="0:0:0.350"/>
         </Storyboard>
         <Style x:Key="NoArrowExpanderStyle" TargetType="Expander">
             <Setter Property="Template">
@@ -58,7 +58,7 @@
             <!-- Белый текст по умолчанию -->
             <Setter Property="Foreground" Value="White"/>
             <!-- Темно-красный фон по умолчанию -->
-            <Setter Property="Background" Value="DarkRed"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <!-- Убираем границы -->
             <Setter Property="Template">
@@ -76,14 +76,14 @@
                 <!-- При наведении мыши -->
                 <Trigger Property="IsMouseOver" Value="True">
                     <!-- Более темный красный фон при наведении -->
-                    <Setter Property="Background" Value="Azure"/>
+                    <Setter Property="Background" Value="Maroon"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
 
                 <!-- При нажатии -->
                 <Trigger Property="IsPressed" Value="True">
                     <!-- Еще темнее при нажатии -->
-                    <Setter Property="Background" Value="Maroon"/>
+                    <Setter Property="Background" Value="#6a1b21"/>
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
             </Style.Triggers>
@@ -120,7 +120,7 @@
 
     </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Border Background="{DynamicResource SubFrame.Background}" Margin="20" CornerRadius="40" BorderThickness="0" BorderBrush="#C6BDBF">
+        <Border Background="{DynamicResource SubFrame.Background}" Margin="20" CornerRadius="40">
             <Grid x:Name="MainGrid" MaxWidth="2000" MaxHeight="1000">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -140,10 +140,10 @@
                                 <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
                                     <Expander.Header>
                                         <StackPanel Orientation="Horizontal" MouseLeftButtonDown="StackPanel_MouseLeftButtonUp">
-                                            <Border Width="2" Background="Black" Margin="0,0,5,0"
+                                            <Border Width="2" Background="White" Margin="0,0,5,0"
                                                 Visibility="{Binding IsSelected, Converter={StaticResource IsSelectedToBorderVisibilityConverter}}"/>
                                             <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
-                                            <TextBlock Text="{Binding Header}" FontSize="16" Margin="5"/>
+                                            <TextBlock Text="{Binding Header}" FontSize="16" Margin="5" Foreground="White"/>
                                             <TextBlock Text="{Binding RecordCount, StringFormat={}{0}}" Margin="5,0,0,0"
                                                 Visibility="{Binding RecordCount, Converter={StaticResource NullVisibilityConverter}}"/>
                                         </StackPanel>
@@ -156,7 +156,7 @@
                                                 <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
                                                     <Expander.Header>
                                                         <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="StackPanel_MouseLeftButtonUp">
-                                                            <Border Width="2" Background="Black" Margin="0,0,5,0"
+                                                            <Border Width="2" Background="White" Margin="0,0,5,0"
                                                                     Visibility="{Binding IsSelected, Converter={StaticResource IsSelectedToBorderVisibilityConverter}}"/>
                                                             <!-- Добавляем картинку -->
                                                             <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
@@ -178,7 +178,7 @@
                                                                 <Expander  Style="{DynamicResource MainMenu.ExpanderStyle}">
                                                                     <Expander.Header>
                                                                         <StackPanel Orientation="Horizontal" Background="Transparent" MouseLeftButtonDown="StackPanel_MouseLeftButtonUp">
-                                                                            <Border Width="2" Background="Black" Margin="0,0,5,0"
+                                                                            <Border Width="2" Background="White" Margin="0,0,5,0"
                                                                                 Visibility="{Binding IsSelected, Converter={StaticResource IsSelectedToBorderVisibilityConverter}}"/>
                                                                             <!-- Добавляем картинку во вложенные подменю -->
                                                                             <Image Source="{Binding ImageSource, Converter={StaticResource NullImageConverter}}" Width="35" Height="35" Margin="5"/>
@@ -215,7 +215,7 @@
                     </ItemsControl>
                 </Border>
                 <!-- Основной контент -->
-                <Border Grid.Column="1" Background="LightGray" CornerRadius="40">
+                <Border Grid.Column="1" Background="White" CornerRadius="40" Margin="0,5,5,5">
                     <ListView Visibility="Hidden" x:Name="ProcurementsListView" ItemsSource="{Binding Procurements}">
                         <ListView.ItemTemplate>
                             <DataTemplate>

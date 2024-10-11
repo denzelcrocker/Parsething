@@ -203,6 +203,7 @@ namespace Parsething.Pages
 
             ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
+            ProcurementStateSecond.ItemsSource = ProcurementStates;
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
@@ -230,6 +231,7 @@ namespace Parsething.Pages
 
             ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
+            ProcurementStateSecond.ItemsSource = ProcurementStates;
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
@@ -244,6 +246,7 @@ namespace Parsething.Pages
                    string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementNumber) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.Law) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementState) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementStateSecond) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.INN) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.Employee) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.OrganizationName) &&
@@ -261,6 +264,7 @@ namespace Parsething.Pages
             SearchNumber.Text = SearchCriteria.Instance.ProcurementNumber;
             Law.SelectedItem = Laws?.FirstOrDefault(l => l.Number == SearchCriteria.Instance.Law);
             ProcurementState.SelectedItem = ProcurementStates?.FirstOrDefault(ps => ps.Kind == SearchCriteria.Instance.ProcurementState);
+            ProcurementStateSecond.SelectedItem = ProcurementStates?.FirstOrDefault(ps => ps.Kind == SearchCriteria.Instance.ProcurementStateSecond);
             SearchINN.Text = SearchCriteria.Instance.INN;
             Employee.SelectedItem = Employees?.FirstOrDefault(e => e.FullName == SearchCriteria.Instance.Employee);
             OrganizationName.Text = SearchCriteria.Instance.OrganizationName;
@@ -334,6 +338,7 @@ namespace Parsething.Pages
             string number = SearchNumber.Text;
             string law = (Law.SelectedItem as Law)?.Number ?? string.Empty;
             string procurementState = (ProcurementState.SelectedItem as ProcurementState)?.Kind ?? string.Empty;
+            string procurementStateSecond = (ProcurementStateSecond.SelectedItem as ProcurementState)?.Kind ?? string.Empty;
             string inn = SearchINN.Text;
             string employee = (Employee.SelectedItem as Employee)?.FullName ?? string.Empty;
             string organizationName = OrganizationName.Text;
@@ -345,13 +350,14 @@ namespace Parsething.Pages
             string shipmentPlan = (ShipmentPlan.SelectedItem as ShipmentPlan)?.Kind ?? string.Empty;
 
             if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(number) || !string.IsNullOrEmpty(law) ||
-                !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(inn) ||
-                !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName) ||
-                !string.IsNullOrEmpty(legalEntity) || !string.IsNullOrEmpty(dateType) ||
-                !string.IsNullOrEmpty(startDate) || !string.IsNullOrEmpty(endDate) ||
-                !string.IsNullOrEmpty(componentCalculation) || !string.IsNullOrEmpty(shipmentPlan))
+                !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(procurementStateSecond) ||
+                !string.IsNullOrEmpty(inn) || !string.IsNullOrEmpty(employee) ||
+                !string.IsNullOrEmpty(organizationName) || !string.IsNullOrEmpty(legalEntity) ||
+                !string.IsNullOrEmpty(dateType) || !string.IsNullOrEmpty(startDate) ||
+                !string.IsNullOrEmpty(endDate) || !string.IsNullOrEmpty(componentCalculation) ||
+                !string.IsNullOrEmpty(shipmentPlan))
             {
-                var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending, componentCalculation, shipmentPlan) ?? new List<Procurement>();
+                var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, procurementStateSecond, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending, componentCalculation, shipmentPlan) ?? new List<Procurement>();
                 GlobalUsingValues.Instance.AddProcurements(procurements);
 
                 GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
@@ -359,15 +365,16 @@ namespace Parsething.Pages
                 SearchLV.ItemsSource = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             }
 
-            SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, componentCalculation, shipmentPlan);
+            SaveSearchCriteria(id, number, law, procurementState, procurementStateSecond, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, componentCalculation, shipmentPlan);
             UpdatePagesPanel();
         }
-        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate, string componentCalculation, string shipmentPlan)
+        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string procurementStateSecond, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate, string componentCalculation, string shipmentPlan)
         {
             SearchCriteria.Instance.ProcurementId = id;
             SearchCriteria.Instance.ProcurementNumber = number;
             SearchCriteria.Instance.Law = law;
             SearchCriteria.Instance.ProcurementState = procurementState;
+            SearchCriteria.Instance.ProcurementStateSecond = procurementStateSecond;
             SearchCriteria.Instance.INN = inn;
             SearchCriteria.Instance.Employee = employee;
             SearchCriteria.Instance.OrganizationName = organizationName;
@@ -694,6 +701,20 @@ namespace Parsething.Pages
                     Clipboard.SetText(procurement.DisplayId.ToString());
                     AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
                 }
+            }
+        }
+
+        private void DateType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DateType.SelectedValue != null && DateType.SelectedValue.ToString() == "HistoryDate")
+            {
+                ProcurementStateSecondLabel.Visibility = Visibility.Visible;
+                ProcurementStateSecond.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ProcurementStateSecondLabel.Visibility = Visibility.Collapsed;
+                ProcurementStateSecond.Visibility = Visibility.Collapsed;
             }
         }
     }

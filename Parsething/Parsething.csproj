@@ -50,16 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="DatabaseLibrary">
-      <HintPath>..\SolutionItems\DatabaseLibrary.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ParsingLibrary">
-      <HintPath>..\SolutionItems\ParsingLibrary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\Images\Printing.png" />
     <Resource Include="Resources\Images\Assembly.png" />
     <Resource Include="Resources\Images\Info.png" />
@@ -124,6 +114,15 @@
 
   <ItemGroup>
     <Folder Include="Styles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DatabaseLibrary">
+      <HintPath>..\SolutionItems\DatabaseLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="ParsingLibrary">
+      <HintPath>..\SolutionItems\ParsingLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
