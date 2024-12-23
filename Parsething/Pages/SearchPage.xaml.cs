@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.ComponentModel;
 using DatabaseLibrary.Entities.ComponentCalculationProperties;
+using System.Windows.Media.Imaging;
 
 namespace Parsething.Pages
 {
@@ -752,6 +753,160 @@ namespace Parsething.Pages
                 ProcurementStateSecondLabel.Visibility = Visibility.Collapsed;
                 ProcurementStateSecond.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void CopyIds_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedItems = SearchLV.SelectedItems.Cast<Procurement>().ToList();
+
+            // Извлекаем ProcurementId из выбранных элементов
+            List<string> procurementIds = selectedItems.Select(item => item.DisplayId.ToString()).ToList();
+
+            // Объединяем их в одну строку, разделенную запятыми (или другим разделителем)
+            string result = string.Join(", ", procurementIds);
+
+            // Копируем результат в буфер обмена
+            Clipboard.SetText(result);
+
+            // Уведомляем пользователя
+            AutoClosingMessageBox.ShowAutoClosingMessageBox($"Успешно сохранено.", "Информация", 1000);
+        }
+
+        private void ToggleStar_Click(object sender, RoutedEventArgs e)
+        {
+            // Проверяем, является ли sender MenuItem
+            if (sender is MenuItem menuItem)
+            {
+                // Получаем объект Procurement из контекста данных
+                Procurement procurement = menuItem.DataContext as Procurement;
+
+                if (procurement == null)
+                    return; // Если procurement не найден, выходим из метода
+
+                var currentEmployee = (Employee)Application.Current.MainWindow.DataContext;
+
+                // Проверяем, является ли закупка уже "избранной"
+                bool isStarred = GET.Entry.ProcurementsEmployee(procurement.Id, currentEmployee.Id, "Starred");
+
+                // Находим ToggleStarImage в визуальном дереве
+                var toggleStarImage = FindVisualChild<Image>(menuItem, "ToggleStarImage");
+
+                if (toggleStarImage != null)
+                {
+                    if (isStarred)
+                    {
+                        // Если уже "избранная", меняем на неокрашенную звезду
+                        toggleStarImage.Source = new BitmapImage(new Uri("/Resources/Images/UnpaintedRedStar.png", UriKind.Relative));
+
+                        // Удаляем из "избранного"
+                        DELETE.ProcurementsEmployee(new ProcurementsEmployee
+                        {
+                            ProcurementId = procurement.Id,
+                            Procurement = procurement,
+                            EmployeeId = currentEmployee.Id,
+                            Employee = currentEmployee,
+                            ActionType = "Starred"
+                        });
+
+                        // Изменяем заголовок на "Добавить в избранное"
+                        menuItem.Header = "Добавить в избранное";
+                    }
+                    else
+                    {
+                        // Если не "избранная", меняем на окрашенную звезду
+                        toggleStarImage.Source = new BitmapImage(new Uri("/Resources/Images/PaintedRedStar.png", UriKind.Relative));
+
+                        // Добавляем в "избранное"
+                        PUT.ProcurementsEmployees(new ProcurementsEmployee
+                        {
+                            ProcurementId = procurement.Id,
+                            Procurement = procurement,
+                            EmployeeId = currentEmployee.Id,
+                            Employee = currentEmployee,
+                            ActionType = "Starred"
+                        });
+
+                        // Изменяем заголовок на "Удалить из избранного"
+                        menuItem.Header = "Удалить из избранного";
+                    }
+                }
+            }
+        }
+
+        private void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            // Проверяем, является ли sender Border
+            if (sender is Border border)
+            {
+                // Получаем контекстное меню, которое открывается
+                var contextMenu = border.ContextMenu;
+
+                // Получаем объект Procurement из контекста данных Border
+                Procurement procurement = border.DataContext as Procurement;
+
+                if (procurement != null)
+                {
+                    var currentEmployee = (Employee)Application.Current.MainWindow.DataContext;
+
+                    // Проверяем, является ли закупка уже "избранной"
+                    bool isStarred = GET.Entry.ProcurementsEmployee(procurement.Id, currentEmployee.Id, "Starred");
+
+                    // Находим ToggleStarMenuItem в контекстном меню
+                    var toggleStarMenuItem = contextMenu.Items.OfType<MenuItem>().FirstOrDefault(item => item.Name == "ToggleStarMenuItem");
+
+                    if (toggleStarMenuItem != null)
+                    {
+                        // Получаем Icon и приводим его к Image
+                        var toggleStarImage = toggleStarMenuItem.Icon as Image;
+
+                        if (toggleStarImage != null)
+                        {
+                            // Обновляем изображение в зависимости от состояния "избранного"
+                            toggleStarImage.Source = new BitmapImage(new Uri(isStarred
+                                ? "/Resources/Images/PaintedRedStar.png"
+                                : "/Resources/Images/UnpaintedRedStar.png", UriKind.Relative));
+
+                            // Обновляем заголовок в зависимости от состояния "избранного"
+                            toggleStarMenuItem.Header = isStarred ? "Удалить из избранного" : "Добавить в избранное";
+                        }
+                    }
+                }
+            }
+        }
+
+        // Метод для поиска дочернего элемента по имени
+        private T FindVisualChild<T>(DependencyObject parent, string childName) where T : DependencyObject
+        {
+            if (parent == null) return null;
+
+            T foundChild = null;
+
+            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childrenCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T childType)
+                {
+                    if (!string.IsNullOrEmpty(childName))
+                    {
+                        var frameworkElement = child as FrameworkElement;
+                        if (frameworkElement != null && frameworkElement.Name == childName)
+                        {
+                            foundChild = (T)child;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        foundChild = (T)child;
+                        break;
+                    }
+                }
+                foundChild = FindVisualChild<T>(child, childName);
+                if (foundChild != null) break;
+            }
+
+            return foundChild;
         }
     }
 }

@@ -90,7 +90,8 @@
                                 <Border 
                                 BorderThickness="1"
                                 BorderBrush="#C6BDBF"
-                                CornerRadius="15">
+                                CornerRadius="15"
+                                    ContextMenuOpening="ContextMenu_ContextMenuOpening">
                                     <Grid HorizontalAlignment="Stretch" Height="50">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="80"/>
@@ -578,6 +579,16 @@
                                             <MenuItem Header="Печать карты сборки" Click="PrintAssemblyMap_Click">
                                                 <MenuItem.Icon>
                                                     <Image Source="/Resources/Images/Printing.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem Header="Копировать выделенные номера" Click="CopyIds_Click">
+                                                <MenuItem.Icon>
+                                                    <Image Source="/Resources/Images/CopyToClipboard.png" Stretch="Uniform" Height="20"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem x:Name="ToggleStarMenuItem" Header="Добавить в избранное" Click="ToggleStar_Click">
+                                                <MenuItem.Icon>
+                                                    <Image x:Name="ToggleStarImage" Source="/Resources/Images/PaintedRedStar.png" Stretch="Uniform" Height="20"/>
                                                 </MenuItem.Icon>
                                             </MenuItem>
                                         </ContextMenu>

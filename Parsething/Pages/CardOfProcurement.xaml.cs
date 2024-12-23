@@ -1349,8 +1349,7 @@ namespace Parsething.Pages
 
         private void GoToProcurementFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            string networkPath = $@"\\192.168.1.128\Parsething\Tender_files\{Procurement.DisplayId}";
-
+            string networkPath = $@"\\192.168.1.128\Parsething\Tender_files\{Procurement.ParentProcurementId ?? Procurement.DisplayId}";
             try
             {
                 Process.Start("explorer.exe", networkPath);

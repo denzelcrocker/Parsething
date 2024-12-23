@@ -63,7 +63,6 @@
     <Resource Include="Resources\Images\Printing.png" />
     <Resource Include="Resources\Images\ActiveBell.png" />
     <Resource Include="Resources\Images\InactiveBell.png" />
-    <Resource Include="Resources\Images\Assembly.png" />
     <Resource Include="Resources\Images\Info.png" />
     <Resource Include="Resources\Images\Back.png" />
     <Resource Include="Resources\Images\Home.png" />
@@ -87,6 +86,7 @@
     <Resource Include="Resources\Images\PaintedRedStar.png" />
     <Resource Include="Resources\Images\PaintedWhiteStar.png" />
     <Resource Include="Resources\Images\UnpaintedRedStar.png" />
+    <Resource Include="Resources\Images\CopyToClipboard.png" />
   </ItemGroup>
 
   <ItemGroup>
