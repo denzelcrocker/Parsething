@@ -33,6 +33,7 @@ namespace Parsething.Classes
             ProcurementNumber = null;
             Law = null;
             ProcurementState = null;
+            ProcurementStateSecond = null;
             INN = null;
             Employee = null;
             OrganizationName = null;
@@ -42,12 +43,15 @@ namespace Parsething.Classes
             EndDate = null;
             ComponentCalculation = null;
             ShipmentPlan = null;
+            WaitingList = null;
+            ContractNumber = null;
         }
 
         public string? ProcurementId { get; set; }
         public string? ProcurementNumber { get; set; }
         public string? Law { get; set; }
         public string? ProcurementState { get; set; }
+        public string? ProcurementStateSecond { get; set; }
         public string? INN { get; set; }
         public string? Employee { get; set; }
         public string? OrganizationName { get; set; }
@@ -57,6 +61,7 @@ namespace Parsething.Classes
         public string? EndDate { get; set; }
         public string? ComponentCalculation { get; set; }
         public string? ShipmentPlan { get; set; }
-
+        public bool? WaitingList { get; set; }
+        public string? ContractNumber { get; set; }
     }
 }

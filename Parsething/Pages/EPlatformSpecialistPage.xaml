@@ -16,10 +16,7 @@
         <system:String x:Key="PurchaseString">Purchase</system:String>
     </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-            </Border.Effect>
+        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
             <Grid Width="1810" Height="820">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
@@ -116,7 +113,7 @@
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}"  Width="25" HorizontalAlignment="Right"/>
                                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -320,7 +317,7 @@
                                         </TextBlock>
                                     </Grid>
                                     <Button x:Name="BetCalculatingButton" Grid.Column="14" Cursor="Hand" Click="BetCalculatingButton_Click" Style="{DynamicResource BaseButton.Bet}" />
-                                    <Popup x:Name="BetCalculatingPopUp" PlacementTarget="{Binding ElementName=BetCalculatingButton}" Placement="Bottom" StaysOpen="True" Width="170">
+                                    <Popup x:Name="BetCalculatingPopUp" PlacementTarget="{Binding ElementName=BetCalculatingButton}" Placement="Bottom" StaysOpen="False" Width="170">
                                         <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
                                             <Grid Width="170" >
                                                 <Grid.RowDefinitions>

@@ -7,17 +7,14 @@
       mc:Ignorable="d" 
       Title="HeadsOfCalculatorsPage" Loaded="Page_Loaded">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-            </Border.Effect>
+        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
             <Grid Width="1810" Height="820">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="330"/>
                     <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="330"/>
                     <ColumnDefinition Width="2"/>
-                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="330"/>
                     <ColumnDefinition Width="2"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -31,7 +28,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="40"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -57,9 +54,10 @@
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="65"/>
                         </Grid.RowDefinitions>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="0" Grid.Column="3" Tag="Новые" MouseEnter="Image_MouseEnter"/>
                         <Label Content="Новые:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="New" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="NewButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="NewButton_Click" />
+                        <Button x:Name="NewButton" Grid.Row="0" Grid.ColumnSpan="3" Opacity="0" Cursor="Hand" Click="NewButton_Click" />
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
                         <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="2" Margin="150,0,0,0"/>
                         <ComboBox x:Name="CheckCombobox" Style="{DynamicResource InfoBox}" Text="На проверке: " Grid.Column="0" Grid.Row="2" SelectionChanged="Combobox_SelectionChanged">
@@ -69,7 +67,7 @@
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
                                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -88,7 +86,7 @@
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
                                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -107,7 +105,7 @@
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
                                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -134,7 +132,7 @@
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
                                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -149,7 +147,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="40"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -171,9 +169,10 @@
                         <Label Content="Отбой:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
                         <TextBlock x:Name="Retreat" Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Grid.Row="2" Text="0"/>
                         <Button x:Name="RetreatButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="RetreatButton_Click"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="3" Grid.Column="3" Tag="Очередь" MouseEnter="Image_MouseEnter"/>
                         <Label Content="Очередь расчета:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="3"/>
                         <TextBlock x:Name="CalculationQueue" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
-                        <Button x:Name="CalculationQueueButton" Grid.Row="3" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CalculationQueueButton_Click" />
+                        <Button x:Name="CalculationQueueButton" Grid.Row="3" Grid.ColumnSpan="3" Opacity="0" Cursor="Hand" Click="CalculationQueueButton_Click" />
                         <Label Content="Добавить тендер" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <Button x:Name="AddProcurementButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="AddProcurementButton_Click" />
                     </Grid>
@@ -181,9 +180,9 @@
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="200" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="40"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -236,7 +235,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="35"/>
+                            <ColumnDefinition Width="40"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -267,7 +266,7 @@
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}"  Width="25" HorizontalAlignment="Right"/>
                                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
-                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmpunt, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
+                                        <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -304,6 +303,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Content="План отгрузки:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <Label Content="Пред. неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="1"/>
@@ -321,7 +321,11 @@
                         <Label Content="Через неделю:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Button x:Name="AWeekLaterButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="AWeekLaterButton_Click"  />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="10" Grid.Column="3" Tag="Через одну" MouseEnter="Image_MouseEnter"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="4" Grid.Column="3" Tag="Через одну" MouseEnter="Image_MouseEnter"/>
+                        <Label Content="На исправлении:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="5"/>
+                        <TextBlock x:Name="OnTheFix" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="5" />
+                        <Button x:Name="OnTheFixButton" Grid.ColumnSpan="5" Grid.Row="5" Opacity="0" Cursor="Hand" Click="OnTheFixButton_Click" />
+                        <Image Source="/Resources/Images/info.png" Stretch="Uniform" Height="25" Grid.Row="6" Grid.Column="3" Tag="CorrectionDate" MouseEnter="Image_MouseEnter"/>
                     </Grid>
                 </StackPanel>
             </Grid>

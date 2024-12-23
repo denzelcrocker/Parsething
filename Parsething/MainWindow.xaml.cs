@@ -11,6 +11,11 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Input;
+using System.Reflection;
+using System.Net;
+using Parsething.Pages;
+using System.Diagnostics;
+using Microsoft.VisualBasic;
 
 namespace Parsething
 {
@@ -25,7 +30,16 @@ namespace Parsething
             InitializeComponent();
             Closing += MainWindow_Closing;
         }
+        private async Task UpdateNotificationIcon(int employeeId)
+        {
+            bool hasUnreadNotifications = await GET.View.HasUnreadNotifications(employeeId);
 
+            string iconPath = hasUnreadNotifications
+                ? "/Resources/Images/ActiveBell.png"  // Иконка с единицей
+                : "/Resources/Images/InactiveBell.png";            // Обычная иконка
+
+            NotificationImage.Source = new BitmapImage(new Uri(iconPath, UriKind.Relative));
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             string? s = ((Employee)DataContext).Photo;
@@ -38,6 +52,7 @@ namespace Parsething
                 bitmap.EndInit();
                 EmployeePhoto.Fill = new ImageBrush { ImageSource = bitmap };
             }
+
 
             FullName.Content = ((Employee)DataContext).FullName;
             Position.Content = ((Employee)DataContext).Position?.Kind;
@@ -81,8 +96,8 @@ namespace Parsething
             else
             {
             }
+            UpdateNotificationIcon(((Employee)DataContext).Id);
         }
-
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             switch (WindowState)
@@ -241,6 +256,7 @@ namespace Parsething
             {
                 // Add any additional roles here
             }
+            UpdateNotificationIcon(((Employee)DataContext).Id);
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         {
@@ -254,6 +270,109 @@ namespace Parsething
         private void GoCharts_Click(object sender, RoutedEventArgs e)
         {
             _ = MainFrame.Navigate(new Pages.Charts());
+        }
+
+        private void Notifications_Click(object sender, RoutedEventArgs e)
+        {
+            NotificationsPopUp.IsOpen = !NotificationsPopUp.IsOpen;
+            if (NotificationsPopUp.IsOpen)
+            {
+                // Загрузить уведомления
+                NotificationsListView.ItemsSource = GET.View.EmployeeNotificationsBy(((Employee)DataContext).Id);
+            }
+        }
+
+        private void ReadNotification_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeeNotification employeeNotification = (sender as Button)?.DataContext as EmployeeNotification ?? new EmployeeNotification();
+            if (employeeNotification != null)
+            {
+                PULL.EmployeeNotificationMark(employeeNotification);
+            }
+        }
+
+        private void EditProcurement_Click(object sender, RoutedEventArgs e)
+        {
+            Procurement procurement = null;
+
+            if (sender is MenuItem menuItem)
+                procurement = menuItem.DataContext as Procurement;
+            else if (sender is Button button)
+                procurement = button.DataContext as Procurement;
+
+            if (procurement != null)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+
+                _ = MainFrame.Navigate(new CardOfProcurement(procurement));
+            }
+        }
+
+        private void StarredProcurements_Click(object sender, RoutedEventArgs e)
+        {
+            StarredProcurementsPopUp.IsOpen = !StarredProcurementsPopUp.IsOpen;
+            if (StarredProcurementsPopUp.IsOpen)
+            {
+                StarredProcurementsListView.ItemsSource = Functions.Conversion.ProcurementsEmployeesConversion(GET.View.ProcurementsEmployeesBy(((Employee)DataContext).Id, "Starred"));
+            }
+        }
+        private void Calculating_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+
+            if (menuItem?.DataContext is Procurement procurement)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, true));
+            }
+        }
+
+        private void Purchase_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+
+            if (menuItem?.DataContext is Procurement procurement)
+            {
+                NavigationState.LastSelectedProcurement = procurement;
+                _ = MainFrame.Navigate(new ComponentCalculationsPage(procurement, false));
+            }
+        }
+        private void NavigateToEPlatformURL_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+
+            if (menuItem?.DataContext is Procurement procurement)
+            {
+                if (procurement.Platform?.Address != null)
+                {
+                    string url = procurement.Platform.Address.ToString();
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
+            }
+        }
+        private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem && menuItem.DataContext is Procurement procurement)
+            {
+                if (procurement.RequestUri != null)
+                {
+                    string url = procurement.RequestUri.ToString();
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
+            }
+        }
+        private void PrintAssemblyMap_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            if (menuItem != null)
+            {
+                Procurement procurement = menuItem.DataContext as Procurement;
+                if (procurement != null)
+                {
+                    AssemblyMap assemblyMap = new AssemblyMap(procurement);
+                    assemblyMap.Show();
+                }
+            }
         }
     }
 }

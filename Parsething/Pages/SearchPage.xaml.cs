@@ -16,6 +16,7 @@ using System.Windows.Controls.Primitives;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.ComponentModel;
+using DatabaseLibrary.Entities.ComponentCalculationProperties;
 
 namespace Parsething.Pages
 {
@@ -51,7 +52,7 @@ namespace Parsething.Pages
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private bool _isAscending = false; 
+        private bool _isAscending = false;
         private string _currentSortingField = "";
 
         public SearchPage()
@@ -203,6 +204,7 @@ namespace Parsething.Pages
 
             ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
+            ProcurementStateSecond.ItemsSource = ProcurementStates;
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
@@ -212,7 +214,7 @@ namespace Parsething.Pages
 
             var procurements = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             GET.View.PopulateComponentStates(procurements);
-            
+
             SearchLV.ItemsSource = procurements;
 
 
@@ -228,8 +230,9 @@ namespace Parsething.Pages
             Employees = GET.View.Employees().Where(e => e.IsAvailable != false).ToList();
             Employee.ItemsSource = Employees;
 
-            ProcurementStates =  GET.View.ProcurementStates();
+            ProcurementStates = GET.View.ProcurementStates();
             ProcurementState.ItemsSource = ProcurementStates;
+            ProcurementStateSecond.ItemsSource = ProcurementStates;
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
@@ -244,6 +247,7 @@ namespace Parsething.Pages
                    string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementNumber) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.Law) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementState) &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ProcurementStateSecond) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.INN) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.Employee) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.OrganizationName) &&
@@ -252,7 +256,9 @@ namespace Parsething.Pages
                    string.IsNullOrEmpty(SearchCriteria.Instance.StartDate) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.EndDate) &&
                    string.IsNullOrEmpty(SearchCriteria.Instance.ComponentCalculation) &&
-                   string.IsNullOrEmpty(SearchCriteria.Instance.ShipmentPlan);
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ShipmentPlan) &&
+                   SearchCriteria.Instance.WaitingList.GetValueOrDefault() &&
+                   string.IsNullOrEmpty(SearchCriteria.Instance.ContractNumber);
         }
 
         private void RestoreSearchCriteria()
@@ -261,6 +267,7 @@ namespace Parsething.Pages
             SearchNumber.Text = SearchCriteria.Instance.ProcurementNumber;
             Law.SelectedItem = Laws?.FirstOrDefault(l => l.Number == SearchCriteria.Instance.Law);
             ProcurementState.SelectedItem = ProcurementStates?.FirstOrDefault(ps => ps.Kind == SearchCriteria.Instance.ProcurementState);
+            ProcurementStateSecond.SelectedItem = ProcurementStates?.FirstOrDefault(ps => ps.Kind == SearchCriteria.Instance.ProcurementStateSecond);
             SearchINN.Text = SearchCriteria.Instance.INN;
             Employee.SelectedItem = Employees?.FirstOrDefault(e => e.FullName == SearchCriteria.Instance.Employee);
             OrganizationName.Text = SearchCriteria.Instance.OrganizationName;
@@ -281,6 +288,8 @@ namespace Parsething.Pages
 
             ShipmentPlan.SelectedItem = ShipmentPlans?.FirstOrDefault(s => s.Kind == SearchCriteria.Instance.ShipmentPlan);
             SearchComponentCalculation.Text = SearchCriteria.Instance.ComponentCalculation;
+            SearchWaitingList.IsChecked = SearchCriteria.Instance.WaitingList;
+            SearchContractNumber.Text = SearchCriteria.Instance.ContractNumber;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -334,6 +343,7 @@ namespace Parsething.Pages
             string number = SearchNumber.Text;
             string law = (Law.SelectedItem as Law)?.Number ?? string.Empty;
             string procurementState = (ProcurementState.SelectedItem as ProcurementState)?.Kind ?? string.Empty;
+            string procurementStateSecond = (ProcurementStateSecond.SelectedItem as ProcurementState)?.Kind ?? string.Empty;
             string inn = SearchINN.Text;
             string employee = (Employee.SelectedItem as Employee)?.FullName ?? string.Empty;
             string organizationName = OrganizationName.Text;
@@ -343,31 +353,37 @@ namespace Parsething.Pages
             string endDate = EndDate.SelectedDate?.ToString("yyyy-MM-dd") ?? string.Empty;
             string componentCalculation = SearchComponentCalculation.Text;
             string shipmentPlan = (ShipmentPlan.SelectedItem as ShipmentPlan)?.Kind ?? string.Empty;
+            bool? waitingList = SearchWaitingList.IsChecked;
+            string contractNumber = SearchContractNumber.Text;
+
 
             if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(number) || !string.IsNullOrEmpty(law) ||
-                !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(inn) ||
-                !string.IsNullOrEmpty(employee) || !string.IsNullOrEmpty(organizationName) ||
-                !string.IsNullOrEmpty(legalEntity) || !string.IsNullOrEmpty(dateType) ||
-                !string.IsNullOrEmpty(startDate) || !string.IsNullOrEmpty(endDate) ||
-                !string.IsNullOrEmpty(componentCalculation) || !string.IsNullOrEmpty(shipmentPlan))
+                !string.IsNullOrEmpty(procurementState) || !string.IsNullOrEmpty(procurementStateSecond) ||
+                !string.IsNullOrEmpty(inn) || !string.IsNullOrEmpty(employee) ||
+                !string.IsNullOrEmpty(organizationName) || !string.IsNullOrEmpty(legalEntity) ||
+                !string.IsNullOrEmpty(dateType) || !string.IsNullOrEmpty(startDate) ||
+                !string.IsNullOrEmpty(endDate) || !string.IsNullOrEmpty(componentCalculation) ||
+                !string.IsNullOrEmpty(shipmentPlan) || waitingList == true ||
+                !string.IsNullOrEmpty(contractNumber))
             {
-                var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending, componentCalculation, shipmentPlan) ?? new List<Procurement>();
+                var procurements = GET.View.ProcurementsBy(id, number, law, procurementState, procurementStateSecond, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, _currentSortingField, _isAscending, componentCalculation, shipmentPlan, waitingList, contractNumber) ?? new List<Procurement>();
                 GlobalUsingValues.Instance.AddProcurements(procurements);
-                
+
                 GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
-                
+
                 SearchLV.ItemsSource = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
             }
 
-            SaveSearchCriteria(id, number, law, procurementState, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, componentCalculation, shipmentPlan);
+            SaveSearchCriteria(id, number, law, procurementState, procurementStateSecond, inn, employee, organizationName, legalEntity, dateType, startDate, endDate, componentCalculation, shipmentPlan, waitingList, contractNumber);
             UpdatePagesPanel();
         }
-        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate, string componentCalculation, string shipmentPlan)
+        private void SaveSearchCriteria(string id, string number, string law, string procurementState, string procurementStateSecond, string inn, string employee, string organizationName, string legalEntity, string dateType, string startDate, string endDate, string componentCalculation, string shipmentPlan, bool? waitingList, string contractNumber)
         {
             SearchCriteria.Instance.ProcurementId = id;
             SearchCriteria.Instance.ProcurementNumber = number;
             SearchCriteria.Instance.Law = law;
             SearchCriteria.Instance.ProcurementState = procurementState;
+            SearchCriteria.Instance.ProcurementStateSecond = procurementStateSecond;
             SearchCriteria.Instance.INN = inn;
             SearchCriteria.Instance.Employee = employee;
             SearchCriteria.Instance.OrganizationName = organizationName;
@@ -377,6 +393,8 @@ namespace Parsething.Pages
             SearchCriteria.Instance.EndDate = endDate;
             SearchCriteria.Instance.ComponentCalculation = componentCalculation;
             SearchCriteria.Instance.ShipmentPlan = shipmentPlan;
+            SearchCriteria.Instance.WaitingList = waitingList;
+            SearchCriteria.Instance.ShipmentPlan = contractNumber;
         }
 
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -408,6 +426,7 @@ namespace Parsething.Pages
 
         private void OverallInfo_Click(object sender, RoutedEventArgs e)
         {
+            decimal? overallInitialPrice = 0;
             decimal? overallAmount = 0;
             decimal? overallAmountCalculate = 0;
             decimal? profitCalculate = 0;
@@ -421,19 +440,21 @@ namespace Parsething.Pages
                 OverallCount.Text = GlobalUsingValues.Instance.Procurements.Count.ToString();
                 foreach (Procurement procurement in GlobalUsingValues.Instance.Procurements)
                 {
-                    CalculateOverallInfo(procurement, ref overallAmount, ref profitCalculate, ref profitReal, ref calculatingAmount, ref purchaseAmount, ref overallAmountCalculate);
+                    CalculateOverallInfo(procurement, ref overallInitialPrice, ref overallAmount, ref profitCalculate, ref profitReal, ref calculatingAmount, ref purchaseAmount, ref overallAmountCalculate);
                 }
-                DisplayOverallInfo(overallAmount, overallAmountCalculate, calculatingAmount, purchaseAmount, profitCalculate, profitReal);
+                DisplayOverallInfo(overallInitialPrice, overallAmount, overallAmountCalculate, calculatingAmount, purchaseAmount, profitCalculate, profitReal);
             }
         }
 
-        private void CalculateOverallInfo(Procurement procurement, ref decimal? overallAmount, ref decimal? profitCalculate, ref decimal? profitReal, ref decimal? calculatingAmount, ref decimal? purchaseAmount, ref decimal? overallAmountCalculate)
+        private void CalculateOverallInfo(Procurement procurement, ref decimal? overallInitialPrice, ref decimal? overallAmount, ref decimal? profitCalculate, ref decimal? profitReal, ref decimal? calculatingAmount, ref decimal? purchaseAmount, ref decimal? overallAmountCalculate)
         {
+            decimal initialPrice = procurement.InitialPrice;
             decimal contractAmount = procurement.ContractAmount ?? 0m;
             decimal reserveContractAmount = procurement.ReserveContractAmount ?? 0m;
             decimal calculatingAmountVal = procurement.CalculatingAmount ?? 0m;
             decimal purchaseAmountVal = procurement.PurchaseAmount ?? 0m;
 
+            overallInitialPrice += initialPrice;
             if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.CalculatingAmount != null)
             {
                 overallAmount += contractAmount;
@@ -454,16 +475,19 @@ namespace Parsething.Pages
             }
         }
 
-        private void DisplayOverallInfo(decimal? overallAmount, decimal? overallAmountCalculate, decimal? calculatingAmount, decimal? purchaseAmount, decimal? profitCalculate, decimal? profitReal)
+        private void DisplayOverallInfo(decimal? overallInitialPrice, decimal? overallAmount, decimal? overallAmountCalculate, decimal? calculatingAmount, decimal? purchaseAmount, decimal? profitCalculate, decimal? profitReal)
         {
             decimal overallAmountVal = overallAmount ?? 0m;
+            decimal overallInitialPriceVal = overallInitialPrice ?? 0m;
             decimal overallAmountCalculateVal = overallAmountCalculate ?? 0m;
             decimal calculatingAmountVal = calculatingAmount ?? 0m;
             decimal purchaseAmountVal = purchaseAmount ?? 0m;
             decimal profitCalculateVal = profitCalculate ?? 0m;
             decimal profitRealVal = profitReal ?? 0m;
 
+
             OverallAmount.Text = overallAmountVal.ToString("N2") + " р.";
+            OverallInitialPrice.Text = overallInitialPriceVal.ToString("N2") + " р.";
             if (calculatingAmountVal != 0 && purchaseAmountVal != 0)
             {
                 AvgCalculationProfit.Text = $"{profitCalculateVal:N2} р. ({((overallAmountCalculateVal - calculatingAmountVal) / calculatingAmountVal * 100):N1} %)";
@@ -522,7 +546,7 @@ namespace Parsething.Pages
             Procurement? procurement = button?.DataContext as Procurement;
             if (procurement != null && button != null)
             {
-                ProcurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(procurement.Id);
+                ProcurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(procurement.Id, "Appoint");
                 Popup popup = Functions.FindPopup.FindPopupByProcurementId(procurement.Id, button);
 
                 if (popup != null && ProcurementsEmployees.Count != 0)
@@ -564,7 +588,7 @@ namespace Parsething.Pages
             Procurement procurement = (sender as Button)?.DataContext as Procurement;
             if (procurement != null)
             {
-                List<Procurement> procurements = new List<Procurement> ();
+                List<Procurement> procurements = new List<Procurement>();
                 if (procurement.ParentProcurementId != null)
                     GlobalUsingValues.Instance.AddProcurements(GET.View.ApplicationsBy(procurement.ParentProcurementId));
                 else
@@ -608,17 +632,58 @@ namespace Parsething.Pages
                     return isAscending ? procurements.OrderBy(p => p.Deadline).ToList() : procurements.OrderByDescending(p => p.Deadline).ToList();
                 case "ResultDate":
                     return isAscending ? procurements.OrderBy(p => p.ResultDate).ToList() : procurements.OrderByDescending(p => p.ResultDate).ToList();
-                case "SigningDeadline":
-                    return isAscending ? procurements.OrderBy(p => p.SigningDeadline).ToList() : procurements.OrderByDescending(p => p.SigningDeadline).ToList();
+                case "Signing":
+                    return isAscending
+                        ? procurements.OrderBy(p => p.SigningDeadline == null && p.SigningDate == null && p.ConclusionDate == null ? 0
+                                           : p.SigningDeadline != null && p.SigningDate == null && p.ConclusionDate == null ? 1
+                                           : p.SigningDeadline != null && p.SigningDate != null && p.ConclusionDate == null ? 2
+                                           : 3)
+                                       .ThenBy(p => p.SigningDeadline)
+                                       .ThenBy(p => p.SigningDate)
+                                       .ThenBy(p => p.ConclusionDate)
+                                       .ToList()
+                        : procurements.OrderByDescending(p => p.SigningDeadline == null && p.SigningDate == null && p.ConclusionDate == null ? 0
+                                                 : p.SigningDeadline != null && p.SigningDate == null && p.ConclusionDate == null ? 1
+                                                 : p.SigningDeadline != null && p.SigningDate != null && p.ConclusionDate == null ? 2
+                                                 : 3)
+                                       .ThenByDescending(p => p.SigningDeadline)
+                                       .ThenByDescending(p => p.SigningDate)
+                                       .ThenByDescending(p => p.ConclusionDate)
+                                       .ToList();
                 case "ActualDeliveryDate":
                     return isAscending ? procurements.OrderBy(p => p.ActualDeliveryDate).ToList() : procurements.OrderByDescending(p => p.ActualDeliveryDate).ToList();
+                case "PercentageReserve":
+                    return isAscending
+                    ? procurements.OrderBy(p => CalculateReservePercentage(p)).ToList()
+                    : procurements.OrderByDescending(p => CalculateReservePercentage(p)).ToList();
                 case "MaxAcceptanceDate":
                     return isAscending ? procurements.OrderBy(p => p.MaxAcceptanceDate).ToList() : procurements.OrderByDescending(p => p.MaxAcceptanceDate).ToList();
                 default:
                     return procurements;
             }
         }
+        private decimal GetTotalReserveAmount(Procurement procurement)
+        {
+            var componentCalculations = GET.View.ComponentCalculationsBy(procurement.Id);
+            return componentCalculations
+            .Where(cc => cc.ComponentState != null && cc.ComponentState.Kind == "В резерве")
+            .Sum(cc => cc.PricePurchase.Value * cc.CountPurchase.Value);
+        }
 
+        private decimal CalculateReservePercentage(Procurement procurement)
+        {
+            // Получаем общую сумму резервов
+            decimal totalReserveAmount = GetTotalReserveAmount(procurement);
+
+            // Проверяем, если PurchaseAmount равно null или 0
+            if (procurement.PurchaseAmount == null || procurement.PurchaseAmount.Value == 0)
+            {
+                return 0; // Возвращаем 0, если нет суммы закупки
+            }
+
+            // Возвращаем процент резервирования
+            return (totalReserveAmount / procurement.PurchaseAmount.Value) * 100;
+        }
         private int ExtractLawNumber(string law)
         {
             var match = Regex.Match(law, @"\d+");
@@ -672,6 +737,20 @@ namespace Parsething.Pages
                     Clipboard.SetText(procurement.DisplayId.ToString());
                     AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
                 }
+            }
+        }
+
+        private void DateType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DateType.SelectedValue != null && DateType.SelectedValue.ToString() == "HistoryDate")
+            {
+                ProcurementStateSecondLabel.Visibility = Visibility.Visible;
+                ProcurementStateSecond.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ProcurementStateSecondLabel.Visibility = Visibility.Collapsed;
+                ProcurementStateSecond.Visibility = Visibility.Collapsed;
             }
         }
     }

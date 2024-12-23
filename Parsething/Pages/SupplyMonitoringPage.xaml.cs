@@ -43,208 +43,11 @@ namespace Parsething.Pages
             try { MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame"); }
             catch { }
         }
-        private void CommonListButton_Click(object sender, RoutedEventArgs e)
-        {
-            var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
-            overAllPrice = 0;
-
-            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses).OrderBy(x => x.ComponentName).ToList();
-            List<StackPanel> stackPanels = new();
-            StackPanel stackPanel = new();
-            
-            ListView list = new();
-            list.Style = (Style)Application.Current.FindResource("ListView");
-            foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
-            {
-                Grid grid = new Grid();
-                double[] columnWidths = { 150, 830, 100, 150, 100, 160, 160 };
-
-                for (int i = 0; i < columnWidths.Length; i++)
-                {
-                    ColumnDefinition columnDefinition = new ColumnDefinition();
-                    columnDefinition.Width = new GridLength(columnWidths[i]);
-                    grid.ColumnDefinitions.Add(columnDefinition);
-                    Border border = new Border();
-                    border.BorderThickness = new Thickness(1);
-                    border.BorderBrush = Brushes.Black;
-                    Grid.SetColumn(border, i);
-                    grid.Children.Add(border);
-                }
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
-
-                TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
-                button.Click += Button_Click;
-                button.DataContext = supplyMonitoring.TenderNumber;
-
-                Grid.SetColumn(textBlockManufacturerName, 0);
-                Grid.SetColumn(textBlockComponentName, 1);
-                Grid.SetColumn(textBlockComponentStatus, 2);
-                Grid.SetColumn(textBlockAveragePrice, 3);
-                Grid.SetColumn(textBlockTotalCount, 4);
-                Grid.SetColumn(textBlockSellerName, 5);
-                Grid.SetColumn(textBlockTotalAmount, 6);
-                Grid.SetColumn(button, 7);
-
-                grid.Children.Add(textBlockManufacturerName);
-                grid.Children.Add(textBlockComponentName);
-                grid.Children.Add(textBlockComponentStatus);
-                grid.Children.Add(textBlockAveragePrice);
-                grid.Children.Add(textBlockTotalCount);
-                grid.Children.Add(textBlockSellerName);
-                grid.Children.Add(textBlockTotalAmount);
-                grid.Children.Add(button);
-
-                if (supplyMonitoring.ComponentStatus == "Купить")
-                {
-                    textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
-                }
-                list.Items.Add(grid);
-                overAllPrice += supplyMonitoring.TotalAmount;
-            }
-            stackPanel.Children.Add(list);
-            stackPanels.Add(stackPanel);
-            listViewSupplyMonitoring.ItemsSource = stackPanels;
-            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " p.";
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Procurement procurement = Entry.ProcurementBy(Convert.ToInt32(((Button)sender).DataContext));
             NavigationService.Navigate(new ComponentCalculationsPage(procurement, false));
         }
-
-        private void BySuppliersButton_Click(object sender, RoutedEventArgs e)
-        {
-            var componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
-            overAllPrice = 0;
-
-            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
-            List<string> headers = new();
-            List<StackPanel> stackPanels = new();
-            foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
-            {
-                if (!headers.Contains(supplyMonitoring.SupplierName))
-                {
-                    headers.Add(supplyMonitoring.SupplierName);
-                }
-            }
-
-            foreach (string header in headers)
-            {
-                StackPanel stackPanel = new();
-                DockPanel dockPanel = new();
-
-                decimal? totalAmount = 0;
-                foreach (SupplyMonitoringList supplyMonitoringList in supplyMonitoringList)
-                {
-                    if (supplyMonitoringList.SupplierName == header)
-                        totalAmount += supplyMonitoringList.TotalAmount;
-                }
-                stackPanel.Children.Add(dockPanel);
-                dockPanel.Children.Add(new TextBlock()
-                {
-                    Text = $"\t{header} - {totalAmount:N2} р.",
-                    Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
-                    Width = 1710
-                });
-
-                Button saveButton = new Button()
-                {
-                    Content = "↓",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
-                    DataContext = header
-                };
-                saveButton.Click += (s, args) =>
-                {
-                    string header = (string)((Button)s).DataContext;
-                    Popup popup = CreatePopup(saveButton, supplyMonitoringList, header);
-                    popup.IsOpen = true;
-                };
-                dockPanel.Children.Add(saveButton);
-                Button сopyToClipBoardButton = new Button()
-                {
-                    Content = "Copy",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
-                };
-                сopyToClipBoardButton.Click += (sender, e) =>
-                {
-                    CopyToClipBoardButton_Click(sender, e, header, totalAmount);
-                };
-                dockPanel.Children.Add(сopyToClipBoardButton);
-
-                ListView list = new ListView() { Style = (Style)Application.Current.FindResource("ListView") };
-                foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
-                {
-                    if (supplyMonitoring.SupplierName == header)
-                    {
-                        Grid grid = new Grid();
-                        double[] columnWidths = { 150, 830, 100, 150, 100, 160, 170 };
-
-                        for (int i = 0; i < columnWidths.Length; i++)
-                        {
-                            ColumnDefinition columnDefinition = new ColumnDefinition();
-                            columnDefinition.Width = new GridLength(columnWidths[i]);
-                            grid.ColumnDefinitions.Add(columnDefinition);
-                            Border border = new Border();
-                            border.BorderThickness = new Thickness(1);
-                            border.BorderBrush = (Brush)Application.Current.FindResource("Text.Foreground");
-                            Grid.SetColumn(border, i);
-                            grid.Children.Add(border);
-                        }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
-
-                        TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
-                        button.Click += Button_Click;
-                        button.DataContext = supplyMonitoring.TenderNumber;
-
-                        Grid.SetColumn(textBlockManufacturerName, 0);
-                        Grid.SetColumn(textBlockComponentName, 1);
-                        Grid.SetColumn(textBlockComponentStatus, 2);
-                        Grid.SetColumn(textBlockAveragePrice, 3);
-                        Grid.SetColumn(textBlockTotalCount, 4);
-                        Grid.SetColumn(textBlockSellerName, 5);
-                        Grid.SetColumn(textBlockTotalAmount, 6);
-                        Grid.SetColumn(button, 7);
-
-                        grid.Children.Add(textBlockManufacturerName);
-                        grid.Children.Add(textBlockComponentName);
-                        grid.Children.Add(textBlockComponentStatus);
-                        grid.Children.Add(textBlockAveragePrice);
-                        grid.Children.Add(textBlockTotalCount);
-                        grid.Children.Add(textBlockSellerName);
-                        grid.Children.Add(textBlockTotalAmount);
-                        grid.Children.Add(button);
-
-                        if (supplyMonitoring.ComponentStatus == "Купить")
-                        {
-                            textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
-                        }
-                        list.Items.Add(grid);
-                        overAllPrice += supplyMonitoring.TotalAmount;
-                    }
-                }
-                stackPanel.Children.Add(list);
-                stackPanels.Add(stackPanel);
-            }
-
-            listViewSupplyMonitoring.ItemsSource = stackPanels;
-            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
-        }
-
 
         private Popup CreatePopup(Button targetButton, List<SupplyMonitoringList> supplyMonitoringList, string header)
         {
@@ -311,264 +114,6 @@ namespace Parsething.Pages
             return popup;
         }
 
-        private void WarehouseAndReserveButton_Click(object sender, RoutedEventArgs e)
-        {
-            var componentStatuses = new List<string> { "На складе", "В резерве"};
-            overAllPrice = 0;
-
-            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
-            List<string> headers = new();
-            List<StackPanel> stackPanels = new();
-            foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
-            {
-                if (!headers.Contains(supplyMonitoring.SupplierName))
-                {
-                    headers.Add(supplyMonitoring.SupplierName);
-                }
-            }
-
-            foreach (string header in headers)
-            {
-                DockPanel dockPanel = new();
-                StackPanel stackPanel = new();
-                decimal? totalAmount = 0;
-                foreach (SupplyMonitoringList supplyMonitoringList in supplyMonitoringList)
-                {
-                    if (supplyMonitoringList.SupplierName == header)
-                        totalAmount += supplyMonitoringList.TotalAmount;
-                }
-                stackPanel.Children.Add(dockPanel);
-                dockPanel.Children.Add(new TextBlock()
-                {
-                    Text = $"\t{header} - {totalAmount:N2} р.",
-                    Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
-                    Width = 1710
-                });
-
-                Button saveButton = new Button()
-                {
-                    Content = "↓",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
-                    DataContext = header
-                };
-                saveButton.Click += (s, args) =>
-                {
-                    string header = (string)((Button)s).DataContext;
-                    Popup popup = CreatePopup(saveButton, supplyMonitoringList, header);
-                    popup.IsOpen = true;
-                };
-                dockPanel.Children.Add(saveButton);
-                Button сopyToClipBoardButton = new Button()
-                {
-                    Content = "Copy",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
-                };
-                сopyToClipBoardButton.Click += (sender, e) =>
-                {
-                    CopyToClipBoardButton_Click(sender, e, header, totalAmount);
-                };
-                dockPanel.Children.Add(сopyToClipBoardButton);
-
-                ListView list = new();
-                list.Style = (Style)Application.Current.FindResource("ListView");
-                foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
-                {
-                    if (supplyMonitoring.SupplierName == header)
-                    {
-                        Grid grid = new Grid();
-                        double[] columnWidths = { 150, 830, 100, 150, 100, 160, 160 };
-
-                        for (int i = 0; i < columnWidths.Length; i++)
-                        {
-                            ColumnDefinition columnDefinition = new ColumnDefinition();
-                            columnDefinition.Width = new GridLength(columnWidths[i]);
-                            grid.ColumnDefinitions.Add(columnDefinition);
-                            Border border = new Border();
-                            border.BorderThickness = new Thickness(1);
-                            border.BorderBrush = Brushes.Black;
-                            Grid.SetColumn(border, i);
-                            grid.Children.Add(border);
-                        }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
-
-                        TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
-                        button.Click += Button_Click;
-                        button.DataContext = supplyMonitoring.TenderNumber;
-
-                        Grid.SetColumn(textBlockManufacturerName, 0);
-                        Grid.SetColumn(textBlockComponentName, 1);
-                        Grid.SetColumn(textBlockComponentStatus, 2);
-                        Grid.SetColumn(textBlockAveragePrice, 3);
-                        Grid.SetColumn(textBlockTotalCount, 4);
-                        Grid.SetColumn(textBlockSellerName, 5);
-                        Grid.SetColumn(textBlockTotalAmount, 6);
-                        Grid.SetColumn(button, 7);
-
-                        grid.Children.Add(textBlockManufacturerName);
-                        grid.Children.Add(textBlockComponentName);
-                        grid.Children.Add(textBlockComponentStatus);
-                        grid.Children.Add(textBlockAveragePrice);
-                        grid.Children.Add(textBlockTotalCount);
-                        grid.Children.Add(textBlockSellerName);
-                        grid.Children.Add(textBlockTotalAmount);
-                        grid.Children.Add(button);
-
-                        if (supplyMonitoring.ComponentStatus == "Купить")
-                        {
-                            textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
-                        }
-                        list.Items.Add(grid);
-                        overAllPrice += supplyMonitoring.TotalAmount;
-                    }
-                }
-                stackPanel.Children.Add(list);
-                stackPanels.Add(stackPanel);
-            }
-
-            listViewSupplyMonitoring.ItemsSource = stackPanels;
-            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
-        }
-
-        private void OnTheWayButton_Click(object sender, RoutedEventArgs e)
-        {
-            var componentStatuses = new List<string> { "В пути" };
-            overAllPrice = 0;
-
-            supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
-            List<string> headers = new();
-            List<StackPanel> stackPanels = new();
-
-            foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
-            {
-                var supplierName = supplyMonitoring.SupplierName ?? "Без поставщика";
-                if (!headers.Contains(supplierName))
-                {
-                    headers.Add(supplierName);
-                }
-            }
-
-            headers = headers.OrderBy(h => h == "Без поставщика" ? "" : h).ToList();
-
-            foreach (string header in headers)
-            {
-                DockPanel dockPanel = new();
-                StackPanel stackPanel = new();
-                decimal? totalAmount = 0;
-
-                foreach (SupplyMonitoringList supplyMonitoringItem in supplyMonitoringList)
-                {
-                    if (supplyMonitoringItem.SupplierName == header)
-                        totalAmount += supplyMonitoringItem.TotalAmount;
-                }
-                stackPanel.Children.Add(dockPanel);
-                dockPanel.Children.Add(new TextBlock()
-                {
-                    Text = $"\t{header} - {totalAmount:N2} р.",
-                    Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
-                    Width = 1710
-                });
-
-                Button saveButton = new Button()
-                {
-                    Content = "↓",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
-                    DataContext = header
-                };
-                saveButton.Click += (s, args) =>
-                {
-                    string header = (string)((Button)s).DataContext;
-                    Popup popup = CreatePopup(saveButton, supplyMonitoringList, header);
-                    popup.IsOpen = true;
-                };
-                dockPanel.Children.Add(saveButton);
-
-                Button сopyToClipBoardButton = new Button()
-                {
-                    Content = "Copy",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
-                };
-                сopyToClipBoardButton.Click += (sender, e) =>
-                {
-                    CopyToClipBoardButton_Click(sender, e, header, totalAmount);
-                };
-                dockPanel.Children.Add(сopyToClipBoardButton);
-
-                ListView list = new();
-                list.Style = (Style)Application.Current.FindResource("ListView");
-
-
-                foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
-                {
-                    if (supplyMonitoring.SupplierName == header)
-                    {
-                        Grid grid = new Grid();
-                        double[] columnWidths = { 150, 830, 100, 150, 100, 160, 160 };
-
-                        for (int i = 0; i < columnWidths.Length; i++)
-                        {
-                            ColumnDefinition columnDefinition = new ColumnDefinition();
-                            columnDefinition.Width = new GridLength(columnWidths[i]);
-                            grid.ColumnDefinitions.Add(columnDefinition);
-                            Border border = new Border();
-                            border.BorderThickness = new Thickness(1);
-                            border.BorderBrush = Brushes.Black;
-                            Grid.SetColumn(border, i);
-                            grid.Children.Add(border);
-                        }
-                        grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
-
-                        TextBox textBlockManufacturerName = new TextBox() { Text = supplyMonitoring.ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockComponentName = new TextBox() { Text = supplyMonitoring.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockComponentStatus = new TextBox() { Text = supplyMonitoring.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockAveragePrice = new TextBox() { Text = $"{supplyMonitoring.AveragePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockTotalCount = new TextBox() { Text = supplyMonitoring.TotalCount.ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockSellerName = new TextBox() { Text = supplyMonitoring.SellerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        TextBox textBlockTotalAmount = new TextBox() { Text = $"{supplyMonitoring.TotalAmount:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
-                        Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
-                        button.Click += Button_Click;
-                        button.DataContext = supplyMonitoring.TenderNumber;
-
-                        Grid.SetColumn(textBlockManufacturerName, 0);
-                        Grid.SetColumn(textBlockComponentName, 1);
-                        Grid.SetColumn(textBlockComponentStatus, 2);
-                        Grid.SetColumn(textBlockAveragePrice, 3);
-                        Grid.SetColumn(textBlockTotalCount, 4);
-                        Grid.SetColumn(textBlockSellerName, 5);
-                        Grid.SetColumn(textBlockTotalAmount, 6);
-                        Grid.SetColumn(button, 7);
-
-                        grid.Children.Add(textBlockManufacturerName);
-                        grid.Children.Add(textBlockComponentName);
-                        grid.Children.Add(textBlockComponentStatus);
-                        grid.Children.Add(textBlockAveragePrice);
-                        grid.Children.Add(textBlockTotalCount);
-                        grid.Children.Add(textBlockSellerName);
-                        grid.Children.Add(textBlockTotalAmount);
-                        grid.Children.Add(button);
-
-                        if (supplyMonitoring.ComponentStatus == "Купить")
-                        {
-                            textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
-                        }
-                        list.Items.Add(grid);
-                        overAllPrice += supplyMonitoring.TotalAmount;
-                    }
-                }
-                stackPanel.Children.Add(list);
-                stackPanels.Add(stackPanel);
-            }
-
-            listViewSupplyMonitoring.ItemsSource = stackPanels;
-            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
-        }
-
         // Обработчик события PreviewMouseWheel для ListView
         private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -611,7 +156,7 @@ namespace Parsething.Pages
 
             var sellerId = sellers.FirstOrDefault(s => s.Name == header)?.Id;
 
-            var filteredComponentCalculations = componentCalculations.Where(cc => cc.SellerIdPurchase == sellerId) .ToList();
+            var filteredComponentCalculations = componentCalculations.Where(cc => cc.SellerIdPurchase == sellerId).ToList();
 
             UpdateComponentCalculations(filteredComponentCalculations, selectedDate, selectedStatus);
 
@@ -643,23 +188,17 @@ namespace Parsething.Pages
             }
         }
 
-        private void ExportToExcelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Functions.ExportToExcel.ExportSupplyMonitoringListToExcel(supplyMonitoringList);
-        }
-
         private void CopyToClipBoardButton_Click(object sender, RoutedEventArgs e, string header, decimal? totalAmount)
         {
             if (supplyMonitoringList == null) return;
 
-            var recordsForHeader = supplyMonitoringList.Where(s => s.SupplierName == header).ToList();
-
+            var recordsForHeader = supplyMonitoringList.Where(s => s.SupplierName == header).GroupBy(s => new { s.ComponentName, s.ComponentStatus }).ToList();
             StringBuilder clipboardText = new StringBuilder();
 
             clipboardText.AppendLine($"{header} - {totalAmount}");
             foreach (var record in recordsForHeader)
             {
-                clipboardText.AppendLine($"{record.ComponentName}      {record.TotalCount}");
+                clipboardText.AppendLine($"{record.Key.ComponentName}      {record.Sum(x => x.TotalCount)}");
             }
 
             Clipboard.SetText(clipboardText.ToString());
@@ -673,6 +212,383 @@ namespace Parsething.Pages
         private void GoBackButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.GoBack();
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = SearchTextBox.Text.ToLower();
+            if (!string.IsNullOrEmpty(searchText))
+                SearchSupplyMonitoringList(searchText);
+            else
+                CreateSupplyMonitoringList();
+        }
+        private void SearchSupplyMonitoringList(string searchText)
+        {
+            string dateType = (SupplyMonitoringListSelectionCombobox.SelectedItem as ComboBoxItem)?.Tag as string ?? string.Empty;
+            var componentStatuses = new List<string>();
+
+            switch (dateType)
+            {
+                case "CommonList":
+                    componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    break;
+                case "BySuppliers":
+                    componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    break;
+                case "WarehouseAndReserve":
+                    componentStatuses = new List<string> { "На складе", "В резерве" };
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    break;
+                case "OnTheWay":
+                    componentStatuses = new List<string> { "В пути" };
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    break;
+                case "ToBuy":
+                    componentStatuses = new List<string> { "Купить", "Согласование средств", "Счет оплачен" };
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    break;
+                case "ExportToExcel":
+                    break;
+            }
+            // Получаем все элементы из оригинального списка (группировка должна быть сохранена)
+            var originalList = supplyMonitoringList
+                .GroupBy(x => new { x.ComponentName, x.SupplierName, x.ComponentStatus })
+                .ToList();
+
+            // Фильтруем элементы по введенному тексту
+            var filteredList = originalList.Where(group =>
+                group.Key.ComponentName.ToLower().Contains(searchText.ToLower()) ||
+                group.Key.SupplierName.ToLower().Contains(searchText.ToLower()) ||
+                group.Key.ComponentStatus.ToLower().Contains(searchText.ToLower()) ||
+                group.Sum(x => x.TotalCount).ToString().Contains(searchText) ||
+                group.Sum(x => x.TotalAmount).ToString().Contains(searchText)
+            ).ToList();
+
+            // Преобразуем отфильтрованные группы обратно в список SupplyMonitoringList
+            supplyMonitoringList = filteredList.SelectMany(group => group).ToList();
+
+
+            // Оптимизированный switch
+            switch (dateType)
+            {
+                case "CommonList":
+                    overAllPrice = 0;
+                    InitializeCommonSupplyMonitoringList();
+                    break;
+                case "BySuppliers":
+                case "WarehouseAndReserve":
+                case "OnTheWay":
+                case "ToBuy":
+                    overAllPrice = 0;
+                    InitializeOtherSupplyMonitoringList();
+                    break;
+            }
+        }
+
+        private void SupplyMonitoringListSelectionCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CreateSupplyMonitoringList();
+        }
+        private void CreateSupplyMonitoringList() 
+        {
+            string dateType = (SupplyMonitoringListSelectionCombobox.SelectedItem as ComboBoxItem)?.Tag as string ?? string.Empty;
+            var componentStatuses = new List<string>();
+            switch (dateType)
+            {
+                case "CommonList":
+                    componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+                    overAllPrice = 0;
+
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    InitializeCommonSupplyMonitoringList();
+                    break;
+                case "BySuppliers":
+                    componentStatuses = new List<string> { "Купить", "Оплатить", "Транзит", "Наличие", "Заказ" };
+                    overAllPrice = 0;
+
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    InitializeOtherSupplyMonitoringList();
+                    break;
+                case "WarehouseAndReserve":
+                    componentStatuses = new List<string> { "На складе", "В резерве" };
+                    overAllPrice = 0;
+
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    InitializeOtherSupplyMonitoringList();
+                    break;
+                case "OnTheWay":
+                    componentStatuses = new List<string> { "В пути" };
+                    overAllPrice = 0;
+
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    InitializeOtherSupplyMonitoringList();
+                    break;
+                case "ToBuy":
+                    componentStatuses = new List<string> { "Купить", "Согласование средств", "Счет оплачен" };
+                    overAllPrice = 0;
+
+                    supplyMonitoringList = View.GetSupplyMonitoringLists(GlobalUsingValues.Instance.Procurements, componentStatuses);
+                    InitializeOtherSupplyMonitoringList();
+                    break;
+                case "ExportToExcel":
+                    Functions.ExportToExcel.ExportSupplyMonitoringListToExcel(supplyMonitoringList);
+                    break;
+            }
+        }
+        private void InitializeCommonSupplyMonitoringList()
+        {
+            var groupedSupplyMonitoringList = supplyMonitoringList
+                .GroupBy(x => new { x.ComponentName, x.SupplierName, x.ComponentStatus })
+                .OrderBy(g => g.Key.ComponentName)
+                .ToList();
+            List<StackPanel> stackPanels = new();
+            StackPanel stackPanel = new();
+
+            ListView list = new();
+            list.Style = (Style)Application.Current.FindResource("ListView");
+
+            foreach (var group in groupedSupplyMonitoringList)
+            {
+                Grid grid = new Grid();
+                double[] columnWidths = { 150, 780, 100, 150, 100, 100, 110, 170 };
+
+                for (int i = 0; i < columnWidths.Length; i++)
+                {
+                    ColumnDefinition columnDefinition = new ColumnDefinition();
+                    columnDefinition.Width = new GridLength(columnWidths[i]);
+                    grid.ColumnDefinitions.Add(columnDefinition);
+                    Border border = new Border();
+                    border.BorderThickness = new Thickness(1);
+                    border.BorderBrush = Brushes.Black;
+                    Grid.SetColumn(border, i);
+                    grid.Children.Add(border);
+                }
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
+
+                // Средняя цена по группе
+                decimal averagePrice = group.Average(x => x.AveragePrice ?? 0);
+
+                // Создаём TextBox для отображения данных группы
+                TextBox textBlockManufacturerName = new TextBox() { Text = group.First().ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockComponentName = new TextBox() { Text = group.First().ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockComponentStatus = new TextBox() { Text = group.First().ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockShipmentPlan = new TextBox() { Text = $"{group.First().ShipmentPlan}".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockAveragePrice = new TextBox() { Text = $"{averagePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockTotalCount = new TextBox() { Text = group.Sum(x => x.TotalCount).ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockSellerName = new TextBox() { Text = group.First().SupplierName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                TextBox textBlockTotalAmount = new TextBox() { Text = $"{group.Sum(x => x.TotalAmount):N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+
+                // Добавляем элементы в grid
+                Grid.SetColumn(textBlockManufacturerName, 0);
+                Grid.SetColumn(textBlockComponentName, 1);
+                Grid.SetColumn(textBlockComponentStatus, 2); // Статус компонента
+                Grid.SetColumn(textBlockShipmentPlan, 3);
+                Grid.SetColumn(textBlockAveragePrice, 4);
+                Grid.SetColumn(textBlockTotalCount, 5);
+                Grid.SetColumn(textBlockSellerName, 6);
+                Grid.SetColumn(textBlockTotalAmount, 7);
+
+                grid.Children.Add(textBlockManufacturerName);
+                grid.Children.Add(textBlockComponentName);
+                grid.Children.Add(textBlockComponentStatus);
+                grid.Children.Add(textBlockShipmentPlan);
+                grid.Children.Add(textBlockAveragePrice);
+                grid.Children.Add(textBlockTotalCount);
+                grid.Children.Add(textBlockSellerName);
+                grid.Children.Add(textBlockTotalAmount);
+
+                // Для каждой записи в группе создаём кнопку с номером тендера
+                StackPanel buttonPanel = new StackPanel() { Orientation = Orientation.Vertical, Margin = new Thickness(0, 2, 0, 2) }; // Вертикальная панель для кнопок с отступом
+
+                foreach (var supplyMonitoring in group)
+                {
+                    Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                    button.Click += Button_Click;
+                    button.DataContext = supplyMonitoring.TenderNumber;
+
+                    // Добавляем отступы между кнопками
+                    button.Margin = new Thickness(0, 5, 0, 5);
+
+                    // Добавляем кнопку в панель для кнопок
+                    buttonPanel.Children.Add(button);
+                }
+
+                // Добавляем панель с кнопками в последнюю колонку
+                Grid.SetColumn(buttonPanel, 8);
+                grid.Children.Add(buttonPanel);
+
+                if (group.First().ComponentStatus == "Купить")
+                {
+                    textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red); // Устанавливаем красный цвет для статуса "Купить"
+                }
+
+                list.Items.Add(grid);
+                overAllPrice += group.Sum(x => x.TotalAmount);
+            }
+
+            stackPanel.Children.Add(list);
+            stackPanels.Add(stackPanel);
+            listViewSupplyMonitoring.ItemsSource = stackPanels;
+            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " p.";
+        }
+        private void InitializeOtherSupplyMonitoringList()
+        {
+            List<string> headers = new();
+            List<StackPanel> stackPanels = new();
+
+            // Сбор уникальных поставщиков для заголовков
+            foreach (SupplyMonitoringList supplyMonitoring in supplyMonitoringList)
+            {
+                if (!headers.Contains(supplyMonitoring.SupplierName))
+                {
+                    headers.Add(supplyMonitoring.SupplierName);
+                }
+            }
+
+            // Обработка данных для каждого поставщика
+            foreach (string header in headers)
+            {
+                StackPanel stackPanel = new StackPanel();
+                DockPanel dockPanel = new DockPanel();
+
+                decimal? totalAmount = 0;
+                foreach (SupplyMonitoringList supplyMonitoringList in supplyMonitoringList)
+                {
+                    if (supplyMonitoringList.SupplierName == header)
+                        totalAmount += supplyMonitoringList.TotalAmount;
+                }
+
+                // Добавляем заголовок поставщика
+                stackPanel.Children.Add(dockPanel);
+                dockPanel.Children.Add(new TextBlock()
+                {
+                    Text = $"\t{header} - {totalAmount:N2} р.",
+                    Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
+                    Width = 1710
+                });
+
+                // Кнопки действий
+                Button saveButton = new Button()
+                {
+                    Content = "↓",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                    DataContext = header
+                };
+                saveButton.Click += (s, args) =>
+                {
+                    string supplierHeader = (string)((Button)s).DataContext;
+                    Popup popup = CreatePopup(saveButton, supplyMonitoringList, supplierHeader);
+                    popup.IsOpen = true;
+                };
+                dockPanel.Children.Add(saveButton);
+
+                Button copyToClipBoardButton = new Button()
+                {
+                    Content = "Copy",
+                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton")
+                };
+                copyToClipBoardButton.Click += (sender, e) =>
+                {
+                    CopyToClipBoardButton_Click(sender, e, header, totalAmount);
+                };
+                dockPanel.Children.Add(copyToClipBoardButton);
+
+                // Создание ListView для списка записей поставщика
+                ListView list = new ListView() { Style = (Style)Application.Current.FindResource("ListView") };
+
+                // Группируем данные по наименованию и статусу
+                var groupedByComponentAndStatus = supplyMonitoringList
+                    .Where(s => s.SupplierName == header)
+                    .GroupBy(s => new { s.ComponentName, s.ComponentStatus });
+
+                // Отображаем сгруппированные записи
+                foreach (var group in groupedByComponentAndStatus)
+                {
+                    Grid grid = new Grid();
+                    double[] columnWidths = { 150, 780, 100, 150, 100, 100, 110, 170 };
+
+                    for (int i = 0; i < columnWidths.Length; i++)
+                    {
+                        ColumnDefinition columnDefinition = new ColumnDefinition();
+                        columnDefinition.Width = new GridLength(columnWidths[i]);
+                        grid.ColumnDefinitions.Add(columnDefinition);
+
+                        Border border = new Border();
+                        border.BorderThickness = new Thickness(1);
+                        border.BorderBrush = (Brush)Application.Current.FindResource("Text.Foreground");
+                        Grid.SetColumn(border, i);
+                        grid.Children.Add(border);
+                    }
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
+
+
+                    decimal averagePrice = group.Average(x => x.AveragePrice ?? 0);
+                    // Добавляем колонки данных
+                    TextBox textBlockManufacturerName = new TextBox() { Text = group.First().ManufacturerName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                    TextBox textBlockComponentName = new TextBox() { Text = group.Key.ComponentName, TextWrapping = TextWrapping.Wrap, IsReadOnly = true, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                    TextBox textBlockComponentStatus = new TextBox() { Text = group.Key.ComponentStatus, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                    TextBox textBlockShipmentPlan = new TextBox() { Text = $"{group.First().ShipmentPlan}".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                    TextBox textBlockAveragePrice = new TextBox() { Text = $"{averagePrice:N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                    TextBox textBlockTotalCount = new TextBox() { Text = group.Sum(x => x.TotalCount).ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                    TextBox textBlockSellerName = new TextBox() { Text = group.First().SupplierName, Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+                    TextBox textBlockTotalAmount = new TextBox() { Text = $"{group.Sum(x => x.TotalAmount):N2} р.".ToString(), Style = (Style)Application.Current.FindResource("SupplyMonitoringTextBox") };
+
+                    // Добавляем элементы в grid
+                    Grid.SetColumn(textBlockManufacturerName, 0);
+                    Grid.SetColumn(textBlockComponentName, 1);
+                    Grid.SetColumn(textBlockComponentStatus, 2); // Статус компонента
+                    Grid.SetColumn(textBlockShipmentPlan, 3);
+                    Grid.SetColumn(textBlockAveragePrice, 4);
+                    Grid.SetColumn(textBlockTotalCount, 5);
+                    Grid.SetColumn(textBlockSellerName, 6);
+                    Grid.SetColumn(textBlockTotalAmount, 7);
+
+                    grid.Children.Add(textBlockManufacturerName);
+                    grid.Children.Add(textBlockComponentName);
+                    grid.Children.Add(textBlockComponentStatus);
+                    grid.Children.Add(textBlockShipmentPlan);
+                    grid.Children.Add(textBlockAveragePrice);
+                    grid.Children.Add(textBlockTotalCount);
+                    grid.Children.Add(textBlockSellerName);
+                    grid.Children.Add(textBlockTotalAmount);
+
+                    // Контейнер для кнопок (в одну строку)
+                    StackPanel buttonPanel = new StackPanel() { Orientation = Orientation.Vertical, Margin = new Thickness(0, 2, 0, 2) }; // Вертикальная панель для кнопок с отступом
+
+                    foreach (var supply in group)
+                    {
+                        Button button = new Button()
+                        {
+                            Content = supply.DisplayId,
+                            Style = (Style)Application.Current.FindResource("GoToAddEditComponents"),
+                            DataContext = supply.TenderNumber,
+                            Margin = new Thickness(0, 5, 0, 5)
+                        };
+                        button.Click += Button_Click;
+                        buttonPanel.Children.Add(button);
+                    }
+
+                    Grid.SetColumn(buttonPanel, 8);
+                    grid.Children.Add(buttonPanel);
+
+                    // Если статус "Купить", то выделяем красным цветом
+                    if (group.Key.ComponentStatus == "Купить")
+                    {
+                        textBlockComponentStatus.Foreground = new SolidColorBrush(Colors.Red);
+                    }
+
+                    list.Items.Add(grid);
+                    overAllPrice += group.Sum(s => s.TotalAmount);
+                }
+
+                stackPanel.Children.Add(list);
+                stackPanels.Add(stackPanel);
+            }
+
+            listViewSupplyMonitoring.ItemsSource = stackPanels;
+            OverAllInfoTextBlock.Text = overAllPrice.ToString() + " р.";
         }
     }
 }

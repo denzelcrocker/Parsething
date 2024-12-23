@@ -191,7 +191,7 @@ namespace Parsething.Windows
                     else
                     {
                         PUT.Procurement(newProcurement);
-                        procurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(Procurement.Id);
+                        procurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(Procurement.Id, "Appoint");
                         if (procurementsEmployees.Any())
                         {
                             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
@@ -201,6 +201,7 @@ namespace Parsething.Windows
                                 procurementsEmployee.Procurement = newProcurement;
                                 procurementsEmployee.Employee = procurement.Employee;
                                 procurementsEmployee.EmployeeId = procurement.EmployeeId;
+                                procurementsEmployee.ActionType = "Appoint";
                                 PUT.ProcurementsEmployees(procurementsEmployee);
                             }
                         }

@@ -58,6 +58,9 @@ namespace Parsething.Pages
             decimal? purchaseAmount = 0;
             if (procurement != null)
             {
+                ToggleStarImage.Source = GET.Entry.ProcurementsEmployee(procurement.Id, ((Employee)Application.Current.MainWindow.DataContext).Id, "Starred")
+                ? new BitmapImage(new Uri("/Resources/Images/PaintedRedStar.png", UriKind.Relative))
+                : new BitmapImage(new Uri("/Resources/Images/UnpaintedRedStar.png", UriKind.Relative));
                 Procurement = procurement;
                 Id.Text = Procurement.DisplayId.ToString();
                 int actualProcurementId = GET.Aggregate.GetActualProcurementId(procurement.Id, procurement.ParentProcurementId);
@@ -398,6 +401,32 @@ namespace Parsething.Pages
         {
             if (Procurement != null)
                 _ = MainFrame.Navigate(new CardOfProcurement(Procurement));
+        }
+
+        private void ToggleStar_Click(object sender, RoutedEventArgs e)
+        {
+            if (GET.Entry.ProcurementsEmployee(Procurement.Id, ((Employee)Application.Current.MainWindow.DataContext).Id, "Starred"))
+            {
+                ToggleStarImage.Source = new BitmapImage(new Uri("/Resources/Images/UnpaintedRedStar.png", UriKind.Relative));
+                ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+                procurementsEmployee.ProcurementId = Procurement.Id;
+                procurementsEmployee.Procurement = Procurement;
+                procurementsEmployee.EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+                procurementsEmployee.Employee = (Employee)Application.Current.MainWindow.DataContext;
+                procurementsEmployee.ActionType = "Starred";
+                DELETE.ProcurementsEmployee(procurementsEmployee);
+            }
+            else
+            {
+                ToggleStarImage.Source = new BitmapImage(new Uri("/Resources/Images/PaintedRedStar.png", UriKind.Relative));
+                ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+                procurementsEmployee.ProcurementId = Procurement.Id;
+                procurementsEmployee.Procurement = Procurement;
+                procurementsEmployee.EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+                procurementsEmployee.Employee = (Employee)Application.Current.MainWindow.DataContext;
+                procurementsEmployee.ActionType = "Starred";
+                PUT.ProcurementsEmployees(procurementsEmployee);
+            }
         }
     }
 }

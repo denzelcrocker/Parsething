@@ -1,8 +1,12 @@
-﻿<Window x:Class="Parsething.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" Title="Parsething" Style="{DynamicResource Main}" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" >
+﻿<Window x:Class="Parsething.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  xmlns:local="clr-namespace:Parsething.Functions"
+ xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" Title="Parsething" Style="{DynamicResource Main}" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" >
     <WindowChrome.WindowChrome>
         <WindowChrome ResizeBorderThickness="16"/>
     </WindowChrome.WindowChrome>
-    <Border x:Name="WindowPresenter" Background="{DynamicResource WindowPresenter.Background}" CornerRadius="16">
+    <Window.Resources>
+        <local:Base64ToImageConverter x:Key="Base64ToImageConverter"/>
+    </Window.Resources>
+    <Border x:Name="WindowPresenter" Background="#F0F0F0" CornerRadius="16">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -79,6 +83,169 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <Button x:Name="Notifications"
+                        Margin="0,0,15,0"
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        Style="{DynamicResource ButtonWithIcon}" Click="Notifications_Click" >
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="NotificationImage" Source="/Resources/Images/InActiveBell.png" Stretch="Uniform" Height="40"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Popup x:Name="NotificationsPopUp" PlacementTarget="{Binding ElementName=Notifications}" Placement="Bottom" StaysOpen="False" >
+                        <ListView x:Name="NotificationsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="300">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border LayoutTransform="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}}" BorderThickness="1" BorderBrush="{DynamicResource TitleBar.Background}" CornerRadius="0" MaxWidth="600" >
+                                        <Grid HorizontalAlignment="Stretch" Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition />
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="35"/>
+                                                <ColumnDefinition MaxWidth="200"/>
+                                                <ColumnDefinition Width="130"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Ellipse x:Name="EmployeePhoto" 
+                                                Width="25" 
+                                                Height="25"
+                                                Grid.Column="0" 
+                                                Grid.Row="0">
+                                                <Ellipse.Fill>
+                                                    <ImageBrush Stretch="Uniform" ImageSource="{Binding Path=Notification.Employee.Photo, Converter={StaticResource Base64ToImageConverter}}"/>
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+                                            <TextBlock 
+                                                Style="{DynamicResource TableElements}"
+                                                Text="{Binding Path=Notification.Employee.FullName}"
+                                                Grid.Column="1"
+                                                Grid.Row="0"
+                                                HorizontalAlignment="Left"
+                                                FontSize="12"
+                                                VerticalAlignment="Center"/>
+                                            <TextBlock 
+                                                Style="{DynamicResource TableElements}"
+                                                Text="{Binding Path=Notification.DateCreated, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
+                                                Grid.Column="2"
+                                                Grid.ColumnSpan="2"
+                                                FontSize="11"
+                                                VerticalAlignment="Center"/>
+                                            <TextBox Text="{Binding Path=Notification.Title}"
+                                                Grid.ColumnSpan="2"
+                                                Grid.Row="1"
+                                                TextWrapping="Wrap"
+                                                FontSize="15"
+                                                VerticalAlignment="Center"
+                                                IsReadOnly="True"
+                                                BorderThickness="0"
+                                                Background="Transparent"/>
+                                            <Button 
+                                                x:Name="ReadNotification"
+                                                Grid.Row="1"
+                                                Grid.Column="2" 
+                                                HorizontalAlignment="Right" 
+                                                Style="{DynamicResource Profile}"
+                                                Content="Прочитать"
+                                                Click="ReadNotification_Click"
+                                                Cursor="Hand"/>
+                                            <TextBox Text="{Binding Path=Notification.Text}"
+                                                Grid.ColumnSpan="4"
+                                                Grid.Row="2"
+                                                TextWrapping="Wrap"
+                                                HorizontalAlignment="Stretch"
+                                                FontSize="11"
+                                                VerticalAlignment="Center"
+                                                IsReadOnly="True"
+                                                BorderThickness="0"
+                                                Background="Transparent"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Popup>
+                    <Button x:Name="StarredProcurements"
+                        Margin="0,0,15,0"
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        Style="{DynamicResource ButtonWithIcon}" Click="StarredProcurements_Click">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="StarredProcurementsImage" Source="/Resources/Images/PaintedWhiteStar.png" Stretch="Uniform" Height="40"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Popup x:Name="StarredProcurementsPopUp" PlacementTarget="{Binding ElementName=StarredProcurements}" Placement="Bottom" StaysOpen="True" >
+                        <ListView x:Name="StarredProcurementsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="600">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="1" BorderBrush="{DynamicResource TitleBar.Background}" CornerRadius="0" MaxWidth="200" Height="45">
+                                        <Grid HorizontalAlignment="Stretch" Margin="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="85"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock 
+                                                Style="{DynamicResource TableElements}"
+                                                Text="{Binding Path=DisplayId}"
+                                                Grid.Column="0"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"/>
+                                            <Button 
+                                                x:Name="EditProcurement"
+                                                Grid.Column="1"
+                                                Click="EditProcurement_Click"
+                                                Style="{DynamicResource ButtonWithIcon}">
+                                                <Button.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="30"/>
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+                                        <Border.ContextMenu>
+                                            <ContextMenu Style="{StaticResource RoundedContextMenuStyle}">
+                                                <MenuItem Header="Расчет" Click="Calculating_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Resources/Images/Calculator.png" Stretch="Uniform" Height="20"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Header="Закупка" Click="Purchase_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="20"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Header="Перейти на ЕИС" Click="NavigateToProcurementURL_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Resources/Images/CoatOfArms.png" Stretch="Uniform" Height="20"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Header="Перейти на ETP" Click="NavigateToEPlatformURL_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Resources/Images/EPlatform.png" Stretch="Uniform" Height="20"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Header="Редактирование тендера" Click="EditProcurement_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Resources/Images/gear.png" Stretch="Uniform" Height="20"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem Header="Печать карты сборки" Click="PrintAssemblyMap_Click">
+                                                    <MenuItem.Icon>
+                                                        <Image Source="/Resources/Images/Printing.png" Stretch="Uniform" Height="20"/>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Popup>
                 </DockPanel>
             </Border>
             <Frame Name="MainFrame" Grid.Row="2" NavigationUIVisibility="Hidden"/>

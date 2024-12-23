@@ -108,12 +108,12 @@ namespace Parsething.Functions
                                 comboBoxHeader.SelectedItem = componentHeaderType;
                                 break;
                             }
-                        comboBoxHeader.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                        comboBoxHeader.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                         comboBoxHeader.LostFocus += (sender, e) => ComboBox_LostFocus(sender, e, comboBoxHeader, 0, true);
                         comboBoxHeader.GotFocus += (sender, e) => ComboBox_GotFocus(sender, e, comboBoxHeader, 0);
                         LoadColumnNames(comboBoxHeader, 0);
                         TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
-                        textBoxHeaderCount.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                        textBoxHeaderCount.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                         textBoxHeaderCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeaderCount, 1, true);
                         textBoxHeaderCount.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeaderCount, 1);
                         LoadColumnNames(textBoxHeaderCount, 1);
@@ -174,32 +174,32 @@ namespace Parsething.Functions
                             buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarAction");
                             TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
                             TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxComponentName.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            textBoxComponentName.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
 
                             ComboBox comboBoxManufacturer = new ComboBox()
                             {
                                 Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),
-                                //ItemsSource = Manufacturers,
+                                ItemsSource = Manufacturers,
                                 DisplayMemberPath = "ManufacturerName"
                             };
                             comboBoxManufacturer.SelectedValuePath = "Id";
                             comboBoxManufacturer.SelectedValue = componentCalculation.ManufacturerId;
-                            comboBoxManufacturer.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            comboBoxManufacturer.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             VirtualizingStackPanel.SetIsVirtualizing(comboBoxManufacturer, true);
                             VirtualizingStackPanel.SetVirtualizationMode(comboBoxManufacturer, VirtualizationMode.Recycling);
                             ScrollViewer.SetIsDeferredScrollingEnabled(comboBoxManufacturer, true);
 
                             TextBox textBoxPrice = new TextBox() { Text = componentCalculation.Price.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxPrice.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            textBoxPrice.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             if (componentCalculation.Price != null && componentCalculation.Count != null)
                                 calculatingAmount += (componentCalculation.Price * componentCalculation.Count);
                             textBoxPrice.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             TextBox textBoxCount = new TextBox() { Text = componentCalculation.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxCount.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            textBoxCount.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
-                            comboBoxSeller.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            comboBoxSeller.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             foreach (Seller seller in Sellers)
                                 if (seller.Id == componentCalculation.SellerId)
                                 {
@@ -207,13 +207,13 @@ namespace Parsething.Functions
                                     break;
                                 }
                             TextBox textBoxReserve = new TextBox() { Text = componentCalculation.Reserve, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxReserve.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            textBoxReserve.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxReserve.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             TextBox textBoxNote = new TextBox() { Text = componentCalculation.Note, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxNote.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            textBoxNote.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxNote.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            textBoxAssemblyMap.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
+                            textBoxAssemblyMap.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxAssemblyMap.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             Button buttonDelete = new Button();
                             buttonDelete.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
@@ -375,12 +375,22 @@ namespace Parsething.Functions
                                     break;
                                 }
                             ComponentStatusToColorConverter statusToColorConverter = new ComponentStatusToColorConverter();
+                            var histories = GET.View.HistoriesBy(componentCalculation.Id, "ComponentCalculation");
+
+                            // Формируем текст для ToolTip
+                            string toolTipText = string.Join(Environment.NewLine, histories.Select(h => $"{h.Date} - {h.Text}"));
+
                             Ellipse ellipseComponentState = new Ellipse
                             {
                                 Width = 8,
                                 Height = 8,
                                 HorizontalAlignment = HorizontalAlignment.Left,
-                                Margin = new Thickness(4,0,0,0),
+                                Margin = new Thickness(4, 0, 0, 0),
+                                ToolTip = new ToolTip
+                                {
+                                    Content = toolTipText,
+                                    Style = (Style)Application.Current.Resources["ComponentCalculation.ToolTip"]
+                                }
                             };
                             Binding binding = new Binding
                             {

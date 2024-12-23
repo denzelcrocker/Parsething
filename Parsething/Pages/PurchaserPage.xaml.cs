@@ -436,7 +436,7 @@ namespace Parsething.Pages
             Procurement? procurement = button?.DataContext as Procurement;
             if (procurement != null && button != null)
             {
-                ProcurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(procurement.Id);
+                ProcurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(procurement.Id, "Appoint");
                 Popup popup = Functions.FindPopup.FindPopupByProcurementId(procurement.Id, button);
 
                 if (popup != null && ProcurementsEmployees.Count != 0)

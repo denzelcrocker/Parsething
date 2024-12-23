@@ -213,7 +213,7 @@
         <Setter Property="Background" Value="{StaticResource SumbitAction.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource SumbitAction.Static.BorderBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource SumbitAction.Static.Foreground}"/>
-        <Setter Property="Width" Value="275"/>
+        <Setter Property="Width" Value="250"/>
         <Setter Property="Padding" Value="0,12"/>
         <Setter Property="FontFamily" Value="../Fonts/#Mustica Pro"/>
         <Setter Property="FontSize" Value="20"/>

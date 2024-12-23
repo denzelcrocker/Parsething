@@ -236,7 +236,7 @@ namespace Parsething.Functions
 
             if (values[0] is DateTime deadline && values[1] is string timeZoneOffset)
             {
-                if (timeZoneOffset == "МСК" && !timeZoneOffset.Contains("МСК+") && !timeZoneOffset.Contains("МСК-") || timeZoneOffset == "стандартное")
+                if (timeZoneOffset == "МСК" && !timeZoneOffset.Contains("МСК+") && !timeZoneOffset.Contains("МСК-") || timeZoneOffset == "стандартное" || timeZoneOffset == "см. zakupki.gov.ru")
                 {
                     return deadline.ToString("dd.MM.yyyy HH:mm:ss");
                 }
@@ -490,6 +490,35 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class PercentageReserveAmountConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (values == null || values.Length < 2)
+                return DependencyProperty.UnsetValue;
+
+            decimal? purchaseAmount = values[0] as decimal?;
+            int? procurementId = values[1] as int?;
+
+            if (!procurementId.HasValue) return DependencyProperty.UnsetValue;
+
+            var componentCalculations = GET.View.ComponentCalculationsBy(procurementId.Value);
+            var totalReservedValue = componentCalculations
+            .Where(cc => cc.ComponentState != null && cc.ComponentState.Kind == "В резерве")
+            .Sum(cc => cc.PricePurchase * cc.CountPurchase);
+
+            if (purchaseAmount == null || purchaseAmount == 0) return string.Empty;
+
+            var percentage = (totalReservedValue / purchaseAmount.Value) * 100;
+
+            return percentage == 0 ? string.Empty : $"В резерве {percentage:F2}%";
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
     public class Base64ToImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -557,7 +586,7 @@ namespace Parsething.Functions
                     return "Red";
                 }
             }
-            return "Transperent"; 
+            return "Transperent";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -606,6 +635,36 @@ namespace Parsething.Functions
                 return StatusColorProvider.GetColor(status);
             }
             return Brushes.Gray; // Цвет по умолчанию
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class ProcurementIsProblemConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+                return "Проблемный";
+            else
+                return ""; // Цвет по умолчанию
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class IsProcurementInWaitingListConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is true)
+                return "2025 год";
+            else
+                return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

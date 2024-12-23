@@ -112,6 +112,9 @@ namespace Parsething.Pages
                 PULL.Procurement(procurement);
             }
 
+            ToggleStarImage.Source = GET.Entry.ProcurementsEmployee(procurement.Id, ((Employee)Application.Current.MainWindow.DataContext).Id, "Starred")
+                ? new BitmapImage(new Uri("/Resources/Images/PaintedRedStar.png", UriKind.Relative))
+                : new BitmapImage(new Uri("/Resources/Images/UnpaintedRedStar.png", UriKind.Relative));
             ProcurementInfoLabel.Foreground = Red;
             ProcurementInfoUL.Fill = Red;
             ProcurementInfoLV.Visibility = Visibility.Visible;
@@ -196,7 +199,7 @@ namespace Parsething.Pages
 
             Calculators = GET.View.EmployeesBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
             Calculator.ItemsSource = Calculators;
-            ProcurementsEmployeeCalculators = GET.View.ProcurementsEmployeesBy(procurement, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
+            ProcurementsEmployeeCalculators = GET.View.ProcurementsEmployeesBy(procurement, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Appoint");
 
             Minopttorgs = GET.View.Minopttorgs();
             Minopttorg.ItemsSource = Minopttorgs;
@@ -206,15 +209,15 @@ namespace Parsething.Pages
 
             Senders = GET.View.EmployeesBy("Специалист по работе с электронными площадками", "", "");
             Sender.ItemsSource = Senders;
-            ProcurementsEmployeeSenders = GET.View.ProcurementsEmployeesBy(procurement, "Специалист по работе с электронными площадками", "", "");
+            ProcurementsEmployeeSenders = GET.View.ProcurementsEmployeesBy(procurement, "Специалист по работе с электронными площадками", "", "", "Appoint");
 
             Managers = GET.View.EmployeesBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела");
             Manager.ItemsSource = Managers;
-            ProcurementsEmployeeManagers = GET.View.ProcurementsEmployeesBy(procurement, "Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела");
+            ProcurementsEmployeeManagers = GET.View.ProcurementsEmployeesBy(procurement, "Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Appoint");
 
             Purchasers = GET.View.EmployeesBy("Руководитель отдела закупки", "Заместитель руководителя отдела закупок", "Специалист закупки");
             Purchaser.ItemsSource = Purchasers;
-            ProcurementsEmployeePurchasers = GET.View.ProcurementsEmployeesBy(procurement, "Руководитель отдела закупки", "Заместитель руководителя отдела закупок", "Специалист закупки");
+            ProcurementsEmployeePurchasers = GET.View.ProcurementsEmployeesBy(procurement, "Руководитель отдела закупки", "Заместитель руководителя отдела закупок", "Специалист закупки", "Appoint");
 
             ShipmentPlans = GET.View.ShipmentPlans();
             ShipmentPlan.ItemsSource = ShipmentPlans;
@@ -230,7 +233,7 @@ namespace Parsething.Pages
 
             Lawyers = GET.View.EmployeesBy("Юрист", "", "");
             Lawyer.ItemsSource = Lawyers;
-            ProcurementsEmployeeLawyers = GET.View.ProcurementsEmployeesBy(procurement, "Юрист", "", "");
+            ProcurementsEmployeeLawyers = GET.View.ProcurementsEmployeesBy(procurement, "Юрист", "", "", "Appoint");
 
             int actualProcurementId = GET.Aggregate.GetActualProcurementId(procurement.Id, procurement.ParentProcurementId);
             Comments = GET.View.CommentsBy(actualProcurementId);
@@ -842,7 +845,7 @@ namespace Parsething.Pages
                     PUT.History(history);
                     HistoryListView.ItemsSource = null;
                     Histories.Clear();
-                    Histories = GET.View.HistoriesBy(Procurement.Id);
+                    Histories = GET.View.HistoriesBy(Procurement.Id, "Procurement");
                     HistoryListView.ItemsSource = Histories;
                     Historylog = ProcurementState.Text;
                 }
@@ -876,6 +879,7 @@ namespace Parsething.Pages
             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
             procurementsEmployee.ProcurementId = Procurement.Id;
             procurementsEmployee.EmployeeId = ((Employee)Sender.SelectedItem).Id;
+            procurementsEmployee.ActionType = "Appoint";
             PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист по работе с электронными площадками", "", "");
         }
 
@@ -884,6 +888,7 @@ namespace Parsething.Pages
             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
             procurementsEmployee.ProcurementId = Procurement.Id;
             procurementsEmployee.EmployeeId = ((Employee)Calculator.SelectedItem).Id;
+            procurementsEmployee.ActionType = "Appoint";
             PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
         }
         private void Manager_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -891,6 +896,7 @@ namespace Parsething.Pages
             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
             procurementsEmployee.ProcurementId = Procurement.Id;
             procurementsEmployee.EmployeeId = ((Employee)Manager.SelectedItem).Id;
+            procurementsEmployee.ActionType = "Appoint";
             PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела");
         }
         private void Purchaser_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -898,6 +904,7 @@ namespace Parsething.Pages
             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
             procurementsEmployee.ProcurementId = Procurement.Id;
             procurementsEmployee.EmployeeId = ((Employee)Purchaser.SelectedItem).Id;
+            procurementsEmployee.ActionType = "Appoint";
             PUT.ProcurementsEmployeesBy(procurementsEmployee, "Руководитель отдела закупки", "Заместитель руководителя отдела закупок", "Специалист закупки");
         }
 
@@ -906,6 +913,7 @@ namespace Parsething.Pages
             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
             procurementsEmployee.ProcurementId = Procurement.Id;
             procurementsEmployee.EmployeeId = ((Employee)Lawyer.SelectedItem).Id;
+            procurementsEmployee.ActionType = "Appoint";
             PUT.ProcurementsEmployeesBy(procurementsEmployee, "Юрист", "", "");
         }
 
@@ -1102,7 +1110,7 @@ namespace Parsething.Pages
 
         private void History_Click(object sender, RoutedEventArgs e)
         {
-            Histories = GET.View.HistoriesBy(Procurement.Id);
+            Histories = GET.View.HistoriesBy(Procurement.Id, "Procurement");
             HistoryListView.ItemsSource = Histories;
             HistoryPopUp.IsOpen = !HistoryPopUp.IsOpen;
         }
@@ -1284,10 +1292,10 @@ namespace Parsething.Pages
             ApplicationAmount.Text = applicationAmount.ToString();
             int displayId = Procurement.DisplayId.GetValueOrDefault(0);
             ApplicationCount.Text = GET.Aggregate.CountOfApplications(displayId).ToString();
-            if (Procurement.ContractAmount != null || Procurement.ContractAmount != 0)
-                RemainingApplicationAmount.Text = (Procurement.ContractAmount - applicationAmount).ToString();
-            if (Procurement.ReserveContractAmount != null || Procurement.ReserveContractAmount != 0)
+            if (Procurement.ReserveContractAmount != null && Procurement.ReserveContractAmount != 0)
                 RemainingApplicationAmount.Text = (Procurement.ReserveContractAmount - applicationAmount).ToString();
+            else if (Procurement.ContractAmount != null && Procurement.ContractAmount != 0)
+                RemainingApplicationAmount.Text = (Procurement.ContractAmount - applicationAmount).ToString();
             Grid grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(300) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(615) });
@@ -1566,5 +1574,30 @@ namespace Parsething.Pages
             AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
         }
 
+        private void ToggleStar_Click(object sender, RoutedEventArgs e)
+        {
+            if (GET.Entry.ProcurementsEmployee(Procurement.Id, ((Employee)Application.Current.MainWindow.DataContext).Id, "Starred"))
+            {
+                ToggleStarImage.Source = new BitmapImage(new Uri("/Resources/Images/UnpaintedRedStar.png", UriKind.Relative));
+                ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+                procurementsEmployee.ProcurementId = Procurement.Id;
+                procurementsEmployee.Procurement = Procurement;
+                procurementsEmployee.EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+                procurementsEmployee.Employee = (Employee)Application.Current.MainWindow.DataContext;
+                procurementsEmployee.ActionType = "Starred";
+                DELETE.ProcurementsEmployee(procurementsEmployee);
+            }
+            else
+            {
+                ToggleStarImage.Source = new BitmapImage(new Uri("/Resources/Images/PaintedRedStar.png", UriKind.Relative));
+                ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
+                procurementsEmployee.ProcurementId = Procurement.Id;
+                procurementsEmployee.Procurement = Procurement;
+                procurementsEmployee.EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+                procurementsEmployee.Employee = (Employee)Application.Current.MainWindow.DataContext;
+                procurementsEmployee.ActionType = "Starred";
+                PUT.ProcurementsEmployees(procurementsEmployee);
+            }
+        }
     }
 }

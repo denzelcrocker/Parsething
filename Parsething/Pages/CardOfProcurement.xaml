@@ -18,10 +18,7 @@
                 <ColumnDefinition Width="1300"/>
                 <ColumnDefinition Width="510"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15"  CornerRadius="45">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15"  CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
@@ -74,6 +71,14 @@
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="/Resources/Images/Purchase.png" Stretch="Uniform" Height="40"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button x:Name="ToggleStar"
+                                Style="{DynamicResource ButtonWithIcon}" Click="ToggleStar_Click" >
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image x:Name="ToggleStarImage" Source="/Resources/Images/UnpaintedRedStar.png" Stretch="Uniform" Height="40"/>
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
@@ -873,10 +878,7 @@
                     </ListView>
                 </Grid>
             </Border>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
                 <StackPanel Margin="13">
                     <Grid>
                         <Grid.ColumnDefinitions>

@@ -59,7 +59,7 @@ namespace Parsething.Pages
             ManagersCombobox.Text = "Менеджеры:";
             ManagersCombobox.Items.Clear();
 
-            ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка", "Принят");
+            ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка", "Принят", "Appoint");
             foreach (var item in ProcurementsEmployeesManagersGroupings)
             {
                 countOfManagers += item.CountOfProcurements;
@@ -95,11 +95,11 @@ namespace Parsething.Pages
 
             OverdueSended.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отправлен", true, GET.KindOf.ResultDate)); // Просрочены
 
-            Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", GET.KindOf.ProcurementState)); // Отменены
+            Cancellation.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отмена", StartDate)); // Отменены
 
-            Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", GET.KindOf.ProcurementState)); // Отклонены
+            Rejected.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отклонен", StartDate)); // Отклонены
 
-            Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", GET.KindOf.ProcurementState)); // Проиграны
+            Lost.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Проигран", StartDate)); // Проиграны
 
             Acceptance.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState)); // Приемка
 
@@ -137,7 +137,7 @@ namespace Parsething.Pages
 
             AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
-            Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", GET.KindOf.ProcurementState));// Принят
+            Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", StartDate));// Принят
 
             ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Calculating).ToString(); // Проверка расчета проведена
 
@@ -316,7 +316,7 @@ namespace Parsething.Pages
 
         private void ReceivedButton_Click(object sender, RoutedEventArgs e)
         {
-            var procurements = GET.View.ProcurementsBy("Принят", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            var procurements = GET.View.ProcurementsBy("Принят", StartDate) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
                 MainFrame.Navigate(new SearchPage());

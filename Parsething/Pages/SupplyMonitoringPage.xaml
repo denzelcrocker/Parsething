@@ -11,28 +11,14 @@
     <Grid>
         <Grid>
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                    </Border.Effect>
+                <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
                     <Grid Width="1810" Height="820" x:Name="MainGrid">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="55"/>
-                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Label Content="Мониторинг поставок" Style="{DynamicResource Header.1}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="70" />
-                            </Grid.ColumnDefinitions>
+                        <DockPanel>
                             <Button   
                                 Grid.Column="0"
                                 x:Name="GoBackButton"
@@ -44,37 +30,13 @@
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                            <Button x:Name="CommonListButton"
-                                Grid.Column="1"
-                                Content="Общий список"
-                                Style="{DynamicResource SupplyMonitoringButton}"
-                                Margin="10" Click="CommonListButton_Click"/>
-                            <Button x:Name="BySuppliersButton"
-                                Grid.Column="2"
-                                Content="По поставщикам"
-                                Style="{DynamicResource SupplyMonitoringButton}"
-                                Margin="10" Click="BySuppliersButton_Click"/>
-                            <Button x:Name="WarehouseAndReserveButton"
-                                Grid.Column="3"
-                                Content="Склад и резерв"
-                                Style="{DynamicResource SupplyMonitoringButton}"
-                                Margin="10" Click="WarehouseAndReserveButton_Click"/>
-                            <Button x:Name="OnTheWayButton"
-                                Grid.Column="4"
-                                Content="В пути"
-                                Style="{DynamicResource SupplyMonitoringButton}"
-                                Margin="10" Click="OnTheWayButton_Click"/>
-                            <Button x:Name="ExportToExcelButton"
-                                Grid.Column="5"
-                                Content="Экспорт в Excel"
-                                Style="{DynamicResource SupplyMonitoringButton}"
-                                Margin="10" Click="ExportToExcelButton_Click"/>
+                            <Label Content="Мониторинг поставок" Style="{DynamicResource Header.1}" DockPanel.Dock="Left" FontSize="20" Padding="5,0,10,10"/>
                             <Button x:Name="OverallInfoButton"
-                                Grid.Column="6"
                                 Width="50"
+                                DockPanel.Dock="Right"
                                 Content="i"
                                 Style="{DynamicResource SupplyMonitoringButton}"
-                                Margin="10" Click="OverallInfoButton_Click"/>
+                                Click="OverallInfoButton_Click"/>
                             <Popup x:Name="OverAllInfoPopUp" PlacementTarget="{Binding ElementName=OverallInfoButton}" Placement="Bottom" StaysOpen="True" Width="170">
                                 <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
                                     <Grid Width="170" >
@@ -83,26 +45,53 @@
                                     </Grid>
                                 </Border>
                             </Popup>
-                        </Grid>
-                        <Grid Grid.Row="2" x:Name="ColumnsNamesPurchase" Visibility="Visible">
+                            <Button x:Name="SearchButton"
+                                DockPanel.Dock="Right"
+                                Style="{DynamicResource ButtonWithIcon}" Click="SearchButton_Click" Width="50" >
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Resources/Images/SearchRed.png" Stretch="Uniform" Height="40"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <TextBox HorizontalAlignment="Right" x:Name="SearchTextBox" Style="{ DynamicResource SingleLineInput.Search}"  DockPanel.Dock="Right" />
+                            <ComboBox x:Name="SupplyMonitoringListSelectionCombobox"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource ComboBoxBase.Search}"
+                                Height="45"
+                                FontSize="15"
+                                SelectedValuePath="Tag"
+                                SelectionChanged="SupplyMonitoringListSelectionCombobox_SelectionChanged"
+                                DisplayMemberPath="Content">
+                                <ComboBoxItem Content="Общий список" Tag="CommonList"/>
+                                <ComboBoxItem Content="По поставщикам" Tag="BySuppliers"/>
+                                <ComboBoxItem Content="Склад и резерв" Tag="WarehouseAndReserve"/>
+                                <ComboBoxItem Content="В пути" Tag="OnTheWay"/>
+                                <ComboBoxItem Content="Купить" Tag="ToBuy"/>
+                                <ComboBoxItem Content="Экспорт в Excel" Tag="ExportToExcel"/>
+                            </ComboBox>
+                        </DockPanel>
+                        <Grid Grid.Row="1" x:Name="ColumnsNamesPurchase" Visibility="Visible">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="170"/>
-                                <ColumnDefinition Width="800"/>
+                                <ColumnDefinition Width="755"/>
                                 <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="125"/>
+                                <ColumnDefinition Width="85"/>
+                                <ColumnDefinition Width="125"/>
                                 <ColumnDefinition Width="150"/>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="110"/>
                             </Grid.ColumnDefinitions>
                             <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Производитель" Grid.Column="0"/>
                             <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Наименование" Grid.Column="1" />
                             <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Статус" Grid.Column="2" />
-                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Цена/Ед" Grid.Column="3" />
-                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Количество" Grid.Column="4" />
-                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Поставщик" Grid.Column="5" />
-                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Сумма" Grid.Column="6" />
-                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Закупка" Grid.Column="7" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Неделя отгрузки" Grid.Column="3" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Цена/Ед" Grid.Column="4" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Количество" Grid.Column="5" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Поставщик" Grid.Column="6" />
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Сумма" Grid.Column="7"/>
+                            <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Закупка" Grid.Column="8" />
                         </Grid>
                         <ScrollViewer Grid.Row="3" VirtualizingPanel.VirtualizationMode="Recycling" SnapsToDevicePixels="False">
                             <ListView x:Name="listViewSupplyMonitoring" PreviewMouseWheel="ListView_PreviewMouseWheel"/>

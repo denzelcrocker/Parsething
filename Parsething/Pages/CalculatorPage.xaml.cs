@@ -45,27 +45,26 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     {
         var globalUsingValues = GlobalUsingValues.Instance;
         StartDate = globalUsingValues.StartDate;
-        var procurementsEmployeesNew = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый");
-        if (procurementsEmployeesNew != null && procurementsEmployeesNew.Count > 0)
-            NewCount.Text = procurementsEmployeesNew.Count.ToString();
-        var procurementsEmployeesCheck = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Проверка");
-        if (procurementsEmployeesCheck != null && procurementsEmployeesCheck.Count > 0)
-            CheckCount.Text = procurementsEmployeesCheck.Count.ToString();
+
+        // Update Counts
+        UpdateCount(NewCount, GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый", "Appoint"));
+        UpdateCount(CheckCount, GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Проверка", "Appoint"));
+
+        // Assuming you need to handle the queue differently, if it's not a List<ProcurementsEmployee>
         var procurementsQueue = GET.View.ProcurementsQueue();
-        if (procurementsQueue != null && procurementsQueue.Count > 0)
-            Queue.Text = procurementsQueue.Count.ToString();
-        var procurementGroup = GET.View.ProcurementsEmployeesGroupBy(((Employee)Application.Current.MainWindow.DataContext).Id);
-        if (procurementGroup != null && procurementGroup.Count > 0)
-            Overall.Text = procurementGroup[0].CountOfProcurements.ToString();
-        var procurementsEmployeeCalculated = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан");
-        if (procurementsEmployeeCalculated != null && procurementsEmployeeCalculated.Count > 0)
-            Calculated.Text = procurementsEmployeeCalculated.Count.ToString();
-        var procurementsEmployeeDrawUp = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить");
-        if (procurementsEmployeeDrawUp != null && procurementsEmployeeDrawUp.Count > 0)
-            DrawUp.Text = procurementsEmployeeDrawUp.Count.ToString();
-        var procurementsEmployeeWonPartOne = GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id);
-        if (procurementsEmployeeWonPartOne != null && procurementsEmployeeWonPartOne.Count > 0)
-            WonPartOne.Text = procurementsEmployeeWonPartOne.Count.ToString();
+        Queue.Text = procurementsQueue?.Count.ToString() ?? "0"; // Keep it simple if it's a different type
+
+        var procurementGroup = GET.View.ProcurementsEmployeesGroupBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+        Overall.Text = procurementGroup?.FirstOrDefault()?.CountOfProcurements.ToString() ?? "0";
+
+        UpdateCount(Calculated, GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан", "Appoint"));
+        UpdateCount(DrawUp, GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить", "Appoint"));
+        UpdateCount(WonPartOne, GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint"));
+    }
+
+    private void UpdateCount(TextBlock textBlock, List<ProcurementsEmployee> procurements)
+    {
+        textBlock.Text = procurements?.Count.ToString() ?? "0";
     }
 
     private void NavigateToProcurementURL_Click(object sender, RoutedEventArgs e)
@@ -81,7 +80,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     private void NewButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = null;
-        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый") ?? new List<ProcurementsEmployee>();
+        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый", "Appoint") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.LightGray;
@@ -95,7 +94,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     private void CalculatedButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = null;
-        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан") ?? new List<ProcurementsEmployee>();
+        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Посчитан", "Appoint") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;
@@ -109,7 +108,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     private void DrawUpButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = null;
-        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить") ?? new List<ProcurementsEmployee>();
+        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Оформить", "Appoint") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;
@@ -133,8 +132,18 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
 
     private void QueueButton_Click(object sender, RoutedEventArgs e)
     {
-        PUT.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id);
+        PUT.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
         LoadPageData();
+    }
+    private void Image_MouseEnter(object sender, MouseEventArgs e)
+    {
+        var image = sender as FrameworkElement;
+
+        if (image != null)
+        {
+            var parameter = image.Tag as string;
+            ToolTipHelper.SetToolTip(image, parameter);
+        }
     }
 
     private void Calculating_Click(object sender, RoutedEventArgs e)
@@ -151,7 +160,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = null;
-        var procurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id) ?? new List<ProcurementsEmployee>();
+        var procurementsEmployees = GET.View.ProcurementsEmployeesBy("Выигран 1ч", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline); 
         NewButton.Background = Brushes.Transparent;
@@ -166,7 +175,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     private void CheckButton_Click(object sender, RoutedEventArgs e)
     {
         View.ItemsSource = null;
-        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Проверка") ?? new List<ProcurementsEmployee>();
+        var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Проверка", "Appoint") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;

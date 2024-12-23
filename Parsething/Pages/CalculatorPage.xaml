@@ -15,10 +15,7 @@
                 <ColumnDefinition Width="1330"/>
                 <ColumnDefinition Width="550"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,0,30" CornerRadius="40">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,0,30" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
                 <Grid Height="845">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
@@ -78,6 +75,7 @@
                             <Label Content="Результаты:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="12"/>
                             <Label Content="Расчёт:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="13"/>
                             <TextBlock x:Name="Overall" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="13" Text="0"/>
+                            <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="14" Grid.Column="3" Tag="Очередь" MouseEnter="Image_MouseEnter"/>
                             <Button x:Name="QueueButton"
                                 Content="Тендер из очереди"
                                 Style="{DynamicResource SupplyMonitoringButton}" 
@@ -250,10 +248,7 @@
                     </ListView>
                 </Grid>
             </Border>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,30" CornerRadius="45">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30" ShadowDepth="1" Direction="270" Color="Black" Opacity="0.5"/>
-                </Border.Effect>
+            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,30" CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
                 <Grid Height="850">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="90"/>

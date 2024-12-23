@@ -299,6 +299,7 @@ namespace Parsething.Windows
                 ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
                 procurementsEmployee.ProcurementId = Procurement.Id;
                 procurementsEmployee.EmployeeId = ((Employee)AssignComboBox.SelectedItem).Id;
+                procurementsEmployee.ActionType = "Appoint";
                 PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов");
 
                 Procurement.ProcurementStateId = 1;
