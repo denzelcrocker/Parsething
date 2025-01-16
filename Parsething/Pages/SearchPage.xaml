@@ -17,9 +17,11 @@
         <local:IndicatorProfitConverter x:Key="IndicatorProfitConverter"/>
         <local:PercentageProfitConverter x:Key="PercentageProfitConverter"/>
         <local:DateToStringConverter x:Key="DateToStringConverter"/>
+        <local:DateToColorConverter x:Key="DateToColorConverter"/>
         <local:AmountConverter x:Key="AmountConverter"/>
         <local:ComponentStateConverter x:Key="ComponentStateConverter"/>
         <local:DateInfoMultiConverter x:Key="DateInfoMultiConverter" />
+        <local:SearchDateChanger x:Key="SearchDateChanger"/>
         <local:DateInfoAdditionalInfoConverter x:Key="DateInfoAdditionalInfoConverter" />
         <local:ApplicationsVisibilityConverter x:Key="ApplicationsVisibilityConverter"/>
         <local:ApplicationsOrNumberConverter x:Key="ApplicationsOrNumberConverter"/>
@@ -66,7 +68,8 @@
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Закон" Grid.Column="1" MouseLeftButtonUp="SortByField" Tag="Law"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="В работе" Grid.Column="2" />
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Комплектующие" Grid.Column="3" MouseLeftButtonUp="SortByField" Tag="PercentageReserve"/>
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата окончания подачи" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="Deadline"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата окончания подачи" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="ResultDate" Margin="0,0,0,15"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата подведения итогов" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="Deadline" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="5" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="НМЦК" Grid.Column="5" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="6" Margin="0,0,0,15"/>
@@ -74,14 +77,22 @@
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Статус тендера" Grid.Column="7" />
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Подписание" Grid.Column="8" MouseLeftButtonUp="SortByField" Tag="Signing"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Проверка" Grid.Column="9" />
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Поставка" Grid.Column="10" MouseLeftButtonUp="SortByField" Tag="ActualDeliveryDate"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" x:Name="FieldName" Grid.Column="10" Content="Поставка" MouseLeftButtonUp="SortByField" Margin="0,0,0,15" Cursor="Hand"/>
+                        <StackPanel x:Name="ChangeDateStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="10" Margin="0,15,0,0">
+                            <Ellipse Width="10" Height="10" Fill="Gray" Margin="5,0" 
+                                Tag="ActualDeliveryDate" MouseLeftButtonUp="SwitchField" />
+                            <Ellipse Width="10" Height="10" Fill="LightGray" Margin="5,0" 
+                                Tag="MaxAcceptanceDate" MouseLeftButtonUp="SwitchField" />
+                            <Ellipse Width="10" Height="10" Fill="LightGray" Margin="5,0" 
+                                Tag="MaxDueDate" MouseLeftButtonUp="SwitchField" />
+                        </StackPanel>
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Приемка" Grid.Column="11" MouseLeftButtonUp="SortByField" Tag="MaxAcceptanceDate"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Реальный профит" Grid.Column="12" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчетный профит" Grid.Column="12" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Регион" Grid.Column="13" />
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Опции" Grid.Column="14" />
                     </Grid>
-                    <ListView x:Name="SearchLV" DataContext="{StaticResource Procurement}" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
+                    <ListView x:Name="SearchLV" Grid.Column="2" BorderThickness="0" Style="{DynamicResource ListView}" Grid.Row="1" ItemContainerStyle="{DynamicResource CustomListViewItemStyle}">
                         <i:Interaction.Behaviors>
                             <cls:SmoothScrollBehavior />
                         </i:Interaction.Behaviors>
@@ -252,13 +263,21 @@
                                         </StackPanel>
                                         <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <TextBlock 
-                                        Style="{DynamicResource TableElements}"
-                                        Grid.Column="8"
-                                        Text="{Binding Deadline, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}', UpdateSourceTrigger=PropertyChanged}"
-                                        HorizontalAlignment="Center"
-                                        FontSize="12"
-                                         VerticalAlignment="Center"
-                                        Margin="10"/>
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="8"
+                                            Text="{Binding Deadline, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}', UpdateSourceTrigger=PropertyChanged}"
+                                            HorizontalAlignment="Center"
+                                            FontSize="12"
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,0,18"/>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Grid.Column="8"
+                                            Text="{Binding ResultDate, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}', UpdateSourceTrigger=PropertyChanged}"
+                                            HorizontalAlignment="Center"
+                                            FontSize="12"
+                                            VerticalAlignment="Center"
+                                            Margin="0,18,0,0"/>
                                         <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <TextBlock 
                                             Style="{DynamicResource TableElements}"
@@ -413,23 +432,25 @@
                                             </Label>
                                         </DockPanel>
                                         <Rectangle Grid.Column="19" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource DeliveryDateIndicatorStyle}" Grid.Column="20" Margin="2,0,0,18"/>
-                                        <TextBlock 
-                                            Style="{DynamicResource TableElements}"
-                                            Grid.Column="20"
-                                            Text="{Binding Path=ActualDeliveryDate, StringFormat='{}{0:dd.MM.yyyy}'}"
-                                            FontSize="12"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="0,0,0,18"/>
-                                        <TextBlock 
-                                            Style="{DynamicResource TableElements}"
-                                            Grid.Column="20"
-                                            Text="{Binding ActualDeliveryDate, Converter={StaticResource DateToStringConverter }}"
-                                            FontSize="12"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="0,18,0,0"/>
+                                        <Ellipse Grid.Column="20" Margin="2,0,0,18" Style="{DynamicResource EllipseBase}">
+                                            <Ellipse.Fill>
+                                                <MultiBinding Converter="{StaticResource DateToColorConverter}">
+                                                    <Binding Path="ActualDeliveryDate" />
+                                                    <Binding Path="MaxAcceptanceDate" />
+                                                    <Binding Path="MaxDueDate" />
+                                                </MultiBinding>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock Style="{DynamicResource TableElements}" Grid.Column="20"
+                                            FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,18">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource SearchDateChanger}" StringFormat="{}{0:dd.MM.yyyy}">
+                                                    <Binding Path="ActualDeliveryDate" />
+                                                    <Binding Path="MaxAcceptanceDate" />
+                                                    <Binding Path="MaxDueDate" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
                                         <Rectangle Grid.Column="21" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <Ellipse Style="{StaticResource MaxAcceptanceDateIndicatorStyle}" Grid.Column="22" Margin="2,0,0,18"/>
                                         <TextBlock 

@@ -18,6 +18,8 @@ using System.Windows.Media;
 using System.ComponentModel;
 using DatabaseLibrary.Entities.ComponentCalculationProperties;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using DatabaseLibrary.Entities.NoRelationship;
 
 namespace Parsething.Pages
 {
@@ -55,11 +57,24 @@ namespace Parsething.Pages
 
         private bool _isAscending = false;
         private string _currentSortingField = "";
+        private readonly Dictionary<string, string> _fieldNames = new()
+        {
+            { "ActualDeliveryDate", "Поставка" },
+            { "MaxAcceptanceDate", "Приемка" },
+            { "MaxDueDate", "Оплата" }
+        };
+        private string _currentFieldDisplay;
+
+        public string CurrentFieldDisplay
+        {
+            get { return _currentFieldDisplay; }
+            set { _currentFieldDisplay = value; } // Добавлен сеттер
+        }
 
         public SearchPage()
         {
             InitializeComponent();
-            DataContext = this;
+            this.DataContext = this; // Привязка данных к текущему окну
 
             if (GlobalUsingValues.Instance.Procurements != null && GlobalUsingValues.Instance.Procurements.Count > 0)
             {
@@ -69,6 +84,7 @@ namespace Parsething.Pages
             {
                 InitializeData();
             }
+            InitializePanelVisuals();
             UpdateProcurements();
         }
         private void PreviousPage_Click(object sender, RoutedEventArgs e)
@@ -597,28 +613,84 @@ namespace Parsething.Pages
                 MainFrame.Navigate(new SearchPage());
             }
         }
+        private void SwitchField(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Ellipse ellipse && ellipse.Tag is string newField)
+            {
+                GlobalUsingValues.Instance.ChangeCurrentSortingField(newField);
+                UpdatePanelVisuals(sender); // Передать sender в UpdatePanelVisuals
+                UpdateProcurements();
+            }
+        }
+        private void InitializePanelVisuals()
+        {
+            foreach (var child in ChangeDateStackPanel.Children)
+            {
+                if (child is Ellipse currentEllipse)
+                {
+                    currentEllipse.Fill = currentEllipse.Tag.ToString() == GlobalUsingValues.Instance.CurrentSortingField
+                        ? Brushes.Gray
+                        : Brushes.LightGray;
+                }
+            }
+
+            // Обновить текст заголовка
+            FieldName.Content = _fieldNames[GlobalUsingValues.Instance.CurrentSortingField];
+        }
+        private void UpdatePanelVisuals(object sender)
+        {
+            if (sender is Ellipse ellipse && ellipse.Parent is StackPanel stackPanel)
+            {
+                // Обновить визуальное состояние кружочков
+                foreach (var child in stackPanel.Children)
+                {
+                    if (child is Ellipse currentEllipse)
+                    {
+                        currentEllipse.Fill = currentEllipse.Tag.ToString() == GlobalUsingValues.Instance.CurrentSortingField
+                            ? Brushes.Gray
+                            : Brushes.LightGray;
+                    }
+                }
+
+                // Обновить текст заголовка
+                FieldName.Content = _fieldNames[GlobalUsingValues.Instance.CurrentSortingField];
+            }
+        }
         private void SortByField(object sender, MouseButtonEventArgs e)
         {
-
-            if (sender is Label label && label.Tag is string field)
+            if (sender is Label label)
             {
-                ClearSortingArrows();
-
-                if (_currentSortingField == field)
+                string field;
+                bool isSameField = false;
+                if (label.Tag == null)
                 {
-                    _isAscending = !_isAscending;
+                    field = GlobalUsingValues.Instance.CurrentSortingField; // Используем текущее поле
+                    isSameField = GlobalUsingValues.Instance.CurrentSortingField == field;
                 }
                 else
                 {
-                    _isAscending = true;
+                    field = label.Tag.ToString();
+                    isSameField = label.Tag.ToString() == field;
                 }
+                // Переключение направления сортировки
+                _isAscending = isSameField ? !_isAscending : true;
 
+                // Установить новое поле сортировки
                 _currentSortingField = field;
 
-                GlobalUsingValues.Instance.AddProcurements(SortProcurements(GlobalUsingValues.Instance.Procurements, field, _isAscending));
-                var procurements = GetProcurementsForPage(GlobalUsingValues.Instance.Procurements, CurrentPage, PageSize);
-                GET.View.PopulateComponentStates(procurements);
-                SearchLV.ItemsSource = procurements;
+                // Очистить визуальные индикаторы сортировки
+                ClearSortingArrows();
+
+                // Сортируем данные
+                var sortedProcurements = SortProcurements(GlobalUsingValues.Instance.Procurements, field, _isAscending);
+
+                // Обновляем список данных
+                GlobalUsingValues.Instance.AddProcurements(sortedProcurements);
+                var procurementsForPage = GetProcurementsForPage(sortedProcurements, CurrentPage, PageSize);
+                GET.View.PopulateComponentStates(procurementsForPage);
+                SearchLV.ItemsSource = procurementsForPage;
+
+                // Обновить визуальный индикатор сортировки
                 UpdateSortingArrow(label, _isAscending);
             }
         }
@@ -659,6 +731,8 @@ namespace Parsething.Pages
                     : procurements.OrderByDescending(p => CalculateReservePercentage(p)).ToList();
                 case "MaxAcceptanceDate":
                     return isAscending ? procurements.OrderBy(p => p.MaxAcceptanceDate).ToList() : procurements.OrderByDescending(p => p.MaxAcceptanceDate).ToList();
+                case "MaxDueDate":
+                    return isAscending ? procurements.OrderBy(p => p.MaxDueDate).ToList() : procurements.OrderByDescending(p => p.MaxDueDate).ToList();
                 default:
                     return procurements;
             }

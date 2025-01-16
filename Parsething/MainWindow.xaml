@@ -64,14 +64,15 @@
                             </Button>
                         </ComboBoxItem>
                     </ComboBox>
-                    <Ellipse x:Name="EmployeePhoto" 
-                        Width="50" 
-                        Height="50"
-                        DockPanel.Dock="Right">
-                        <Ellipse.Fill>
-                            <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                    <Grid DockPanel.Dock="Right">
+                        <Ellipse x:Name="EmployeePhoto" 
+                            Width="50" 
+                            Height="50">
+                            <Ellipse.Fill>
+                                <ImageBrush Stretch="Uniform" ImageSource="/Resources/Images/PlaceholderEmployeePhotoPreview.png"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
                     <Button x:Name="Search"
                         Margin="0,0,15,0"
                         DockPanel.Dock="Right"

@@ -6,7 +6,15 @@
     <local:ShipmentPlanColorConverter x:Key="ShipmentPlanColorConverter"/>
     <local:RepeatedStatusColorConverter x:Key="RepeatedStatusColorConverter"/>
     <local:IndicatorProfitConverter x:Key="IndicatorProfitConverter"/>
-
+    <Style x:Key="EllipseBase" TargetType="Ellipse">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0,0,1"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="Stroke" Value="Black"/>
+    </Style>
     <Style x:Key="DeadlineIndicatorStyle" TargetType="Ellipse">
         <Setter Property="Width" Value="12"/>
         <Setter Property="Height" Value="12"/>

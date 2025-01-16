@@ -195,6 +195,118 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class SearchDateChanger : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            // Проверяем, что массив values не пустой и содержит достаточное количество элементов
+            if (values == null || values.Length < 3)
+            {
+                return string.Empty; // Если входные данные невалидны
+            }
+
+            // Проверяем значения на null и корректность типов
+            DateTime? actualDeliveryDate = values[0] as DateTime?;
+            DateTime? maxAcceptanceDate = values[1] as DateTime?;
+            DateTime? maxDueDate = values[2] as DateTime?;
+
+            // Если тип даты или даты не указаны, возвращаем прозрачный цвет
+            if (string.IsNullOrEmpty(GlobalUsingValues.Instance.CurrentSortingField) ||
+                (actualDeliveryDate == null && maxAcceptanceDate == null && maxDueDate == null))
+            {
+                return string.Empty;
+            }
+
+            // Определяем выбранную дату, начиная с дефолтного значения
+            DateTime? selectedDate = actualDeliveryDate;
+            if (GlobalUsingValues.Instance.CurrentSortingField == "MaxAcceptanceDate")
+            {
+                selectedDate = maxAcceptanceDate;
+            }
+            else if (GlobalUsingValues.Instance.CurrentSortingField == "MaxDueDate")
+            {
+                selectedDate = maxDueDate;
+            }
+
+            // Если выбранная дата отсутствует, возвращаем прозрачный цвет
+            if (selectedDate == null)
+            {
+                return string.Empty;
+            }
+            return selectedDate.Value;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException(); // Обратное преобразование не реализуется
+        }
+    }
+    public class DateToColorConverter : IMultiValueConverter
+    {
+        public int YellowThresholdDays { get; set; } = 3;
+        public int RedThresholdDays { get; set; } = 1;
+
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            // Проверяем, что массив values не пустой и содержит достаточное количество элементов
+            if (values == null || values.Length < 3)
+            {
+                return Brushes.Transparent; // Если входные данные невалидны
+            }
+
+            // Проверяем значения на null и корректность типов
+            DateTime? actualDeliveryDate = values[0] as DateTime?;
+            DateTime? maxAcceptanceDate = values[1] as DateTime?;
+            DateTime? maxDueDate = values[2] as DateTime?;
+
+            // Если тип даты или даты не указаны, возвращаем прозрачный цвет
+            if (string.IsNullOrEmpty(GlobalUsingValues.Instance.CurrentSortingField) ||
+                (actualDeliveryDate == null && maxAcceptanceDate == null && maxDueDate == null))
+            {
+                return Brushes.Transparent;
+            }
+
+            // Определяем выбранную дату, начиная с дефолтного значения
+            DateTime? selectedDate = actualDeliveryDate;
+            if (GlobalUsingValues.Instance.CurrentSortingField == "MaxAcceptanceDate")
+            {
+                selectedDate = maxAcceptanceDate;
+            }
+            else if (GlobalUsingValues.Instance.CurrentSortingField == "MaxDueDate")
+            {
+                selectedDate = maxDueDate;
+            }
+
+            // Если выбранная дата отсутствует, возвращаем прозрачный цвет
+            if (selectedDate == null)
+            {
+                return Brushes.Transparent;
+            }
+
+            // Рассчитываем оставшиеся дни и устанавливаем цвет
+            var remainingDays = (selectedDate.Value - DateTime.Now).Days;
+
+            if (remainingDays > YellowThresholdDays)
+            {
+                return Brushes.Green; // Много времени
+            }
+            else if (remainingDays <= YellowThresholdDays && remainingDays > RedThresholdDays)
+            {
+                return Brushes.Yellow; // Мало времени
+            }
+            else if (remainingDays <= RedThresholdDays)
+            {
+                return Brushes.Red; // Почти истекло
+            }
+
+            return Brushes.Transparent; // Если ничего не подошло
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException(); // Обратное преобразование не реализуется
+        }
+    }
     public class ShipmentPlanColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
