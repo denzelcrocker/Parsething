@@ -288,15 +288,15 @@ namespace Parsething.Functions
 
             if (remainingDays > YellowThresholdDays)
             {
-                return Brushes.Green; // Много времени
+                return Brushes.Green; // Заменяем на цвет #FF8800
             }
             else if (remainingDays <= YellowThresholdDays && remainingDays > RedThresholdDays)
             {
-                return Brushes.Yellow; // Мало времени
+                return new SolidColorBrush(Color.FromRgb(255, 136, 0)); 
             }
             else if (remainingDays <= RedThresholdDays)
             {
-                return Brushes.Red; // Почти истекло
+                return new SolidColorBrush(Color.FromRgb(189, 20, 20)); 
             }
 
             return Brushes.Transparent; // Если ничего не подошло

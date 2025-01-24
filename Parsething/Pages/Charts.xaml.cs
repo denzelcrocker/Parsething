@@ -15,17 +15,16 @@ namespace Parsething.Pages
     public partial class Charts : Page
     {
         private Frame MainFrame { get; set; } = null!;
-        private CartesianChart chart;
         private CartesianChart barChart;
         private double maxValue;
         private List<History>? Histories;
-        private (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthWins;
-        private (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthSends;
-        private (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthIssued;
-        private (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthCalculated;
-        private (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthNews;
-        private (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthRetreat;
-        private (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthRejected;
+        private List<Tuple<int, int, decimal, int, List<Procurement>>>? monthWins;
+        private List<Tuple<int, int, decimal, int, List<Procurement>>>? monthSends;
+        private List<Tuple<int, int, decimal, int, List<Procurement>>>? monthIssued;
+        private List<Tuple<int, int, decimal, int, List<Procurement>>>? monthCalculated;
+        private List<Tuple<int, int, decimal, int, List<Procurement>>>? monthNews;
+        private List<Tuple<int, int, decimal, int, List<Procurement>>>? monthRetreat;
+        private List<Tuple<int, int, decimal, int, List<Procurement>>>? monthRejected;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -34,63 +33,57 @@ namespace Parsething.Pages
             }
             catch { }
         }
-        private async void LoadDataAsync()
+        private async void LoadDataAsync(int year)
         {
             try
             {
-                MainFrame = (Frame)Application.Current.MainWindow.FindName("MainFrame");
-                Histories = await Task.Run(() => GET.View.Histories());
+                LoadingIndicator.Visibility = Visibility.Visible;
+                Histories = await Task.Run(() => GET.View.Histories().Where(h => h.Date.Year == year).ToList());
 
                 if (Histories != null)
                 {
                     // Получаем данные для каждого типа тендеров
-                    await Task.Run(() =>
+                    var tasks = new List<Task>
                     {
-                        monthWins = GET.View.HistoryGroupBy("Выигран 2ч", Histories);
-                        monthSends = GET.View.HistoryGroupBy("Отправлен", Histories);
-                        monthIssued = GET.View.HistoryGroupBy("Оформлен", Histories);
-                        monthCalculated = GET.View.HistoryGroupBy("Посчитан", Histories);
-                        monthNews = GET.View.HistoryGroupBy("Новый", Histories);
-                        monthRetreat = GET.View.HistoryGroupBy("Отбой", Histories);
-                        monthRejected = GET.View.HistoryGroupBy("Отклонен", Histories);
-                    });
+                        Task.Run(() => monthWins = GET.View.HistoryGroupBy("Выигран 2ч", Histories)),
+                        Task.Run(() => monthSends = GET.View.HistoryGroupBy("Отправлен", Histories)),
+                        Task.Run(() => monthIssued = GET.View.HistoryGroupBy("Оформлен", Histories)),
+                        Task.Run(() => monthCalculated = GET.View.HistoryGroupBy("Посчитан", Histories)),
+                        Task.Run(() => monthNews = GET.View.HistoryGroupBy("Новый", Histories)),
+                        Task.Run(() => monthRetreat = GET.View.HistoryGroupBy("Отбой", Histories)),
+                        Task.Run(() => monthRejected = GET.View.HistoryGroupBy("Отклонен", Histories))
+                    };
+
+                    // Ожидание завершения всех задач
+                    await Task.WhenAll(tasks);
 
                     // Формируем полный список месяцев за текущий год для выравнивания столбцов
-                    var months = Enumerable.Range(1, 12).Select(m => new DateTime(DateTime.Now.Year, m, 1)).ToList();
+                    var months = Enumerable.Range(1, 12).Select(m => new DateTime(year, m, 1)).ToList();
 
                     // Обработка пустых месяцев
-                    monthWins.Item1 = EnsureAllMonths(monthWins.Item1, months);
-                    monthSends.Item1 = EnsureAllMonths(monthSends.Item1, months);
-                    monthIssued.Item1 = EnsureAllMonths(monthIssued.Item1, months);
-                    monthCalculated.Item1 = EnsureAllMonths(monthCalculated.Item1, months);
-                    monthNews.Item1 = EnsureAllMonths(monthNews.Item1, months);
-                    monthRetreat.Item1 = EnsureAllMonths(monthRetreat.Item1, months);
-                    monthRejected.Item1 = EnsureAllMonths(monthRejected.Item1, months);
+                    monthWins = EnsureAllMonths(monthWins, months);
+                    monthSends = EnsureAllMonths(monthSends, months);
+                    monthIssued = EnsureAllMonths(monthIssued, months);
+                    monthCalculated = EnsureAllMonths(monthCalculated, months);
+                    monthNews = EnsureAllMonths(monthNews, months);
+                    monthRetreat = EnsureAllMonths(monthRetreat, months);
+                    monthRejected = EnsureAllMonths(monthRejected, months);
 
                     // Расчет максимального значения для оси Y
-                    if (monthCalculated.Item1.Count != 0 && monthSends.Item1.Count != 0 && monthWins.Item1.Count != 0 && monthNews.Item1.Count != 0)
+                    if (monthCalculated.Count != 0 && monthSends.Count != 0 && monthWins.Count != 0 && monthNews.Count != 0)
                     {
-                        maxValue = Math.Max((double)monthNews.Item1.Max(entry => entry.Item4), Math.Max((double)monthSends.Item1.Max(entry => entry.Item4), (double)monthWins.Item1.Max(entry => entry.Item4)));
+                        maxValue = Math.Max((double)monthNews.Max(entry => entry.Item4), Math.Max((double)monthSends.Max(entry => entry.Item4), (double)monthWins.Max(entry => entry.Item4)));
 
                         // Создаем диаграмму столбцов
                         barChart = CreateBarChart(monthWins, monthSends, monthIssued, monthCalculated, monthNews, monthRetreat, monthRejected, months);
 
                         // Создаем линейную диаграмму
-                        chart = CreateLineChart(monthWins, monthSends, monthIssued, monthCalculated, monthNews, monthRetreat, monthRejected, months);
 
                         // Добавляем диаграммы на страницу
                         await Application.Current.Dispatcher.InvokeAsync(() =>
                         {
-                            Grid.SetRow(barChart, 0);
-                            Grid.SetColumn(barChart, 0);
-                            MainGrid.Children.Add(barChart);
-
-                            Grid.SetRow(chart, 0);
-                            Grid.SetColumn(chart, 0);
-                            MainGrid.Children.Add(chart);
-
-                            barChart.Visibility = Visibility.Visible;
-                            chart.Visibility = Visibility.Hidden;
+                            ChartContent.Content = barChart;
+                            LoadingIndicator.Visibility = Visibility.Collapsed;
                         });
                     }
                 }
@@ -104,9 +97,18 @@ namespace Parsething.Pages
         public Charts()
         {
             InitializeComponent();
-            LoadDataAsync();
+            InitializeYearComboBox();
         }
-
+        private void InitializeYearComboBox()
+        {
+            // Добавляем годы в ComboBox
+            int currentYear = DateTime.Now.Year;
+            for (int year = currentYear - 5; year <= currentYear + 5; year++) // Пример: последние 5 лет и следующие 5
+            {
+                YearComboBox.Items.Add(year);
+            }
+            YearComboBox.SelectedItem = currentYear; // Устанавливаем текущий год по умолчанию
+        }
         // Метод для заполнения пустых месяцев нулевыми значениями
         private List<Tuple<int, int, decimal, int, List<Procurement>>> EnsureAllMonths(List<Tuple<int, int, decimal, int, List<Procurement>>> data, List<DateTime> months)
         {
@@ -121,13 +123,13 @@ namespace Parsething.Pages
 
         // Метод для создания диаграммы столбцов
         private CartesianChart CreateBarChart(
-        (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthWins,
-        (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthSends,
-        (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthIssued,
-        (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthCalculated,
-        (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthNews,
-        (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthRetreat,
-        (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthRejected,
+        List<Tuple<int, int, decimal, int, List<Procurement>>>? monthWins,
+        List<Tuple<int, int, decimal, int, List<Procurement>>>? monthSends,
+        List<Tuple<int, int, decimal, int, List<Procurement>>>? monthIssued,
+        List<Tuple<int, int, decimal, int, List<Procurement>>>? monthCalculated,
+        List<Tuple<int, int, decimal, int, List<Procurement>>>? monthNews,
+        List<Tuple<int, int, decimal, int, List<Procurement>>>? monthRetreat,
+        List<Tuple<int, int, decimal, int, List<Procurement>>>? monthRejected,
         List<DateTime> months)
         {
             var barChart = new CartesianChart
@@ -137,13 +139,13 @@ namespace Parsething.Pages
                 new ColumnSeries
                 {
                     Title = "Отклоненные тендеры",
-                    Values = new ChartValues<int>(monthRejected.Item1.Select(entry => entry.Item4)),
+                    Values = new ChartValues<int>(monthRejected.Select(entry => entry.Item4)),
                     Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#c0392b")),
                     LabelPoint = point =>
                     {
                         var month = months[(int)point.X];
-                        decimal sumRejected = monthRejected.Item1?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
-                        return $"{monthRejected.Item1[(int)point.X].Item4} ( НМЦК ~{sumRejected.ToString("N2")} р. )";
+                        decimal sumRejected = monthRejected?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
+                        return $"{monthRejected[(int)point.X].Item4} ( НМЦК ~{sumRejected.ToString("N2")} р. )";
                     },
                     
                     
@@ -151,73 +153,73 @@ namespace Parsething.Pages
                 new ColumnSeries
                 {
                     Title = "Выигранные тендеры",
-                    Values = new ChartValues<int>(monthWins.Item1.Select(entry => entry.Item4)),
+                    Values = new ChartValues<int>(monthWins.Select(entry => entry.Item4)),
                     Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8e44ad")),
                     LabelPoint = point =>
                     {
                         var month = months[(int)point.X];
-                        decimal sumWins = monthWins.Item1?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
-                        return $"{monthWins.Item1[(int)point.X].Item4} ( Контракты ~{sumWins.ToString("N2")} р. )";
+                        decimal sumWins = monthWins?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
+                        return $"{monthWins[(int)point.X].Item4} ( Контракты ~{sumWins.ToString("N2")} р. )";
                     }
                 },
                 new ColumnSeries
                 {
                     Title = "Отправленные тендеры",
-                    Values = new ChartValues<int>(monthSends.Item1.Select(entry => entry.Item4)),
+                    Values = new ChartValues<int>(monthSends.Select(entry => entry.Item4)),
                     Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#9b59b6")),
                     LabelPoint = point =>
                     {
                         var month = months[(int)point.X];
-                        decimal sumSends = monthSends.Item1?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
-                        return $"{monthSends.Item1[(int)point.X].Item4} ( НМЦК ~{sumSends.ToString("N2")} р. )";
+                        decimal sumSends = monthSends?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
+                        return $"{monthSends[(int)point.X].Item4} ( НМЦК ~{sumSends.ToString("N2")} р. )";
                     }
                 },
                 new ColumnSeries
                 {
                     Title = "Оформленные тендеры",
-                    Values = new ChartValues<int>(monthIssued.Item1.Select(entry => entry.Item4)),
+                    Values = new ChartValues<int>(monthIssued.Select(entry => entry.Item4)),
                     Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#27ae60")),
                     LabelPoint = point =>
                     {
                         var month = months[(int)point.X];
-                        decimal sumIssued = monthIssued.Item1?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
-                        return $"{monthIssued.Item1[(int)point.X].Item4} ( НМЦК ~{sumIssued.ToString("N2")} р. )";
+                        decimal sumIssued = monthIssued?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
+                        return $"{monthIssued[(int)point.X].Item4} ( НМЦК ~{sumIssued.ToString("N2")} р. )";
                     }
                 },
                 new ColumnSeries
                 {
                     Title = "Посчитанные тендеры",
-                    Values = new ChartValues<int>(monthCalculated.Item1.Select(entry => entry.Item4)),
+                    Values = new ChartValues<int>(monthCalculated.Select(entry => entry.Item4)),
                     Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2ecc71")),
                     LabelPoint = point =>
                     {
                         var month = months[(int)point.X];
-                        decimal sumCalculated = monthCalculated.Item1?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
-                        return $"{monthCalculated.Item1[(int)point.X].Item4} ( НМЦК ~ {sumCalculated.ToString("N2")}  р. )";
+                        decimal sumCalculated = monthCalculated?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
+                        return $"{monthCalculated[(int)point.X].Item4} ( НМЦК ~ {sumCalculated.ToString("N2")}  р. )";
                     }
                 },
                 new ColumnSeries
                 {
                     Title = "Тендеры в отбое",
-                    Values = new ChartValues<int>(monthRetreat.Item1.Select(entry => entry.Item4)),
+                    Values = new ChartValues<int>(monthRetreat.Select(entry => entry.Item4)),
                     Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#e74c3c")),
                     LabelPoint = point =>
                     {
                         var month = months[(int)point.X];
-                        decimal sumRetreat = monthRetreat.Item1?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
-                        return $"{monthRetreat.Item1[(int)point.X].Item4} ( НМЦК ~{sumRetreat.ToString("N2")} р. )";
+                        decimal sumRetreat = monthRetreat?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
+                        return $"{monthRetreat[(int)point.X].Item4} ( НМЦК ~{sumRetreat.ToString("N2")} р. )";
                     }
                 },
                 new ColumnSeries
                 {
                     Title = "Новые тендеры",
-                    Values = new ChartValues<int>(monthNews.Item1.Select(entry => entry.Item4)),
+                    Values = new ChartValues<int>(monthNews.Select(entry => entry.Item4)),
                     Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3498db")),
                     LabelPoint = point =>
                     {
                         var month = months[(int)point.X];
-                        decimal sumNews = monthNews.Item1?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
-                        return $"{monthNews.Item1[(int)point.X].Item4} ( НМЦК ~{sumNews.ToString("N2")} р. )";
+                        decimal sumNews = monthNews?.Where(entry => entry.Item2 == month.Month).Sum(entry => entry.Item3) ?? 0;
+                        return $"{monthNews[(int)point.X].Item4} ( НМЦК ~{sumNews.ToString("N2")} р. )";
                     }
                 }
             },
@@ -245,118 +247,11 @@ namespace Parsething.Pages
                 }
             }
                 };
+            barChart.MouseDown += BarChart_MouseDown;
 
             return barChart;
         }
 
-        // Метод для создания линейной диаграммы
-        private CartesianChart CreateLineChart(
-            (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthWins,
-            (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthSends,
-            (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthIssued,
-            (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthCalculated,
-            (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthNews,
-            (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthRetreat,
-            (List<Tuple<int, int, decimal, int, List<Procurement>>>?, List<Procurement>?) monthRejected,
-            List<DateTime> months)
-        {
-            var lineChart = new CartesianChart
-            {
-                Series = new SeriesCollection
-                {
-                    new LineSeries
-                    {
-                        Title = "Количество отклоненных тендеров",
-                        Values = new ChartValues<int>(monthRejected.Item1.Select(entry => entry.Item4)),
-                        Fill = Brushes.Transparent, // Прозрачный фон
-                        Stroke = Brushes.Black, // Цвет линии для выигранных тендеров
-                        PointGeometry = DefaultGeometries.Circle, // Форма точек на кривой
-                        PointGeometrySize = 10 // Размер точек на кривой
-                    },
-                    new LineSeries
-                    {
-                        Title = "Количество выигрышей",
-                        Values = new ChartValues<int>(monthWins.Item1.Select(entry => entry.Item4)),
-                        Fill = Brushes.Transparent, // Прозрачный фон
-                        Stroke = Brushes.Green, // Цвет линии для выигранных тендеров
-                        PointGeometry = DefaultGeometries.Circle, // Форма точек на кривой
-                        PointGeometrySize = 10 // Размер точек на кривой
-                    },
-                    new LineSeries
-                    {
-                        Title = "Количество отправленных тендеров",
-                        Values = new ChartValues<int>(monthSends.Item1.Select(entry => entry.Item4)),
-                        Fill = Brushes.Transparent, // Прозрачный фон
-                        Stroke = Brushes.Blue, // Цвет линии для выигранных тендеров
-                        PointGeometry = DefaultGeometries.Circle, // Форма точек на кривой
-                        PointGeometrySize = 10 // Размер точек на кривой
-                    },
-                    new LineSeries
-                    {
-                        Title = "Количество оформленных тендеров",
-                        Values = new ChartValues<int>(monthIssued.Item1.Select(entry => entry.Item4)),
-                        Fill = Brushes.Transparent, // Прозрачный фон
-                        Stroke = Brushes.Blue, // Цвет линии для выигранных тендеров
-                        PointGeometry = DefaultGeometries.Circle, // Форма точек на кривой
-                        PointGeometrySize = 10 // Размер точек на кривой
-                    },
-                    new LineSeries
-                    {
-                        Title = "Количество посчитанных тендеров",
-                        Values = new ChartValues<int>(monthCalculated.Item1.Select(entry => entry.Item4)),
-                        Fill = Brushes.Transparent, // Прозрачный фон
-                        Stroke = Brushes.Purple, // Цвет линии для выигранных тендеров
-                        PointGeometry = DefaultGeometries.Circle, // Форма точек на кривой
-                        PointGeometrySize = 10 // Размер точек на кривой
-                    },
-                    new LineSeries
-                    {
-                        Title = "Количество отбоев",
-                        Values = new ChartValues<int>(monthRetreat.Item1.Select(entry => entry.Item4)),
-                        Fill = Brushes.Transparent, // Прозрачный фон
-                        Stroke = Brushes.Red, // Цвет линии для выигранных тендеров
-                        PointGeometry = DefaultGeometries.Circle, // Форма точек на кривой
-                        PointGeometrySize = 10 // Размер точек на кривой
-                    },
-                    new LineSeries
-                    {
-                        Title = "Количество новых тендеров",
-                        Values = new ChartValues<int>(monthNews.Item1.Select(entry => entry.Item4)),
-                        Fill = Brushes.Transparent, // Прозрачный фон
-                        Stroke = Brushes.BlueViolet, // Цвет линии для выигранных тендеров
-                        PointGeometry = DefaultGeometries.Circle, // Форма точек на кривой
-                        PointGeometrySize = 10 // Размер точек на кривой
-                    },
-                },
-                AxisX = new AxesCollection
-                {
-                    new Axis
-                    {
-                        Title = "Месяцы",
-                        Labels = months.Select(m => $"{m.ToString("MMM", CultureInfo.CurrentCulture)} {m.Year}").ToArray(),
-                        LabelsRotation = 45,
-                        Foreground = Brushes.Black
-                    }
-                },
-                AxisY = new AxesCollection
-                {
-                    new Axis
-                    {
-                        Title = "Количество",
-                        MinValue = 0,
-                        MaxValue = Math.Ceiling(maxValue / 10) * 10,
-                        Separator = new LiveCharts.Wpf.Separator
-                        {
-                            Step = 100
-                        },
-                        Foreground = Brushes.Black
-                    }
-                }
-            };
-            barChart.MouseDown += BarChart_MouseDown;
-
-            return lineChart;
-        }
         private void BarChart_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var months = Enumerable.Range(1, 12).Select(m => new DateTime(DateTime.Now.Year, m, 1)).ToList();
@@ -394,63 +289,63 @@ namespace Parsething.Pages
             switch (status)
             {
                 case "Отклоненные тендеры":
-                    if (monthRejected.Item1 != null)
+                    if (monthRejected != null)
                     {
-                        procurements.AddRange(monthRejected.Item1
+                        procurements.AddRange(monthRejected
                             .Where(p => p.Item2 == month) // Фильтрация по Item2
                             .SelectMany(p => p.Item5));
                     }
                     break;
 
                 case "Выигранные тендеры":
-                    if (monthWins.Item1 != null)
+                    if (monthWins != null)
                     {
-                        procurements.AddRange(monthWins.Item1
+                        procurements.AddRange(monthWins
                             .Where(p => p.Item2 == month)
                             .SelectMany(p => p.Item5));
                     }
                     break;
 
                 case "Отправленные тендеры":
-                    if (monthSends.Item1 != null)
+                    if (monthSends != null)
                     {
-                        procurements.AddRange(monthSends.Item1
+                        procurements.AddRange(monthSends
                             .Where(p => p.Item2 == month)
                             .SelectMany(p => p.Item5));
                     }
                     break;
 
                 case "Оформленные тендеры":
-                    if (monthIssued.Item1 != null)
+                    if (monthIssued != null)
                     {
-                        procurements.AddRange(monthIssued.Item1
+                        procurements.AddRange(monthIssued
                             .Where(p => p.Item2 == month)
                             .SelectMany(p => p.Item5));
                     }
                     break;
 
                 case "Посчитанные тендеры":
-                    if (monthCalculated.Item1 != null)
+                    if (monthCalculated != null)
                     {
-                        procurements.AddRange(monthCalculated.Item1
+                        procurements.AddRange(monthCalculated
                             .Where(p => p.Item2 == month)
                             .SelectMany(p => p.Item5));
                     }
                     break;
 
                 case "Тендеры в отбое":
-                    if (monthRetreat.Item1 != null)
+                    if (monthRetreat != null)
                     {
-                        procurements.AddRange(monthRetreat.Item1
+                        procurements.AddRange(monthRetreat
                             .Where(p => p.Item2 == month)
                             .SelectMany(p => p.Item5));
                     }
                     break;
 
                 case "Новые тендеры":
-                    if (monthNews.Item1 != null)
+                    if (monthNews != null)
                     {
-                        procurements.AddRange(monthNews.Item1
+                        procurements.AddRange(monthNews
                             .Where(p => p.Item2 == month)
                             .SelectMany(p => p.Item5));
                     }
@@ -474,25 +369,13 @@ namespace Parsething.Pages
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
-        private void BarChartButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (chart != null && barChart != null)
-            {
-                barChart.Visibility = Visibility.Visible;
-                chart.Visibility = Visibility.Hidden;
-            }
 
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void YearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (chart != null && barChart != null)
+            if (YearComboBox.SelectedItem is int selectedYear)
             {
-                barChart.Visibility = Visibility.Hidden;
-                chart.Visibility = Visibility.Visible;
+                LoadDataAsync(selectedYear); // Загружаем данные для выбранного года
             }
         }
-
-        
     }
 }
