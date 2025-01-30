@@ -37,6 +37,8 @@ namespace Parsething.Pages
             Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
             FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
+
+            ClaimWorks.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.ClaimWorks)); // Претензионные работы
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -108,7 +110,6 @@ namespace Parsething.Pages
                 string url = procurement.RequestUri.ToString();
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
-
         }
 
         private void Image_MouseEnter(object sender, MouseEventArgs e)
@@ -134,6 +135,15 @@ namespace Parsething.Pages
                     AutoClosingMessageBox.ShowAutoClosingMessageBox("Данные скопированы в буфер обмена", "Оповещение", 900);
                 }
             }
+        }
+
+        private void ClaimWorksButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy(GET.KindOf.ClaimWorks) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
         }
     }
 }

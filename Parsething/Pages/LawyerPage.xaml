@@ -34,6 +34,7 @@
                             <RowDefinition Height="6"/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Content="Не оплачены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="NotPaid" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -54,6 +55,9 @@
                         <Label Content="ФАС:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="7"/>
                         <TextBlock x:Name="FAS" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="7" />
                         <Button x:Name="FASButton" Grid.Row="7" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="FASButton_Click"/>
+                        <Label Content="Претензионные работы:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2"/>
+                        <TextBlock x:Name="ClaimWorks" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
+                        <Button x:Name="ClaimWorksButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ClaimWorksButton_Click"/>
                     </Grid>
                 </StackPanel>
                 <Grid Grid.Column="2">

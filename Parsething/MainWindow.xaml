@@ -145,13 +145,13 @@
                                                 BorderThickness="0"
                                                 Background="Transparent"/>
                                             <Button 
-                                                x:Name="ReadNotification"
+                                                x:Name="DeleteNotificationButton"
                                                 Grid.Row="1"
                                                 Grid.Column="2" 
                                                 HorizontalAlignment="Right" 
                                                 Style="{DynamicResource Profile}"
-                                                Content="Прочитать"
-                                                Click="ReadNotification_Click"
+                                                Content="Удалить"
+                                                Click="DeleteNotificationButton_Click"
                                                 Cursor="Hand"/>
                                             <TextBox Text="{Binding Path=Notification.Text}"
                                                 Grid.ColumnSpan="4"

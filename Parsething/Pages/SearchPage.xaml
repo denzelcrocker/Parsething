@@ -28,7 +28,11 @@
         <local:ParentProcurementIdConverter x:Key="ParentProcurementIdConverter"/>
         <local:ProcurementIsProblemConverter x:Key="ProcurementIsProblemConverter"/>
         <local:PercentageReserveAmountConverter x:Key="PercentageReserveAmountConverter"/>
+        <local:CountOfCommentsConverter x:Key="CountOfCommentsConverter"/>
         <local:IsProcurementInWaitingListConverter x:Key="IsProcurementInWaitingListConverter"/>
+        <local:LastCommentDateTimeConverter x:Key="LastCommentDateTimeConverter"/>
+        <local:Base64ToImageConverter x:Key="Base64ToImageConverter"/>
+        <local:InverseScaleYConverter x:Key="InverseScaleYConverter"/>
         <db:Procurement x:Key="Procurement"/>
         <system:String x:Key="CalculatingString">Calculating</system:String>
         <system:String x:Key="PurchaseString">Purchase</system:String>
@@ -68,8 +72,8 @@
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Закон" Grid.Column="1" MouseLeftButtonUp="SortByField" Tag="Law"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="В работе" Grid.Column="2" />
                         <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Комплектующие" Grid.Column="3" MouseLeftButtonUp="SortByField" Tag="PercentageReserve"/>
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата окончания подачи" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="ResultDate" Margin="0,0,0,15"/>
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата подведения итогов" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="Deadline" Margin="0,10,0,0"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата окончания подачи" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="Deadline" Margin="0,0,0,15"/>
+                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Дата подведения итогов" Grid.Column="4" MouseLeftButtonUp="SortByField" Tag="ResultDate" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчет" Grid.Column="5" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="НМЦК" Grid.Column="5" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Закупка" Grid.Column="6" Margin="0,0,0,15"/>
@@ -86,7 +90,7 @@
                             <Ellipse Width="10" Height="10" Fill="LightGray" Margin="5,0" 
                                 Tag="MaxDueDate" MouseLeftButtonUp="SwitchField" />
                         </StackPanel>
-                        <Label Style="{DynamicResource ClickableColumnNames.Search}" Content="Приемка" Grid.Column="11" MouseLeftButtonUp="SortByField" Tag="MaxAcceptanceDate"/>
+                        <Label Style="{DynamicResource ColumnNames.Search}" Content="Комментарии" Grid.Column="11"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Реальный профит" Grid.Column="12" Margin="0,10,0,0"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Расчетный профит" Grid.Column="12" Margin="0,0,0,15"/>
                         <Label Style="{DynamicResource ColumnNames.Search}" Content="Регион" Grid.Column="13" />
@@ -208,6 +212,7 @@
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition/>
                                                         <RowDefinition/>
+                                                        <RowDefinition/>
                                                     </Grid.RowDefinitions>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="75"/>
@@ -215,8 +220,10 @@
                                                     </Grid.ColumnDefinitions>
                                                     <Label Content="Расчетчик: " Grid.Row="0" Style="{DynamicResource LabelBase}"/>
                                                     <TextBlock x:Name="CalculatorTextBlock" Grid.Row="0" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                                    <Label Content="Менеджер: " Grid.Row="2" Style="{DynamicResource LabelBase}"/>
-                                                    <TextBlock x:Name="ManagerTextBlock" Grid.Row="2" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                                    <Label Content="Менеджер: " Grid.Row="1" Style="{DynamicResource LabelBase}"/>
+                                                    <TextBlock x:Name="ManagerTextBlock" Grid.Row="1" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                                    <Label Content="Юр. лицо: " Grid.Row="2" Style="{DynamicResource LabelBase}"/>
+                                                    <TextBlock x:Name="LegalEntityTextBlock" Grid.Row="2" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
                                                 </Grid>
                                             </Border>
                                         </Popup>
@@ -437,7 +444,7 @@
                                                 <MultiBinding Converter="{StaticResource DateToColorConverter}">
                                                     <Binding Path="ActualDeliveryDate" />
                                                     <Binding Path="MaxAcceptanceDate" />
-                                                    <Binding Path="MaxDueDate" />
+                                                    <Binding Path="MaxDueDate"/>
                                                 </MultiBinding>
                                             </Ellipse.Fill>
                                         </Ellipse>
@@ -452,23 +459,34 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <Rectangle Grid.Column="21" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
-                                        <Ellipse Style="{StaticResource MaxAcceptanceDateIndicatorStyle}" Grid.Column="22" Margin="2,0,0,18"/>
-                                        <TextBlock 
-                                            Style="{DynamicResource TableElements}"
+                                        <Button 
                                             Grid.Column="22"
-                                            Text="{Binding Path=MaxAcceptanceDate, StringFormat='{}{0:dd.MM.yyyy}'}"
-                                            FontSize="12"
+                                            Margin="0,0,15,0"
+                                            x:Name="CommentsButton"
+                                            Click="CommentsButton_Click"
+                                            Style="{DynamicResource ButtonWithIcon}">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Resources/Images/Comments.png" Stretch="Uniform" Height="30"/>
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                        <Label 
+                                            Grid.Column="22"
+                                            x:Name="CountOfComments" 
+                                            Style="{DynamicResource Label.Search}"
+                                            HorizontalAlignment="Center"
+                                            Margin="30,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Content="{Binding Id, Converter={StaticResource CountOfCommentsConverter }}"/>
+                                        <TextBlock 
+                                            x:Name="LastCommentDateTime" 
+                                            Text="{Binding Id, Converter={StaticResource LastCommentDateTimeConverter }}"
+                                            Grid.Column="22"
+                                            FontSize="10"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            Margin="0,0,0,18"/>
-                                        <TextBlock 
-                                            Style="{DynamicResource TableElements}"
-                                            Grid.Column="22"
-                                            Text="{Binding MaxAcceptanceDate, Converter={StaticResource DateToStringConverter }}"
-                                            FontSize="12"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="0,18,0,0"/>
+                                            Margin="0,30,0,0"/>
                                         <Rectangle Grid.Column="23" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
                                         <Grid Grid.Column="24" Margin="0,5">
                                             <Grid.ColumnDefinitions>
@@ -684,7 +702,92 @@
                         <Label Content="Поиск по номеру договора" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <TextBox x:Name="SearchContractNumber" Style="{DynamicResource SingleLineInput.Search}" Height="40"/>
                     </ListView>
-                    <DockPanel Grid.Row="1">
+                    <ListView x:Name="CommentsListView" 
+                        BorderThickness="0"
+                        Grid.RowSpan="2"
+                        Visibility="Collapsed"
+                        Margin="0,0,10,0"
+                        Style="{DynamicResource ListView.Preferences}" 
+                        ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <i:Interaction.Behaviors>
+                            <cls:SmoothScrollBehavior />
+                        </i:Interaction.Behaviors>
+                        <ListView.LayoutTransform>
+                            <ScaleTransform ScaleY="-1"/>
+                        </ListView.LayoutTransform>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border LayoutTransform="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=Content, Converter={StaticResource InverseScaleYConverter}}" BorderThickness="1" BorderBrush="{DynamicResource TitleBar.Background}" CornerRadius="15" >
+                                    <Grid HorizontalAlignment="Stretch" Margin="3" MaxWidth="230">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40"/>
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="95"/>
+                                            <ColumnDefinition Width="20"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Ellipse x:Name="EmployeePhoto" 
+                                            Width="25" 
+                                            Height="25"
+                                            Grid.Column="0" 
+                                            Grid.Row="0">
+                                            <Ellipse.Fill>
+                                                <ImageBrush Stretch="Uniform" ImageSource="{Binding Path=Employee.Photo, Converter={StaticResource Base64ToImageConverter}}"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Text="{Binding Path=Employee.FullName}"
+                                            Grid.Column="1"
+                                            Grid.Row="0"
+                                            HorizontalAlignment="Left"
+                                            FontSize="12"
+                                            VerticalAlignment="Center"/>
+                                        <TextBlock 
+                                            Style="{DynamicResource TableElements}"
+                                            Text="{Binding Path=Date, StringFormat='{}{0:dd.MM.yyyy HH:mm:ss}'}"
+                                            Grid.Column="2"
+                                            Grid.ColumnSpan="1"
+                                            FontSize="10"
+                                            VerticalAlignment="Center"/>
+                                        <TextBox Text="{Binding Path=Text}"
+                                            Grid.ColumnSpan="4"
+                                            Grid.Row="1"
+                                            TextWrapping="Wrap"
+                                            HorizontalAlignment="Stretch"
+                                            FontSize="11"
+                                            VerticalAlignment="Center"
+                                            IsReadOnly="True"
+                                            BorderThickness="0"
+                                            Background="Transparent"/>
+                                        <Label x:Name="arrow" 
+                                            Grid.Column="3"
+                                            Content="&#xe836;" 
+                                            FontSize="15"
+                                            FontFamily="Segoe Fluent Icons"
+                                            Foreground="{StaticResource MainText.Foreground}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                            <Label.Style>
+                                                <Style TargetType="Label">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsTechnical}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Label.Style>
+                                        </Label>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <DockPanel Grid.Row="1" x:Name="SearchDockPanel" Visibility="Visible">
                         <Button x:Name="SearchButton" 
                             Width="110"
                             IsDefault = "true"

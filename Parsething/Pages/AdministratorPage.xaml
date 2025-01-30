@@ -86,7 +86,7 @@
                         <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Button x:Name="BargainingButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="BargainingButton_Click"  />
                         <Label VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="20" FontWeight="Bold" Content="&#xe70d;" Grid.Column="0" Grid.Row="3" Margin="160,0,0,0"/>
-                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Сп-бы опр-я: " Grid.Column="0" Grid.Row="3" SelectionChanged="Combobox_SelectionChanged">
+                        <ComboBox x:Name="QuotesCombobox" Style="{DynamicResource InfoBox}" Text="Типы торгов: " Grid.Column="0" Grid.Row="3" SelectionChanged="Combobox_SelectionChanged">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -425,6 +425,7 @@
                             <RowDefinition Height="6"/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Content="Приёмка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -457,6 +458,9 @@
                         <Label Content="ФАС:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="13"/>
                         <TextBlock x:Name="FAS" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="13" />
                         <Button x:Name="FASButton" Grid.ColumnSpan="5" Grid.Row="13" Opacity="0" Cursor="Hand" Click="FASButton_Click" />
+                        <Label Content="Претензионные работы:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2"/>
+                        <TextBlock x:Name="ClaimWorks" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="14" />
+                        <Button x:Name="ClaimWorksButton" Grid.ColumnSpan="5" Grid.Row="14" Opacity="0" Cursor="Hand" Click="ClaimWorksButton_Click" />
                     </Grid>
                     <Label Content="Логистика" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>

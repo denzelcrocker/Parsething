@@ -301,6 +301,28 @@
                             MaxHeight="170"
                             TextWrapping="Wrap"
                             VerticalContentAlignment="Top"/>
+                        <Popup Name="EmployeesPopUp"
+                            Placement="Bottom"
+                            PlacementTarget="{Binding ElementName=CommentsTextBox}"
+                            StaysOpen="False"
+                            Width="200">
+                            <Border BorderBrush="Gray" BorderThickness="1" Background="White">
+                                <ListBox x:Name="EmployeesListBox"
+                                    MaxHeight="500">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}">
+                                                        <Binding Path="Name"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Border>
+                        </Popup>
                         <Label Style="{DynamicResource Label.CardOfProcurement}" Grid.Column="0" Grid.Row="2" FontSize="23">
                             <TextBlock>
                                 Технический

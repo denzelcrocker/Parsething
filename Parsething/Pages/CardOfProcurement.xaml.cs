@@ -1,4 +1,5 @@
-﻿using DatabaseLibrary.Entities.ProcurementProperties;
+﻿using DatabaseLibrary.Entities.EmployeeMuchToMany;
+using DatabaseLibrary.Entities.ProcurementProperties;
 using DatabaseLibrary.Queries;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Windows.Themes;
@@ -42,6 +43,9 @@ namespace Parsething.Pages
         private List<Region>? ProcurementRegions { get; set; }
         private List<City>? Cities { get; set; }
         private List<Employee>? Calculators { get; set; }
+        private List<Employee>? Employees { get; set; }
+        private List<Position>? Positions { get; set; }
+
         private ProcurementsEmployee? ProcurementsEmployeeCalculators = new ProcurementsEmployee();
 
         private List<Minopttorg>? Minopttorgs { get; set; }
@@ -82,6 +86,8 @@ namespace Parsething.Pages
         private string Historylog;
 
         private Procurement? Procurement { get; set; }
+        private MentionService MentionService;
+
 
         private List<ComponentCalculation> ComponentCalculations { get; set; }
 
@@ -100,6 +106,10 @@ namespace Parsething.Pages
         {
             InitializeComponent();
             UpdateUIForUserRole();
+            Employees = GET.View.Employees().Where(e => e.IsAvailable == true).ToList();
+            Positions = GET.View.Positions();
+            MentionService = new MentionService(CommentsTextBox, EmployeesPopUp, EmployeesListBox, Employees, Positions, procurement);
+
             procurement = GET.View.ProcurementBy(procurement.Id);
             if (procurement.IsProcurementBlocked == true)
             {
@@ -265,8 +275,13 @@ namespace Parsething.Pages
                 }
                 if (Procurement.StartDate != null && Procurement.TimeZone != null)
                     StartDate.Text = $"{Procurement.StartDate} ({Procurement.TimeZone.Offset})";
+                else
+                    StartDate.Text = $"{Procurement.StartDate} (Часовой пояс не выбран)";
+
                 if (Procurement.Deadline != null && Procurement.TimeZone != null)
                     DeadLine.Text = $"{Procurement.Deadline} ({Procurement.TimeZone.Offset})";
+                else
+                    DeadLine.Text = $"{Procurement.Deadline} (Часовой пояс не выбран)";
                 if (Procurement.ResultDate != null)
                     ResultDate.Text = $"{Procurement.ResultDate}";
                 InitialPrice.Text = Procurement.InitialPrice.ToString("N2", CultureInfo.CurrentCulture);
@@ -491,6 +506,7 @@ namespace Parsething.Pages
                         }
                 Judgment.IsChecked = Procurement.Judgment;
                 FAS.IsChecked = Procurement.Fas;
+                ClaimWorks.IsChecked = Procurement.ClaimWorks;
             }
 
             Historylog = ProcurementState.Text;
@@ -829,8 +845,10 @@ namespace Parsething.Pages
                     Procurement.SignedOriginalId = ((SignedOriginal)SignedOriginal.SelectedItem).Id;
                 else
                     Procurement.SignedOriginalId = null;
-                    Procurement.Judgment = Judgment.IsChecked;
+                Procurement.Judgment = Judgment.IsChecked;
                 Procurement.Fas = FAS.IsChecked;
+                Procurement.ClaimWorks = ClaimWorks.IsChecked;
+
 
                 if (warningMessage != null)
                 {
@@ -1076,6 +1094,7 @@ namespace Parsething.Pages
             if (CommentsTextBox.Text != "")
             {
                 Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = GET.Aggregate.GetActualProcurementId(Procurement.Id, Procurement.ParentProcurementId), Text = CommentsTextBox.Text, IsTechnical = IsTechnical.IsChecked };
+                MentionService.NotifyMentionedUsers(CommentsTextBox.Text);
                 CommentsTextBox.Clear();
                 IsTechnical.IsChecked = false;
                 PUT.Comment(comment);
@@ -1148,37 +1167,6 @@ namespace Parsething.Pages
 
             }
             MainFrame.GoBack();
-
-
-            //var employee = (Employee)Application.Current.MainWindow.DataContext;
-            //var positionKind = employee.Position.Kind;
-
-            //var navigationMap = new Dictionary<string, Page>
-            //    {
-            //        { "Администратор", new Pages.AdministratorPage() },
-            //        { "Руководитель отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-            //        { "Заместитель руководителя отдела расчетов", new Pages.HeadsOfCalculatorsPage() },
-            //        { "Специалист отдела расчетов", new Pages.CalculatorPage() },
-            //        { "Руководитель тендерного отдела", new Pages.HeadsOfManagersPage() },
-            //        { "Заместитель руководителя тендерного отдела", new Pages.HeadsOfManagersPage() },
-            //        { "Специалист по работе с электронными площадками", new Pages.EPlatformSpecialistPage() },
-            //        { "Специалист тендерного отдела", new Pages.ManagerPage() },
-            //        { "Руководитель отдела закупки", new Pages.PurchaserPage() },
-            //        { "Заместитель руководителя отдела закупок", new Pages.PurchaserPage() },
-            //        { "Специалист закупки", new Pages.PurchaserPage() },
-            //        { "Руководитель отдела производства", new Pages.AssemblyPage() },
-            //        { "Заместитель руководителя отдела производства", new Pages.AssemblyPage() },
-            //        { "Специалист по производству", new Pages.AssemblyPage() },
-            //        { "Юрист", new Pages.LawyerPage() }
-            //    };
-
-            //if (navigationMap.TryGetValue(positionKind, out var page))
-            //{
-            //    _ = MainFrame.Navigate(page);
-            //}
-            //else
-            //{
-            //}
         }
         private void ResetAll()
         {
@@ -1431,6 +1419,7 @@ namespace Parsething.Pages
                     Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
+                    ApplicationsCB.IsEnabled = false;
                     break;
                 case "Руководитель отдела закупки":
                     Calculator.IsEnabled = false;

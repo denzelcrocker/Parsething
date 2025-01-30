@@ -16,23 +16,82 @@ using System.Net;
 using Parsething.Pages;
 using System.Diagnostics;
 using Microsoft.VisualBasic;
+using System.Drawing;
+using System.Timers;
+using System.Windows.Threading;
 
 namespace Parsething
 {
     public partial class MainWindow : Window
     {
+        private System.Windows.Forms.NotifyIcon _notifyIcon; // Иконка в системном трее
+        private DispatcherTimer _timer; // Таймер для проверки уведомлений
+        List<EmployeeNotification> EmployeeNotifications;
+        private bool _isWindowOpen; // Флаг для проверки, открыто ли окно
+
         public MainWindow()
         {
             AutorizationWindow autorization = new();
             if (autorization.ShowDialog() == true)
                 DataContext = autorization.Employee;
             else Application.Current.Shutdown();
+
             InitializeComponent();
+
+            _notifyIcon = new System.Windows.Forms.NotifyIcon
+            {
+                Icon = SystemIcons.Information, // Иконка уведомлений
+                Visible = true,
+                BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info,
+            };
+
+            ReloadNotifications(); // Первая загрузка уведомлений
+
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(15) // 30 секунд
+            };
+            _timer.Tick += TimerElapsed;
+            _timer.Start();
+
             Closing += MainWindow_Closing;
+        }
+
+        private void TimerElapsed(object sender, EventArgs e)
+        {
+            ReloadNotifications();
+        }
+
+        private void ReloadNotifications()
+        {
+            int employeeId = ((Employee)Application.Current.Dispatcher.Invoke(() => DataContext)).Id;
+
+            Task.Run(() =>
+            {
+                // Получаем уведомления в фоновом потоке
+                var notifications = GET.View.UnreadEmployeeNotificationsBy(employeeId);
+                // Возвращаемся в UI-поток, чтобы показать уведомления
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UpdateNotificationIcon(employeeId);
+                    foreach (EmployeeNotification employeeNotification in notifications)
+                    {
+                        ShowNotification(employeeNotification.Notification.Text);
+                        PULL.EmployeeNotificationMarkAsRead(employeeNotification);
+                    }
+                });
+            });
+        }
+
+        private void ShowNotification(string message)
+        {
+            _notifyIcon.BalloonTipTitle = "Новое уведомление";
+            _notifyIcon.BalloonTipText = message;
+            _notifyIcon.ShowBalloonTip(1000); // Показываем уведомление в течение 3 секунд
         }
         private async Task UpdateNotificationIcon(int employeeId)
         {
-            bool hasUnreadNotifications = await GET.View.HasUnreadNotifications(employeeId);
+            bool hasUnreadNotifications = await GET.View.HasUnDeletedNotifications(employeeId);
 
             string iconPath = hasUnreadNotifications
                 ? "/Resources/Images/ActiveBell.png"  // Иконка с единицей
@@ -208,6 +267,8 @@ namespace Parsething
         {
             if ((Employee)Application.Current.MainWindow.DataContext != null)
                 PULL.ClosingActiveSessionsByEmployee(((Employee)Application.Current.MainWindow.DataContext).Id);
+            _notifyIcon.Visible = false; // Скрываем иконку уведомлений из трея при закрытии приложения
+            _timer.Stop(); // Останавливаем таймер
         }
 
         private void GoHome_Click(object sender, RoutedEventArgs e)
@@ -281,14 +342,45 @@ namespace Parsething
                 NotificationsListView.ItemsSource = GET.View.EmployeeNotificationsBy(((Employee)DataContext).Id);
             }
         }
+        private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (sender is ListView listView)
+            {
+                var scrollViewer = GetScrollViewer(listView);
+                if (scrollViewer != null)
+                {
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta / 3.0);
+                    e.Handled = true; // Предотвращаем дальнейшую обработку события
+                }
+            }
+        }
 
-        private void ReadNotification_Click(object sender, RoutedEventArgs e)
+        // Метод для получения ScrollViewer из ListView
+        private ScrollViewer GetScrollViewer(DependencyObject obj)
+        {
+            if (obj is ScrollViewer)
+                return obj as ScrollViewer;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                var result = GetScrollViewer(child);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
+        private void DeleteNotificationButton_Click(object sender, RoutedEventArgs e)
         {
             EmployeeNotification employeeNotification = (sender as Button)?.DataContext as EmployeeNotification ?? new EmployeeNotification();
             if (employeeNotification != null)
             {
-                PULL.EmployeeNotificationMark(employeeNotification);
+                PULL.EmployeeNotificationMarkAsDeleted(employeeNotification);
+                NotificationsListView.ItemsSource = GET.View.EmployeeNotificationsBy(((Employee)DataContext).Id);
+                UpdateNotificationIcon(((Employee)DataContext).Id);
             }
+
         }
 
         private void EditProcurement_Click(object sender, RoutedEventArgs e)

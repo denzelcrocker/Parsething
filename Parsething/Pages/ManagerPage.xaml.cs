@@ -73,6 +73,8 @@ namespace Parsething.Pages
 
             FAS.Text = GET.Aggregate.ProcurementsEmployeesCountBy(GET.KindOf.FAS, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // ФАС
 
+            ClaimWorks.Text = GET.Aggregate.ProcurementsEmployeesCountBy(GET.KindOf.ClaimWorks, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Претензионые работы
+
             ExecutionState.Text = GET.Aggregate.ProcurementsEmployeesCountBy(null, GET.KindOf.ExecutionState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // БГ исполнения
 
             WarrantyState.Text = GET.Aggregate.ProcurementsEmployeesCountBy(null, GET.KindOf.WarrantyState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // БГ гарантии
@@ -256,6 +258,17 @@ namespace Parsething.Pages
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
                 MainFrame.Navigate(new SearchPage());
         }
+        private void ClaimWorksButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(GET.KindOf.ClaimWorks, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
 
         private void ProblemButton_Click(object sender, RoutedEventArgs e)
         {
@@ -432,5 +445,7 @@ namespace Parsething.Pages
                 ToolTipHelper.SetToolTipProcurementEmployee(image, parameter);
             }
         }
+
+        
     }
 }

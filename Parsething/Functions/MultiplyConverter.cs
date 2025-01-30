@@ -166,6 +166,50 @@ namespace Parsething.Functions
             throw new NotImplementedException();
         }
     }
+    public class CountOfCommentsConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null)
+                return null;
+
+            if (value is int procurementId)
+            {
+                return GlobalUsingValues.Instance.Comments.Where(pe => pe.EntryId == procurementId).Where(c => c.EntityType == "Procurement").Count();
+            }
+            return "0";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class LastCommentDateTimeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int procurementId)
+            {
+                // Предполагаем, что CommentsBy возвращает коллекцию комментариев
+                
+                var lastCommentDate = GlobalUsingValues.Instance.Comments.Where(pe => pe.EntryId == procurementId).Where(c => c.EntityType == "Procurement").OrderByDescending(c => c.Date).FirstOrDefault()?.Date;
+
+                if (lastCommentDate.HasValue)
+                {
+                    // Форматируем дату в удобный для отображения формат
+                    return lastCommentDate.Value.ToString("dd.MM.yyyy HH:mm");
+                }
+            }
+
+            return ""; // Если комментарии отсутствуют
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException(); // Обратное преобразование не требуется
+        }
+    }
     public class DateColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -343,18 +387,30 @@ namespace Parsething.Functions
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values.Length < 2 || values[0] == null || values[1] == null)
-                return DependencyProperty.UnsetValue;
-
-            if (values[0] is DateTime deadline && values[1] is string timeZoneOffset)
+            if (values.Length < 2 || values[0] == null || values[0] == DependencyProperty.UnsetValue)
             {
-                if (timeZoneOffset == "МСК" && !timeZoneOffset.Contains("МСК+") && !timeZoneOffset.Contains("МСК-") || timeZoneOffset == "стандартное" || timeZoneOffset == "см. zakupki.gov.ru")
+                return DependencyProperty.UnsetValue;
+            }
+
+            if (values[0] is DateTime deadline)
+            {
+                if (values[1] == null || values[1] == DependencyProperty.UnsetValue || string.IsNullOrWhiteSpace(values[1]?.ToString()))
+                {
+                    // Если часовой пояс отсутствует, просто возвращаем дату без смещения
+                    return deadline.ToString("dd.MM.yyyy HH:mm:ss");
+                }
+
+                string timeZoneOffset = values[1].ToString();
+
+                if (timeZoneOffset == "МСК" && !timeZoneOffset.Contains("МСК+") && !timeZoneOffset.Contains("МСК-") ||
+                    timeZoneOffset == "стандартное" || timeZoneOffset == "см. zakupki.gov.ru")
                 {
                     return deadline.ToString("dd.MM.yyyy HH:mm:ss");
                 }
 
-                string[] parts = timeZoneOffset.Split('+', '-');
-                if (parts.Length > 1 && int.TryParse(parts[1], out int offsetHours))
+                // Разбираем смещение часового пояса
+                string[] parts = timeZoneOffset.Split(new char[] { '+', '-' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 2 && int.TryParse(parts[1], out int offsetHours))
                 {
                     int sign = timeZoneOffset.Contains('+') ? -1 : 1;
                     TimeSpan offset = TimeSpan.FromHours(sign * offsetHours);
@@ -362,6 +418,9 @@ namespace Parsething.Functions
                     DateTime dateTimeWithOffset = deadline + offset;
                     return dateTimeWithOffset.ToString("dd.MM.yyyy HH:mm:ss");
                 }
+
+                // Если не удалось разобрать смещение, возвращаем просто дату
+                return deadline.ToString("dd.MM.yyyy HH:mm:ss");
             }
 
             return DependencyProperty.UnsetValue;

@@ -85,6 +85,7 @@
                             <RowDefinition Height="0"/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Content="Приёмка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
@@ -117,6 +118,9 @@
                         <Label Content="ФАС:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="13"/>
                         <TextBlock x:Name="FAS" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="13" />
                         <Button x:Name="FASButton" Grid.ColumnSpan="5" Grid.Row="13" Opacity="0" Cursor="Hand" Click="FASButton_Click" />
+                        <Label Content="Претензионные работы:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="14" Grid.ColumnSpan="2"/>
+                        <TextBlock x:Name="ClaimWorks" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="14" />
+                        <Button x:Name="ClaimWorksButton" Grid.ColumnSpan="5" Grid.Row="14" Opacity="0" Cursor="Hand" Click="ClaimWorksButton_Click"/>
                     </Grid>
                 </StackPanel>
                 <StackPanel Grid.Column="4" Margin="10">

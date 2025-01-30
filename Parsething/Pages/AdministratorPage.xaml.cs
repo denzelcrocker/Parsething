@@ -216,6 +216,8 @@ public partial class AdministratorPage : Page
 
         FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
 
+        ClaimWorks.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.ClaimWorks)); // Претензионные работы
+
         await UpdateRatesFromCBRAsync();
 
     }
@@ -522,6 +524,13 @@ public partial class AdministratorPage : Page
     private void FASButton_Click(object sender, RoutedEventArgs e)
     {
         var procurements = GET.View.ProcurementsBy(GET.KindOf.FAS) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
+    }
+    private void ClaimWorksButton_Click(object sender, RoutedEventArgs e)
+    {
+        var procurements = GET.View.ProcurementsBy(GET.KindOf.ClaimWorks) ?? new List<Procurement>();
         GlobalUsingValues.Instance.AddProcurements(procurements);
         if (GlobalUsingValues.Instance.Procurements.Count > 0)
             MainFrame.Navigate(new SearchPage());

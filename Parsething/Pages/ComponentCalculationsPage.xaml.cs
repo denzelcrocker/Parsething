@@ -1,4 +1,5 @@
-﻿using DatabaseLibrary.Entities.ProcurementProperties;
+﻿using DatabaseLibrary.Entities.EmployeeMuchToMany;
+using DatabaseLibrary.Entities.ProcurementProperties;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
 using Parsething.Classes;
 using Parsething.Functions;
@@ -44,6 +45,10 @@ namespace Parsething.Pages
 
         private bool IsCalculation;
 
+        private MentionService MentionService;
+        private List<Employee>? Employees { get; set; }
+        private List<Position>? Positions { get; set; }
+
         SolidColorBrush Red = new SolidColorBrush(Color.FromRgb(0xBD, 0x14, 0x14));
 
         static List<string> ProcurementStates = new List<string>() { "Новый", "Посчитан", "Оформить", "Оформлен", "Отправлен", "Отмена", "Отклонен", "Проверка" };
@@ -52,6 +57,9 @@ namespace Parsething.Pages
         public ComponentCalculationsPage(Procurement procurement, bool isCalculation)
         {
             InitializeComponent();
+            Employees = GET.View.Employees().Where(e => e.IsAvailable == true).ToList();
+            Positions = GET.View.Positions();
+            MentionService = new MentionService(CommentsTextBox, EmployeesPopUp, EmployeesListBox, Employees, Positions, procurement);
             procurement = GET.View.ProcurementBy(procurement.Id);
             IsCalculation = isCalculation;
             decimal? calculatingAmount = 0;
@@ -191,6 +199,7 @@ namespace Parsething.Pages
             if (CommentsTextBox.Text != "")
             {
                 Comment? comment = new Comment { EmployeeId = ((Employee)Application.Current.MainWindow.DataContext).Id, Date = DateTime.Now, EntityType = "Procurement", EntryId = GET.Aggregate.GetActualProcurementId(Procurement.Id, Procurement.ParentProcurementId), Text = CommentsTextBox.Text, IsTechnical = IsTechnical.IsChecked };
+                MentionService.NotifyMentionedUsers(CommentsTextBox.Text);
                 CommentsTextBox.Clear();
                 IsTechnical.IsChecked = false;
                 PUT.Comment(comment);

@@ -117,6 +117,8 @@ namespace Parsething.Pages
 
             FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
 
+            ClaimWorks.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.ClaimWorks)); // Претензионные работы
+
             ComponentCalculationsProblem = GET.View.ComponentCalculationsBy("Проблема").Distinct(new Functions.MyClassComparer()).ToList(); // Проблема
             if (ComponentCalculationsProblem != null)
                 Problem.Text = ComponentCalculationsProblem.Count.ToString();
@@ -296,6 +298,13 @@ namespace Parsething.Pages
         private void FASButton_Click(object sender, RoutedEventArgs e)
         {
             var procurements = GET.View.ProcurementsBy(GET.KindOf.FAS) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+        private void ClaimWorksButton_Click(object sender, RoutedEventArgs e)
+        {
+            var procurements = GET.View.ProcurementsBy(GET.KindOf.ClaimWorks) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
                 MainFrame.Navigate(new SearchPage());

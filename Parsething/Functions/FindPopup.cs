@@ -24,7 +24,20 @@ namespace Parsething.Functions
 
             return null;
         }
+        public static Popup FindPopupByProcurementId(int procurementId, Button button, string name)
+        {
+            Grid grid = FindParent<Grid>(button);
 
+            foreach (var child in FindVisualChildren<Popup>(grid))
+            {
+                if (child.DataContext is Procurement procurement && procurement.Id == procurementId && child.Name == name)
+                {
+                    return child;
+                }
+            }
+
+            return null;
+        }
         private static T FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             DependencyObject parent = VisualTreeHelper.GetParent(child);

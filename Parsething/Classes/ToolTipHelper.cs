@@ -32,7 +32,7 @@ namespace Parsething.Classes
                     procurements = GET.View.ProcurementsBy(parameter, GET.KindOf.ShipmentPlane);
                     break;
                 case "Принят":
-                    procurements = GET.View.ProcurementsBy("Принят", GET.KindOf.ProcurementState);
+                    procurements = GET.View.ProcurementsBy("Принят", GlobalUsingValues.Instance.StartDate);
                     break;
                 case "Приемка":
                     procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.ProcurementState);
@@ -181,7 +181,7 @@ namespace Parsething.Classes
                     procurementsEmployees = GET.View.ProcurementsEmployeesBy(parameter, GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
                     break;
                 case "Принят":
-                    procurementsEmployees = GET.View.ProcurementsEmployeesBy("Принят", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+                    procurementsEmployees = GET.View.ProcurementsEmployeesBy("Принят", GlobalUsingValues.Instance.StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
                     break;
                 case "Приемка":
                     procurementsEmployees = GET.View.ProcurementsEmployeesBy("Приемка", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");

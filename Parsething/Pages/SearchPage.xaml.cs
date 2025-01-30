@@ -32,9 +32,12 @@ namespace Parsething.Pages
         private List<LegalEntity>? LegalEntities { get; set; }
         private List<ShipmentPlan>? ShipmentPlans { get; set; }
         private List<ProcurementsEmployee>? ProcurementsEmployees { get; set; }
+        private List<Comment>? Comments { get; set; }
         private const int PageSize = 35;
         private int _currentPage = 1;
         private const int VisiblePagesCount = 5; // Количество видимых страниц
+        private bool isCommentsVisible = false;
+        private int selectedProcurementId = -1;
 
         public int CurrentPage
         {
@@ -411,7 +414,7 @@ namespace Parsething.Pages
             SearchCriteria.Instance.ComponentCalculation = componentCalculation;
             SearchCriteria.Instance.ShipmentPlan = shipmentPlan;
             SearchCriteria.Instance.WaitingList = waitingList;
-            SearchCriteria.Instance.ShipmentPlan = contractNumber;
+            SearchCriteria.Instance.ContractNumber = contractNumber;
         }
 
         private void Search_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -559,30 +562,68 @@ namespace Parsething.Pages
 
         private void EmployeeInfoButton_MouseEnter(object sender, RoutedEventArgs e)
         {
-            Button? button = sender as Button;
-            Procurement? procurement = button?.DataContext as Procurement;
-            if (procurement != null && button != null)
-            {
-                ProcurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(procurement.Id, "Appoint");
-                Popup popup = Functions.FindPopup.FindPopupByProcurementId(procurement.Id, button);
+            if (sender is not Button button || button.DataContext is not Procurement procurement)
+                return;
 
-                if (popup != null && ProcurementsEmployees.Count != 0)
-                {
-                    popup.IsOpen = !popup.IsOpen;
-                    SetEmployeePopupText(popup, "CalculatorTextBlock", 2, 3, 4);
-                    SetEmployeePopupText(popup, "ManagerTextBlock", 5, 6, 8);
-                }
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesByProcurement(procurement.Id, "Appoint") ?? new List<ProcurementsEmployee>();
+            if (ProcurementsEmployees.Count == 0)
+                return;
+
+            Popup? popup = Functions.FindPopup.FindPopupByProcurementId(procurement.Id, button);
+            if (popup == null)
+                return;
+
+            popup.IsOpen = !popup.IsOpen;
+            SetEmployeePopupText(popup, "CalculatorTextBlock", 2, 3, 4);
+            SetEmployeePopupText(popup, "ManagerTextBlock", 5, 6, 8);
+
+            if (popup.FindName("LegalEntityTextBlock") is TextBlock legalEntityTextBlock)
+            {
+                legalEntityTextBlock.Text = procurement.LegalEntity?.Name ?? "Не указано";
             }
         }
 
         private void SetEmployeePopupText(Popup popup, string textBlockName, params int[] positionIds)
         {
-            TextBlock textBlock = popup.FindName(textBlockName) as TextBlock;
-            if (textBlock != null)
+            if (popup.FindName(textBlockName) is TextBlock textBlock)
             {
-                textBlock.Text = ProcurementsEmployees.LastOrDefault(pe => positionIds.Contains(pe.Employee.PositionId))?.Employee.FullName;
+                var employee = ProcurementsEmployees.LastOrDefault(pe => positionIds.Contains(pe.Employee.PositionId))?.Employee;
+                textBlock.Text = employee?.FullName ?? "Не назначен";
             }
         }
+        private void CommentsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is Procurement procurement)
+            {
+                if (isCommentsVisible && procurement.Id == selectedProcurementId)
+                {
+                    // Вернуть критерии поиска
+                    CommentsListView.Visibility = Visibility.Collapsed;
+                    SearchBar.Visibility = Visibility.Visible;
+                    SearchDockPanel.Visibility = Visibility.Visible;
+                    isCommentsVisible = false;
+                }
+                else
+                {
+                    // Показать комментарии для выбранного тендера
+                    selectedProcurementId = procurement.Id;
+                    LoadComments(selectedProcurementId);
+                    CommentsListView.Visibility = Visibility.Visible;
+                    SearchBar.Visibility = Visibility.Collapsed;
+                    SearchDockPanel.Visibility = Visibility.Collapsed;
+                    isCommentsVisible = true;
+                }
+            }
+        }
+
+        // Метод загрузки комментариев
+        private void LoadComments(int procurementId)
+        {
+            // Загрузка комментариев, например, из базы данных
+            var comments = GET.View.CommentsBy(procurementId);
+            CommentsListView.ItemsSource = comments;
+        }
+
 
         private void EmployeeInfoButton_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -982,5 +1023,7 @@ namespace Parsething.Pages
 
             return foundChild;
         }
+
+        
     }
 }

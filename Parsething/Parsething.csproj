@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="7.1.1" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
@@ -87,6 +88,7 @@
     <Resource Include="Resources\Images\PaintedWhiteStar.png" />
     <Resource Include="Resources\Images\UnpaintedRedStar.png" />
     <Resource Include="Resources\Images\CopyToClipboard.png" />
+    <Resource Include="Resources\Images\Comments.png" />
   </ItemGroup>
 
   <ItemGroup>
