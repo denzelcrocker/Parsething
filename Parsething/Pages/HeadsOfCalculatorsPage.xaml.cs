@@ -29,7 +29,7 @@ namespace Parsething.Pages
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsNew { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsCheck { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsDrawUp { get; set; }
-        private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesEPSpecialistGroupings { get; set; }
+        private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesSendingGroupings { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
 
         private DateTime StartDate = new DateTime();
@@ -68,7 +68,11 @@ namespace Parsething.Pages
 
             CalculationsCombobox.Items.Clear();
             CalculationsCombobox.Text = "Расчет:";
-            ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Новый", "", "", "", "Appoint");
+            ProcurementsEmployeesCalculatorsGroupingsNew = GET.View.ProcurementsEmployeesGroupBy(
+                new string[] { "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов" },
+                procurementStates: new string[] { "Новый" },
+                actionType: "Appoint"
+            );
             foreach (var item in ProcurementsEmployeesCalculatorsGroupingsNew)
             {
                 countOfCalculationsNew += item.CountOfProcurements;
@@ -80,7 +84,11 @@ namespace Parsething.Pages
             }
             CheckCombobox.Items.Clear();
             CheckCombobox.Text = "На проверке:";
-            ProcurementsEmployeesCalculatorsGroupingsCheck = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Проверка", "", "", "", "Appoint");
+            ProcurementsEmployeesCalculatorsGroupingsCheck = GET.View.ProcurementsEmployeesGroupBy(
+                new string[] { "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов" },
+                procurementStates: new string[] { "Проверка" },
+                actionType: "Appoint"
+            );
             foreach (var item in ProcurementsEmployeesCalculatorsGroupingsCheck)
             {
                 countOfCalculationsCheck += item.CountOfProcurements;
@@ -93,7 +101,11 @@ namespace Parsething.Pages
             DrawUp.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Оформить", GET.KindOf.ProcurementState)); // Оформить
             DrawUpCombobox.Items.Clear();
             DrawUpCombobox.Text = "Оформление:";
-            ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy("Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов", "Оформить", "", "", "", "Appoint");
+            ProcurementsEmployeesCalculatorsGroupingsDrawUp = GET.View.ProcurementsEmployeesGroupBy(
+                new string[] { "Специалист отдела расчетов", "Заместитель руководителя отдела расчетов", "Руководитель отдела расчетов" },
+                procurementStates: new string[] { "Оформить" },
+                actionType: "Appoint"
+            );
             foreach (var item in ProcurementsEmployeesCalculatorsGroupingsDrawUp)
             {
                 countOfCalculationsDrawUp += item.CountOfProcurements;
@@ -112,13 +124,17 @@ namespace Parsething.Pages
 
             SendingCombobox.Items.Clear();
             SendingCombobox.Text = "Отправка:";
-            ProcurementsEmployeesEPSpecialistGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист по работе с электронными площадками", "", "", "Отправлен", "", "", "", "Appoint");
-            foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
+            ProcurementsEmployeesSendingGroupings = GET.View.ProcurementsEmployeesGroupBy(
+                new string[] { "Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендерного отдела" },
+                actionType: "Appoint",
+                procurementStates: new string[] { "Отправлен" }
+            );
+            foreach (var item in ProcurementsEmployeesSendingGroupings)
             {
                 countOfSended += item.CountOfProcurements;
             }
             SendingOverAll.Text = countOfSended.ToString(); // Подачицы (общее количество)
-            foreach (var item in ProcurementsEmployeesEPSpecialistGroupings)
+            foreach (var item in ProcurementsEmployeesSendingGroupings)
             {
                 SendingCombobox.Items.Add(item); // Подачицы (по сотрудникам)
             } // Отправка

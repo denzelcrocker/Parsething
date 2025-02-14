@@ -30,6 +30,8 @@ namespace Parsething.Pages
         private List<ComponentCalculation>? ComponentCalculationsProblem { get; set; }
         private List<ComponentCalculation>? ComponentCalculationsInWork { get; set; }
         private List<ComponentCalculation>? ComponentCalculationsAgreed { get; set; }
+        private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
+
 
         private DateTime StartDate = new DateTime();
 
@@ -46,16 +48,44 @@ namespace Parsething.Pages
 
             var globalUsingValues = GlobalUsingValues.Instance;
             StartDate = globalUsingValues.StartDate;
+            int countOfMethods = 0;
+
+            Issued.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Оформлен", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Оформлены
+
+            ForSend.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Оформлен", false, GET.KindOf.Deadline, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// К отправке
+
+            OverdueIssued.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Оформлен", true, GET.KindOf.Deadline, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Просрочены
+
+            Sended.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Отправлен", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Отправлены
+
+            Bargaining.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Отправлен", false, GET.KindOf.ResultDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Торги
+
+            QuotesCombobox.Items.Clear();
+            QuotesCombobox.Text = "Сп-бы опр-я:";
+            ProcurementsMethodsGroupings = GET.View.ProcurementsEmployeesGroupByMethod(((Employee)Application.Current.MainWindow.DataContext).Id);
+            foreach (var item in ProcurementsMethodsGroupings)
+            {
+                countOfMethods += item.CountOfProcurements;
+            }
+            Quotes.Text = countOfMethods.ToString(); // Котировки (общее количество)
+            foreach (var item in ProcurementsMethodsGroupings)
+            {
+                QuotesCombobox.Items.Add(item); // Котировки (по методам)
+            }// Котировки
+
+            OverdueSended.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Отправлен", true, GET.KindOf.ResultDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Просрочены
+
+            Cancellation.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Отмена", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Отменены
+
+            Rejected.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Отклонен", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Отклонены
+
+            Lost.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Проигран", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Проиграны
 
             WonPartOne.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Выигран 1ч", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Выигран 1ч
 
             WonPartTwo.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Выигран 2ч", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Выигран 2ч
 
             WonByApplications.Text = GET.Aggregate.ProcurementsEmployeesCountBy("", GET.KindOf.Applications, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // По заявкам
-
-            ContractYes.Text = GET.Aggregate.ProcurementsEmployeesCountBy("", true, GET.KindOf.ContractConclusion, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Контракт Подписан
-
-            ContractNo.Text = GET.Aggregate.ProcurementsEmployeesCountBy("", false, GET.KindOf.ContractConclusion, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Контракт Не подписан
 
             Acceptance.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Приемка", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Приемка
 
@@ -67,7 +97,9 @@ namespace Parsething.Pages
 
             NotPaidDelay.Text = GET.Aggregate.ProcurementsEmployeesCountBy(true, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Просрочка
 
-            NotPaid.Text = (GET.Aggregate.ProcurementsEmployeesCountBy(true, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint") + GET.Aggregate.ProcurementsEmployeesCountBy(false, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint")).ToString(); // Не оплачены
+            UnpaidPennies.Text = GET.Aggregate.ProcurementsEmployeesCountBy(GET.KindOf.UnpaidPennies, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Неоплаченные пени
+
+            NotPaid.Text = (GET.Aggregate.ProcurementsEmployeesCountBy(true, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint") + GET.Aggregate.ProcurementsEmployeesCountBy(GET.KindOf.UnpaidPennies, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint") + GET.Aggregate.ProcurementsEmployeesCountBy(false, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint")).ToString(); // Не оплачены
 
             Judgement.Text = GET.Aggregate.ProcurementsEmployeesCountBy(GET.KindOf.Judgement, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Суд
 
@@ -99,17 +131,127 @@ namespace Parsething.Pages
 
             AWeekLater.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Через одну", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Отгрузка через неделю
 
-            Received.Text = GET.Aggregate.ProcurementsCountBy("Принят", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Принят
-
-            ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsEmployeesCountBy(true, KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Проверка расчета проведена
-
-            ApproveCalculatingNo.Text = GET.Aggregate.ProcurementsEmployeesCountBy(false, KindOf.Calculating, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Проверка расчета не проведена
-
-            ApprovePurchaseYes.Text = GET.Aggregate.ProcurementsEmployeesCountBy(true, KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Проверка закупки проведена
-
-            ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsEmployeesCountBy(false, KindOf.Purchase, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Проверка закупки не проведена
+            Received.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Принят", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Принят
         }
-       
+
+        private void IssuedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Оформлен", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+        private void ForSendButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Оформлен", false, GET.KindOf.Deadline, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void OverdueIssuedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Оформлен", true, GET.KindOf.Deadline, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void SendedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Отправлен", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void BargainingButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Отправлен", false, GET.KindOf.ResultDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void QuotesCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is ProcurementsEmployeesGrouping selectedGrouping)
+            {
+                var procurements = selectedGrouping.Procurements ?? new List<Procurement>();
+                GlobalUsingValues.Instance.AddProcurements(procurements);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+        private void OverdueSendedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Отправлен", true, GET.KindOf.ResultDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void CancellationButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Отмена", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void RejectedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Отклонен", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void LostButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Проигран", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+
         private void WonPartOneButton_Click(object sender, RoutedEventArgs e)
         {
             GlobalUsingValues.Instance.Procurements.Clear();
@@ -227,6 +369,17 @@ namespace Parsething.Pages
         {
             GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(true, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+        private void UnpaidPenniesButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy(GET.KindOf.UnpaidPennies, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
@@ -445,7 +598,5 @@ namespace Parsething.Pages
                 ToolTipHelper.SetToolTipProcurementEmployee(image, parameter);
             }
         }
-
-        
     }
 }

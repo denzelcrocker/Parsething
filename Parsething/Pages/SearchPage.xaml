@@ -206,9 +206,9 @@
                                                 </StackPanel>
                                             </Button.Content>
                                         </Button>
-                                        <Popup x:Name="EmployeeInfoPopUp" PlacementTarget="{Binding ElementName=EmployeeInfoButton}" Placement="Bottom" StaysOpen="True" Width="170">
+                                        <Popup x:Name="EmployeeInfoPopUp" PlacementTarget="{Binding ElementName=EmployeeInfoButton}" Placement="Bottom" StaysOpen="True" >
                                             <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
-                                                <Grid Width="170" >
+                                                <Grid >
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition/>
                                                         <RowDefinition/>
@@ -511,6 +511,7 @@
                                                         <Binding Path="ReserveContractAmount"/>
                                                         <Binding Path="CalculatingAmount"/>
                                                         <Binding Source="{StaticResource CalculatingString}"/>
+                                                        <Binding Path="UnitPrice"/>
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
@@ -527,6 +528,7 @@
                                                         <Binding Path="ReserveContractAmount"/>
                                                         <Binding Path="PurchaseAmount"/>
                                                         <Binding Source="{StaticResource PurchaseString}"/>
+                                                        <Binding Path="UnitPrice"/>
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
@@ -542,6 +544,7 @@
                                                         <Binding Path="ReserveContractAmount"/>
                                                         <Binding Path="CalculatingAmount"/>
                                                         <Binding Source="{StaticResource CalculatingString}"/>
+                                                        <Binding Path="UnitPrice"/>
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>
@@ -558,6 +561,7 @@
                                                         <Binding Path="ReserveContractAmount"/>
                                                         <Binding Path="PurchaseAmount"/>
                                                         <Binding Source="{StaticResource PurchaseString}"/>
+                                                        <Binding Path="UnitPrice"/>
                                                     </MultiBinding>
                                                 </TextBlock.Text>
                                             </TextBlock>

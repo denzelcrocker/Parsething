@@ -59,7 +59,22 @@ namespace Parsething.Pages
             ManagersCombobox.Text = "Менеджеры:";
             ManagersCombobox.Items.Clear();
 
-            ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела", "Выигран 1ч", "Выигран 2ч", "Приемка", "Принят", "Appoint");
+            ProcurementsEmployeesManagersGroupings = GET.View.ProcurementsEmployeesGroupBy(
+                new string[] {
+                    "Специалист тендерного отдела",
+                    "Руководитель тендерного отдела",
+                    "Заместитель руководителя тендерного отдела"
+                },
+                actionType: "Appoint",
+                procurementStates: new string[] {
+                    "Выигран 1ч",
+                    "Выигран 2ч",
+                    "Приемка",
+                    "Принят",
+                    "Оформлен",
+                    "Отправлен"
+                }
+            );
             foreach (var item in ProcurementsEmployeesManagersGroupings)
             {
                 countOfManagers += item.CountOfProcurements;
@@ -111,7 +126,9 @@ namespace Parsething.Pages
 
             NotPaidDelay.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(true));// Просрочка
 
-            NotPaid.Text = (GET.Aggregate.ProcurementsCountBy(true) + GET.Aggregate.ProcurementsCountBy(false)).ToString(); // Не оплачены
+            UnpaidPennies.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.UnpaidPennies));// Неоплаченные пени
+
+            NotPaid.Text = (GET.Aggregate.ProcurementsCountBy(true) + GET.Aggregate.ProcurementsCountBy(GET.KindOf.UnpaidPennies) + GET.Aggregate.ProcurementsCountBy(false)).ToString(); // Не оплачены
 
             Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
@@ -282,6 +299,14 @@ namespace Parsething.Pages
         private void NotPaidDelayButton_Click(object sender, RoutedEventArgs e)
         {
             var procurements = GET.View.ProcurementsBy(true) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void UnpaidPenniesButton_Click(object sender, RoutedEventArgs e)
+        {
+            var procurements = GET.View.ProcurementsBy(GET.KindOf.UnpaidPennies) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
                 MainFrame.Navigate(new SearchPage());

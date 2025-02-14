@@ -137,12 +137,7 @@ namespace Parsething.Pages
             CalculatingLabel.Foreground = Gray;
             CalculatingUL.Fill = Gray;
             CalculatingLV.Visibility = Visibility.Hidden;
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
+            SendingAndBargainingLV.Visibility = Visibility.Hidden;
             SupplyLabel.Foreground = Gray;
             SupplyUL.Fill = Gray;
             SupplyLV.Visibility = Visibility.Hidden;
@@ -216,10 +211,6 @@ namespace Parsething.Pages
 
             LegalEntities = GET.View.LegalEntities();
             LegalEntity.ItemsSource = LegalEntities;
-
-            Senders = GET.View.EmployeesBy("Специалист по работе с электронными площадками", "", "");
-            Sender.ItemsSource = Senders;
-            ProcurementsEmployeeSenders = GET.View.ProcurementsEmployeesBy(procurement, "Специалист по работе с электронными площадками", "", "", "Appoint");
 
             Managers = GET.View.EmployeesBy("Специалист тендерного отдела", "Руководитель тендерного отдела", "Заместитель руководителя тендреного отдела");
             Manager.ItemsSource = Managers;
@@ -382,18 +373,18 @@ namespace Parsething.Pages
                     ApplicationUL.Visibility = Visibility.Hidden;
                     Applications.Visibility = Visibility.Hidden;
                 }
-                foreach (Employee employee in Sender.ItemsSource)
-                    if (ProcurementsEmployeeSenders != null)
-                        if (employee.Id == ProcurementsEmployeeSenders.EmployeeId)
-                        {
-                            Sender.SelectedItem = employee;
-                            break;
-                        }
                 Bet.Text = Procurement.Bet.HasValue ? Procurement.Bet.Value.ToString("N2") : "";
                 MinimalPrice.Text = Procurement.MinimalPrice.HasValue ? Procurement.MinimalPrice.Value.ToString("N2") : "";
                 ContractAmount.Text = Procurement.ContractAmount.HasValue ? Procurement.ContractAmount.Value.ToString("N2") : "";
                 ReserveContractAmount.Text = Procurement.ReserveContractAmount.HasValue ? Procurement.ReserveContractAmount.Value.ToString("N2") : "";
                 IsUnitPriceCB.IsChecked = Procurement.IsUnitPrice;
+                if (IsUnitPriceCB.IsChecked == true)
+                {
+                    UnitPrice.Visibility = Visibility.Visible;
+                    UnitPrice.Text = Procurement.UnitPrice.ToString();
+                }
+                else
+                    UnitPrice.Visibility = Visibility.Hidden;
                 ProtocolDate.SelectedDate = Procurement.ProtocolDate;
                 CalculatingAmount.Text = Procurement.CalculatingAmount.HasValue ? Procurement.CalculatingAmount.Value.ToString("N2") : "";
                 if (Procurement?.ProcurementState?.Kind == "Отклонен")
@@ -491,6 +482,7 @@ namespace Parsething.Pages
                 ClosingDate.SelectedDate = Procurement.ClosingDate;
                 RealDueDate.SelectedDate = Procurement.RealDueDate;
                 Amount.Text = Procurement.Amount.HasValue ? Procurement.Amount.Value.ToString("N2") : "";
+                UnpaidPenniesCB.IsChecked = Procurement.UnpaidPennies;
                 foreach (SignedOriginal signedOriginal in SignedOriginal.ItemsSource)
                     if (signedOriginal.Id == Procurement.SignedOriginalId)
                     {
@@ -748,6 +740,23 @@ namespace Parsething.Pages
                 else
                     Procurement.ReserveContractAmount = null;
                 Procurement.IsUnitPrice = IsUnitPriceCB.IsChecked;
+                if (IsUnitPriceCB.IsChecked == true)
+                {
+                    UnitPrice.Visibility = Visibility.Visible;
+                    if (UnitPrice.Text != "")
+                    {
+                        decimal unitPriceDecimal;
+                        if (decimal.TryParse(UnitPrice.Text.Replace(".", ","), out unitPriceDecimal))
+                            Procurement.UnitPrice = unitPriceDecimal;
+                        else
+                            warningMessage += " Цена за единицу";
+                    }
+                }
+                else
+                {
+                    UnitPrice.Visibility = Visibility.Hidden;
+                    Procurement.UnitPrice = null;
+                }
                 Procurement.ProtocolDate = ProtocolDate.SelectedDate;
                 if (RejectionReason.SelectedValue is RejectionReason selectedReason)
                     Procurement.RejectionReason = selectedReason;
@@ -841,6 +850,7 @@ namespace Parsething.Pages
                 }
                 else
                     Procurement.Amount = null;
+                Procurement.UnpaidPennies = UnpaidPenniesCB.IsChecked;
                 if (SignedOriginal.SelectedItem != null)
                     Procurement.SignedOriginalId = ((SignedOriginal)SignedOriginal.SelectedItem).Id;
                 else
@@ -892,15 +902,6 @@ namespace Parsething.Pages
                 }
             }
         }
-        private void Sender_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
-            procurementsEmployee.ProcurementId = Procurement.Id;
-            procurementsEmployee.EmployeeId = ((Employee)Sender.SelectedItem).Id;
-            procurementsEmployee.ActionType = "Appoint";
-            PUT.ProcurementsEmployeesBy(procurementsEmployee, "Специалист по работе с электронными площадками", "", "");
-        }
-
         private void Calculator_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ProcurementsEmployee procurementsEmployee = new ProcurementsEmployee();
@@ -1150,6 +1151,7 @@ namespace Parsething.Pages
                 existingProcurement.ResultDate = Procurement.ResultDate;
                 existingProcurement.CalculatingAmount = Procurement.CalculatingAmount;
                 existingProcurement.PurchaseAmount = Procurement.PurchaseAmount;
+                existingProcurement.UnitPrice = Procurement.UnitPrice;
                 existingProcurement.ContractAmount = Procurement.ContractAmount;
                 existingProcurement.ReserveContractAmount = Procurement.ReserveContractAmount;
                 existingProcurement.ProcurementStateId = Procurement.ProcurementStateId;
@@ -1186,13 +1188,9 @@ namespace Parsething.Pages
             CalculatingUL.Fill = Gray;
             CalculatingLV.Visibility = Visibility.Hidden;
 
-            SendingLabel.Foreground = Gray;
-            SendingUL.Fill = Gray;
-            SendingLV.Visibility = Visibility.Hidden;
-
-            BargainingLabel.Foreground = Gray;
-            BargainingUL.Fill = Gray;
-            BargainingLV.Visibility = Visibility.Hidden;
+            SendingAndBargainingLabel.Foreground = Gray;
+            SendingAndBargainingUL.Fill = Gray;
+            SendingAndBargainingLV.Visibility = Visibility.Hidden;
 
             SupplyLabel.Foreground = Gray;
             SupplyUL.Fill = Gray;
@@ -1238,16 +1236,10 @@ namespace Parsething.Pages
             SetActiveElement(CalculatingLabel, CalculatingUL, CalculatingLV);
         }
 
-        private void Sending_Click(object sender, RoutedEventArgs e)
+        private void SendingAndBargaining_Click(object sender, RoutedEventArgs e)
         {
             ResetAll();
-            SetActiveElement(SendingLabel, SendingUL, SendingLV);
-        }
-
-        private void Bargaining_Click(object sender, RoutedEventArgs e)
-        {
-            ResetAll();
-            SetActiveElement(BargainingLabel, BargainingUL, BargainingLV);
+            SetActiveElement(SendingAndBargainingLabel, SendingAndBargainingUL, SendingAndBargainingLV);
         }
 
         private void Supply_Click(object sender, RoutedEventArgs e)
@@ -1356,7 +1348,6 @@ namespace Parsething.Pages
                     RefreshProcurementButton.Visibility = Visibility.Visible;
                     break;
                 case "Руководитель отдела расчетов":
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
                     Distance.IsReadOnly = true;
@@ -1369,7 +1360,6 @@ namespace Parsething.Pages
                     DeliveryDetails.IsReadOnly = true;
                     break;
                 case "Заместитель руководителя отдела расчетов":
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
                     Distance.IsReadOnly = true;
@@ -1391,8 +1381,7 @@ namespace Parsething.Pages
                     ContractInfo.IsEnabled = false;
                     ContractNuances.IsEnabled = false;
                     Calculating.IsEnabled = false;
-                    Sending.IsEnabled = false;
-                    Bargaining.IsEnabled = false;
+                    SendingAndBargaining.IsEnabled = false;
                     Supply.IsEnabled = false;
                     Payment.IsEnabled = false;
                     Applications.IsEnabled = false;
@@ -1400,52 +1389,38 @@ namespace Parsething.Pages
                     break;
                 case "Руководитель тендерного отдела":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     break;
                 case "Заместитель руководителя тендреного отдела":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
-                    Purchaser.IsEnabled = false;
-                    break;
-                case "Специалист по работе с электронными площадками":
-                    RefreshProcurementButton.Visibility = Visibility.Visible;
-                    Calculator.IsEnabled = false;
-                    Manager.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     break;
                 case "Специалист тендерного отдела":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
                     ApplicationsCB.IsEnabled = false;
                     break;
                 case "Руководитель отдела закупки":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Manager.IsEnabled = false;
                     break;
                 case "Заместитель руководителя отдела закупок":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Manager.IsEnabled = false;
                     break;
                 case "Специалист закупки":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
                     break;
                 case "Руководитель отдела производства":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
                     break;
                 case "Заместитель руководителя отдела производства":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
                     break;
@@ -1458,8 +1433,7 @@ namespace Parsething.Pages
                     ProcurementInfo.IsEnabled = false;
                     ContractInfo.IsEnabled = false;
                     Calculating.IsEnabled = false;
-                    Sending.IsEnabled = false;
-                    Bargaining.IsEnabled = false;
+                    SendingAndBargaining.IsEnabled = false;
                     Supply.IsEnabled = false;
                     Payment.IsEnabled = false;
                     Applications.IsEnabled = false;
@@ -1467,7 +1441,6 @@ namespace Parsething.Pages
                     break;
                 case "Юрист":
                     Calculator.IsEnabled = false;
-                    Sender.IsEnabled = false;
                     Purchaser.IsEnabled = false;
                     Manager.IsEnabled = false;
                     break;

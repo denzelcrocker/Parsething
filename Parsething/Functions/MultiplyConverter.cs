@@ -20,34 +20,35 @@ namespace Parsething.Functions
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null || values.Length < 3)
+            if (values == null || values.Length < 5)
                 return DependencyProperty.UnsetValue;
 
             decimal? contractAmount = values[0] as decimal?;
             decimal? reserveContractAmount = values[1] as decimal?;
             decimal? amount = values[2] as decimal?;
-            string? type = values[3].ToString();
+            string? type = values[3]?.ToString();
+            decimal? unitPrice = values[4] as decimal?;
 
-            if (reserveContractAmount == null && contractAmount != null)
+            if (amount == null)
+                return DependencyProperty.UnsetValue;
+
+            decimal? baseAmount = null;
+
+            if (type == "Calculating")
             {
-                if (amount != null)
-                    return ((decimal)contractAmount - (decimal)amount).ToString("N2") + " р.";
-                else
-                    return DependencyProperty.UnsetValue; // Обработка случая, если amount == null
-            }
-            else if (reserveContractAmount != null)
-            {
-                if (amount != null && type == "Purchase")
-                    return ((decimal)reserveContractAmount - (decimal)amount).ToString("N2") + " р.";
-                else if (amount != null && type == "Calculating" && contractAmount != null)
-                    return ((decimal)contractAmount - (decimal)amount).ToString("N2") + " р.";
-                else
-                    return DependencyProperty.UnsetValue; // Обработка случая, если amount == null
+                // Если unitPrice задан, используем его. Если нет, берем резервную сумму контракта или сам contractAmount.
+                baseAmount = (unitPrice != null && unitPrice > 0) ? unitPrice : (reserveContractAmount ?? contractAmount);
             }
             else
             {
-                return DependencyProperty.UnsetValue;
+                // Для остальных случаев проверяем, есть ли резервная сумма контракта
+                baseAmount = reserveContractAmount ?? contractAmount;
             }
+
+            if (baseAmount == null)
+                return DependencyProperty.UnsetValue;
+
+            return ((decimal)baseAmount - (decimal)amount).ToString("N2") + " р.";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -55,38 +56,40 @@ namespace Parsething.Functions
             throw new NotSupportedException();
         }
     }
+
     public class PercentageProfitConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null || values.Length < 3)
+            if (values == null || values.Length < 5)
                 return DependencyProperty.UnsetValue;
 
             decimal? contractAmount = values[0] as decimal?;
             decimal? reserveContractAmount = values[1] as decimal?;
             decimal? amount = values[2] as decimal?;
-            string? type = values[3].ToString();
+            string? type = values[3]?.ToString();
+            decimal? unitPrice = values[4] as decimal?;
 
+            if (amount == null || amount == 0)
+                return DependencyProperty.UnsetValue;
 
-            if (reserveContractAmount == null && contractAmount != null)
+            decimal? baseAmount = null;
+
+            if (type == "Calculating")
             {
-                if (amount != null && amount != 0)
-                    return (((decimal)contractAmount - (decimal)amount) / (decimal)amount * 100).ToString("N0") + "%";
-                else
-                    return DependencyProperty.UnsetValue; // Обработка случая, если amount == null
-            }
-            else if (reserveContractAmount != null)
-            {
-                if (amount != null && type == "Purchase" && amount != 0)
-                    return (((decimal)reserveContractAmount - (decimal)amount) / (decimal)amount * 100).ToString("N0") + "%";
-                else if (amount != null && type == "Calculating" && contractAmount != null && amount != 0)
-                    return (((decimal)contractAmount - (decimal)amount) / (decimal)amount * 100).ToString("N0") + "%";
-                return DependencyProperty.UnsetValue; // Обработка случая, если amount == null
+                // Если unitPrice задан, используем его. Если нет, берем резервную сумму контракта или сам contractAmount.
+                baseAmount = (unitPrice != null && unitPrice > 0) ? unitPrice : (reserveContractAmount ?? contractAmount);
             }
             else
             {
-                return DependencyProperty.UnsetValue;
+                // Для остальных случаев проверяем, есть ли резервная сумма контракта
+                baseAmount = reserveContractAmount ?? contractAmount;
             }
+
+            if (baseAmount == null)
+                return DependencyProperty.UnsetValue;
+
+            return (((decimal)baseAmount - (decimal)amount) / (decimal)amount * 100).ToString("N0") + "%";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

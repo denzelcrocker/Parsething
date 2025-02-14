@@ -64,13 +64,16 @@ namespace Parsething
 
         private void ReloadNotifications()
         {
-            int employeeId = ((Employee)Application.Current.Dispatcher.Invoke(() => DataContext)).Id;
+            var employee = Application.Current.Dispatcher.Invoke(() => DataContext as Employee);
+
+            if (employee == null)
+                return;
+
+            int employeeId = employee.Id;
 
             Task.Run(() =>
             {
-                // Получаем уведомления в фоновом потоке
                 var notifications = GET.View.UnreadEmployeeNotificationsBy(employeeId);
-                // Возвращаемся в UI-поток, чтобы показать уведомления
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     UpdateNotificationIcon(employeeId);
@@ -131,10 +134,6 @@ namespace Parsething
             else if (((Employee)DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
             {
                 _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
-            }
-            else if (((Employee)DataContext).Position.Kind == "Специалист по работе с электронными площадками")
-            {
-                _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
             }
             else if (((Employee)DataContext).Position.Kind == "Специалист тендерного отдела")
             {
@@ -292,10 +291,6 @@ namespace Parsething
             else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Руководитель тендерного отдела" || ((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Заместитель руководителя тендреного отдела")
             {
                 _ = MainFrame.Navigate(new Pages.HeadsOfManagersPage());
-            }
-            else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист по работе с электронными площадками")
-            {
-                _ = MainFrame.Navigate(new Pages.EPlatformSpecialistPage());
             }
             else if (((Employee)Application.Current.MainWindow.DataContext).Position.Kind == "Специалист тендерного отдела")
             {

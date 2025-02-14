@@ -473,25 +473,41 @@ namespace Parsething.Pages
             decimal reserveContractAmount = procurement.ReserveContractAmount ?? 0m;
             decimal calculatingAmountVal = procurement.CalculatingAmount ?? 0m;
             decimal purchaseAmountVal = procurement.PurchaseAmount ?? 0m;
+            decimal unitPrice = procurement.UnitPrice ?? 0m;
 
             overallInitialPrice += initialPrice;
+
+            // Обработка контрактной суммы
             if (procurement.ContractAmount != null && procurement.ReserveContractAmount == null && procurement.CalculatingAmount != null)
             {
                 overallAmount += contractAmount;
                 profitReal += contractAmount - purchaseAmountVal;
-                profitCalculate += contractAmount - calculatingAmountVal;
+
+                // Проверяем, если UnitPrice задан
+                if (unitPrice > 0)
+                    profitCalculate += unitPrice - calculatingAmountVal; // Используем UnitPrice для расчета прибыли
+                else
+                    profitCalculate += contractAmount - calculatingAmountVal; // Старый расчет
+
                 calculatingAmount += calculatingAmountVal;
                 purchaseAmount += purchaseAmountVal;
                 overallAmountCalculate += contractAmount;
             }
+            // Обработка резервной контрактной суммы
             else if (procurement.ReserveContractAmount != null && procurement.CalculatingAmount != null)
             {
                 overallAmount += reserveContractAmount;
                 profitReal += reserveContractAmount - purchaseAmountVal;
-                profitCalculate += contractAmount - calculatingAmountVal;
+
+                // Проверяем, если UnitPrice задан
+                if (unitPrice > 0)
+                    profitCalculate += unitPrice - calculatingAmountVal; // Используем UnitPrice для расчета прибыли
+                else
+                    profitCalculate += reserveContractAmount - calculatingAmountVal; // Старый расчет для резервной суммы
+
                 calculatingAmount += calculatingAmountVal;
                 purchaseAmount += purchaseAmountVal;
-                overallAmountCalculate += contractAmount;
+                overallAmountCalculate += reserveContractAmount;
             }
         }
 
@@ -505,12 +521,19 @@ namespace Parsething.Pages
             decimal profitCalculateVal = profitCalculate ?? 0m;
             decimal profitRealVal = profitReal ?? 0m;
 
-
             OverallAmount.Text = overallAmountVal.ToString("N2") + " р.";
             OverallInitialPrice.Text = overallInitialPriceVal.ToString("N2") + " р.";
+
             if (calculatingAmountVal != 0 && purchaseAmountVal != 0)
             {
-                AvgCalculationProfit.Text = $"{profitCalculateVal:N2} р. ({((overallAmountCalculateVal - calculatingAmountVal) / calculatingAmountVal * 100):N1} %)";
+                // Пересчитываем процентный расчет, учитывая profitCalculate (правильный расчет процента)
+                decimal profitPercentage = 0;
+                if (calculatingAmountVal != 0)
+                {
+                    profitPercentage = (profitCalculateVal / calculatingAmountVal) * 100;
+                }
+
+                AvgCalculationProfit.Text = $"{profitCalculateVal:N2} р. ({profitPercentage:N1} %)";
                 AvgPurchaseProfit.Text = $"{profitRealVal:N2} р. ({((overallAmountVal - purchaseAmountVal) / purchaseAmountVal * 100):N1} %)";
             }
             else

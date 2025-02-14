@@ -34,6 +34,8 @@ namespace Parsething.Pages
 
             NotPaid.Text = (GET.Aggregate.ProcurementsCountBy(true) + GET.Aggregate.ProcurementsCountBy(false)).ToString(); // Не оплачены
 
+            UnpaidPennies.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.UnpaidPennies)); // Неоплаченные пени
+
             Judgement.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.Judgement)); // Суд
 
             FAS.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy(GET.KindOf.FAS)); // ФАС
@@ -70,6 +72,15 @@ namespace Parsething.Pages
         {
             View.ItemsSource = null;
             var procurements = GET.View.ProcurementsBy(true) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+        }
+
+        private void UnpaidPenniesButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy(GET.KindOf.UnpaidPennies) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
                 View.ItemsSource = GlobalUsingValues.Instance.Procurements;

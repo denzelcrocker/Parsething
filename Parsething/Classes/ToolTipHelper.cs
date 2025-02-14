@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using OfficeOpenXml.Core.Worksheet.Fill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Parsething.Classes
                     break;
                 case "Applications":
                     procurements = GET.View.ProcurementsBy("", GET.KindOf.Applications);
+
                     break;
                 case "Предыдущая":
                 case "Текущая":
@@ -48,6 +50,9 @@ namespace Parsething.Classes
                     break;
                 case "NotPaidDelay":
                     procurements = GET.View.ProcurementsBy(true);
+                    break;
+                case "UnpaidPennies":
+                    procurements = GET.View.ProcurementsBy(GET.KindOf.UnpaidPennies);
                     break;
                 case "Очередь":
                     procurements = GET.View.ProcurementsQueue();
@@ -115,14 +120,44 @@ namespace Parsething.Classes
                     return;
             }
 
-            // Логика для NotPaid, NotPaidOnTime, NotPaidDelay
-            if (parameter == "NotPaid" || parameter == "NotPaidOnTime" || parameter == "NotPaidDelay")
+            // Логика для NotPaid, NotPaidOnTime, NotPaidDelay, UnpaidPennies
+            if (parameter == "NotPaid" || parameter == "NotPaidOnTime" || parameter == "NotPaidDelay" || parameter == "UnpaidPennies")
             {
                 var totalContractAmount = procurements.Sum(p => p.GetFinalAmount());
                 var totalPaidAmount = procurements.Sum(p => p.Amount); // Предполагается, что Amount хранит сумму оплаты
                 var amountLeftToPay = totalContractAmount - totalPaidAmount;
 
                 var toolTipContent = $"Осталось оплатить - {amountLeftToPay:N2} р.";
+                var toolTip = new ToolTip
+                {
+                    Content = toolTipContent,
+                    Style = (Style)Application.Current.Resources["ComponentCalculation.ToolTip"]
+                };
+
+                ToolTipService.SetInitialShowDelay(element, 0);
+                ToolTipService.SetShowDuration(element, 60000);
+                ToolTipService.SetBetweenShowDelay(element, 200);
+
+                element.ToolTip = toolTip;
+                return;
+            }
+            if (parameter == "Applications")
+            {
+                decimal totalContractAmount = procurements.Sum(p => p.GetFinalAmount());
+                decimal applicationAmount = 0;
+                decimal applicationAmountLeft = 0;
+
+                foreach (Procurement procurement in procurements)
+                {
+                    List<Procurement> applications = GET.View.ApplicationsBy(procurement.DisplayId);
+                    foreach (Procurement application in applications)
+                    {
+                        applicationAmount += application.GetFinalAmount();
+                    }
+                }
+                applicationAmountLeft = totalContractAmount - applicationAmount;
+
+                var toolTipContent = $"Сумма контрактов - {totalContractAmount:N2} р. \nСумма заявок - {applicationAmount:N2} р. \nОстаток - {applicationAmountLeft:N2} р.";
                 var toolTip = new ToolTip
                 {
                     Content = toolTipContent,
@@ -189,6 +224,9 @@ namespace Parsething.Classes
                 case "CorrectionDate":
                     procurementsEmployees = GET.View.ProcurementsEmployeesBy("Приемка", GET.KindOf.CorrectionDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
                     break;
+                case "UnpaidPennies":
+                    procurementsEmployees = GET.View.ProcurementsEmployeesBy(GET.KindOf.UnpaidPennies, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+                    break;
                 case "NotPaid":
                     procurementsEmployees = GET.View.ProcurementsEmployeesNotPaid(((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
                     break;
@@ -200,13 +238,43 @@ namespace Parsething.Classes
                     break;
             }
             procurements = Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees);
-            if (parameter == "NotPaid" || parameter == "NotPaidOnTime" || parameter == "NotPaidDelay")
+            if (parameter == "NotPaid" || parameter == "NotPaidOnTime" || parameter == "NotPaidDelay" || parameter == "UnpaidPennies")
             {
                 var totalContractAmount = procurements.Sum(p => p.GetFinalAmount());
                 var totalPaidAmount = procurements.Sum(p => p.Amount); // Предполагается, что Amount хранит сумму оплаты
                 var amountLeftToPay = totalContractAmount - totalPaidAmount;
 
                 var toolTipContent = $"Осталось оплатить - {amountLeftToPay:N2} р.";
+                var toolTip = new ToolTip
+                {
+                    Content = toolTipContent,
+                    Style = (Style)Application.Current.Resources["ComponentCalculation.ToolTip"]
+                };
+
+                ToolTipService.SetInitialShowDelay(element, 0);
+                ToolTipService.SetShowDuration(element, 60000);
+                ToolTipService.SetBetweenShowDelay(element, 200);
+
+                element.ToolTip = toolTip;
+                return;
+            }
+            if (parameter == "Applications")
+            {
+                decimal totalContractAmount = procurements.Sum(p => p.GetFinalAmount());
+                decimal applicationAmount = 0;
+                decimal applicationAmountLeft = 0;
+
+                foreach (Procurement procurement in procurements)
+                {
+                    List<Procurement> applications = GET.View.ApplicationsBy(procurement.DisplayId);
+                    foreach (Procurement application in applications)
+                    {
+                        applicationAmount += application.GetFinalAmount();
+                    }
+                }
+                applicationAmountLeft = totalContractAmount - applicationAmount;
+
+                var toolTipContent = $"Сумма контрактов - {totalContractAmount:N2} р. \nСумма заявок - {applicationAmount:N2} р. \nОстаток - {applicationAmountLeft:N2} р.";
                 var toolTip = new ToolTip
                 {
                     Content = toolTipContent,
