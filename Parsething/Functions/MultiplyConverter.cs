@@ -676,7 +676,7 @@ namespace Parsething.Functions
 
             if (!procurementId.HasValue) return DependencyProperty.UnsetValue;
 
-            var componentCalculations = GET.View.ComponentCalculationsBy(procurementId.Value);
+            var componentCalculations = GET.View.ComponentCalculationsBy(procurementId.Value).Where(cc => cc.IsDeleted != true);
             var totalReservedValue = componentCalculations
             .Where(cc => cc.ComponentState != null && cc.ComponentState.Kind == "В резерве")
             .Sum(cc => cc.PricePurchase * cc.CountPurchase);

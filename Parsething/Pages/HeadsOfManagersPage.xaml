@@ -196,7 +196,7 @@
                         <Label Content="Неоплаченные пени:" Style="{DynamicResource Title.MainFrame.5.Foreground}" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2"/>
                         <TextBlock x:Name="UnpaidPennies" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="9" />
                         <Button x:Name="UnpaidPenniesButton" Grid.ColumnSpan="5" Grid.Row="9" Opacity="0" Cursor="Hand" Click="UnpaidPenniesButton_Click"  />
-                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="9" Grid.Column="3" Tag="NotPaidDelay" MouseEnter="Image_MouseEnter"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="9" Grid.Column="3" Tag="UnpaidPennies" MouseEnter="Image_MouseEnter"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
                         <Label Content="Суд:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="13"/>
                         <TextBlock x:Name="Judgement" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="13" />

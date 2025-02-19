@@ -121,7 +121,9 @@
     <Using Include="System.Windows.Controls" />
     <Using Include="System.Windows.Input" />
   </ItemGroup>
-
+  <PropertyGroup>
+    <Version>1.0.1.13</Version>
+  </PropertyGroup>
   <ItemGroup>
     <EditorConfigFiles Remove="C:\Users\zelen\source\repos\Parsething\Parsething\.editorconfig" />
   </ItemGroup>

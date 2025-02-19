@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Windows;
 
 namespace Parsething.Windows
@@ -46,43 +47,68 @@ namespace Parsething.Windows
             Employee = GET.Entry.Employee(UserName.Text, Password.Password);
             if (Employee != null)
             {
-                DialogResult = true;
-
-                string computerName = Dns.GetHostName();
-
-                string ipAddress = string.Empty;
-                foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
+                if (!IsUpdateRequired())
                 {
-                    if (networkInterface.OperationalStatus == OperationalStatus.Up)
+                    DialogResult = true;
+
+                    string computerName = Dns.GetHostName();
+
+                    string ipAddress = string.Empty;
+                    foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
                     {
-                        foreach (var addressInfo in networkInterface.GetIPProperties().UnicastAddresses)
+                        if (networkInterface.OperationalStatus == OperationalStatus.Up)
                         {
-                            if (addressInfo.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                            foreach (var addressInfo in networkInterface.GetIPProperties().UnicastAddresses)
                             {
-                                ipAddress = addressInfo.Address.ToString();
-                                break;
+                                if (addressInfo.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                                {
+                                    ipAddress = addressInfo.Address.ToString();
+                                    break;
+                                }
                             }
                         }
+                        if (!string.IsNullOrEmpty(ipAddress))
+                        {
+                            break;
+                        }
                     }
-                    if (!string.IsNullOrEmpty(ipAddress))
-                    {
-                        break;
-                    }
-                }
-                string loginInfo = $"{Employee.FullName}, IP: {ipAddress}, Компьютер: {computerName}";
-                History? history = new History { EmployeeId = Employee.Id, Date = DateTime.Now, EntityType = "Login", EntryId = 0, Text = $"{loginInfo}" };
-                PUT.History(history);
+                    string loginInfo = $"{Employee.FullName}, IP: {ipAddress}, Компьютер: {computerName}";
+                    History? history = new History { EmployeeId = Employee.Id, Date = DateTime.Now, EntityType = "Login", EntryId = 0, Text = $"{loginInfo}" };
+                    PUT.History(history);
 
-                string username = UserName.Text;
-                string password = Password.Password;
-                UserConfig.SaveCredentials(username, password);
+                    string username = UserName.Text;
+                    string password = Password.Password;
+                    UserConfig.SaveCredentials(username, password);
+                }
             }
             else
             {
                 MessageBox.Show("Вы ввели неверные данные!");
             }
         }
+        public bool IsUpdateRequired()
+        {
+            string currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
 
+            var latestVersion = GET.View.GetLatestVersion(); // Получаем последнюю версию из БД
+
+            if (latestVersion.VersionNumber != currentVersion)
+            {
+                if (latestVersion.IsMandatory)
+                {
+                    MessageBox.Show("Доступна новая версия! Обновите приложение", "Обязательное обновление!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogResult = false;
+                    return true; // Блокируем работу
+                }
+                else
+                {
+                    MessageBox.Show("Доступна новая версия! Обновите приложение", "Обновление", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+            }
+
+            return false;
+        }
         private void Password_TextInput(object sender, TextCompositionEventArgs e) =>
             VisiblePassword.Text = Password.Password;
 

@@ -803,10 +803,10 @@ namespace Parsething.Pages
         }
         private decimal GetTotalReserveAmount(Procurement procurement)
         {
-            var componentCalculations = GET.View.ComponentCalculationsBy(procurement.Id);
+            var componentCalculations = GET.View.ComponentCalculationsBy(procurement.Id).Where(cc => cc.IsDeleted != true);
             return componentCalculations
-            .Where(cc => cc.ComponentState != null && cc.ComponentState.Kind == "В резерве")
-            .Sum(cc => cc.PricePurchase.Value * cc.CountPurchase.Value);
+                .Where(cc => cc.ComponentState?.Kind == "В резерве")
+                .Sum(cc => (cc.PricePurchase ?? 0m) * (cc.CountPurchase ?? 0m));
         }
 
         private decimal CalculateReservePercentage(Procurement procurement)
