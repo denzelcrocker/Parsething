@@ -59,6 +59,7 @@ namespace Parsething.Pages
             }
             OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", KindOf.CorrectionDate)); // На исправлении
             Acceptance.Text = GET.Aggregate.ProcurementsCountBy("Приемка", GET.KindOf.ProcurementState).ToString();
+            Shipped.Text = GET.Aggregate.ProcurementsCountBy("Отгружен", GET.KindOf.ProcurementState).ToString();
             PreviousWeek.Text = GET.Aggregate.ProcurementsCountBy("Предыдущая", GET.KindOf.ShipmentPlane).ToString();
             ThisWeek.Text = GET.Aggregate.ProcurementsCountBy("Текущая", GET.KindOf.ShipmentPlane).ToString();
             NextWeek.Text = GET.Aggregate.ProcurementsCountBy("Следующая", GET.KindOf.ShipmentPlane).ToString();
@@ -88,6 +89,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -111,6 +113,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -134,6 +137,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.LightGray;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -142,6 +146,30 @@ namespace Parsething.Pages
             ThisWeekButton.Background = Brushes.Transparent;
             NextWeekButton.Background = Brushes.Transparent;
             AWeekLaterButton.Background = Brushes.Transparent; 
+        }
+
+        private void ShippedButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Отгружен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements != null)
+            {
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+            }
+            WonPartOneButton.Background = Brushes.Transparent;
+            WonPartTwoButton.Background = Brushes.Transparent;
+            AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.LightGray;
+            ProblemButton.Background = Brushes.Transparent;
+            InWorkButton.Background = Brushes.Transparent;
+            AgreedButton.Background = Brushes.Transparent;
+            OnTheFixButton.Background = Brushes.Transparent;
+            PreviousWeekButton.Background = Brushes.Transparent;
+            ThisWeekButton.Background = Brushes.Transparent;
+            NextWeekButton.Background = Brushes.Transparent;
+            AWeekLaterButton.Background = Brushes.Transparent;
         }
 
         private void WonPartTwoButton_Click(object sender, RoutedEventArgs e)
@@ -157,6 +185,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.LightGray;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -180,6 +209,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.LightGray;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -205,6 +235,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.LightGray;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -231,6 +262,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.LightGray;
             AgreedButton.Background = Brushes.Transparent;
@@ -257,6 +289,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.LightGray;
@@ -279,6 +312,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -301,6 +335,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -323,6 +358,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -345,6 +381,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;
@@ -368,6 +405,7 @@ namespace Parsething.Pages
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             AcceptanceButton.Background = Brushes.Transparent;
+            ShippedButton.Background = Brushes.Transparent;
             ProblemButton.Background = Brushes.Transparent;
             InWorkButton.Background = Brushes.Transparent;
             AgreedButton.Background = Brushes.Transparent;

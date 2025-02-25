@@ -22,7 +22,7 @@
     </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
-            <Grid Width="1810" Height="820">
+            <Grid Width="1810" Height="830">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
                     <ColumnDefinition Width="2"/>
@@ -45,11 +45,13 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="40"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="40"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="40"/>
                             <RowDefinition Height="2"/>
                         </Grid.RowDefinitions>
                         <Button x:Name="WonPartOneButton" Grid.ColumnSpan="5" Grid.Row="0" Cursor="Hand" Click="WonPartOneButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 1ч:"/>
@@ -64,6 +66,9 @@
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="4" Grid.Column="4" Tag="Приемка" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="4" Text="0"/>
                         <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="5"/>
+                        <Button x:Name="ShippedButton" Grid.ColumnSpan="5" Grid.Row="6" Cursor="Hand" Click="ShippedButton_Click" Style="{DynamicResource BaseButton}" Content="Отгружен:"/>
+                        <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="6" Grid.Column="4" Tag="Shipped" MouseEnter="Image_MouseEnter"/>
+                        <TextBlock x:Name="Shipped" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="6" Text="0"/>
                     </Grid>
                     <Label Content="Поставка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
                     <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
@@ -88,7 +93,6 @@
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
-                            <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
                         <Button x:Name="ProblemButton" Grid.ColumnSpan="5" Grid.Row="0"  Cursor="Hand" Click="ProblemButton_Click" Style="{DynamicResource BaseButton}" Content="Проблема:"/>
                         <TextBlock x:Name="Problem" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />

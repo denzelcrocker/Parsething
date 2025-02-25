@@ -348,6 +348,14 @@ namespace Parsething.Pages
             MessageBox.Show("В разработке");
         }
 
+        private void ShippedButton_Click(object sender, RoutedEventArgs e)
+        {
+            var procurements = GET.View.ProcurementsBy("Отгружен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
         private void ReceivedButton_Click(object sender, RoutedEventArgs e)
         {
             var procurements = GET.View.ProcurementsBy("Принят", StartDate) ?? new List<Procurement>();

@@ -129,7 +129,9 @@ namespace Parsething.Pages
 
             NextWeek.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Следующая", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Следующая неделя отгрузки
 
-            AWeekLater.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Через одну", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Отгрузка через неделю
+            AWeekLater.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Через одну", GET.KindOf.ShipmentPlane, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Отгрузка через неделю+
+
+            Shipped.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Отгружен", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString();// Отгружены
 
             Received.Text = GET.Aggregate.ProcurementsEmployeesCountBy("Принят", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint").ToString(); // Принят
         }
@@ -532,6 +534,18 @@ namespace Parsething.Pages
         {
             GlobalUsingValues.Instance.Procurements.Clear();
             ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Принят", StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+            foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
+            {
+                GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);
+            }
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+
+        private void ShippedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalUsingValues.Instance.Procurements.Clear();
+            ProcurementsEmployees = GET.View.ProcurementsEmployeesBy("Отгружен", GET.KindOf.ProcurementState, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
             foreach (ProcurementsEmployee procurementsEmployee in ProcurementsEmployees)
             {
                 GlobalUsingValues.Instance.AddProcurement(procurementsEmployee.Procurement);

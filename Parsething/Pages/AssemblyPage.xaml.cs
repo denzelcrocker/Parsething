@@ -59,6 +59,8 @@ namespace Parsething.Pages
 
             AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
+            Shipped.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отгружен", GET.KindOf.ProcurementState)); // Отгружен
+
             WonPartTwo.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Выигран 2ч", GET.KindOf.ProcurementState)); // Выигран 2ч
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -166,6 +168,18 @@ namespace Parsething.Pages
         {
             View.ItemsSource = null;
             var procurements = GET.View.ProcurementsBy("Через одну", GET.KindOf.ShipmentPlane) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements != null)
+            {
+                GET.View.PopulateComponentStates(GlobalUsingValues.Instance.Procurements);
+                View.ItemsSource = GlobalUsingValues.Instance.Procurements;
+            }
+        }
+
+        private void ShippedButton_Click(object sender, RoutedEventArgs e)
+        {
+            View.ItemsSource = null;
+            var procurements = GET.View.ProcurementsBy("Отгружен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements != null)
             {

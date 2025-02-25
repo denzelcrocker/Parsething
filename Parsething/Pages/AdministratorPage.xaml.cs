@@ -213,6 +213,8 @@ public partial class AdministratorPage : Page
 
         ApprovePurchaseNo.Text = GET.Aggregate.ProcurementsCountBy(false, KindOf.Purchase).ToString(); // Проверка закупки не проведена
 
+        Shipped.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отгружен", GET.KindOf.ProcurementState)); // Отгружен
+
         Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", StartDate));// Принят
         // Рублей в обороте
 
@@ -479,6 +481,14 @@ public partial class AdministratorPage : Page
     private void ApprovePurchaseNoButton_Click(object sender, RoutedEventArgs e)
     {
         var procurements = GET.View.ProcurementsBy(false, GET.KindOf.Purchase) ?? new List<Procurement>();
+        GlobalUsingValues.Instance.AddProcurements(procurements);
+        if (GlobalUsingValues.Instance.Procurements.Count > 0)
+            MainFrame.Navigate(new SearchPage());
+    }
+
+    private void ShippedButton_Click(object sender, RoutedEventArgs e)
+    {
+        var procurements = GET.View.ProcurementsBy("Отгружен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
         GlobalUsingValues.Instance.AddProcurements(procurements);
         if (GlobalUsingValues.Instance.Procurements.Count > 0)
             MainFrame.Navigate(new SearchPage());

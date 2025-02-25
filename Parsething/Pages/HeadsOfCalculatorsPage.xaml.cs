@@ -189,6 +189,8 @@ namespace Parsething.Pages
             AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
             OnTheFix.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Приемка", KindOf.CorrectionDate)); // На исправлении
+
+            Shipped.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отгружен", GET.KindOf.ProcurementState)); // Отгружен
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
@@ -437,6 +439,13 @@ namespace Parsething.Pages
         private void OnTheFixButton_Click(object sender, RoutedEventArgs e)
         {
             var procurements = GET.View.ProcurementsBy("Приемка", GET.KindOf.CorrectionDate) ?? new List<Procurement>();
+            GlobalUsingValues.Instance.AddProcurements(procurements);
+            if (GlobalUsingValues.Instance.Procurements.Count > 0)
+                MainFrame.Navigate(new SearchPage());
+        }
+        private void ShippedButton_Click(object sender, RoutedEventArgs e)
+        {
+            var procurements = GET.View.ProcurementsBy("Отгружен", GET.KindOf.ProcurementState) ?? new List<Procurement>();
             GlobalUsingValues.Instance.AddProcurements(procurements);
             if (GlobalUsingValues.Instance.Procurements.Count > 0)
                 MainFrame.Navigate(new SearchPage());

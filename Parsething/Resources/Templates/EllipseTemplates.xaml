@@ -196,7 +196,7 @@
             <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Корзина">
                 <Setter Property="Fill" Value="#7f8c8d "/>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Закрыт NEW">
+            <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Отгружен">
                 <Setter Property="Fill" Value="#2c3e50 "/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=ProcurementState.Kind}" Value="Завершен">
@@ -268,7 +268,7 @@
             <DataTrigger Binding="{Binding Path=Procurement.ProcurementState.Kind}" Value="Корзина">
                 <Setter Property="Fill" Value="#7f8c8d "/>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Procurement.ProcurementState.Kind}" Value="Закрыт NEW">
+            <DataTrigger Binding="{Binding Path=Procurement.ProcurementState.Kind}" Value="Отгружен">
                 <Setter Property="Fill" Value="#2c3e50 "/>
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=Procurement.ProcurementState.Kind}" Value="Завершен">

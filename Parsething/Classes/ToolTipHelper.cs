@@ -54,6 +54,9 @@ namespace Parsething.Classes
                 case "UnpaidPennies":
                     procurements = GET.View.ProcurementsBy(GET.KindOf.UnpaidPennies);
                     break;
+                case "Shipped":
+                    procurements = GET.View.ProcurementsBy("Отгружен", GET.KindOf.ProcurementState);
+                    break;
                 case "Очередь":
                     procurements = GET.View.ProcurementsQueue();
 
@@ -235,6 +238,9 @@ namespace Parsething.Classes
                     break;
                 case "NotPaidDelay":
                     procurementsEmployees = GET.View.ProcurementsEmployeesBy(true, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
+                    break;
+                case "Shipped":
+                    procurementsEmployees = GET.View.ProcurementsEmployeesBy("Отгружен", GlobalUsingValues.Instance.StartDate, ((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
                     break;
             }
             procurements = Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees);
