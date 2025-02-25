@@ -11,7 +11,7 @@
 
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
+            <Border Background="{DynamicResource WorkAreaBackgroundBrush}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="{DynamicResource SeparatorBrush}">
                 <Grid Width="1810" Height="820" x:Name="MainGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>

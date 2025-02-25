@@ -7,14 +7,17 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Style="{DynamicResource SortWindow}"
-        Title="AutoCloseMessageBox" Height="150" Width="300">
+        Style="{DynamicResource AutoCloseMessageWindow}"
+        Title="AutoCloseMessageBox">
+    
+        
+    
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Border x:Name="TitleBar" Background="{DynamicResource TitleBarBackgroundBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock Name="TitleTextBox" TextWrapping="Wrap" Margin="10" Style="{DynamicResource TitleBar.TextBlock}"/>

@@ -73,7 +73,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="#C6BDBF" CornerRadius="16" BorderThickness="1" SnapsToDevicePixels="True">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{DynamicResource SeparatorBrush}" CornerRadius="16" BorderThickness="1" SnapsToDevicePixels="True">
                         <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}" Style="{DynamicResource ScrollViewer}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </ScrollViewer>
@@ -89,7 +89,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="#C6BDBF" CornerRadius="0" BorderThickness="1" SnapsToDevicePixels="True">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{DynamicResource SeparatorBrush}" CornerRadius="0" BorderThickness="1" SnapsToDevicePixels="True">
                         <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}" Style="{DynamicResource ScrollViewer}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </ScrollViewer>

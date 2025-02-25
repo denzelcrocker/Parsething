@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:Parsething.Windows"
         mc:Ignorable="d"
         Title="AssemblyMap" Style="{DynamicResource AssemblyMap}"  Loaded="Page_Loaded">
-    <Grid Background="White">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+        <Border x:Name="TitleBar" Background="{DynamicResource TitleBarBackgroundBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button 
@@ -86,7 +86,7 @@
                                     HorizontalAlignment="Right"
                                     FontSize="9"
                                     VerticalAlignment="Center"/>
-                                <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2" Grid.Row="2" Grid.ColumnSpan="3"/>
+                                <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2" Grid.Row="2" Grid.ColumnSpan="3"/>
                                 <TextBlock 
                                     Style="{DynamicResource TableElements}"
                                     Text="{Binding Path=Text}"

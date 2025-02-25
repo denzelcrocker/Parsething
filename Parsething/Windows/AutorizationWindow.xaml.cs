@@ -12,9 +12,52 @@ namespace Parsething.Windows
         public AutorizationWindow()
         {
             InitializeComponent();
-            var (username, password) = UserConfig.LoadCredentials();
+
+            // Загружаем учётные данные и тему
+            var (username, password, theme) = UserConfig.LoadCredentials();
+
             UserName.Text = username;
             Password.Password = password;
+
+            // Применяем тему
+            ChangeTheme(theme);
+        }
+
+        private void ChangeTheme(string theme)
+        {
+            // Получаем текущую тему (это не должно менять учетные данные)
+            string currentTheme = UserConfig.LoadCredentials().Theme;
+
+            // Здесь мы не сохраняем пустые значения для учетных данных, только изменяем тему
+            UserConfig.SaveCredentials(UserConfig.LoadCredentials().Username, UserConfig.LoadCredentials().Password, theme);
+
+            // Очищаем текущие темы
+            var dictionariesToRemove = Application.Current.Resources.MergedDictionaries
+                .Where(d => d.Source.ToString().Contains("Dark") || d.Source.ToString().Contains("Light"))
+                .ToList();
+
+            // Удаляем старые ресурсы
+            foreach (var dict in dictionariesToRemove)
+            {
+                Application.Current.Resources.MergedDictionaries.Remove(dict);
+            }
+
+            // Подключаем нужную тему
+            if (theme == "Dark")
+            {
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/DarkBrushes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Windows.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Labels.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Buttons.xaml", UriKind.Relative) });
+
+            }
+            else if (theme == "Light")
+            {
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/LightBrushes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Windows.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Labels.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Buttons.xaml", UriKind.Relative) });
+            }
         }
 
         public Employee? Employee { get; private set; }
@@ -76,9 +119,8 @@ namespace Parsething.Windows
                     History? history = new History { EmployeeId = Employee.Id, Date = DateTime.Now, EntityType = "Login", EntryId = 0, Text = $"{loginInfo}" };
                     PUT.History(history);
 
-                    string username = UserName.Text;
-                    string password = Password.Password;
-                    UserConfig.SaveCredentials(username, password);
+                    var currentTheme = UserConfig.LoadCredentials().Theme;  // Загружаем текущую тему
+                    UserConfig.SaveCredentials(UserName.Text, Password.Password, currentTheme);  // Сохраняем учётные данные с текущей темой
                 }
             }
             else

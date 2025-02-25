@@ -587,10 +587,6 @@ public partial class AdministratorPage : Page
             MainFrame.Navigate(new SearchPage());
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        MainFrame.Navigate(new Charts());
-    }
 
     private void GoToCalculationsButton_Click(object sender, RoutedEventArgs e)
     {
@@ -624,6 +620,11 @@ public partial class AdministratorPage : Page
             var parameter = image.Tag as string;
             ToolTipHelper.SetToolTip(image, parameter);
         }
+    }
+
+    private void ByMonthButton_Click(object sender, RoutedEventArgs e)
+    {
+        MainFrame.Navigate(new Charts());
     }
 }
 public static class StringExtensions

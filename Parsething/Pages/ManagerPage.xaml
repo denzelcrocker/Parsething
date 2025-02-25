@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       Title="ManagerPage" Loaded="Page_Loaded">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,5,40,20" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
+        <Border Background="{DynamicResource WorkAreaBackgroundBrush}" Grid.Row="1" Margin="40,5,40,20" CornerRadius="40" BorderThickness="2" BorderBrush="{DynamicResource SeparatorBrush}">
             <Grid Width="1810" Height="870">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="360"/>
@@ -20,12 +20,12 @@
                     <ColumnDefinition Width="2"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
-                <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
-                <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
+                <Rectangle Grid.Column="1" Fill="{DynamicResource SeparatorBrush}" Margin="0,15,0,15" Grid.RowSpan="2"/>
+                <Rectangle Grid.Column="3" Fill="{DynamicResource SeparatorBrush}" Margin="0,15,0,15" Grid.RowSpan="2"/>
+                <Rectangle Grid.Column="5" Fill="{DynamicResource SeparatorBrush}" Margin="0,15,0,15" Grid.RowSpan="2"/>
                 <StackPanel Grid.Column="0" Margin="10" Grid.RowSpan="2">
                     <Label Content="Подача" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
@@ -43,17 +43,17 @@
                         <Label Content="Оформлены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Issued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
                         <Button x:Name="IssuedButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="IssuedButton_Click"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
                         <Label Content="К отправке:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
                         <TextBlock x:Name="ForSend" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Button x:Name="ForSendButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ForSendButton_Click"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
                         <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <TextBlock x:Name="OverdueIssued" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Button x:Name="OverdueIssuedButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueIssuedButton_Click"/>
                     </Grid>
                     <Label Content="Торги" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}"  Grid.RowSpan="2" Height="2"/>
+                    <Rectangle Fill="{DynamicResource SeparatorBrush}"  Grid.RowSpan="2" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
@@ -77,7 +77,7 @@
                         <Label Content="Отправлены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="Sended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
                         <Button x:Name="SendedButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="SendedButton_Click"  />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
                         <Label Content="Торги:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
                         <TextBlock x:Name="Bargaining" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Button x:Name="BargainingButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="BargainingButton_Click"  />
@@ -88,7 +88,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=CountOfProcurements}"  Width="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2"/>
+                                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2"/>
                                         <TextBlock Style="{DynamicResource ComboBox.Entry}" Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </DataTemplate>
@@ -98,21 +98,21 @@
                         <Label Content="Просрочены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <TextBlock x:Name="OverdueSended" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Button x:Name="OverdueSendedButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="OverdueSendedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="5"/>
                         <Label Content="Отменены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
                         <TextBlock x:Name="Cancellation" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
                         <Button x:Name="CancellationButton" Grid.Row="6" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="CancellationButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="7"/>
                         <Label Content="Отклонены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="8"/>
                         <TextBlock x:Name="Rejected" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
                         <Button x:Name="RejectedButton" Grid.Row="8" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="RejectedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Grid.Row="9"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Grid.Row="9"/>
                         <Label Content="Проиграны:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Row="10"/>
                         <TextBlock x:Name="Lost" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="10" />
                         <Button x:Name="LostButton" Grid.Row="10" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="LostButton_Click" />
                     </Grid>
                     <Label Content="Подписание" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
@@ -142,7 +142,7 @@
                 <StackPanel Grid.Column="2" Margin="10">
                     
                     <Label Content="Поставка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
@@ -177,11 +177,11 @@
                         <Label Content="БГ исп-я" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="0"/>
                         <TextBlock x:Name="ExecutionState" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
                         <Button x:Name="ExecutionStateButton" Grid.Row="0" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ExecutionStateButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="1"/>
                         <Label Content="БГ гар-я" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="2"/>
                         <TextBlock x:Name="WarrantyState" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Button x:Name="WarrantyStateButton" Grid.Row="2" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="WarrantyStateButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="3"/>
                         <Label Content="Проблема:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="4"/>
                         <TextBlock x:Name="Problem" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="4" />
                         <Button x:Name="ProblemButton" Grid.Row="4" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ProblemButton_Click" />
@@ -191,7 +191,7 @@
                         <Label Content="Согласовано:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
                         <TextBlock x:Name="Agreed" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
                         <Button x:Name="AgreedButton" Grid.Row="6" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="AgreedButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="8"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="8"/>
                         <Label Content="План отгрузки:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="10"/>
                         <Label Content="Текущая неделя:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="12"/>
                         <TextBlock x:Name="ThisWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="12" />
@@ -209,7 +209,7 @@
                         <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="14" />
                         <Button x:Name="AWeekLaterButton" Grid.Row="14" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="AWeekLaterButton_Click" />
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="14" Grid.Column="3" Tag="Через одну" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="15"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="15"/>
                         <Label Content="Отгружен:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="16"/>
                         <TextBlock x:Name="Shipped" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="16" />
                         <Button x:Name="ShippedButton" Grid.Row="16" Grid.ColumnSpan="4" Opacity="0" Cursor="Hand" Click="ShippedButton_Click"  />
@@ -222,7 +222,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="4" Margin="10">
                     <Label Content="Приёмка и оплата" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220" />
@@ -259,7 +259,7 @@
                         <TextBlock x:Name="OnTheFix" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Button x:Name="OnTheFixButton" Grid.ColumnSpan="5" Grid.Row="2" Opacity="0" Cursor="Hand" Click="OnTheFixButton_Click" />
                         <Image Source="/Resources/Images/info.png" Stretch="Uniform" Height="25" Grid.Row="2" Grid.Column="3" Tag="CorrectionDate" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
                         <Label Content="Не оплачены:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="6"/>
                         <TextBlock x:Name="NotPaid" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
                         <Button x:Name="NotPaidButton" Grid.ColumnSpan="5" Grid.Row="6" Opacity="0" Cursor="Hand" Click="NotPaidButton_Click"/>
@@ -276,7 +276,7 @@
                         <TextBlock x:Name="UnpaidPennies" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="9" />
                         <Button x:Name="UnpaidPenniesButton" Grid.ColumnSpan="5" Grid.Row="9" Opacity="0" Cursor="Hand" Click="UnpaidPenniesButton_Click"  />
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="9" Grid.Column="3" Tag="UnpaidPennies" MouseEnter="Image_MouseEnter"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="11"/>
                         <Label Content="Суд:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="13"/>
                         <TextBlock x:Name="Judgement" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="13" />
                         <Button x:Name="JudgementButton" Grid.ColumnSpan="5" Grid.Row="13" Opacity="0" Cursor="Hand" Click="JudgementButton_Click" />

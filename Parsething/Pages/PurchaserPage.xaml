@@ -21,7 +21,7 @@
         <system:String x:Key="PurchaseString">Purchase</system:String>
     </Page.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Border Background="{DynamicResource MainFrame.Background}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="#C6BDBF">
+        <Border Background="{DynamicResource WorkAreaBackgroundBrush}" Grid.Row="1" Margin="40,15,40,40" CornerRadius="40" BorderThickness="2" BorderBrush="{DynamicResource SeparatorBrush}">
             <Grid Width="1810" Height="830">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="300"/>
@@ -32,10 +32,10 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,15,0,15" Grid.RowSpan="2"/>
+                <Rectangle Grid.Column="1" Fill="{DynamicResource SeparatorBrush}" Margin="0,15,0,15" Grid.RowSpan="2"/>
                 <StackPanel Grid.Column="0" Margin="5" Grid.RowSpan="2">
                     <Label Content="Закупка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50" />
@@ -57,21 +57,21 @@
                         <Button x:Name="WonPartOneButton" Grid.ColumnSpan="5" Grid.Row="0" Cursor="Hand" Click="WonPartOneButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 1ч:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="0" Grid.Column="4" Tag="Выигран 1ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Text="0" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="1"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="5" Height="2" Grid.Row="1"/>
                         <Button x:Name="WonPartTwoButton" Grid.ColumnSpan="5" Grid.Row="2" Cursor="Hand" Click="WonPartTwoButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 2ч:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="2" Grid.Column="4" Tag="Выигран 2ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartTwo" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="2" Text="0" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="3"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="5" Height="2" Grid.Row="3"/>
                         <Button x:Name="AcceptanceButton" Grid.ColumnSpan="5" Grid.Row="4" Cursor="Hand" Click="AcceptanceButton_Click" Style="{DynamicResource BaseButton}" Content="Приемка:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="4" Grid.Column="4" Tag="Приемка" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="4" Text="0"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="5" Height="2" Grid.Row="5"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="5" Height="2" Grid.Row="5"/>
                         <Button x:Name="ShippedButton" Grid.ColumnSpan="5" Grid.Row="6" Cursor="Hand" Click="ShippedButton_Click" Style="{DynamicResource BaseButton}" Content="Отгружен:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="6" Grid.Column="4" Tag="Shipped" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="Shipped" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="6" Text="0"/>
                     </Grid>
                     <Label Content="Поставка" Style="{DynamicResource Header.MainFrame.1.Foreground}"/>
-                    <Rectangle Fill="{DynamicResource TitleBar.Background}" Height="2"/>
+                    <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200" />
@@ -102,7 +102,7 @@
                         <TextBlock x:Name="Agreed" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
                         <Button x:Name="OnTheFixButton" Grid.ColumnSpan="5" Grid.Row="3" Cursor="Hand" Click="OnTheFixButton_Click"  Style="{DynamicResource BaseButton}" Content="На исправлении:"/>
                         <TextBlock x:Name="OnTheFix" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
                         <Button x:Name="PreviousWeekButton" Grid.ColumnSpan="5" Grid.Row="5" Cursor="Hand" Click="PreviousWeekButton_Click"  Style="{DynamicResource BaseButton}" Content="Пред. неделя:" Padding="25,0"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="5" Grid.Column="3" Tag="Предыдущая" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="PreviousWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="5" />
@@ -115,7 +115,7 @@
                         <Button x:Name="AWeekLaterButton" Grid.ColumnSpan="5" Grid.Row="8" Cursor="Hand" Click="AWeekLaterButton_Click"  Style="{DynamicResource BaseButton}" Content="Через неделю:" Padding="25,0"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="8" Grid.Column="3" Tag="Через одну" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Grid.ColumnSpan="4" Height="2" Grid.Row="9"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="9"/>
                         <Label Content="Проверка:" Style="{DynamicResource Title.MainFrame.2.Foreground}" Grid.Column="0" Grid.Row="10"/>
                         <Label Content="Закупка Y / N:" Style="{DynamicResource Title.MainFrame.3.Foreground}" Grid.Column="0" Grid.Row="11"/>
                         <TextBlock x:Name="ApprovePurchaseYes" Style="{DynamicResource TextBlock.ComboFirst}" Grid.Column="1" Text="0" Grid.Row="11" />
@@ -165,7 +165,7 @@
                         <DataTemplate>
                             <Border 
                                 BorderThickness="1"
-                                BorderBrush="#C6BDBF"
+                                BorderBrush="{DynamicResource SeparatorBrush}"
                                 CornerRadius="15">
                                 <Grid HorizontalAlignment="Stretch" Height="45">
                                     <Grid.ColumnDefinitions>
@@ -242,7 +242,7 @@
                                             </Button>
                                         </Grid>
                                     </Border>
-                                    <Rectangle Grid.Column="1" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="1" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="2"
@@ -250,7 +250,7 @@
                                         FontSize="15"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"/>
-                                    <Rectangle Grid.Column="3" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="3" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button 
                                         x:Name="EmployeeInfoButton"
                                         Grid.Column="4"
@@ -281,7 +281,7 @@
                                             </Grid>
                                         </Border>
                                     </Popup>
-                                    <Rectangle Grid.Column="5" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="5" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <lvc:CartesianChart Grid.Column="6" 
                                     Width="130" 
                                     MinHeight="14" 
@@ -301,7 +301,7 @@
                                             <lvc:VisualElement Opacity="0" />
                                         </lvc:CartesianChart.VisualElements>
                                     </lvc:CartesianChart>
-                                    <Rectangle Grid.Column="7" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="7" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="8"
@@ -318,7 +318,7 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Margin="0,18,0,0"/>
-                                    <Rectangle Grid.Column="9" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="9" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
                                         Grid.Column="10"
@@ -341,7 +341,7 @@
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                    <Rectangle Grid.Column="11" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="11" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Ellipse Style="{StaticResource StatusIndicatorStyle}" Grid.Column="12"/>
                                     <TextBlock
                                         Style="{DynamicResource TableElements}"
@@ -351,7 +351,7 @@
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Margin="10"/>
-                                    <Rectangle Grid.Column="13" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="13" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <DockPanel
                                         Grid.Column="14">
                                         <TextBlock 
@@ -405,7 +405,7 @@
                                             </Label.Style>
                                         </Label>
                                     </DockPanel>
-                                    <Rectangle Grid.Column="15" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="15" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Grid Grid.Column="16" Margin="0, 5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="100"/>
@@ -429,6 +429,7 @@
                                                     <Binding Path="ReserveContractAmount"/>
                                                     <Binding Path="CalculatingAmount"/>
                                                     <Binding Source="{StaticResource CalculatingString}"/>
+                                                    <Binding Path="UnitPrice"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -445,6 +446,7 @@
                                                     <Binding Path="ReserveContractAmount"/>
                                                     <Binding Path="PurchaseAmount"/>
                                                     <Binding Source="{StaticResource PurchaseString}"/>
+                                                    <Binding Path="UnitPrice"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -460,6 +462,7 @@
                                                     <Binding Path="ReserveContractAmount"/>
                                                     <Binding Path="CalculatingAmount"/>
                                                     <Binding Source="{StaticResource CalculatingString}"/>
+                                                    <Binding Path="UnitPrice"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -476,12 +479,13 @@
                                                     <Binding Path="ReserveContractAmount"/>
                                                     <Binding Path="PurchaseAmount"/>
                                                     <Binding Source="{StaticResource PurchaseString}"/>
+                                                    <Binding Path="UnitPrice"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <Ellipse Style="{StaticResource ProfitIndicator}" Grid.Column="2" Grid.RowSpan="2"/>
                                     </Grid>
-                                    <Rectangle Grid.Column="17" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="17" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Ellipse Style="{StaticResource ShipmentPlanIndicatorStyle}" Grid.Column="18" />
                                     <TextBlock 
                                         Style="{DynamicResource TableElements}"
@@ -491,7 +495,7 @@
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
                                         Margin="10"/>
-                                    <Rectangle Grid.Column="19" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="19" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button   
                                         Grid.Column="20"
                                         x:Name="Calculating"
@@ -502,7 +506,7 @@
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>
-                                    <Rectangle Grid.Column="21" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="21" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button   
                                         Grid.Column="22"
                                         x:Name="Purchase"
@@ -513,7 +517,7 @@
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>
-                                    <Rectangle Grid.Column="23" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="23" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button 
                                         x:Name="NavigateToProcurementURL"
                                         Grid.Column="24"
@@ -525,7 +529,7 @@
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>
-                                    <Rectangle Grid.Column="25" Fill="{DynamicResource TitleBar.Background}" Margin="0,10" Grid.RowSpan="2"/>
+                                    <Rectangle Grid.Column="25" Fill="{DynamicResource SeparatorBrush}" Margin="0,10" Grid.RowSpan="2"/>
                                     <Button 
                                         x:Name="EditProcurement"
                                         Grid.Column="26"

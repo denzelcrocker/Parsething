@@ -93,7 +93,7 @@ namespace Parsething.Windows
             Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
             saveFileDialog.Filter = "PDF Files|*.pdf";
             saveFileDialog.Title = "Save PDF File";
-            saveFileDialog.FileName = $"Лист_комплектаций_{Procurement.Id}.pdf"; // Имя файла по умолчанию
+            saveFileDialog.FileName = $"Лист_комплектаций_{Procurement.DisplayId}.pdf"; // Имя файла по умолчанию
 
             // Если пользователь выбрал местоположение и нажал "Сохранить"
             if (saveFileDialog.ShowDialog() == true)

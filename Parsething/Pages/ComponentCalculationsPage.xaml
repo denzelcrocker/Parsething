@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="1400"/>
                 <ColumnDefinition Width="460"/>
             </Grid.ColumnDefinitions>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="0" Margin="0,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
+            <Border Background="{DynamicResource WorkAreaBackgroundBrush}" Grid.Column="0" Margin="0,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="{DynamicResource SeparatorBrush}">
                 <Grid >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1400"/>
@@ -158,35 +158,35 @@
                     <StackPanel x:Name="PurchasePanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
                         <Label Content="Закупка: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
                         <TextBlock x:Name="PurchasePrice" Text="0" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Контракт: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <TextBlock x:Name="ContractPrice" Text="0" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <Button x:Name="AddDivisionPurchase" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionPurchase_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Button x:Name="SavePurchaseButton" Content="Сохранить" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="SavePurchaseButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <DatePicker x:Name="SameDate" Style="{DynamicResource ComponentCalculations.DatePickerStyle}" Width="150" VerticalAlignment="Center"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <ComboBox x:Name="SameComponentState" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Kind" Width="150" Height="35"/>
                     </StackPanel>
                     <StackPanel x:Name="CalculatingPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Hidden">
                         <Label Content="Сумма: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
                         <TextBlock x:Name="CalculationPrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Максимальная цена: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <TextBlock x:Name="MaxPrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <Button x:Name="AddDivisionCalculating" Content="Заголовок" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionCalculating_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Button x:Name="SaveCalculatingButton" Content="Сохранить" Style="{DynamicResource ComponentCalculationsButton}" Cursor="Hand"  Margin="0,0,0,0" Click="SaveCalculatingButton_Click" />
-                        <Rectangle Fill="{DynamicResource TitleBar.Background}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
+                        <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                     </StackPanel>
                 </Grid>
             </Border>
-            <Border Background="{DynamicResource MainFrame.Background}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="#C6BDBF">
+            <Border Background="{DynamicResource WorkAreaBackgroundBrush}" Grid.Column="1" Margin="40,15,0,15" CornerRadius="45" BorderThickness="2" BorderBrush="{DynamicResource SeparatorBrush}">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -223,7 +223,7 @@
                             </ListView.LayoutTransform>
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Border LayoutTransform="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=Content, Converter={StaticResource InverseScaleYConverter}}" BorderThickness="1" BorderBrush="{DynamicResource TitleBar.Background}" CornerRadius="15" Margin="15,1,0,1">
+                                    <Border LayoutTransform="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=Content, Converter={StaticResource InverseScaleYConverter}}" BorderThickness="1" BorderBrush="{DynamicResource SeparatorBrush}" CornerRadius="15" Margin="15,1,0,1">
                                         <Grid HorizontalAlignment="Left" Margin="3" Width="330">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="40"/>

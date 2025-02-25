@@ -7,13 +7,16 @@
         mc:Ignorable="d"
         Title="AddApplicationWindow" 
         Style="{DynamicResource AddApplicationWindow}" Loaded="Window_Loaded" >
+    <WindowChrome.WindowChrome>
+        <WindowChrome ResizeBorderThickness="10"/>
+    </WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <Border x:Name="TitleBar" Background="{DynamicResource TitleBar.Background}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+        <Border x:Name="TitleBar" Background="{DynamicResource TitleBarBackgroundBrush}" CornerRadius="16,16,0,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Label Content="Заявка № " Style="{DynamicResource TitleBar.Label}"/>

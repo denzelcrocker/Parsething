@@ -461,5 +461,55 @@ namespace Parsething
                 }
             }
         }
+
+        private void SwitchThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Проверяем текущую тему
+            string currentTheme = UserConfig.LoadTheme();
+
+            // Переключаем тему
+            string newTheme = currentTheme == "Dark" ? "Light" : "Dark"; // Если текущая тема "Dark", переключаем на "Light", и наоборот
+
+            // Сохраняем новую тему (не трогая учетные данные)
+            string username = UserConfig.LoadCredentials().Username;
+            string password = UserConfig.LoadCredentials().Password;
+            UserConfig.SaveCredentials(username, password, newTheme); // Сохраняем как есть, изменяя только тему
+
+            // Применяем новую тему
+            ChangeTheme(newTheme);
+        }
+
+        private void ChangeTheme(string theme)
+        {
+            // Получаем текущую тему
+            string currentTheme = UserConfig.LoadCredentials().Theme;
+
+            // Очищаем текущие темы
+            var dictionariesToRemove = Application.Current.Resources.MergedDictionaries
+                .Where(d => d.Source.ToString().Contains("Dark") || d.Source.ToString().Contains("Light"))
+                .ToList();
+
+            // Удаляем старые ресурсы
+            foreach (var dict in dictionariesToRemove)
+            {
+                Application.Current.Resources.MergedDictionaries.Remove(dict);
+            }
+
+            // Подключаем нужную тему
+            if (theme == "Dark")
+            {
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/DarkBrushes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Windows.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Labels.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Buttons.xaml", UriKind.Relative) });
+            }
+            else if (theme == "Light")
+            {
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/LightBrushes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Windows.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Labels.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Buttons.xaml", UriKind.Relative) });
+            }
+        }
     }
 }

@@ -12,7 +12,6 @@
                 <ResourceDictionary Source="/Resources/Templates/PasswordBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/Scrolling.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/TextBoxTemplates.xaml"/>
-                <ResourceDictionary Source="/Resources/Templates/WindowTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/TextBlockTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ComboBoxCard Templates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/DatePicker Templates.xaml"/>
@@ -21,6 +20,10 @@
                 <ResourceDictionary Source="/Resources/Templates/PopUpTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ToolTipTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ContextMenuTemplates.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark/DarkBrushes.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark/Windows.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark/Labels.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark/Buttons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
