@@ -223,30 +223,39 @@ namespace Parsething.Pages
                     }
                 }
             },
-                    AxisX = new AxesCollection
-            {
-                new Axis
+                AxisX = new AxesCollection
                 {
-                    Title = "Месяцы",
-                    Labels = months.Select(m => $"{m.ToString("MMM", CultureInfo.CurrentCulture)} {m.Year}").ToArray(),
-                    LabelsRotation = 45,
-                    Foreground = Brushes.Black
-                }
-            },
-                    AxisY = new AxesCollection
-            {
-                new Axis
-                {
-                    Title = "Количество",
-                    MinValue = 0,
-                    Separator = new LiveCharts.Wpf.Separator
+                    new Axis
                     {
-                        Step = 100
-                    },
-                    Foreground = Brushes.Black
+                        Title = "Месяцы",
+                        Labels = months.Select(m => $"{m.ToString("MMM", CultureInfo.CurrentCulture)} {m.Year}").ToArray(),
+                        LabelsRotation = 45,
+                        Foreground = (Brush)FindResource("TextBrush"),
+                        Separator = new LiveCharts.Wpf.Separator
+                        {
+                            Stroke = (Brush)FindResource("GridLineChartBrush") // Применение цвета сетки для оси X
+                        }
+                    }
+                },
+                AxisY = new AxesCollection
+                {
+                    new Axis
+                    {
+                        Title = "Количество",
+                        MinValue = 0,
+                        Separator = new LiveCharts.Wpf.Separator
+                        {
+                            Step = 100,
+                            Stroke = (Brush)FindResource("GridLineChartBrush"), // Применение цвета сетки для оси Y
+                        },
+                        Foreground = (Brush)FindResource("TextBrush")
+                    }
                 }
-            }
-                };
+            };
+            barChart.DataTooltip = new DefaultTooltip
+            {
+                Style = (Style)FindResource("BarChartTooltipStyle") // Применение стиля для Tooltip
+            };
             barChart.MouseDown += BarChart_MouseDown;
 
             return barChart;

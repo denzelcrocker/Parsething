@@ -122,12 +122,22 @@ namespace Parsething.Functions
                         buttonAdd.Click += ButtonAddPosition_Click;
                         buttonAdd.MouseRightButtonUp += ButtonAdd_MouseRightButtonUp;
                         buttonAdd.Content = "";
-                        buttonAdd.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
+                        buttonAdd.Style = (Style)Application.Current.FindResource("BaseButton");
+                        buttonAdd.FontFamily = new FontFamily("Segoe Fluent Icons");
+                        buttonAdd.Width = 100;
+                        buttonAdd.Height = 50;
+                        buttonAdd.FontSize = 20;
+                        buttonAdd.FontWeight = FontWeights.Medium;
                         Button buttonDelete = new Button();
                         buttonDelete.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                         buttonDelete.Click += ButtonDeleteDivision_Click;
                         buttonDelete.Content = "";
-                        buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
+                        buttonDelete.Style = (Style)Application.Current.FindResource("BaseButton");
+                        buttonDelete.FontFamily = new FontFamily("Segoe Fluent Icons");
+                        buttonDelete.Width = 100;
+                        buttonDelete.Height = 50;
+                        buttonDelete.FontSize = 20;
+                        buttonDelete.FontWeight = FontWeights.Medium;
 
 
                         Grid.SetColumn(comboBoxHeader, 0);
@@ -165,13 +175,13 @@ namespace Parsething.Functions
                             buttonMoveUp.Click += ButtonMoveUp_Click;
                             buttonMoveUp.Content = "";
                             buttonMoveUp.Margin = new Thickness (0, 0, 35, 11);
-                            buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarAction");
+                            buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarButton");
                             Button buttonMoveDown = new Button();
                             buttonMoveDown.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             buttonMoveDown.Click += ButtonMoveDown_Click;
                             buttonMoveDown.Content = "";
                             buttonMoveDown.Margin = new Thickness(0, 11, 35, 0);
-                            buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarAction");
+                            buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarButton");
                             TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
                             TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxComponentName.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
@@ -219,11 +229,24 @@ namespace Parsething.Functions
                             buttonDelete.IsEnabled = ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             buttonDelete.Click += ButtonDelete_Click;
                             buttonDelete.Content = "";
-                            buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
+                            buttonDelete.Style = (Style)Application.Current.FindResource("BaseButton");
+                            buttonDelete.FontFamily = new FontFamily("Segoe Fluent Icons");
+                            buttonDelete.Width = 25;
+                            buttonDelete.Height = 25;
+                            buttonDelete.FontSize = 12;
+                            buttonDelete.Padding = new Thickness(0);
+                            buttonDelete.FontWeight = FontWeights.Medium;
                             Button buttonCopy = new Button();
                             buttonCopy.Click += ButtonCopy_Click;
                             buttonCopy.Content = "";
-                            buttonCopy.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
+                            buttonCopy.Style = (Style)Application.Current.FindResource("BaseButton");
+                            buttonCopy.FontFamily = new FontFamily("Segoe Fluent Icons");
+                            buttonCopy.Width = 25;
+                            buttonCopy.Height = 25;
+                            buttonCopy.FontSize = 12;
+                            buttonCopy.Padding = new Thickness(0);
+                            buttonCopy.FontWeight = FontWeights.Medium;
+
 
                             Grid.SetColumn(textBoxIndex, 0);
                             Grid.SetColumn(buttonMoveUp, 0);
@@ -306,12 +329,22 @@ namespace Parsething.Functions
                         buttonAdd.Click += ButtonAddPosition_Click;
                         buttonAdd.MouseRightButtonUp += ButtonAdd_MouseRightButtonUp;
                         buttonAdd.Content = "";
-                        buttonAdd.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
+                        buttonAdd.FontFamily = new FontFamily("Segoe Fluent Icons");
+                        buttonAdd.Style = (Style)Application.Current.FindResource("BaseButton");
+                        buttonAdd.Width = 100;
+                        buttonAdd.Height = 50;
+                        buttonAdd.FontSize = 20;
+                        buttonAdd.FontWeight = FontWeights.Medium;
 
                         Button buttonDelete = new Button();
                         buttonDelete.Click += ButtonDeleteDivision_Click;
                         buttonDelete.Content = "";
-                        buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderButton");
+                        buttonDelete.FontFamily = new FontFamily("Segoe Fluent Icons");
+                        buttonDelete.Style = (Style)Application.Current.FindResource("BaseButton");
+                        buttonDelete.Width = 100;
+                        buttonDelete.Height = 50;
+                        buttonDelete.FontSize = 20;
+                        buttonDelete.FontWeight = FontWeights.Medium;
 
                         Grid.SetColumn(comboBoxHeader, 0);
                         Grid.SetColumn(textBoxHeaderCount, 1);
@@ -344,12 +377,12 @@ namespace Parsething.Functions
                             buttonMoveUp.Click += ButtonMoveUp_Click;
                             buttonMoveUp.Content = "";
                             buttonMoveUp.Margin = new Thickness(0, 0, 35, 11);
-                            buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarAction");
+                            buttonMoveUp.Style = (Style)Application.Current.FindResource("TitleBarButton");
                             Button buttonMoveDown = new Button();
                             buttonMoveDown.Click += ButtonMoveDown_Click;
                             buttonMoveDown.Content = "";
                             buttonMoveDown.Margin = new Thickness(0, 11, 35, 0);
-                            buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarAction");
+                            buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarButton");
                             TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
                             TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             Label replacementLabel = new Label() { Content = "!", Visibility = Visibility.Hidden, Style = (Style)Application.Current.FindResource("ComponentCalculation.Label") };
@@ -422,7 +455,13 @@ namespace Parsething.Functions
                             Button buttonDelete = new Button();
                             buttonDelete.Click += ButtonDelete_Click;
                             buttonDelete.Content = "";
-                            buttonDelete.Style = (Style)Application.Current.FindResource("ComponentCalculationItemButton");
+                            buttonDelete.Style = (Style)Application.Current.FindResource("BaseButton");
+                            buttonDelete.FontFamily = new FontFamily("Segoe Fluent Icons");
+                            buttonDelete.Width = 25;
+                            buttonDelete.Height = 25;
+                            buttonDelete.FontSize = 12;
+                            buttonDelete.Padding = new Thickness(0);
+                            buttonDelete.FontWeight = FontWeights.Medium;
 
                             Grid.SetColumn(textBoxIndex, 0);
                             Grid.SetColumn(buttonMoveUp, 0);

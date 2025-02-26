@@ -72,9 +72,10 @@ namespace Parsething.Pages
             var saveButton = new Button
             {
                 Content = "Save",
-                Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
+                Style = (Style)Application.Current.FindResource("BaseButton"),
                 Width = 150,
                 Height = 35,
+                FontSize = 13,
                 Tag = header,
                 Margin = new Thickness(5)
             };
@@ -365,7 +366,7 @@ namespace Parsething.Pages
                     Grid.SetColumn(border, i);
                     grid.Children.Add(border);
                 }
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(130) });
 
                 // Средняя цена по группе
                 decimal averagePrice = group.Average(x => x.AveragePrice ?? 0);
@@ -404,7 +405,16 @@ namespace Parsething.Pages
 
                 foreach (var supplyMonitoring in group)
                 {
-                    Button button = new Button() { Content = supplyMonitoring.DisplayId, Style = (Style)Application.Current.FindResource("GoToAddEditComponents") };
+                    Button button = new Button() 
+                    {
+                        Content = supplyMonitoring.DisplayId,
+                        Style = (Style)Application.Current.FindResource("BaseButton"),
+                        Height = 30,
+                        FontSize = 13,
+                        Width = 110,
+                        Padding = new Thickness(0),
+                        Margin = new Thickness(5, 1, 5, 1)
+                    };
                     button.Click += Button_Click;
                     button.DataContext = supplyMonitoring.TenderNumber;
 
@@ -466,15 +476,19 @@ namespace Parsething.Pages
                 {
                     Text = $"\t{header} - {totalAmount:N2} р.",
                     Style = (Style)Application.Current.FindResource("TextBlock.SupplyMonitoring.Header"),
-                    Width = 1710
+                    Width = 1650
                 });
 
                 // Кнопки действий
                 Button saveButton = new Button()
                 {
                     Content = "↓",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton"),
-                    DataContext = header
+                    Style = (Style)Application.Current.FindResource("BaseButton"),
+                    DataContext = header,
+                    Height = 30,
+                    Width = 60,
+                    FontSize = 13,
+                    Margin = new Thickness(10,0,0,0)
                 };
                 saveButton.Click += (s, args) =>
                 {
@@ -487,7 +501,11 @@ namespace Parsething.Pages
                 Button copyToClipBoardButton = new Button()
                 {
                     Content = "Copy",
-                    Style = (Style)Application.Current.FindResource("SaveSupplyMonitoringButton")
+                    Style = (Style)Application.Current.FindResource("BaseButton"),
+                    Height = 30,
+                    Width = 60,
+                    Margin = new Thickness(0, 0, 5, 0),
+                    FontSize = 13
                 };
                 copyToClipBoardButton.Click += (sender, e) =>
                 {
@@ -507,7 +525,7 @@ namespace Parsething.Pages
                 foreach (var group in groupedByComponentAndStatus)
                 {
                     Grid grid = new Grid();
-                    double[] columnWidths = { 150, 780, 100, 150, 100, 100, 110, 170 };
+                    double[] columnWidths = { 150, 780, 100, 150, 100, 100, 110, 160 };
 
                     for (int i = 0; i < columnWidths.Length; i++)
                     {
@@ -521,7 +539,7 @@ namespace Parsething.Pages
                         Grid.SetColumn(border, i);
                         grid.Children.Add(border);
                     }
-                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(85) });
+                    grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(140) });
 
 
                     decimal averagePrice = group.Average(x => x.AveragePrice ?? 0);
@@ -562,9 +580,13 @@ namespace Parsething.Pages
                         Button button = new Button()
                         {
                             Content = supply.DisplayId,
-                            Style = (Style)Application.Current.FindResource("GoToAddEditComponents"),
+                            Style = (Style)Application.Current.FindResource("BaseButton"),
+                            Height = 30,
+                            FontSize = 13,
+                            Width = 120,
+                            Padding = new Thickness(0),
                             DataContext = supply.TenderNumber,
-                            Margin = new Thickness(0, 5, 0, 5)
+                            Margin = new Thickness(5,1,5,1)
                         };
                         button.Click += Button_Click;
                         buttonPanel.Children.Add(button);

@@ -180,8 +180,8 @@
                             <RowDefinition Height="2"/>
                             <RowDefinition Height="50"/>
                             <RowDefinition Height="2"/>
-                            <RowDefinition Height="110"/>
-                            <RowDefinition Height="110"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="60"/>
                         </Grid.RowDefinitions>
                         <Label x:Name="ProcurementInfoLabel" Content="Данные закупки" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="0"/>
                         <Rectangle x:Name="ProcurementInfoUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="1"/>
@@ -207,8 +207,8 @@
                         <Label x:Name="ApplicationLabel" Content="Заявки" Style="{DynamicResource Title.CardOfProcurement}" Grid.Row="14" Margin="0,12,0,0" VerticalAlignment="Top" />
                         <Button x:Name="Applications" Opacity="0" Cursor="Hand" Grid.RowSpan="2" Grid.Row="14" Click="Applications_Click"/>
                         <Rectangle x:Name="ApplicationUL" Fill="{DynamicResource Text.Foreground}" Height="2" Grid.Row="15"/>
-                        <Button x:Name="AddApplicationButton" Grid.Row="16" Style="{DynamicResource SumbitAction}" Content="Заявка+" Click="AddApplicationButton_Click"/>
-                        <Button x:Name="SaveButton" Grid.Row="17" Style="{DynamicResource SumbitAction}" Content="Сохранить" Click="SaveButton_Click"/>
+                        <Button x:Name="AddApplicationButton" Grid.Row="16" Style="{DynamicResource BaseButton}" Content="Заявка+" Click="AddApplicationButton_Click"/>
+                        <Button x:Name="SaveButton" Grid.Row="17" Style="{DynamicResource BaseButton}" Content="Сохранить" Click="SaveButton_Click"/>
                     </Grid>
                     <ListView x:Name="ProcurementInfoLV" Grid.Column="2" Grid.Row="2" Margin="30,30,30,80" Style="{DynamicResource ListView}" Visibility="Hidden">
                         <Grid>

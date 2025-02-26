@@ -15,9 +15,9 @@
         <Border x:Name="TitleBar" Background="{DynamicResource TitleBarBackgroundBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <DockPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
-                    <Button x:Name="MaximizeAction" Content="&#xE922;" Style="{DynamicResource TitleBarAction}" Click="MaximizeAction_Click" Cursor="Hand"/>
-                    <Button x:Name="CloseAction" Content="&#xE8BB;" Style="{DynamicResource TitleBarAction}" Click="CloseAction_Click" Cursor="Hand"/>
+                    <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarButton}" Click="MinimizeAction_Click"/>
+                    <Button x:Name="MaximizeAction" Content="&#xE922;" Style="{DynamicResource TitleBarButton}" Click="MaximizeAction_Click" Cursor="Hand"/>
+                    <Button x:Name="CloseAction" Content="&#xE8BB;" Style="{DynamicResource TitleBarButton}" Click="CloseAction_Click" Cursor="Hand"/>
                 </StackPanel>
             </DockPanel>
         </Border>
@@ -58,9 +58,9 @@
                         <Button x:Name="SwitchThemeButton" Content="Switch Theme" Click="SwitchThemeButton_Click" />
                     </ComboBoxItem>
                     <ComboBoxItem>
-                        <Button x:Name="SwitchUser" Style="{DynamicResource Profile}" Click="SwitchUser_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button x:Name="SwitchUser" Style="{DynamicResource TransparentButton}" Click="SwitchUser_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
-                                <Label Foreground="#BD1414" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="30" Content="&#xE748;"/>
+                                <Label Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="30" Content="&#xE748;"/>
                                 <Label VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="30" Content="Выход"/>
                             </StackPanel>
                         </Button>
@@ -151,7 +151,7 @@
                                                 Grid.Row="1"
                                                 Grid.Column="2" 
                                                 HorizontalAlignment="Right" 
-                                                Style="{DynamicResource Profile}"
+                                                Style="{DynamicResource TransparentButton}"
                                                 Content="Удалить"
                                                 Click="DeleteNotificationButton_Click"
                                                 Cursor="Hand"/>

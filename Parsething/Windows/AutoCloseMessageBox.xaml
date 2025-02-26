@@ -21,8 +21,8 @@
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock Name="TitleTextBox" TextWrapping="Wrap" Margin="10" Style="{DynamicResource TitleBar.TextBlock}"/>
-                    <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
-                    <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarAction}" Click="CloseAction_Click"/>
+                    <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarButton}" Click="MinimizeAction_Click"/>
+                    <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarButton}" Click="CloseAction_Click"/>
                 </StackPanel>
                 </DockPanel>
             </Border>

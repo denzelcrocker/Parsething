@@ -134,7 +134,7 @@ namespace Parsething.Pages
                     Content = "‹",
                     Tag = CurrentPage - 1
                 };
-                prevPageButton.Style = (Style)FindResource("Button.SearchNavigation");
+                prevPageButton.Style = (Style)FindResource("SearchNavigationButton");
                 prevPageButton.Click += PageButton_Click;
                 PagesPanel.Children.Add(prevPageButton);
             }
@@ -147,7 +147,7 @@ namespace Parsething.Pages
                     Content = i.ToString(),
                     Tag = i
                 };
-                pageButton.Style = (Style)FindResource("Button.SearchNavigation");
+                pageButton.Style = (Style)FindResource("SearchNavigationButton");
 
                 if (i == CurrentPage)
                 {
@@ -166,7 +166,7 @@ namespace Parsething.Pages
                     Content = "›",
                     Tag = CurrentPage + 1
                 };
-                nextPageButton.Style = (Style)FindResource("Button.SearchNavigation");
+                nextPageButton.Style = (Style)FindResource("SearchNavigationButton");
                 nextPageButton.Click += PageButton_Click;
                 PagesPanel.Children.Add(nextPageButton);
             }

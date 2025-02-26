@@ -143,8 +143,6 @@ namespace Parsething.Pages
                 }
                 ComponentCalculationsListViewInitialization(isCalculation, ComponentCalculations, ComponentCalculationsListView, CalculationPrice, PurchasePrice, Procurement);
             }
-            GoToComments.Background = Brushes.LightGray;
-            GoToPassports.Background = Brushes.Transparent;
             CommentsGrid.Visibility = Visibility.Visible;
             PassportsListView.Visibility = Visibility.Hidden;
             SavePassportButton.Visibility = Visibility.Hidden;
@@ -258,8 +256,6 @@ namespace Parsething.Pages
 
         private void GoToPassports_Click(object sender, RoutedEventArgs e)
         {
-            GoToComments.Background = Brushes.Transparent;
-            GoToPassports.Background = Brushes.LightGray;
             CommentsGrid.Visibility = Visibility.Hidden;
             PassportsListView.Visibility = Visibility.Visible;
             SavePassportButton.Visibility = Visibility.Visible;
@@ -274,8 +270,6 @@ namespace Parsething.Pages
 
         private void GoToComments_Click(object sender, RoutedEventArgs e)
         {
-            GoToComments.Background = Brushes.LightGray;
-            GoToPassports.Background = Brushes.Transparent;
             CommentsGrid.Visibility = Visibility.Visible;
             PassportsListView.Visibility = Visibility.Hidden;
             SavePassportButton.Visibility = Visibility.Hidden;

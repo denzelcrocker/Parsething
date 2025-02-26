@@ -34,11 +34,15 @@ namespace Parsething.Pages
         private bool _isAscendingDeadline = true;
         private bool _isAscendingLaw = true;
         private bool _isAscendingResultDate = true;
+        SolidColorBrush buttonBrush = new SolidColorBrush();
 
         public EPlatformSpecialistPage()
         {
             InitializeComponent();
-            
+
+            string theme = UserConfig.LoadTheme();
+            Color defaultColor = (Color)ColorConverter.ConvertFromString(theme == "Dark" ? "#383838" : "#D9D9D9");
+            buttonBrush = new SolidColorBrush(defaultColor);
 
             var globalUsingValues = Classes.GlobalUsingValues.Instance;
             StartDate = globalUsingValues.StartDate;
@@ -181,7 +185,7 @@ namespace Parsething.Pages
             if (procurements != null)
                 ProcurementsListView.ItemsSource = procurements;
 
-            NewButton.Background = Brushes.LightGray;
+            NewButton.Background = buttonBrush;
             CalculatedButton.Background = Brushes.Transparent;
             RetreatCalculateButton.Background = Brushes.Transparent;
             DrawUpButton.Background = Brushes.Transparent;
@@ -206,7 +210,7 @@ namespace Parsething.Pages
                 ProcurementsListView.ItemsSource = procurements;
 
             NewButton.Background = Brushes.Transparent;
-            CalculatedButton.Background = Brushes.LightGray;
+            CalculatedButton.Background = buttonBrush;
             RetreatCalculateButton.Background = Brushes.Transparent;
             DrawUpButton.Background = Brushes.Transparent;
             IssuedButton.Background = Brushes.Transparent;
@@ -231,7 +235,7 @@ namespace Parsething.Pages
 
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
-            RetreatCalculateButton.Background = Brushes.LightGray;
+            RetreatCalculateButton.Background = buttonBrush;
             DrawUpButton.Background = Brushes.Transparent;
             IssuedButton.Background = Brushes.Transparent;
             ForSendButton.Background = Brushes.Transparent;
@@ -256,7 +260,7 @@ namespace Parsething.Pages
             NewButton.Background = Brushes.Transparent;
             CalculatedButton.Background = Brushes.Transparent;
             RetreatCalculateButton.Background = Brushes.Transparent;
-            DrawUpButton.Background = Brushes.LightGray;
+            DrawUpButton.Background = buttonBrush;
             IssuedButton.Background = Brushes.Transparent;
             ForSendButton.Background = Brushes.Transparent;
             OverdueIssuedButton.Background = Brushes.Transparent;
@@ -281,7 +285,7 @@ namespace Parsething.Pages
             CalculatedButton.Background = Brushes.Transparent;
             RetreatCalculateButton.Background = Brushes.Transparent;
             DrawUpButton.Background = Brushes.Transparent;
-            IssuedButton.Background = Brushes.LightGray;
+            IssuedButton.Background = buttonBrush;
             ForSendButton.Background = Brushes.Transparent;
             OverdueIssuedButton.Background = Brushes.Transparent;
             BargainingButton.Background = Brushes.Transparent;
@@ -306,7 +310,7 @@ namespace Parsething.Pages
             RetreatCalculateButton.Background = Brushes.Transparent;
             DrawUpButton.Background = Brushes.Transparent;
             IssuedButton.Background = Brushes.Transparent;
-            ForSendButton.Background = Brushes.LightGray;
+            ForSendButton.Background = buttonBrush;
             OverdueIssuedButton.Background = Brushes.Transparent;
             BargainingButton.Background = Brushes.Transparent;
             OverdueSendedButton.Background = Brushes.Transparent;
@@ -331,7 +335,7 @@ namespace Parsething.Pages
             DrawUpButton.Background = Brushes.Transparent;
             IssuedButton.Background = Brushes.Transparent;
             ForSendButton.Background = Brushes.Transparent;
-            OverdueIssuedButton.Background = Brushes.LightGray;
+            OverdueIssuedButton.Background = buttonBrush;
             BargainingButton.Background = Brushes.Transparent;
             OverdueSendedButton.Background = Brushes.Transparent;
             CancellationButton.Background = Brushes.Transparent;
@@ -356,7 +360,7 @@ namespace Parsething.Pages
             IssuedButton.Background = Brushes.Transparent;
             ForSendButton.Background = Brushes.Transparent;
             OverdueIssuedButton.Background = Brushes.Transparent;
-            BargainingButton.Background = Brushes.LightGray;
+            BargainingButton.Background = buttonBrush;
             OverdueSendedButton.Background = Brushes.Transparent;
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
@@ -381,7 +385,7 @@ namespace Parsething.Pages
             ForSendButton.Background = Brushes.Transparent;
             OverdueIssuedButton.Background = Brushes.Transparent;
             BargainingButton.Background = Brushes.Transparent;
-            OverdueSendedButton.Background = Brushes.LightGray;
+            OverdueSendedButton.Background = buttonBrush;
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
@@ -406,7 +410,7 @@ namespace Parsething.Pages
             OverdueIssuedButton.Background = Brushes.Transparent;
             BargainingButton.Background = Brushes.Transparent;
             OverdueSendedButton.Background = Brushes.Transparent;
-            CancellationButton.Background = Brushes.LightGray;
+            CancellationButton.Background = buttonBrush;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
@@ -431,7 +435,7 @@ namespace Parsething.Pages
             BargainingButton.Background = Brushes.Transparent;
             OverdueSendedButton.Background = Brushes.Transparent;
             CancellationButton.Background = Brushes.Transparent;
-            RejectedButton.Background = Brushes.LightGray;
+            RejectedButton.Background = buttonBrush;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
@@ -456,7 +460,7 @@ namespace Parsething.Pages
             OverdueSendedButton.Background = Brushes.Transparent;
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
-            LostButton.Background = Brushes.LightGray;
+            LostButton.Background = buttonBrush;
             WonPartOneButton.Background = Brushes.Transparent;
             WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
@@ -481,7 +485,7 @@ namespace Parsething.Pages
             CancellationButton.Background = Brushes.Transparent;
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
-            WonPartOneButton.Background = Brushes.LightGray;
+            WonPartOneButton.Background = buttonBrush;
             WonPartTwoButton.Background = Brushes.Transparent;
             ClearSortingArrows();
         }
@@ -506,7 +510,7 @@ namespace Parsething.Pages
             RejectedButton.Background = Brushes.Transparent;
             LostButton.Background = Brushes.Transparent;
             WonPartOneButton.Background = Brushes.Transparent;
-            WonPartTwoButton.Background = Brushes.LightGray;
+            WonPartTwoButton.Background = buttonBrush;
             ClearSortingArrows();
         }
 

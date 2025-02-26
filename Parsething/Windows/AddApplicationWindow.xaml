@@ -21,8 +21,8 @@
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Label Content="Заявка № " Style="{DynamicResource TitleBar.Label}"/>
                     <TextBlock x:Name="NumberOfApplicationTextBlock" Style="{DynamicResource TitleBar.TextBlock}"/>
-                    <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarAction}" Click="MinimizeAction_Click"/>
-                    <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarAction}" Click="CloseAction_Click"/>
+                    <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarButton}" Click="MinimizeAction_Click"/>
+                    <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarButton}" Click="CloseAction_Click"/>
                 </StackPanel>
             </DockPanel>
         </Border>
@@ -55,6 +55,6 @@
             </Grid>
             <ListView x:Name="ComponentCalculationsListView" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource ListView}"/>
         </Grid>
-        <Button x:Name="AddApplicationButton" Content="Создать заявку" Style="{DynamicResource SortWindowButton}" Grid.Row="2" Click="AddApplicationButton_Click"/>
+        <Button x:Name="AddApplicationButton" Content="Создать заявку" Style="{DynamicResource BaseButton}" Grid.Row="2" Click="AddApplicationButton_Click" Height="35"/>
     </Grid>
 </Window>

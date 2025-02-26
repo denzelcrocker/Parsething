@@ -10,6 +10,7 @@ namespace Parsething.Pages;
 public partial class CalculatorPage : Page, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
+    SolidColorBrush buttonBrush = new SolidColorBrush();
 
     protected virtual void OnPropertyChanged(string propertyName)
     {
@@ -19,6 +20,9 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
+        string theme = UserConfig.LoadTheme();
+        Color defaultColor = (Color)ColorConverter.ConvertFromString(theme == "Dark" ? "#383838" : "#D9D9D9");
+        buttonBrush = new SolidColorBrush(defaultColor);
         LoadPageData();
     }
 
@@ -83,7 +87,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         var procurementsEmployees = GET.View.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Новый", "Appoint") ?? new List<ProcurementsEmployee>();
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
-        NewButton.Background = Brushes.LightGray;
+        NewButton.Background = buttonBrush;
         CheckButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;
@@ -99,7 +103,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;
         CheckButton.Background = Brushes.Transparent;
-        CalculatedButton.Background = Brushes.LightGray;
+        CalculatedButton.Background = buttonBrush;
         DrawUpButton.Background = Brushes.Transparent;
         WonPartOneButton.Background = Brushes.Transparent;
         LoadPageData();
@@ -114,7 +118,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         NewButton.Background = Brushes.Transparent;
         CheckButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
-        DrawUpButton.Background = Brushes.LightGray;
+        DrawUpButton.Background = buttonBrush;
         WonPartOneButton.Background = Brushes.Transparent;
         LoadPageData();
     }
@@ -168,7 +172,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         NewButton.Background = Brushes.Transparent;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;
-        WonPartOneButton.Background = Brushes.LightGray;
+        WonPartOneButton.Background = buttonBrush;
         LoadPageData();
     }
 
@@ -179,7 +183,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         GlobalUsingValues.Instance.AddProcurements(Functions.Conversion.ProcurementsEmployeesConversion(procurementsEmployees));
         View.ItemsSource = GlobalUsingValues.Instance.Procurements.OrderBy(p => p.Deadline);
         NewButton.Background = Brushes.Transparent;
-        CheckButton.Background = Brushes.LightGray;
+        CheckButton.Background = buttonBrush;
         CalculatedButton.Background = Brushes.Transparent;
         DrawUpButton.Background = Brushes.Transparent;
         WonPartOneButton.Background = Brushes.Transparent;

@@ -54,19 +54,19 @@
                             <RowDefinition Height="40"/>
                             <RowDefinition Height="2"/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="WonPartOneButton" Grid.ColumnSpan="5" Grid.Row="0" Cursor="Hand" Click="WonPartOneButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 1ч:"/>
+                        <Button x:Name="WonPartOneButton" Grid.ColumnSpan="5" Grid.Row="0" Cursor="Hand" Click="WonPartOneButton_Click" Style="{DynamicResource ProfileNavigationButton}" Content="Выигран 1ч:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="0" Grid.Column="4" Tag="Выигран 1ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartOne" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Text="0" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="5" Height="2" Grid.Row="1"/>
-                        <Button x:Name="WonPartTwoButton" Grid.ColumnSpan="5" Grid.Row="2" Cursor="Hand" Click="WonPartTwoButton_Click" Style="{DynamicResource BaseButton}" Content="Выигран 2ч:"/>
+                        <Button x:Name="WonPartTwoButton" Grid.ColumnSpan="5" Grid.Row="2" Cursor="Hand" Click="WonPartTwoButton_Click" Style="{DynamicResource ProfileNavigationButton}" Content="Выигран 2ч:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="2" Grid.Column="4" Tag="Выигран 2ч" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="WonPartTwo" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="2" Text="0" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="5" Height="2" Grid.Row="3"/>
-                        <Button x:Name="AcceptanceButton" Grid.ColumnSpan="5" Grid.Row="4" Cursor="Hand" Click="AcceptanceButton_Click" Style="{DynamicResource BaseButton}" Content="Приемка:"/>
+                        <Button x:Name="AcceptanceButton" Grid.ColumnSpan="5" Grid.Row="4" Cursor="Hand" Click="AcceptanceButton_Click" Style="{DynamicResource ProfileNavigationButton}" Content="Приемка:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="4" Grid.Column="4" Tag="Приемка" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="Acceptance" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="4" Text="0"/>
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="5" Height="2" Grid.Row="5"/>
-                        <Button x:Name="ShippedButton" Grid.ColumnSpan="5" Grid.Row="6" Cursor="Hand" Click="ShippedButton_Click" Style="{DynamicResource BaseButton}" Content="Отгружен:"/>
+                        <Button x:Name="ShippedButton" Grid.ColumnSpan="5" Grid.Row="6" Cursor="Hand" Click="ShippedButton_Click" Style="{DynamicResource ProfileNavigationButton}" Content="Отгружен:"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="6" Grid.Column="4" Tag="Shipped" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="Shipped" Style="{DynamicResource TextBlock.Single}" Grid.Column="3" Grid.Row="6" Text="0"/>
                     </Grid>
@@ -94,25 +94,25 @@
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="45"/>
                         </Grid.RowDefinitions>
-                        <Button x:Name="ProblemButton" Grid.ColumnSpan="5" Grid.Row="0"  Cursor="Hand" Click="ProblemButton_Click" Style="{DynamicResource BaseButton}" Content="Проблема:"/>
+                        <Button x:Name="ProblemButton" Grid.ColumnSpan="5" Grid.Row="0"  Cursor="Hand" Click="ProblemButton_Click" Style="{DynamicResource ProfileNavigationButton}" Content="Проблема:"/>
                         <TextBlock x:Name="Problem" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="0" />
-                        <Button x:Name="InWorkButton" Grid.ColumnSpan="5" Grid.Row="1" Cursor="Hand" Click="InWorkButton_Click"  Style="{DynamicResource BaseButton}" Content="В работе:"/>
+                        <Button x:Name="InWorkButton" Grid.ColumnSpan="5" Grid.Row="1" Cursor="Hand" Click="InWorkButton_Click"  Style="{DynamicResource ProfileNavigationButton}" Content="В работе:"/>
                         <TextBlock x:Name="InWork" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="1" />
-                        <Button x:Name="AgreedButton" Grid.ColumnSpan="5" Grid.Row="2" Cursor="Hand" Click="AgreedButton_Click"  Style="{DynamicResource BaseButton}" Content="Согласовано:"/>
+                        <Button x:Name="AgreedButton" Grid.ColumnSpan="5" Grid.Row="2" Cursor="Hand" Click="AgreedButton_Click"  Style="{DynamicResource ProfileNavigationButton}" Content="Согласовано:"/>
                         <TextBlock x:Name="Agreed" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="2" />
-                        <Button x:Name="OnTheFixButton" Grid.ColumnSpan="5" Grid.Row="3" Cursor="Hand" Click="OnTheFixButton_Click"  Style="{DynamicResource BaseButton}" Content="На исправлении:"/>
+                        <Button x:Name="OnTheFixButton" Grid.ColumnSpan="5" Grid.Row="3" Cursor="Hand" Click="OnTheFixButton_Click"  Style="{DynamicResource ProfileNavigationButton}" Content="На исправлении:"/>
                         <TextBlock x:Name="OnTheFix" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="3" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="4"/>
-                        <Button x:Name="PreviousWeekButton" Grid.ColumnSpan="5" Grid.Row="5" Cursor="Hand" Click="PreviousWeekButton_Click"  Style="{DynamicResource BaseButton}" Content="Пред. неделя:" Padding="25,0"/>
+                        <Button x:Name="PreviousWeekButton" Grid.ColumnSpan="5" Grid.Row="5" Cursor="Hand" Click="PreviousWeekButton_Click"  Style="{DynamicResource ProfileNavigationButton}" Content="Пред. неделя:" Padding="25,0"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="5" Grid.Column="3" Tag="Предыдущая" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="PreviousWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="5" />
-                        <Button x:Name="ThisWeekButton" Grid.ColumnSpan="5" Grid.Row="6" Cursor="Hand" Click="ThisWeekButton_Click"  Style="{DynamicResource BaseButton}" Content="Текущая неделя:" Padding="25,0"/>
+                        <Button x:Name="ThisWeekButton" Grid.ColumnSpan="5" Grid.Row="6" Cursor="Hand" Click="ThisWeekButton_Click"  Style="{DynamicResource ProfileNavigationButton}" Content="Текущая неделя:" Padding="25,0"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="6" Grid.Column="3" Tag="Текущая" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="ThisWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="6" />
-                        <Button x:Name="NextWeekButton" Grid.ColumnSpan="5" Grid.Row="7" Cursor="Hand" Click="NextWeekButton_Click"  Style="{DynamicResource BaseButton}" Content="След. неделя:" Padding="25,0"/>
+                        <Button x:Name="NextWeekButton" Grid.ColumnSpan="5" Grid.Row="7" Cursor="Hand" Click="NextWeekButton_Click"  Style="{DynamicResource ProfileNavigationButton}" Content="След. неделя:" Padding="25,0"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="7" Grid.Column="3" Tag="Следующая" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="NextWeek" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="7" />
-                        <Button x:Name="AWeekLaterButton" Grid.ColumnSpan="5" Grid.Row="8" Cursor="Hand" Click="AWeekLaterButton_Click"  Style="{DynamicResource BaseButton}" Content="Через неделю:" Padding="25,0"/>
+                        <Button x:Name="AWeekLaterButton" Grid.ColumnSpan="5" Grid.Row="8" Cursor="Hand" Click="AWeekLaterButton_Click"  Style="{DynamicResource ProfileNavigationButton}" Content="Через неделю:" Padding="25,0"/>
                         <Image Source="/Resources/Images/Info.png" Stretch="Uniform" Height="25" Grid.Row="8" Grid.Column="3" Tag="Через одну" MouseEnter="Image_MouseEnter"/>
                         <TextBlock x:Name="AWeekLater" Style="{DynamicResource TextBlock.Single}" Grid.Column="1" Text="0" Grid.ColumnSpan="3" Grid.Row="8" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Grid.ColumnSpan="4" Height="2" Grid.Row="9"/>
@@ -123,7 +123,7 @@
                         <TextBlock Style="{DynamicResource TextBlock.Single}" Grid.Column="2" Text="/" Grid.Row="11" />
                         <TextBlock x:Name="ApprovePurchaseNo" Style="{DynamicResource TextBlock.ComboSecond}" Grid.Column="3" Text="0" Grid.Row="11" />
                         <Button x:Name="ApprovePurchaseNoButton" Grid.Row="11" Grid.Column="3" Opacity="0" Cursor="Hand" Click="ApprovePurchaseNoButton_Click" />
-                        <Button x:Name="SupplyMonitoringButton" Content="Мониторинг поставок" Style="{DynamicResource SupplyMonitoringButton}"  Grid.Row="12"  Grid.ColumnSpan="4" Click="SupplyMonitoringButton_Click"/>
+                        <Button x:Name="SupplyMonitoringButton" Content="Мониторинг поставок" Style="{DynamicResource BaseButton}" Height="45" Grid.Row="12"  Grid.ColumnSpan="4" Click="SupplyMonitoringButton_Click"/>
                     </Grid>
                 </StackPanel>
                 <Grid Grid.Column="2">

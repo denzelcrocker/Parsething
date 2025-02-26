@@ -35,7 +35,7 @@
                                 Width="50"
                                 DockPanel.Dock="Right"
                                 Content="i"
-                                Style="{DynamicResource SupplyMonitoringButton}"
+                                Style="{DynamicResource BaseButton}"
                                 Click="OverallInfoButton_Click"/>
                             <Popup x:Name="OverAllInfoPopUp" PlacementTarget="{Binding ElementName=OverallInfoButton}" Placement="Bottom" StaysOpen="True" Width="170">
                                 <Border Background="White" BorderBrush="Black" BorderThickness="0.2">

@@ -641,9 +641,9 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button x:Name="FirstPageButton" Content="«" Width="33" Height="33" Click="FirstPage_Click" ToolTip="Первая страница" Style="{DynamicResource Button.SearchNavigation}"/>
+                        <Button x:Name="FirstPageButton" Content="«" Width="33" Height="33" Click="FirstPage_Click" ToolTip="Первая страница" Style="{DynamicResource SearchNavigationButton}"/>
                         <WrapPanel x:Name="PagesPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <Button x:Name="LastPageButton" Content="»" Width="33" Height="33" Click="LastPage_Click" ToolTip="Последняя страница" Style="{DynamicResource Button.SearchNavigation}"/>
+                        <Button x:Name="LastPageButton" Content="»" Width="33" Height="33" Click="LastPage_Click" ToolTip="Последняя страница" Style="{DynamicResource SearchNavigationButton}"/>
                         <TextBlock x:Name="PageNumberTextBlock" VerticalAlignment="Center" Margin="10,0" Style="{DynamicResource TableElements}"/>
                     </StackPanel>
                 </Grid>
@@ -662,7 +662,7 @@
                         <Label Content="Закон" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <ComboBox x:Name="Law" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="Number" FontSize="15"/>
                         <Label Content="Статус тендера" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <ComboBox x:Name="ProcurementState" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="Kind" FontSize="15"/>
+                        <ComboBox x:Name="ProcurementState" HorizontalAlignment="Left" Style="{DynamicResource NotEditableComboBox}"  Height="35" DisplayMemberPath="Kind" FontSize="15"/>
                         <Label x:Name="ProcurementStateSecondLabel" Content="Текущий статус тендера" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left" Visibility="Collapsed"/>
                         <ComboBox x:Name="ProcurementStateSecond" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="Kind" FontSize="15" Visibility="Collapsed"/>
                         <Label Content="ИНН заказчика" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
@@ -793,16 +793,17 @@
                     </ListView>
                     <DockPanel Grid.Row="1" x:Name="SearchDockPanel" Visibility="Visible">
                         <Button x:Name="SearchButton" 
-                            Width="110"
+                            Width="90"
+                                Margin="10"
                             IsDefault = "true"
                             Content="Поиск"
-                            Style="{DynamicResource StatisticsButton}" 
+                            Style="{DynamicResource BaseButton}" 
                             Cursor="Hand"
                             Click="SearchButton_Click" />
                         <Button x:Name="OverallInfoButton" 
                             Content="&#xea1f;" 
                             FontFamily="Segoe Fluent Icons"
-                            Style="{DynamicResource StatisticsButton}" 
+                            Style="{DynamicResource BaseButton}" 
                             Width="65"
                             Cursor="Hand"
                             Click="OverallInfo_Click"/>
@@ -837,7 +838,7 @@
                             Width="65"
                             Content="&#xe7bf;" 
                             FontFamily="Segoe Fluent Icons"
-                            Style="{DynamicResource StatisticsButton}" 
+                            Style="{DynamicResource BaseButton}" 
                             Cursor="Hand"
                             Click="SupplyMonitoringButton_Click" />
                     </DockPanel>
