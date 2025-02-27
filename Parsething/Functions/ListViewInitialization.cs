@@ -101,7 +101,7 @@ namespace Parsething.Functions
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
 
-                        ComboBox comboBoxHeader = new ComboBox() { ItemsSource = ComponentHeaderTypes, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationHeader") };
+                        ComboBox comboBoxHeader = new ComboBox() { ItemsSource = ComponentHeaderTypes, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("EditableComponentCalculationsHeaderComboBox") };
                         foreach (ComponentHeaderType componentHeaderType in ComponentHeaderTypes)
                             if (componentHeaderType.Id == componentCalculationHeader.HeaderTypeId)
                             {
@@ -189,7 +189,7 @@ namespace Parsething.Functions
 
                             ComboBox comboBoxManufacturer = new ComboBox()
                             {
-                                Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),
+                                Style = (Style)Application.Current.FindResource("EditableMainComboBox"),
                                 ItemsSource = Manufacturers,
                                 DisplayMemberPath = "ManufacturerName"
                             };
@@ -208,7 +208,7 @@ namespace Parsething.Functions
                             TextBox textBoxCount = new TextBox() { Text = componentCalculation.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxCount.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
+                            ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("EditableMainComboBox") };
                             comboBoxSeller.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             foreach (Seller seller in Sellers)
                                 if (seller.Id == componentCalculation.SellerId)
@@ -311,7 +311,7 @@ namespace Parsething.Functions
                             columnDefinition.Width = new GridLength(columnWidths[i]);
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
-                        ComboBox comboBoxHeader = new ComboBox() { ItemsSource = ComponentHeaderTypes, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationHeader") };
+                        ComboBox comboBoxHeader = new ComboBox() { ItemsSource = ComponentHeaderTypes, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("EditableComponentCalculationsHeaderComboBox") };
                         foreach (ComponentHeaderType componentHeaderType in ComponentHeaderTypes)
                             if (componentHeaderType.Id == componentCalculationHeader.HeaderTypeId)
                             {
@@ -393,14 +393,14 @@ namespace Parsething.Functions
                             if (componentCalculation.ComponentName != componentCalculation.ComponentNamePurchase)
                                 replacementLabel.Visibility = Visibility.Visible;
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"), };
+                            ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("EditableMainComboBox"), };
                             foreach (Manufacturer manufacturer in Manufacturers)
                                 if (manufacturer.Id == componentCalculation.ManufacturerIdPurchase)
                                 {
                                     comboBoxManufacturer.SelectedItem = manufacturer;
                                     break;
                                 }
-                            ComboBox comboBoxComponentState = new ComboBox() { ItemsSource = ComponentStates, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
+                            ComboBox comboBoxComponentState = new ComboBox() { ItemsSource = ComponentStates, DisplayMemberPath = "Kind", Style = (Style)Application.Current.FindResource("EditableMainComboBox") };
                             foreach (ComponentState componentState in ComponentStates)
                                 if (componentState.Id == componentCalculation.ComponentStateId)
                                 {
@@ -439,7 +439,7 @@ namespace Parsething.Functions
                             textBoxPrice.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
                             textBoxCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem") };
+                            ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("EditableMainComboBox") };
                             foreach (Seller seller in Sellers)
                                 if (seller.Id == componentCalculation.SellerIdPurchase)
                                 {

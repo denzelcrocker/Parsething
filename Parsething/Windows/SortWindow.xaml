@@ -60,12 +60,12 @@
                 <Label Content="Дата аукциона" Style="{DynamicResource  Label.SortWindow}"/>
                 <TextBox x:Name="ResultDate" Style="{DynamicResource SingleLineInput.SortWindow}"/>
                 <Label Content="Часовой пояс" Style="{DynamicResource  Label.SortWindow}"/>
-                <ComboBox x:Name="TimeZoneCombobox" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Offset" IsEnabled="False"/>
+                <ComboBox x:Name="TimeZoneCombobox" Style="{DynamicResource EditableMainComboBox}" DisplayMemberPath="Offset" IsEnabled="False"/>
             </DockPanel>
             <Label Content="Номер закупки" Style="{DynamicResource  Label.SortWindow}"/>
             <TextBox x:Name="Number" Style="{DynamicResource SingleLineInput.SortWindow}"/>
             <Label Content="Закон" Style="{DynamicResource  Label.SortWindow}"/>
-            <ComboBox x:Name="LawCombobox" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Number" IsEnabled="False"/>
+            <ComboBox x:Name="LawCombobox" Style="{DynamicResource EditableMainComboBox}" Height="30" DisplayMemberPath="Number"  IsEnabled="False"/>
             <Label Content="Ссылка на закупку" Style="{DynamicResource  Label.SortWindow}"/>
             <TextBox x:Name="RequestUri" Style="{DynamicResource SingleLineInput.SortWindow}"/>
             <Label Content="Начальная цена" Style="{DynamicResource  Label.SortWindow}"/>
@@ -73,9 +73,9 @@
             <Label Content="Объект закупки" Style="{DynamicResource  Label.SortWindow}"/>
             <TextBox x:Name="Object" Style="{DynamicResource SingleLineInput.SortWindow}" TextWrapping="Wrap"/>
             <Label Content="Организация" Style="{DynamicResource  Label.SortWindow}"/>
-            <ComboBox x:Name="OrganizationCombobox" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Name" IsEnabled="False"/>
+            <ComboBox x:Name="OrganizationCombobox" Style="{DynamicResource EditableMainComboBox}" Height="30" DisplayMemberPath="Name" IsEnabled="False"/>
             <Label Content="Регион" Style="{DynamicResource  Label.SortWindow}"/>
-            <ComboBox x:Name="RegionCombobox" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Title" IsEnabled="False"/>
+            <ComboBox x:Name="RegionCombobox" Style="{DynamicResource EditableMainComboBox}" Height="30" DisplayMemberPath="Title" IsEnabled="False"/>
         </StackPanel>
         <DockPanel x:Name="SortBar" Grid.Row="2">
             <Grid HorizontalAlignment="Stretch">
@@ -86,7 +86,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button x:Name="QueueButton" Style="{DynamicResource BaseButton}" Content="Очередь" Grid.Column="0" Click="QueueButton_Click" Width="200" Height="40"/>
-                <ComboBox x:Name="AssignComboBox" Grid.Column="2" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="FullName"/>
+                <ComboBox x:Name="AssignComboBox" Grid.Column="2" Style="{DynamicResource EditableMainComboBox}" DisplayMemberPath="FullName"/>
                 <Button x:Name="AssignButton" Style="{DynamicResource BaseButton}" Content="Назначить на" Grid.Column="1" Click="AssignButton_Click" Width="200" Height="40"/>
                 <Button x:Name="RetreatButton" Style="{DynamicResource BaseButton}" Content="Отбой" Grid.Column="3" Click="RetreatButton_Click" Width="200" Height="40"/>
             </Grid>

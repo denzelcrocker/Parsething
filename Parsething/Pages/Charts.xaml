@@ -24,7 +24,7 @@
                     </Grid.RowDefinitions>
                     <DockPanel>
                         <Label Content="Выберите год:" Style="{DynamicResource Header.1}"/>
-                        <ComboBox x:Name="YearComboBox" SelectionChanged="YearComboBox_SelectionChanged" Style="{DynamicResource ComboBoxBase.Card}"/>
+                        <ComboBox x:Name="YearComboBox" SelectionChanged="YearComboBox_SelectionChanged" FontSize="15" Style="{DynamicResource NotEditableMainComboBox}" Height="50"/>
                         <ProgressBar x:Name="LoadingIndicator" IsIndeterminate="True" Visibility="Collapsed" Margin="10" />
                     </DockPanel>
                     <ContentControl x:Name="ChartContent" Grid.Row="1" />

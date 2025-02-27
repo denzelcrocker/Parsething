@@ -6,76 +6,7 @@
     <Style x:Key="TextBlockBase.2" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="Noah"/>
     </Style>
-    <Style x:Key="TextBlock.Single" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="TextTrimming" Value="None"/>
-    </Style>
-    <Style x:Key="TextBlock.Number" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="30"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="TextTrimming" Value="None"/>
-    </Style>
-    <Style x:Key="TextBlock.ComboFirst" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="TextTrimming" Value="None"/>
-    </Style>
-    <Style x:Key="TextBlock.ComboSecond" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="TextTrimming" Value="None"/>
-    </Style>
-    <Style x:Key="TextBlock.Single2" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="25"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="TextTrimming" Value="None"/>
-    </Style>
-    <Style x:Key="ComboBox.Entry" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="Margin" Value="10,10"/>
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="#000"/>
-        <Setter Property="FontFamily" Value="Noah"/>
-    </Style>
-    <Style x:Key="TableElements" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase.2}">
-        <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontFamily" Value="Noah"/>
-    </Style>
-    <Style x:Key="TableElements.ComponentCalculations" TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-    <Style x:Key="TextBlock.AddEditComponent" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="35"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="#BD1414"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-    </Style>
-    <Style x:Key="TextBlock.SupplyMonitoring.Header" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
-        <Setter Property="TextWrapping" Value="NoWrap"/>
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Padding" Value="3"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="#535353"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Background" Value="#D9D9D9"/>
-    </Style>
-    <Style x:Key="OverAllInfo.Search.TextBlock" TargetType="{x:Type TextBlock}">
+    <Style x:Key="OfverAllInfoTextBlock" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{StaticResource Header.1.Foreground}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>

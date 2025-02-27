@@ -10,7 +10,7 @@
     </LinearGradientBrush>
     <SolidColorBrush x:Key="TextBoxBase.Static.Foreground" Color="#000"/>
     <Style x:Key="TextBoxBase" TargetType="{x:Type TextBox}">
-        <Setter Property="FontFamily" Value="../Fonts/#Mustica Pro"/>
+        <Setter Property="FontFamily" Value="Noah"/>
         <Setter Property="Background" Value="{DynamicResource TextBoxBase.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource TextBoxBase.Static.BorderBrush}"/>
         <Setter Property="CaretBrush" Value="{StaticResource TextBoxBase.Static.CaretBrush}"/>

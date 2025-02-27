@@ -119,7 +119,7 @@ namespace Parsething.Pages
                     CalculatingPanel.Visibility = Visibility.Hidden;
                     ColumnsNamesCalculating.Visibility = Visibility.Hidden;
                     ComponentStates = GET.View.ComponentStates();
-                    SameComponentState.ItemsSource = ComponentStates;
+                    SaveComponentState.ItemsSource = ComponentStates;
 
                     foreach (ComponentCalculation componentCalculation in ComponentCalculations)
                     {
@@ -292,13 +292,13 @@ namespace Parsething.Pages
             Procurement = GET.Entry.ProcurementBy(Procurement.Id);
             if (Procurement.PurchaseUserId == ((Employee)Application.Current.MainWindow.DataContext).Id || Procurement.PurchaseUserId == null)
             {
-                if (UpdateComponentCalculationListView(SameDate, SameComponentState))
+                if (UpdateComponentCalculationListView(SameDate, SaveComponentState))
                     AutoClosingMessageBox.ShowAutoClosingMessageBox($"Успешно сохранено!", "Информация", 1000);
             }
             else
                 MessageBox.Show($"Закупка сейчас редактируется пользователем: \n{GET.View.Employees().Where(e => e.Id == Procurement.PurchaseUserId).First().FullName}");
             SameDate.SelectedDate = null;
-            SameComponentState.Text = null;
+            SaveComponentState.Text = null;
         }
 
         private void SaveCalculatingButton_Click(object sender, RoutedEventArgs e)

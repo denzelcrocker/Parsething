@@ -38,10 +38,10 @@
                                 Style="{DynamicResource BaseButton}"
                                 Click="OverallInfoButton_Click"/>
                             <Popup x:Name="OverAllInfoPopUp" PlacementTarget="{Binding ElementName=OverallInfoButton}" Placement="Bottom" StaysOpen="True" Width="170">
-                                <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
+                                <Border Background="{DynamicResource TextBoxBackgroundBrush}" BorderBrush="Black" BorderThickness="0.2">
                                     <Grid Width="170" >
                                         <Label Content="Всего: " Style="{DynamicResource LabelBase}"/>
-                                        <TextBlock x:Name="OverAllInfoTextBlock" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                        <TextBlock x:Name="OverAllInfoTextBlock" Style="{DynamicResource OverAllInfoTextBlock}"/>
                                     </Grid>
                                 </Border>
                             </Popup>
@@ -57,8 +57,9 @@
                             <TextBox HorizontalAlignment="Right" x:Name="SearchTextBox" Style="{ DynamicResource SingleLineInput.Search}"  DockPanel.Dock="Right" />
                             <ComboBox x:Name="SupplyMonitoringListSelectionCombobox"
                                 HorizontalAlignment="Left"
-                                Style="{DynamicResource ComboBoxBase.Search}"
+                                Style="{DynamicResource EditableMainComboBox}"
                                 Height="45"
+                                Width="245"
                                 FontSize="15"
                                 SelectedValuePath="Tag"
                                 SelectionChanged="SupplyMonitoringListSelectionCombobox_SelectionChanged"

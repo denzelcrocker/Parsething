@@ -207,7 +207,7 @@
                                             </Button.Content>
                                         </Button>
                                         <Popup x:Name="EmployeeInfoPopUp" PlacementTarget="{Binding ElementName=EmployeeInfoButton}" Placement="Bottom" StaysOpen="True" >
-                                            <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
+                                            <Border Background="{DynamicResource TextBoxBackgroundBrush}" BorderBrush="Black" BorderThickness="1">
                                                 <Grid >
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition/>
@@ -219,11 +219,11 @@
                                                         <ColumnDefinition/>
                                                     </Grid.ColumnDefinitions>
                                                     <Label Content="Расчетчик: " Grid.Row="0" Style="{DynamicResource LabelBase}"/>
-                                                    <TextBlock x:Name="CalculatorTextBlock" Grid.Row="0" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                                    <TextBlock x:Name="CalculatorTextBlock" Grid.Row="0" Grid.Column="1" Style="{DynamicResource OverAllInfoTextBlock}"/>
                                                     <Label Content="Менеджер: " Grid.Row="1" Style="{DynamicResource LabelBase}"/>
-                                                    <TextBlock x:Name="ManagerTextBlock" Grid.Row="1" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                                    <TextBlock x:Name="ManagerTextBlock" Grid.Row="1" Grid.Column="1" Style="{DynamicResource OverAllInfoTextBlock}"/>
                                                     <Label Content="Юр. лицо: " Grid.Row="2" Style="{DynamicResource LabelBase}"/>
-                                                    <TextBlock x:Name="LegalEntityTextBlock" Grid.Row="2" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                                    <TextBlock x:Name="LegalEntityTextBlock" Grid.Row="2" Grid.Column="1" Style="{DynamicResource OverAllInfoTextBlock}"/>
                                                 </Grid>
                                             </Border>
                                         </Popup>
@@ -660,24 +660,25 @@
                         <Label Content="Номер закупки" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <TextBox x:Name="SearchNumber" Style="{DynamicResource SingleLineInput.Search}" Height="40" PreviewTextInput="Search_PreviewTextInput" />
                         <Label Content="Закон" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <ComboBox x:Name="Law" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="Number" FontSize="15"/>
+                        <ComboBox x:Name="Law" HorizontalAlignment="Left" Style="{DynamicResource NotEditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Number" FontSize="15"/>
                         <Label Content="Статус тендера" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <ComboBox x:Name="ProcurementState" HorizontalAlignment="Left" Style="{DynamicResource NotEditableComboBox}"  Height="35" DisplayMemberPath="Kind" FontSize="15"/>
+                        <ComboBox x:Name="ProcurementState" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Kind" FontSize="15"/>
                         <Label x:Name="ProcurementStateSecondLabel" Content="Текущий статус тендера" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left" Visibility="Collapsed"/>
-                        <ComboBox x:Name="ProcurementStateSecond" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="Kind" FontSize="15" Visibility="Collapsed"/>
+                        <ComboBox x:Name="ProcurementStateSecond" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Kind" FontSize="15" Visibility="Collapsed"/>
                         <Label Content="ИНН заказчика" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <TextBox x:Name="SearchINN" Style="{DynamicResource SingleLineInput.Search}" Height="40" PreviewTextInput="Search_PreviewTextInput"/>
                         <Label Content="Сотрудник" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <ComboBox x:Name="Employee" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="FullName" FontSize="15"/>
+                        <ComboBox x:Name="Employee" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="FullName" FontSize="15"/>
                         <Label Content="Организация" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <TextBox x:Name="OrganizationName" Style="{DynamicResource SingleLineInput.Search}" Height="40"/>
                         <Label Content="Юридическое лицо" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <ComboBox x:Name="LegalEntity" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="Name" FontSize="15"/>
+                        <ComboBox x:Name="LegalEntity" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Name" FontSize="15"/>
                         <Label Content="Тип даты" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <ComboBox x:Name="DateType"
                             HorizontalAlignment="Left"
-                            Style="{DynamicResource ComboBoxBase.Search}"
+                            Style="{DynamicResource EditableMainComboBox}"
                             Height="35"
+                            Width="245"
                             FontSize="15"
                             SelectedValuePath="Tag"
                             SelectionChanged="DateType_SelectionChanged"
@@ -700,7 +701,7 @@
                         <Label Content="Поиск по товару" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <TextBox x:Name="SearchComponentCalculation" Style="{DynamicResource SingleLineInput.Search}" Height="40"/>
                         <Label Content="План отгрузки" Style="{DynamicResource Label.Search}" Grid.Column="0" HorizontalAlignment="Left"/>
-                        <ComboBox x:Name="ShipmentPlan" HorizontalAlignment="Left" Style="{DynamicResource ComboBoxBase.Search}" Height="35" DisplayMemberPath="Kind" FontSize="15"/>
+                        <ComboBox x:Name="ShipmentPlan" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Kind" FontSize="15"/>
                         <Label Content="Отложен до 2025 года" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <CheckBox x:Name="SearchWaitingList" HorizontalAlignment="Left" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
                         <Label Content="Поиск по номеру договора" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
@@ -808,7 +809,7 @@
                             Cursor="Hand"
                             Click="OverallInfo_Click"/>
                         <Popup x:Name="OverallInfoPopUp" PlacementTarget="{Binding ElementName=OverallInfoButton}" Placement="Top" StaysOpen="False" Width="300">
-                            <Border Background="White" BorderBrush="Black" BorderThickness="0.2">
+                            <Border Background="{DynamicResource TextBoxBackgroundBrush}" BorderBrush="Black" BorderThickness="0.2">
                                 <Grid Width="300" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
@@ -826,11 +827,11 @@
                                     <Label Content="Сумма контрактов: " Grid.Row="2" Style="{DynamicResource OwerAllInfo.Search}"/>
                                     <Label Content="Расчетный профит: " Grid.Row="3" Style="{DynamicResource OwerAllInfo.Search}"/>
                                     <Label Content="Реальный профит: " Grid.Row="4" Style="{DynamicResource OwerAllInfo.Search}"/>
-                                    <TextBlock x:Name="OverallCount" Grid.Column="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                    <TextBlock x:Name="OverallInitialPrice" Grid.Column="1" Grid.Row="1" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                    <TextBlock x:Name="OverallAmount" Grid.Column="1" Grid.Row="2" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                    <TextBlock x:Name="AvgCalculationProfit" Grid.Column="1" Grid.Row="3" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
-                                    <TextBlock x:Name="AvgPurchaseProfit" Grid.Column="1" Grid.Row="4" Style="{DynamicResource OverAllInfo.Search.TextBlock}"/>
+                                    <TextBlock x:Name="OverallCount" Grid.Column="1" Style="{DynamicResource OverAllInfoTextBlock}"/>
+                                    <TextBlock x:Name="OverallInitialPrice" Grid.Column="1" Grid.Row="1" Style="{DynamicResource OverAllInfoTextBlock}"/>
+                                    <TextBlock x:Name="OverallAmount" Grid.Column="1" Grid.Row="2" Style="{DynamicResource OverAllInfoTextBlock}"/>
+                                    <TextBlock x:Name="AvgCalculationProfit" Grid.Column="1" Grid.Row="3" Style="{DynamicResource OverAllInfoTextBlock}"/>
+                                    <TextBlock x:Name="AvgPurchaseProfit" Grid.Column="1" Grid.Row="4" Style="{DynamicResource OverAllInfoTextBlock}"/>
                                 </Grid>
                             </Border>
                         </Popup>

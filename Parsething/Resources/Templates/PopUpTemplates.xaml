@@ -11,7 +11,7 @@
                 <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="10">
                     <StackPanel>
                         <DatePicker Style="{StaticResource ComponentCalculations.DatePickerStyle}" Width="150"/>
-                        <ComboBox DisplayMemberPath="Kind" Style="{StaticResource ComboBoxBase.ComponentCalculationItem}" Width="150"/>
+                        <ComboBox DisplayMemberPath="Kind" Style="{StaticResource EditableMainComboBox}" Width="150"/>
                         <Button Content="Save" Width="75" Margin="5"/>
                     </StackPanel>
                 </Border>

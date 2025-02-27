@@ -42,7 +42,7 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>
-                <ComboBox ItemContainerStyle="{DynamicResource ComboBoxItemBase}" Style="{DynamicResource ComboBoxBase}" Cursor="Hand" DockPanel.Dock="Right">
+                <ComboBox Style="{DynamicResource ProfileComboBox}" Cursor="Hand" DockPanel.Dock="Right">
                     <ComboBoxItem IsEnabled="False">
                         <Label x:Name="FullName" Style="{DynamicResource ProfilePreview.Entry}"/>
                     </ComboBoxItem>

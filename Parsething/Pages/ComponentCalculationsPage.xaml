@@ -103,10 +103,10 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <Border Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource Text.Background}" CornerRadius="30" Width="150" MouseDown="Border_MouseDown" Cursor="Hand">
-                            <TextBlock x:Name="Id" Text="000000" Foreground="{DynamicResource Text.Foreground}" Style="{DynamicResource TextBlock.Number}" Padding="15,10"/>
+                        <Border Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TextBoxBackgroundBrush}" CornerRadius="30" Width="150" MouseDown="Border_MouseDown" Cursor="Hand">
+                            <TextBlock x:Name="Id" Text="000000" FontSize="30" Style="{DynamicResource MainTextBlock}" Padding="25,10"/>
                         </Border>
-                        <TextBlock Grid.Column="2" Name="PurchaseOrCalculatiing" Text="Режим" Style="{DynamicResource TextBlock.ComboFirst}" Margin="20,0,0,0"/>
+                        <TextBlock Grid.Column="2" Name="PurchaseOrCalculatiing" Text="Режим" Style="{DynamicResource MainTextBlock}" Margin="20,0,0,0"/>
                         <Button Grid.Column="3" x:Name="ForCheckButton" Content="На проверку" Style="{DynamicResource BaseButton}" Cursor="Hand" Click="ForCheckButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
                         <Button Grid.Column="4" x:Name="CalculatedButton" Content="Посчитан" Style="{DynamicResource BaseButton}" Cursor="Hand" Click="CalculatedButton_Click" HorizontalAlignment="Right" Margin="0,0,25,0" Visibility="Hidden"/>
                         <Button 
@@ -157,31 +157,31 @@
                     </Grid>
                     <StackPanel x:Name="PurchasePanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Visible">
                         <Label Content="Закупка: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
-                        <TextBlock x:Name="PurchasePrice" Text="0" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
+                        <TextBlock x:Name="PurchasePrice" Text="0" Style="{DynamicResource MainTextBlock}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Контракт: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
-                        <TextBlock x:Name="ContractPrice" Text="0" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
+                        <TextBlock x:Name="ContractPrice" Text="0" Style="{DynamicResource MainTextBlock}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
-                        <Button x:Name="AddDivisionPurchase" Content="Заголовок" Style="{DynamicResource BaseButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionPurchase_Click" />
+                        <Button x:Name="AddDivisionPurchase" Content="Заголовок" Style="{DynamicResource BaseButton}" Cursor="Hand" Width="200"  Margin="10,0,0,0" Click="AddDivisionPurchase_Click" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
-                        <Button x:Name="SavePurchaseButton" Content="Сохранить" Style="{DynamicResource BaseButton}" Cursor="Hand"  Margin="10,0,0,0" Click="SavePurchaseButton_Click" />
+                        <Button x:Name="SavePurchaseButton" Content="Сохранить" Style="{DynamicResource BaseButton}" Cursor="Hand" Width="200"  Margin="10,0,0,0" Click="SavePurchaseButton_Click" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <DatePicker x:Name="SameDate" Style="{DynamicResource ComponentCalculations.DatePickerStyle}" Width="150" VerticalAlignment="Center"/>
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
-                        <ComboBox x:Name="SameComponentState" Style="{DynamicResource ComboBoxBase.ComponentCalculationItem}" DisplayMemberPath="Kind" Width="150" Height="35"/>
+                        <ComboBox x:Name="SaveComponentState" Style="{DynamicResource EditableMainComboBox}" DisplayMemberPath="Kind" Width="150" Height="35"/>
                     </StackPanel>
                     <StackPanel x:Name="CalculatingPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Hidden">
                         <Label Content="Сумма: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
-                        <TextBlock x:Name="CalculationPrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
+                        <TextBlock x:Name="CalculationPrice" Text="1000000,00" Style="{DynamicResource MainTextBlock}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Максимальная цена: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
-                        <TextBlock x:Name="MaxPrice" Text="1000000,00" Style="{DynamicResource TextBlock.Single}" FontSize="20"/>
+                        <TextBlock x:Name="MaxPrice" Text="1000000,00" Style="{DynamicResource MainTextBlock}" FontSize="20"/>
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Добавить: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
-                        <Button x:Name="AddDivisionCalculating" Content="Заголовок" Style="{DynamicResource BaseButton}" Cursor="Hand"  Margin="10,0,0,0" Click="AddDivisionCalculating_Click" />
+                        <Button x:Name="AddDivisionCalculating" Content="Заголовок" Style="{DynamicResource BaseButton}" Cursor="Hand" Width="200" Margin="10,0,0,0" Click="AddDivisionCalculating_Click" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
-                        <Button x:Name="SaveCalculatingButton" Content="Сохранить" Style="{DynamicResource BaseButton}" Cursor="Hand"  Margin="0,0,0,0" Click="SaveCalculatingButton_Click" />
+                        <Button x:Name="SaveCalculatingButton" Content="Сохранить" Style="{DynamicResource BaseButton}" Cursor="Hand" Width="200" Margin="0,0,0,0" Click="SaveCalculatingButton_Click" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                     </StackPanel>
                 </Grid>

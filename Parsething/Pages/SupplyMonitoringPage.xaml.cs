@@ -63,7 +63,7 @@ namespace Parsething.Pages
             {
                 Name = "ComboBox",
                 DisplayMemberPath = "Kind",
-                Style = (Style)Application.Current.FindResource("ComboBoxBase.ComponentCalculationItem"),
+                Style = (Style)Application.Current.FindResource("EditableMainComboBox"),
                 ItemsSource = componentStates,
                 Width = 150,
                 Height = 35
@@ -92,7 +92,7 @@ namespace Parsething.Pages
 
             var border = new Border
             {
-                Background = Brushes.White,
+                Background = (Brush)Application.Current.FindResource("TextBoxBackgroundBrush"),
                 BorderBrush = Brushes.Gray,
                 BorderThickness = new Thickness(1),
                 Padding = new Thickness(10),

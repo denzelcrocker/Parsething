@@ -4,22 +4,44 @@
     <Color x:Key="TitleBarBackgroundColor">#C6BDBF</Color>
     <Color x:Key="TitleBarButtonColor">#948F90</Color>
     <Color x:Key="WorkAreaBackgroundColor">#ffffff</Color>
-    <Color x:Key="TextBackgroundColor">#D9D9D9</Color>
+    <Color x:Key="TextBoxBackgroundColor">#D9D9D9</Color>
     <Color x:Key="HeaderTextBackgroundColor">#ABABAB</Color>
     <Color x:Key="SeparatorColor">#C6BDBF</Color>
     <Color x:Key="TextColor">#000000</Color>
     <Color x:Key="SecondaryTextColor">#A52A2A</Color>
     <Color x:Key="AccentColor">#A52A2A</Color>
     <Color x:Key="ButtonTextColor">#D6D6D6</Color>
+    
     <Color x:Key="SearchNavigationButtonTextColor">#000000</Color>
     <Color x:Key="SearchNavigationButtonHoverColor">#D9D9D9</Color>
     <Color x:Key="SearchNavigationButtonPressedColor">#A9A9A9</Color>
+    
     <Color x:Key="ProfileNavigationButtonTextColor">#000000</Color>
     <Color x:Key="ProfileNavigationButtonHoverColor">#D9D9D9</Color>
     <Color x:Key="ProfileNavigationButtonPressedColor">#A9A9A9</Color>
+    
     <Color x:Key="GridLineChartColor">#CCCCCC</Color>
+    
+    <Color x:Key="MainComboBoxTextColor">#000000</Color>
+    <Color x:Key="MainComboBoxBackgroundColor">#D9D9D9</Color>
+    <Color x:Key="MainComboBoxToggleButtonColor">#948F90</Color>
+    <Color x:Key="MainComboBoxBackgroundHoverButtonColor">#D3D3D3</Color>
+    <Color x:Key="MainComboBoxBorderColor">#C6BDBF</Color>
 
+    <Color x:Key="ComponentCalculationHeaderComboBoxTextColor">#000000</Color>
+    <Color x:Key="ComponentCalculationHeaderComboBoxBackgroundColor">#ABABAB</Color>
+    <Color x:Key="ComponentCalculationHeaderComboBoxToggleButtonColor">#948F90</Color>
+    <Color x:Key="ComponentCalculationHeaderComboBoxBackgroundHoverButtonColor">#505050</Color>
+    <Color x:Key="ComponentCalculationHeaderComboBoxBorderColor">#424242</Color>
 
+    <Color x:Key="ProfileComboBoxTextColor">#000000</Color>
+    <Color x:Key="ProfileComboBoxBackgroundColor">#D9D9D9</Color>
+    <Color x:Key="ProfileComboBoxToggleButtonColor">#948F90</Color>
+    <Color x:Key="ProfileComboBoxBackgroundHoverButtonColor">#D3D3D3</Color>
+    <Color x:Key="ProfileComboBoxBorderColor">#C6BDBF</Color>
+
+    <Color x:Key="SupplyMonitoringHeaderBackgroundColor">#D6D6D6</Color>
+    <Color x:Key="SupplyMonitoringHeaderTextColor">#202020</Color>
 
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}"/>
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="{StaticResource TitleBarBackgroundColor}"/>
@@ -31,13 +53,38 @@
     <SolidColorBrush x:Key="SecondaryTextBrush" Color="{StaticResource SecondaryTextColor}"/>
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
     <SolidColorBrush x:Key="ButtonTextBrush" Color="{StaticResource ButtonTextColor}"/>
+    
     <SolidColorBrush x:Key="SearchNavigationButtonTextBrush" Color="{StaticResource SearchNavigationButtonTextColor}"/>
     <SolidColorBrush x:Key="SearchNavigationButtonHoverBrush" Color="{StaticResource SearchNavigationButtonHoverColor}"/>
     <SolidColorBrush x:Key="SearchNavigationButtonPressedBrush" Color="{StaticResource SearchNavigationButtonPressedColor}"/>
+    
     <SolidColorBrush x:Key="ProfileNavigationButtonTextBrush" Color="{StaticResource ProfileNavigationButtonTextColor}"/>
     <SolidColorBrush x:Key="ProfileNavigationButtonHoverBrush" Color="{StaticResource ProfileNavigationButtonHoverColor}"/>
     <SolidColorBrush x:Key="ProfileNavigationButtonPressedBrush" Color="{StaticResource ProfileNavigationButtonPressedColor}"/>
+        
+    <SolidColorBrush x:Key="MainComboBoxTextBrush" Color="{StaticResource MainComboBoxTextColor}"/>
+    <SolidColorBrush x:Key="MainComboBoxBackgroundBrush" Color="{StaticResource MainComboBoxBackgroundColor}"/>
+    <SolidColorBrush x:Key="MainComboBoxToggleButtonBrush" Color="{StaticResource MainComboBoxToggleButtonColor}"/>
+    <SolidColorBrush x:Key="MainComboBoxBackgroundHoverButtonBrush" Color="{StaticResource MainComboBoxBackgroundHoverButtonColor}"/>
+    <SolidColorBrush x:Key="MainComboBoxBorderBrush" Color="{StaticResource MainComboBoxBorderColor}"/>
+
+    <SolidColorBrush x:Key="ComponentCalculationHeaderComboBoxTextBrush" Color="{StaticResource ComponentCalculationHeaderComboBoxTextColor}"/>
+    <SolidColorBrush x:Key="ComponentCalculationHeaderComboBoxBackgroundBrush" Color="{StaticResource ComponentCalculationHeaderComboBoxBackgroundColor}"/>
+    <SolidColorBrush x:Key="ComponentCalculationHeaderComboBoxToggleButtonBrush" Color="{StaticResource ComponentCalculationHeaderComboBoxToggleButtonColor}"/>
+    <SolidColorBrush x:Key="ComponentCalculationHeaderComboBoxBackgroundHoverButtonBrush" Color="{StaticResource ComponentCalculationHeaderComboBoxBackgroundHoverButtonColor}"/>
+    <SolidColorBrush x:Key="ComponentCalculationHeaderComboBoxBorderBrush" Color="{StaticResource ComponentCalculationHeaderComboBoxBorderColor}"/>
+
+    <SolidColorBrush x:Key="ProfileComboBoxTextBrush" Color="{StaticResource ProfileComboBoxTextColor}"/>
+    <SolidColorBrush x:Key="ProfileComboBoxBackgroundBrush" Color="{StaticResource ProfileComboBoxBackgroundColor}"/>
+    <SolidColorBrush x:Key="ProfileComboBoxToggleButtonBrush" Color="{StaticResource ProfileComboBoxToggleButtonColor}"/>
+    <SolidColorBrush x:Key="ProfileComboBoxBackgroundHoverButtonBrush" Color="{StaticResource ProfileComboBoxBackgroundHoverButtonColor}"/>
+    <SolidColorBrush x:Key="ProfileComboBoxBorderBrush" Color="{StaticResource ProfileComboBoxBorderColor}"/>
+
     <SolidColorBrush x:Key="GridLineChartBrush" Color="{StaticResource GridLineChartColor}"/>
+
+    <SolidColorBrush x:Key="SupplyMonitoringBackgroundHeaderBrush" Color="{StaticResource SupplyMonitoringHeaderBackgroundColor}"/>
+    <SolidColorBrush x:Key="SupplyMonitoringTextHeaderBrush" Color="{StaticResource SupplyMonitoringHeaderTextColor}"/>
+
     <LinearGradientBrush x:Key="MainGradientBackground">
         <LinearGradientBrush.GradientStops>
             <GradientStop Color="#7A1F2D" Offset="0.4"/>

@@ -505,6 +505,7 @@ namespace Parsething
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/CheckBoxes.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Charts.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/ComboBoxes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/TextBlocks.xaml", UriKind.Relative) });
             }
             else if (theme == "Light")
             {
@@ -515,6 +516,7 @@ namespace Parsething
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/CheckBoxes.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Charts.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/ComboBoxes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/TextBlocks.xaml", UriKind.Relative) });
             }
         }
     }
