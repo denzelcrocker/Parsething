@@ -20,7 +20,7 @@
             <Border x:Name="TitleBar" Background="{DynamicResource TitleBarBackgroundBrush}" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <TextBlock Name="TitleTextBox" TextWrapping="Wrap" Margin="10" Style="{DynamicResource TitleBar.TextBlock}"/>
+                    <TextBlock Name="TitleTextBox" TextWrapping="Wrap" Margin="10" Style="{DynamicResource TitleBarTextBlock}"/>
                     <Button x:Name="MinimizeAction" Content="&#xE921;" Style="{DynamicResource TitleBarButton}" Click="MinimizeAction_Click"/>
                     <Button x:Name="CloseAction" Content="&#xE8BB;" IsCancel="True" Style="{DynamicResource TitleBarButton}" Click="CloseAction_Click"/>
                 </StackPanel>

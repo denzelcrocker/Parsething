@@ -51,8 +51,8 @@
                 <Border Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Center" Background="{DynamicResource TextBoxBackgroundBrush}" CornerRadius="15" Width="70" Margin="0,0,30,0">
                     <TextBlock x:Name="ProcurementId" Text="000000" Style="{DynamicResource MainTextBlock}" Padding="10,5" FontSize="15"/>
                 </Border>
-                <TextBlock Name="OrganizationNameTextBlock" Style="{DynamicResource Info.AssemblyMap}"/>
-                <TextBlock Name="PostalAddressTextBlock" Grid.Row="1" Style="{DynamicResource Info.AssemblyMap}"/>
+                <TextBlock Name="OrganizationNameTextBlock" Style="{DynamicResource AssemblyMapTextBlock}" Text="dskjnvjsknvkfjdnvdfnvov"/>
+                <TextBlock Name="PostalAddressTextBlock" Grid.Row="1" Style="{DynamicResource AssemblyMapTextBlock}"/>
             </Grid>
             <ListView Grid.Row="2" x:Name="AssemblyMapListView" Style="{DynamicResource ListView.Preferences}"/>
             <Label Content="Комментарии: " Grid.Row="3" Style="{DynamicResource LabelBase}"/>

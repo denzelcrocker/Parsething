@@ -9,7 +9,6 @@
                 <ResourceDictionary Source="/Resources/Templates/PasswordBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/Scrolling.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/TextBoxTemplates.xaml"/>
-                <ResourceDictionary Source="/Resources/Templates/TextBlockTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/DatePicker Templates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ImageTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/PopUpTemplates.xaml"/>

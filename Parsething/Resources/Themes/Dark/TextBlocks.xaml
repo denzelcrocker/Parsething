@@ -24,4 +24,14 @@
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Margin" Value="0,0,5,0"/>
     </Style>
+    <Style x:Key="AssemblyMapTextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Margin" Value="15,0,0,0"/>
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="TitleBarTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MainTextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource TitleBarButtonBrush}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
 </ResourceDictionary>
