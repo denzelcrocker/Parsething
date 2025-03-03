@@ -52,11 +52,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#F0F0F0"/>
+                            <Setter  Property="Background" Value="{DynamicResource MainComboBoxBackgroundHoverButtonBrush}"/>
                             <Setter TargetName="Border" Property="CornerRadius" Value="15"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#ECECEC"/>
+                            <Setter  Property="Background" Value="{DynamicResource MainComboBoxBackgroundHoverButtonBrush}"/>
                             <Setter TargetName="Border" Property="CornerRadius" Value="15"/>
                         </Trigger>
                     </ControlTemplate.Triggers>

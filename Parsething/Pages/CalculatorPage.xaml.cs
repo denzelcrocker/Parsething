@@ -21,7 +21,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
         string theme = UserConfig.LoadTheme();
-        Color defaultColor = (Color)ColorConverter.ConvertFromString(theme == "Dark" ? "#383838" : "#D9D9D9");
+        Color defaultColor = (Color)ColorConverter.ConvertFromString(theme == "Dark" ? "#383838" : "#A9A9A9");
         buttonBrush = new SolidColorBrush(defaultColor);
         LoadPageData();
     }
@@ -136,8 +136,18 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
 
     private void QueueButton_Click(object sender, RoutedEventArgs e)
     {
-        PUT.ProcurementsEmployeesBy(((Employee)Application.Current.MainWindow.DataContext).Id, "Appoint");
-        LoadPageData();
+        var employeeId = ((Employee)Application.Current.MainWindow.DataContext).Id;
+
+        // Проверяем, больше ли 10 назначенных тендеров с состоянием "Новый"
+        if (GET.Entry.HasMoreThan10NewProcurementsAssigned(30))
+        {
+            PUT.ProcurementsEmployeesBy(employeeId, "Appoint");
+            LoadPageData();
+        }
+        else
+        {
+            AutoClosingMessageBox.ShowAutoClosingMessageBox("Вы не можете брать из очереди пока у вас более 10 Новых тендеров", "Оповещение", 2000);
+        }
     }
     private void Image_MouseEnter(object sender, MouseEventArgs e)
     {

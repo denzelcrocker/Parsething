@@ -499,6 +499,7 @@ namespace Parsething
             if (theme == "Dark")
             {
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/DarkBrushes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/TextBoxes.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Windows.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Labels.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Buttons.xaml", UriKind.Relative) });
@@ -506,10 +507,13 @@ namespace Parsething
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/Charts.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/ComboBoxes.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/TextBlocks.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/DatePickers.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Dark/PasswordBoxes.xaml", UriKind.Relative) });
             }
             else if (theme == "Light")
             {
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/LightBrushes.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/TextBoxes.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Windows.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Labels.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Buttons.xaml", UriKind.Relative) });
@@ -517,6 +521,8 @@ namespace Parsething
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/Charts.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/ComboBoxes.xaml", UriKind.Relative) });
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/TextBlocks.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/DatePickers.xaml", UriKind.Relative) });
+                Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Resources/Themes/Light/PasswordBoxes.xaml", UriKind.Relative) });
             }
         }
     }

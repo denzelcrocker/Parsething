@@ -103,7 +103,7 @@
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <Border Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource TextBoxBackgroundBrush}" CornerRadius="30" Width="150" MouseDown="Border_MouseDown" Cursor="Hand">
+                        <Border Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="{DynamicResource MainComboBoxBackgroundBrush}" CornerRadius="30" Width="150" MouseDown="Border_MouseDown" Cursor="Hand">
                             <TextBlock x:Name="Id" Text="000000" FontSize="30" Style="{DynamicResource MainTextBlock}" Padding="25,10"/>
                         </Border>
                         <TextBlock Grid.Column="2" Name="PurchaseOrCalculatiing" Text="Режим" Style="{DynamicResource MainTextBlock}" Margin="20,0,0,0"/>
@@ -173,7 +173,7 @@
                     </StackPanel>
                     <StackPanel x:Name="CalculatingPanel" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Hidden">
                         <Label Content="Сумма: " Style="{DynamicResource ColumnNames}" FontSize="20" Margin="10,0,0,0"/>
-                        <TextBlock x:Name="CalculationPrice" Text="1000000,00" Style="{DynamicResource MainTextBlock}" FontSize="20"/>
+                        <TextBlock x:Name="CalculationPrice" Text="1000000,00" Style="{DynamicResource MainTextBlock}" FontSize="20" />
                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2" Grid.Row="2" Grid.Column="1" Margin="10,20"/>
                         <Label Content="Максимальная цена: " Style="{DynamicResource ColumnNames}" FontSize="20"/>
                         <TextBlock x:Name="MaxPrice" Text="1000000,00" Style="{DynamicResource MainTextBlock}" FontSize="20"/>
@@ -262,6 +262,7 @@
                                             <TextBox Text="{Binding Path=Text}"
                                                 Grid.ColumnSpan="4"
                                                 Grid.Row="1"
+                                                Foreground="{DynamicResource MainTextBoxTextBrush}"
                                                 TextWrapping="Wrap"
                                                 HorizontalAlignment="Stretch"
                                                 FontSize="11"
@@ -294,7 +295,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
                         <TextBox x:Name="CommentsTextBox"
-                            Style="{DynamicResource SingleLineInput.CardOfProcurement}"
+                            Style="{DynamicResource CommentsTextBox}"
                             MinHeight="60" Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Grid.Row="1"
@@ -351,17 +352,17 @@
                     </Grid>
                     <ListView x:Name="PassportsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.Preferences}" Margin="0,15,0,0">
                         <Label Content="Монитор" Style="{DynamicResource Passport.CopmponentCalculation}"/>
-                        <TextBox x:Name="MonitorPassportTextBox" Style="{DynamicResource PassportTextBox}"/>
+                        <TextBox x:Name="MonitorPassportTextBox" Style="{DynamicResource PassportTextBox}" Width="370"/>
                         <Label Content="Компьютер" Style="{DynamicResource Passport.CopmponentCalculation}"/>
-                        <TextBox x:Name="PcPassportTextBox" Style="{DynamicResource PassportTextBox}"/>
+                        <TextBox x:Name="PcPassportTextBox" Style="{DynamicResource PassportTextBox}" Width="370"/>
                         <Label Content="Моноблок" Style="{DynamicResource Passport.CopmponentCalculation}"/>
-                        <TextBox x:Name="MonoblockPassportTextBox" Style="{DynamicResource PassportTextBox}"/>
+                        <TextBox x:Name="MonoblockPassportTextBox" Style="{DynamicResource PassportTextBox}" Width="370"/>
                         <Label Content="Ноутбук" Style="{DynamicResource Passport.CopmponentCalculation}"/>
-                        <TextBox x:Name="NotebookPassportTextBox" Style="{DynamicResource PassportTextBox}"/>
+                        <TextBox x:Name="NotebookPassportTextBox" Style="{DynamicResource PassportTextBox}" Width="370"/>
                         <Label Content="АРМ" Style="{DynamicResource Passport.CopmponentCalculation}"/>
-                        <TextBox x:Name="AwPassportTextBox" Style="{DynamicResource PassportTextBox}"/>
+                        <TextBox x:Name="AwPassportTextBox" Style="{DynamicResource PassportTextBox}" Width="370"/>
                         <Label Content="ИБП" Style="{DynamicResource Passport.CopmponentCalculation}"/>
-                        <TextBox x:Name="UpsPassportTextBox" Style="{DynamicResource PassportTextBox}"/>
+                        <TextBox x:Name="UpsPassportTextBox" Style="{DynamicResource PassportTextBox}" Width="370"/>
                     </ListView>
                     <Button x:Name="SavePassportButton" Content="Сохранить" Style="{DynamicResource BaseButton}" Cursor="Hand" Click="SavePassportButton_Click" Grid.Row="2"/>
                 </Grid>

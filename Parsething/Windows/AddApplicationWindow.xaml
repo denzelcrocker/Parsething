@@ -38,9 +38,9 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Label Content="Сумма заявки" Style="{DynamicResource Label.CardOfProcurement}"/>
-            <TextBox x:Name="ApplicationAmount" Grid.Column="1" Style="{DynamicResource SingleLineInput.CardOfProcurement}"/>
+            <TextBox x:Name="ApplicationAmount" Grid.Column="1" Style="{DynamicResource MainTextBox}"/>
             <Label Content="Остаток" Style="{DynamicResource Label.CardOfProcurement}" Grid.Row="1"/>
-            <TextBox x:Name="ApplicationRemaining" Style="{DynamicResource SingleLineInput.CardOfProcurement}" Grid.Column="1" Grid.Row="1" IsReadOnly="True"/>
+            <TextBox x:Name="ApplicationRemaining" Style="{DynamicResource MainTextBox}" Grid.Column="1" Grid.Row="1" IsReadOnly="True"/>
             <Grid Grid.Row="2" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40"/>

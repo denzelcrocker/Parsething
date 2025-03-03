@@ -52,26 +52,26 @@
                     </Button.Content>
                 </Button>
                 <Label Content="Id" Style="{DynamicResource  Label.SortWindow}"/>
-                <TextBox x:Name="Id" Style="{DynamicResource SingleLineInput.SortWindow}"/>
+                <TextBox x:Name="Id" Style="{DynamicResource SortWindowTextBox}"/>
                 <Label Content="Дата размещения" Style="{DynamicResource  Label.SortWindow}"/>
-                <TextBox x:Name="PostingDate" Style="{DynamicResource SingleLineInput.SortWindow}"/>
+                <TextBox x:Name="PostingDate" Style="{DynamicResource SortWindowTextBox}"/>
                 <Label Content="Дата подачи" Style="{DynamicResource  Label.SortWindow}"/>
-                <TextBox x:Name="DeadLine" Style="{DynamicResource SingleLineInput.SortWindow}"/>
+                <TextBox x:Name="DeadLine" Style="{DynamicResource SortWindowTextBox}"/>
                 <Label Content="Дата аукциона" Style="{DynamicResource  Label.SortWindow}"/>
-                <TextBox x:Name="ResultDate" Style="{DynamicResource SingleLineInput.SortWindow}"/>
+                <TextBox x:Name="ResultDate" Style="{DynamicResource SortWindowTextBox}"/>
                 <Label Content="Часовой пояс" Style="{DynamicResource  Label.SortWindow}"/>
                 <ComboBox x:Name="TimeZoneCombobox" Style="{DynamicResource EditableMainComboBox}" DisplayMemberPath="Offset" IsEnabled="False"/>
             </DockPanel>
             <Label Content="Номер закупки" Style="{DynamicResource  Label.SortWindow}"/>
-            <TextBox x:Name="Number" Style="{DynamicResource SingleLineInput.SortWindow}"/>
+            <TextBox x:Name="Number" Style="{DynamicResource SortWindowTextBox}"/>
             <Label Content="Закон" Style="{DynamicResource  Label.SortWindow}"/>
             <ComboBox x:Name="LawCombobox" Style="{DynamicResource EditableMainComboBox}" Height="30" DisplayMemberPath="Number"  IsEnabled="False"/>
             <Label Content="Ссылка на закупку" Style="{DynamicResource  Label.SortWindow}"/>
-            <TextBox x:Name="RequestUri" Style="{DynamicResource SingleLineInput.SortWindow}"/>
+            <TextBox x:Name="RequestUri" Style="{DynamicResource SortWindowTextBox}"/>
             <Label Content="Начальная цена" Style="{DynamicResource  Label.SortWindow}"/>
-            <TextBox x:Name="InitialPrice" Style="{DynamicResource SingleLineInput.SortWindow}" />
+            <TextBox x:Name="InitialPrice" Style="{DynamicResource SortWindowTextBox}" />
             <Label Content="Объект закупки" Style="{DynamicResource  Label.SortWindow}"/>
-            <TextBox x:Name="Object" Style="{DynamicResource SingleLineInput.SortWindow}" TextWrapping="Wrap"/>
+            <TextBox x:Name="Object" Style="{DynamicResource SortWindowTextBox}" TextWrapping="Wrap"/>
             <Label Content="Организация" Style="{DynamicResource  Label.SortWindow}"/>
             <ComboBox x:Name="OrganizationCombobox" Style="{DynamicResource EditableMainComboBox}" Height="30" DisplayMemberPath="Name" IsEnabled="False"/>
             <Label Content="Регион" Style="{DynamicResource  Label.SortWindow}"/>

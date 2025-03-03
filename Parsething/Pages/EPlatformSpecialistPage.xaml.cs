@@ -41,7 +41,7 @@ namespace Parsething.Pages
             InitializeComponent();
 
             string theme = UserConfig.LoadTheme();
-            Color defaultColor = (Color)ColorConverter.ConvertFromString(theme == "Dark" ? "#383838" : "#D9D9D9");
+            Color defaultColor = (Color)ColorConverter.ConvertFromString(theme == "Dark" ? "#383838" : "#A9A9A9");
             buttonBrush = new SolidColorBrush(defaultColor);
 
             var globalUsingValues = Classes.GlobalUsingValues.Instance;

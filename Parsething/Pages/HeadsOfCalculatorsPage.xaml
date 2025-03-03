@@ -64,7 +64,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Path=CountOfProcurements}" Width="30"/>
                                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2"/>
                                         <TextBlock Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
@@ -82,7 +82,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Path=CountOfProcurements}" Width="30"/>
                                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2"/>
                                         <TextBlock Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
@@ -100,7 +100,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Path=CountOfProcurements}" Width="30"/>
                                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2"/>
                                         <TextBlock Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
@@ -126,7 +126,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Path=Id}" Width="150" HorizontalAlignment="Left"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Path=CountOfProcurements}" Width="30"/>
                                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2"/>
                                         <TextBlock Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>
@@ -258,8 +258,8 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}"  Width="25" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Path=CountOfProcurements}" Width="30"/>
                                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2"/>
                                         <TextBlock Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right"/>
                                     </StackPanel>

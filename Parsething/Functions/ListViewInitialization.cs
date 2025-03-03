@@ -112,7 +112,7 @@ namespace Parsething.Functions
                         comboBoxHeader.LostFocus += (sender, e) => ComboBox_LostFocus(sender, e, comboBoxHeader, 0, true);
                         comboBoxHeader.GotFocus += (sender, e) => ComboBox_GotFocus(sender, e, comboBoxHeader, 0);
                         LoadColumnNames(comboBoxHeader, 0);
-                        TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
+                        TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderTextBox") };
                         textBoxHeaderCount.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                         textBoxHeaderCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeaderCount, 1, true);
                         textBoxHeaderCount.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeaderCount, 1);
@@ -182,8 +182,8 @@ namespace Parsething.Functions
                             buttonMoveDown.Content = "";
                             buttonMoveDown.Margin = new Thickness(0, 11, 35, 0);
                             buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarButton");
-                            TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
-                            TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
+                            TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxComponentName.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
 
@@ -200,12 +200,12 @@ namespace Parsething.Functions
                             VirtualizingStackPanel.SetVirtualizationMode(comboBoxManufacturer, VirtualizationMode.Recycling);
                             ScrollViewer.SetIsDeferredScrollingEnabled(comboBoxManufacturer, true);
 
-                            TextBox textBoxPrice = new TextBox() { Text = componentCalculation.Price.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxPrice = new TextBox() { Text = componentCalculation.Price.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxPrice.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             if (componentCalculation.Price != null && componentCalculation.Count != null)
                                 calculatingAmount += (componentCalculation.Price * componentCalculation.Count);
                             textBoxPrice.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            TextBox textBoxCount = new TextBox() { Text = componentCalculation.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxCount = new TextBox() { Text = componentCalculation.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxCount.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("EditableMainComboBox") };
@@ -216,13 +216,13 @@ namespace Parsething.Functions
                                     comboBoxSeller.SelectedItem = seller;
                                     break;
                                 }
-                            TextBox textBoxReserve = new TextBox() { Text = componentCalculation.Reserve, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxReserve = new TextBox() { Text = componentCalculation.Reserve, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxReserve.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxReserve.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            TextBox textBoxNote = new TextBox() { Text = componentCalculation.Note, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxNote = new TextBox() { Text = componentCalculation.Note, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxNote.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxNote.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxAssemblyMap.IsReadOnly = !ProcurementStates.Contains(Procurement.ProcurementState.Kind);
                             textBoxAssemblyMap.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             Button buttonDelete = new Button();
@@ -321,7 +321,7 @@ namespace Parsething.Functions
                         comboBoxHeader.LostFocus += (sender, e) => ComboBox_LostFocus(sender, e, comboBoxHeader, 0, true);
                         comboBoxHeader.GotFocus += (sender, e) => ComboBox_GotFocus(sender, e, comboBoxHeader, 0);
                         LoadColumnNames(comboBoxHeader, 0);
-                        TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
+                        TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderTextBox") };
                         textBoxHeaderCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, textBoxHeaderCount, 1, true);
                         textBoxHeaderCount.GotFocus += (sender, e) => TextBox_GotFocus(sender, e, textBoxHeaderCount, 1);
                         LoadColumnNames(textBoxHeaderCount, 1);
@@ -383,15 +383,15 @@ namespace Parsething.Functions
                             buttonMoveDown.Content = "";
                             buttonMoveDown.Margin = new Thickness(0, 11, 35, 0);
                             buttonMoveDown.Style = (Style)Application.Current.FindResource("TitleBarButton");
-                            TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
-                            TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
-                            Label replacementLabel = new Label() { Content = "!", Visibility = Visibility.Hidden, Style = (Style)Application.Current.FindResource("ComponentCalculation.Label") };
+                            TextBox textBoxIndex = new TextBox() { Name = "textBoxIndex", Text = indexOfComponent.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true, HorizontalContentAlignment = HorizontalAlignment.Center };
+                            TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
+                            Label replacementLabel = new Label() { Content = "i", Style = (Style)Application.Current.FindResource("ComponentCalculation.Label") };
                             ToolTip tooltip = new ToolTip();
                             tooltip.Style = (Style)Application.Current.FindResource("ComponentCalculation.ToolTip");
-                            tooltip.Content = string.IsNullOrEmpty(componentCalculation.ComponentName) ? "Добавлено в закупке" : componentCalculation.ComponentName;
+                            tooltip.Content = string.IsNullOrEmpty(componentCalculation.ComponentName) ? "Добавлено в закупке" : $"{componentCalculation.ComponentName} - {componentCalculation.Price} р.";
                             replacementLabel.ToolTip = tooltip;
                             if (componentCalculation.ComponentName != componentCalculation.ComponentNamePurchase)
-                                replacementLabel.Visibility = Visibility.Visible;
+                                tooltip.Content += " (Позиция изменена)";
                             textBoxComponentName.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             ComboBox comboBoxManufacturer = new ComboBox() { ItemsSource = Manufacturers, DisplayMemberPath = "ManufacturerName", Style = (Style)Application.Current.FindResource("EditableMainComboBox"), };
                             foreach (Manufacturer manufacturer in Manufacturers)
@@ -433,11 +433,11 @@ namespace Parsething.Functions
                             };
                             ellipseComponentState.SetBinding(Ellipse.FillProperty, binding);
                             DatePicker datePicker = new DatePicker() { SelectedDate = componentCalculation.Date, Style = (Style)Application.Current.FindResource("ComponentCalculations.DatePickerStyle") };
-                            TextBox textBoxPrice = new TextBox() { Text = componentCalculation.PricePurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxPrice = new TextBox() { Text = componentCalculation.PricePurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             if (componentCalculation.PricePurchase != null && componentCalculation.CountPurchase != null)
                                 purchaseAmount += (componentCalculation.PricePurchase * componentCalculation.CountPurchase);
                             textBoxPrice.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxCount.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             ComboBox comboBoxSeller = new ComboBox() { ItemsSource = Sellers, DisplayMemberPath = "Name", Style = (Style)Application.Current.FindResource("EditableMainComboBox") };
                             foreach (Seller seller in Sellers)
@@ -446,11 +446,11 @@ namespace Parsething.Functions
                                     comboBoxSeller.SelectedItem = seller;
                                     break;
                                 }
-                            TextBox textBoxReserve = new TextBox() { Text = componentCalculation.ReservePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxReserve = new TextBox() { Text = componentCalculation.ReservePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxReserve.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            TextBox textBoxNote = new TextBox() { Text = componentCalculation.NotePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxNote = new TextBox() { Text = componentCalculation.NotePurchase, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxNote.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
-                            TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                            TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
                             textBoxAssemblyMap.LostFocus += (sender, e) => TextBox_LostFocus(sender, e, null, 0, false);
                             Button buttonDelete = new Button();
                             buttonDelete.Click += ButtonDelete_Click;
@@ -1094,11 +1094,11 @@ namespace Parsething.Functions
                         grid.ColumnDefinitions.Add(columnDefinition);
                     }
 
-                    TextBox textBoxHeader = new TextBox() { Style = (Style)Application.Current.FindResource("AssemblyMap.Header") };
+                    TextBox textBoxHeader = new TextBox() { Style = (Style)Application.Current.FindResource("AssemblyMapHeaderTextBox") };
                     if (componentCalculationHeader.ComponentHeaderType != null)
                         textBoxHeader.Text = componentCalculationHeader.ComponentHeaderType.Kind.ToString();
                     LoadColumnNames(textBoxHeader, 0);
-                    TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMap.Header") };
+                    TextBox textBoxHeaderAssemblyMap = new TextBox() { Text = componentCalculationHeader.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMapHeaderTextBox") };
                     LoadColumnNames(textBoxHeaderAssemblyMap, 1);
 
                     Grid.SetColumn(textBoxHeader, 0);
@@ -1125,11 +1125,11 @@ namespace Parsething.Functions
                             columnDefinition.Width = new GridLength(columnWidths[i]);
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
-                        TextBox textBoxIdOfPosition = new TextBox() { Text = idOfPosition.ToString(), Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+                        TextBox textBoxIdOfPosition = new TextBox() { Text = idOfPosition.ToString(), Style = (Style)Application.Current.FindResource("AssemblyMapTextBox") };
                         idOfPosition++;
-                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
-                        TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
-                        TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMap.Item") };
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentNamePurchase, Style = (Style)Application.Current.FindResource("AssemblyMapTextBox") };
+                        TextBox textBoxCount = new TextBox() { Text = componentCalculation.CountPurchase.ToString(), Style = (Style)Application.Current.FindResource("AssemblyMapTextBox") };
+                        TextBox textBoxAssemblyMap = new TextBox() { Text = componentCalculation.AssemblyMap, Style = (Style)Application.Current.FindResource("AssemblyMapTextBox") };
 
                         Grid.SetColumn(textBoxIdOfPosition, 0);
                         Grid.SetColumn(textBoxComponentName, 1);
@@ -1185,16 +1185,16 @@ namespace Parsething.Functions
                         grid.ColumnDefinitions.Add(columnDefinition);
                     }
 
-                    TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentHeaderType.Kind, Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+                    TextBox textBoxHeader = new TextBox() { Text = componentCalculationHeader.ComponentHeaderType.Kind, Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderTextBox"), IsReadOnly = true };
                     LoadColumnNames(textBoxHeader, 0);
-                    TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header") };
+                    TextBox textBoxHeaderCount = new TextBox() { Text = componentCalculationHeader.Count.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderTextBox") };
 
                     // Вычисляем остаток для заголовка
                     var parentComponent = componentCalculations.FirstOrDefault(pc => pc.HeaderTypeId == componentCalculationHeader.HeaderTypeId && pc.IsDeleted == false);
                     var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.Count == componentCalculationHeader.Count && c.IsDeleted == false).Sum(c => c.Count);
                     var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculationHeader.Count;
 
-                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderTextBox"), IsReadOnly = true };
 
                     Grid.SetColumn(textBoxHeader, 0);
                     Grid.SetColumn(textBoxHeaderCount, 1);
@@ -1229,11 +1229,11 @@ namespace Parsething.Functions
                         var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.Count == componentCalculation.Count && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
                         var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculation.Count;
 
-                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
-                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
-                        TextBox textBoxCount = new TextBox() { Text = remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item") };
+                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true };
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true };
+                        TextBox textBoxCount = new TextBox() { Text = remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox") };
 
-                        TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true };
 
                         Grid.SetColumn(textBoxCounter, 0);
                         Grid.SetColumn(textBoxComponentName, 1);
@@ -1294,7 +1294,7 @@ namespace Parsething.Functions
                     TextBox textBoxHeader = new TextBox()
                     {
                         Text = string.IsNullOrEmpty(componentCalculationHeader?.ComponentHeaderType?.Kind) ? "Необходимо выбрать заголовок!!!" : componentCalculationHeader.ComponentHeaderType.Kind,
-                        Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"),
+                        Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderTextBox"),
                         IsReadOnly = true
                     };
                     LoadColumnNames(textBoxHeader, 0);
@@ -1303,7 +1303,7 @@ namespace Parsething.Functions
                     var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculationHeader.ComponentName && c.Count == componentCalculationHeader.Count && c.IsDeleted == false).Sum(c => c.Count);
                     var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculationHeader.Count;
 
-                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Header"), IsReadOnly = true };
+                    TextBox textBoxHeaderRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationHeaderTextBox"), IsReadOnly = true };
 
                     Grid.SetColumn(textBoxHeader, 0);
                     Grid.SetColumn(textBoxHeaderRemainingCount, 1);
@@ -1329,14 +1329,14 @@ namespace Parsething.Functions
                             columnDefinition.Width = new GridLength(columnWidths[i]);
                             grid.ColumnDefinitions.Add(columnDefinition);
                         }
-                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
-                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxCounter = new TextBox() { Text = counterOfComponentCalculations.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true };
+                        TextBox textBoxComponentName = new TextBox() { Text = componentCalculation.ComponentName, Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true };
 
                         var parentComponent = componentCalculations.FirstOrDefault(pc => pc.ComponentName == componentCalculation.ComponentName && pc.Count == componentCalculation.Count && pc.IsDeleted == false && pc.SellerId == componentCalculation.SellerId);
                         var usedCount = childProcurementComponents.Where(c => c.ComponentName == componentCalculation.ComponentName && c.Count == componentCalculation.Count && c.IsDeleted == false && c.SellerId == componentCalculation.SellerId).Sum(c => c.Count);
                         var remainingCount = parentComponent != null ? parentComponent.Count - usedCount : componentCalculation.Count;
 
-                        TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculation.Item"), IsReadOnly = true };
+                        TextBox textBoxRemainingCount = new TextBox() { Text = procurement.IsUnitPrice == true ? "-" : remainingCount.ToString(), Style = (Style)Application.Current.FindResource("ComponentCalculationItemTextBox"), IsReadOnly = true };
 
                         Grid.SetColumn(textBoxCounter, 0);
                         Grid.SetColumn(textBoxComponentName, 1);

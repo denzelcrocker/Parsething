@@ -62,11 +62,11 @@ namespace Parsething.Classes
                 var doc = XDocument.Load(ConfigFilePath);
                 var username = doc.Root.Element("Username")?.Value ?? string.Empty;
                 var password = doc.Root.Element("Password")?.Value ?? string.Empty;
-                var theme = doc.Root.Element("Theme")?.Value ?? "Dark";  // Возвращаем "Dark" как дефолт
+                var theme = doc.Root.Element("Theme")?.Value ?? "Light";  // Возвращаем "Dark" как дефолт
                 return (username, password, theme);
             }
 
-            return (string.Empty, string.Empty, "Dark"); // Если файл не существует, возвращаем дефолтное значение
+            return (string.Empty, string.Empty, "Light"); // Если файл не существует, возвращаем дефолтное значение
         }
 
         // Добавим сохранение темы

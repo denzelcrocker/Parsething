@@ -86,7 +86,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Path=Id}" Width="350" HorizontalAlignment="Left"  TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding Path=CountOfProcurements}"  Width="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Path=CountOfProcurements}" Width="30"/>
                                         <Rectangle Fill="{DynamicResource SeparatorBrush}" Width="2"/>
                                         <TextBlock Text="{Binding Path=TotalAmount, StringFormat={}{0:N0} р.}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                     </StackPanel>

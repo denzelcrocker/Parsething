@@ -30,7 +30,7 @@
     <Color x:Key="MainComboBoxBorderColor">#424242</Color>
 
     <Color x:Key="ComponentCalculationHeaderComboBoxTextColor">#D6D6D6</Color>
-    <Color x:Key="ComponentCalculationHeaderComboBoxBackgroundColor">#181818</Color>
+    <Color x:Key="ComponentCalculationHeaderComboBoxBackgroundColor">#424242</Color>
     <Color x:Key="ComponentCalculationHeaderComboBoxToggleButtonColor">#948F90</Color>
     <Color x:Key="ComponentCalculationHeaderComboBoxBackgroundHoverButtonColor">#505050</Color>
     <Color x:Key="ComponentCalculationHeaderComboBoxBorderColor">#424242</Color>
@@ -41,9 +41,17 @@
     <Color x:Key="ProfileComboBoxBackgroundHoverButtonColor">#505050</Color>
     <Color x:Key="ProfileComboBoxBorderColor">#424242</Color>
 
-    <Color x:Key="SupplyMonitoringHeaderBackgroundColor">#D6D6D6</Color>
-    <Color x:Key="SupplyMonitoringHeaderTextColor">#202020</Color>
-    
+    <Color x:Key="SupplyMonitoringHeaderBackgroundColor">#424242</Color>
+    <Color x:Key="SupplyMonitoringHeaderTextColor">#D6D6D6</Color>
+
+    <Color x:Key="MainTextBoxTextColor">#D6D6D6</Color>
+    <Color x:Key="MainTextBoxBackgroundColor">#3A3A3A</Color>
+    <Color x:Key="MainTextBoxCaretBrushColor">#930C0C</Color>
+
+    <Color x:Key="AssemblyMapTextBoxTextColor">#000000</Color>
+    <Color x:Key="AssemblyMapTextBoxBackgroundColor">#D9D9D9</Color>
+    <Color x:Key="AssemblyMapHeaderTextBoxBackgroundColor">#ABABAB</Color>
+
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}"/>
     <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="{StaticResource TitleBarBackgroundColor}"/>
     <SolidColorBrush x:Key="TitleBarButtonBrush" Color="{StaticResource TitleBarButtonColor}"/>
@@ -85,7 +93,15 @@
 
     <SolidColorBrush x:Key="SupplyMonitoringBackgroundHeaderBrush" Color="{StaticResource SupplyMonitoringHeaderBackgroundColor}"/>
     <SolidColorBrush x:Key="SupplyMonitoringTextHeaderBrush" Color="{StaticResource SupplyMonitoringHeaderTextColor}"/>
-    
+
+    <SolidColorBrush x:Key="MainTextBoxTextBrush" Color="{StaticResource MainTextBoxTextColor}"/>
+    <SolidColorBrush x:Key="MainTextBoxBackgroundBrush" Color="{StaticResource MainTextBoxBackgroundColor}"/>
+    <SolidColorBrush x:Key="MainTextBoxCaretBrush" Color="{StaticResource MainTextBoxCaretBrushColor}"/>
+
+    <SolidColorBrush x:Key="AssemblyMapTextBoxTextBrush" Color="{StaticResource AssemblyMapTextBoxTextColor}"/>
+    <SolidColorBrush x:Key="AssemblyMapTextBoxBackgroundBrush" Color="{StaticResource AssemblyMapTextBoxBackgroundColor}"/>
+    <SolidColorBrush x:Key="AssemblyMapHeaderTextBoxBackgroundBrush" Color="{StaticResource AssemblyMapHeaderTextBoxBackgroundColor}"/>
+
     <LinearGradientBrush x:Key="MainGradientBackground">
         <LinearGradientBrush.GradientStops>
             <GradientStop Color="#7A1F2D" Offset="0.4"/>

@@ -6,5 +6,6 @@
         <ResourceDictionary Source="Buttons.xaml"/>
         <ResourceDictionary Source="CheckBoxes.xaml"/>
         <ResourceDictionary Source="ComboBoxes.xaml"/>
+        <ResourceDictionary Source="TextBoxes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

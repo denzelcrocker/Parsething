@@ -54,7 +54,7 @@
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                            <TextBox HorizontalAlignment="Right" x:Name="SearchTextBox" Style="{ DynamicResource SingleLineInput.Search}"  DockPanel.Dock="Right" />
+                            <TextBox HorizontalAlignment="Right" x:Name="SearchTextBox" Style="{ DynamicResource SearchTextBox}" Width="250" DockPanel.Dock="Right" />
                             <ComboBox x:Name="SupplyMonitoringListSelectionCombobox"
                                 HorizontalAlignment="Left"
                                 Style="{DynamicResource EditableMainComboBox}"
@@ -95,7 +95,7 @@
                             <Label Style="{DynamicResource ColumnNames.SupplyMonitoring}" Content="Закупка" Grid.Column="8" />
                         </Grid>
                         <ScrollViewer Grid.Row="3" VirtualizingPanel.VirtualizationMode="Recycling" SnapsToDevicePixels="False">
-                            <ListView x:Name="listViewSupplyMonitoring" PreviewMouseWheel="ListView_PreviewMouseWheel"/>
+                            <ListView x:Name="listViewSupplyMonitoring" PreviewMouseWheel="ListView_PreviewMouseWheel" Background="{DynamicResource WorkAreaBackgroundBrush}"/>
                         </ScrollViewer>
                     </Grid>
                 </Border>

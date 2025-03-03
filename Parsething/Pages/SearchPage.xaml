@@ -207,7 +207,7 @@
                                             </Button.Content>
                                         </Button>
                                         <Popup x:Name="EmployeeInfoPopUp" PlacementTarget="{Binding ElementName=EmployeeInfoButton}" Placement="Bottom" StaysOpen="True" >
-                                            <Border Background="{DynamicResource TextBoxBackgroundBrush}" BorderBrush="Black" BorderThickness="1">
+                                            <Border Background="{DynamicResource TextBoxBackgroundBrush}" BorderThickness="1">
                                                 <Grid >
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition/>
@@ -483,6 +483,7 @@
                                             x:Name="LastCommentDateTime" 
                                             Text="{Binding Id, Converter={StaticResource LastCommentDateTimeConverter }}"
                                             Grid.Column="22"
+                                            Style="{DynamicResource TableElements}"    
                                             FontSize="10"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -656,9 +657,9 @@
                     </Grid.RowDefinitions>
                     <ListView x:Name="SearchBar" Visibility="Visible" Style="{DynamicResource ListView}">
                         <Label Content="Id тендера" Style="{DynamicResource Label.Search}"/>
-                        <TextBox x:Name="SearchId" Style="{DynamicResource SingleLineInput.Search}"/>
+                        <TextBox x:Name="SearchId" Style="{DynamicResource SearchTextBox}"/>
                         <Label Content="Номер закупки" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <TextBox x:Name="SearchNumber" Style="{DynamicResource SingleLineInput.Search}" Height="40" PreviewTextInput="Search_PreviewTextInput" />
+                        <TextBox x:Name="SearchNumber" Style="{DynamicResource SearchTextBox}" Height="40" PreviewTextInput="Search_PreviewTextInput" />
                         <Label Content="Закон" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <ComboBox x:Name="Law" HorizontalAlignment="Left" Style="{DynamicResource NotEditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Number" FontSize="15"/>
                         <Label Content="Статус тендера" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
@@ -666,11 +667,11 @@
                         <Label x:Name="ProcurementStateSecondLabel" Content="Текущий статус тендера" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left" Visibility="Collapsed"/>
                         <ComboBox x:Name="ProcurementStateSecond" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Kind" FontSize="15" Visibility="Collapsed"/>
                         <Label Content="ИНН заказчика" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <TextBox x:Name="SearchINN" Style="{DynamicResource SingleLineInput.Search}" Height="40" PreviewTextInput="Search_PreviewTextInput"/>
+                        <TextBox x:Name="SearchINN" Style="{DynamicResource SearchTextBox}" Height="40" PreviewTextInput="Search_PreviewTextInput"/>
                         <Label Content="Сотрудник" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <ComboBox x:Name="Employee" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="FullName" FontSize="15"/>
                         <Label Content="Организация" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <TextBox x:Name="OrganizationName" Style="{DynamicResource SingleLineInput.Search}" Height="40"/>
+                        <TextBox x:Name="OrganizationName" Style="{DynamicResource SearchTextBox}" Height="40"/>
                         <Label Content="Юридическое лицо" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <ComboBox x:Name="LegalEntity" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Name" FontSize="15"/>
                         <Label Content="Тип даты" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
@@ -699,13 +700,13 @@
                             <DatePicker x:Name="EndDate" Style="{DynamicResource ComponentCalculations.DatePickerStyle}" Width="100"/>
                         </DockPanel>
                         <Label Content="Поиск по товару" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <TextBox x:Name="SearchComponentCalculation" Style="{DynamicResource SingleLineInput.Search}" Height="40"/>
+                        <TextBox x:Name="SearchComponentCalculation" Style="{DynamicResource SearchTextBox}" Height="40"/>
                         <Label Content="План отгрузки" Style="{DynamicResource Label.Search}" Grid.Column="0" HorizontalAlignment="Left"/>
                         <ComboBox x:Name="ShipmentPlan" HorizontalAlignment="Left" Style="{DynamicResource EditableMainComboBox}" Width="245" Height="35" DisplayMemberPath="Kind" FontSize="15"/>
                         <Label Content="Отложен до 2025 года" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
                         <CheckBox x:Name="SearchWaitingList" HorizontalAlignment="Left" Style="{DynamicResource Checkbox.Base}" Cursor="Hand"/>
                         <Label Content="Поиск по номеру договора" Style="{DynamicResource Label.Search}" HorizontalAlignment="Left"/>
-                        <TextBox x:Name="SearchContractNumber" Style="{DynamicResource SingleLineInput.Search}" Height="40"/>
+                        <TextBox x:Name="SearchContractNumber" Style="{DynamicResource SearchTextBox}" Height="40"/>
                     </ListView>
                     <ListView x:Name="CommentsListView" 
                         BorderThickness="0"
@@ -764,6 +765,7 @@
                                             TextWrapping="Wrap"
                                             HorizontalAlignment="Stretch"
                                             FontSize="11"
+                                            Foreground="{DynamicResource TextBrush}"
                                             VerticalAlignment="Center"
                                             IsReadOnly="True"
                                             BorderThickness="0"

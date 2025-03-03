@@ -10,7 +10,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Window}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="#D9D9D9" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="16" SnapsToDevicePixels="true">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="1" SnapsToDevicePixels="true">
                         <ContentPresenter Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                 </ControlTemplate>
@@ -33,13 +33,14 @@
     </Style>
     <Style x:Key="SortWindow" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
         <Setter Property="Width" Value="830"/>
-        <Setter Property="Height" Value="500"/>
+        <Setter Property="Height" Value="520"/>
         <Setter Property="ResizeMode" Value="NoResize"/>
     </Style>
     <Style x:Key="AssemblyMap" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
         <Setter Property="Width" Value="793.7"/>
         <Setter Property="Height" Value="1122.5"/>
         <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="Background" Value="White"/>
     </Style>
     <Style x:Key="AutoCloseMessageWindow" TargetType="{x:Type Window}" BasedOn="{StaticResource WindowBase}">
         <Setter Property="Width" Value="300"/>

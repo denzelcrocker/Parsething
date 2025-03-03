@@ -4,12 +4,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Brushes.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/EllipseTemplates.xaml"/>
-                <ResourceDictionary Source="/Resources/Templates/LabelTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ListView.xaml"/>
-                <ResourceDictionary Source="/Resources/Templates/PasswordBoxTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/Scrolling.xaml"/>
-                <ResourceDictionary Source="/Resources/Templates/TextBoxTemplates.xaml"/>
-                <ResourceDictionary Source="/Resources/Templates/DatePicker Templates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ImageTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/PopUpTemplates.xaml"/>
                 <ResourceDictionary Source="/Resources/Templates/ToolTipTemplates.xaml"/>
@@ -20,8 +16,11 @@
                 <ResourceDictionary Source="/Resources/Themes/Dark/Buttons.xaml"/>
                 <ResourceDictionary Source="/Resources/Themes/Dark/CheckBoxes.xaml"/>
                 <ResourceDictionary Source="/Resources/Themes/Dark/Charts.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark/TextBoxes.xaml"/>
                 <ResourceDictionary Source="/Resources/Themes/Dark/ComboBoxes.xaml"/>
                 <ResourceDictionary Source="/Resources/Themes/Dark/TextBlocks.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark/DatePickers.xaml"/>
+                <ResourceDictionary Source="/Resources/Themes/Dark/PasswordBoxes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

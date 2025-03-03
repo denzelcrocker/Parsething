@@ -137,6 +137,8 @@ namespace Parsething.Pages
             CalculatingLabel.Foreground = Gray;
             CalculatingUL.Fill = Gray;
             CalculatingLV.Visibility = Visibility.Hidden;
+            SendingAndBargainingLabel.Foreground = Gray;
+            SendingAndBargainingUL.Fill = Gray;
             SendingAndBargainingLV.Visibility = Visibility.Hidden;
             SupplyLabel.Foreground = Gray;
             SupplyUL.Fill = Gray;
@@ -1298,7 +1300,7 @@ namespace Parsething.Pages
                 TextBox textBox = new TextBox
                 {
                     Text = application.ContractAmount.ToString(),
-                    Style = (Style)FindResource("SingleLineInput.CardOfProcurement"),
+                    Style = (Style)FindResource("CardOfProcurementTextBox"),
                     MinHeight = 50,
                     MaxHeight = 150,
                     TextWrapping = TextWrapping.Wrap,

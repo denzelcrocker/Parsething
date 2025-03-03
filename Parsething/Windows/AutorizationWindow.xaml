@@ -16,23 +16,23 @@
             </DockPanel>
         </Border>
         <StackPanel Grid.Row="1" Margin="30,0">
-            <Label Content="Авторизация" Style="{DynamicResource Title}" Foreground="{DynamicResource AccentBrush}"/>
+            <Label Content="Авторизация" Style="{DynamicResource Title}"/>
             <Label Content="Имя пользователя" Style="{DynamicResource Header.1}"/>
-            <TextBox x:Name="UserName" Style="{DynamicResource SingleLineInput}"/>
+            <TextBox x:Name="UserName" Style="{DynamicResource AutorizationTextBox}" FontSize="30"/>
             <Label Content="Пароль" Style="{DynamicResource Header.1}"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="64"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="VisiblePassword" Grid.ColumnSpan="2" Style="{DynamicResource SingleLineInput}" TextChanged="VisiblePassword_TextChanged"/>
+                <TextBox x:Name="VisiblePassword" Grid.ColumnSpan="2" Style="{DynamicResource AutorizationTextBox}" TextChanged="VisiblePassword_TextChanged" FontSize="30"/>
                 <PasswordBox x:Name="Password" Grid.ColumnSpan="2" Padding="8,8,64,8" Style="{DynamicResource PasswordBoxBase}" TextInput="Password_TextInput"/>
                 <CheckBox x:Name="PasswordVisibility" Grid.Column="1" Style="{DynamicResource PasswordVisibility}" Checked="PasswordVisibility_Checked" Unchecked="PasswordVisibility_Unchecked" Cursor="Hand"/>
             </Grid>
             <Button x:Name="EnterButton"
                     Content="Войти"
                     FontSize="25"
-                    Margin="40"
+                    Margin="0,55"
                     IsDefault="True"
                     Style="{DynamicResource BaseButton}"
                     Click="EnterButton_Click"/>

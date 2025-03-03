@@ -49,19 +49,19 @@
                     <ComboBoxItem IsEnabled="False">
                         <Label x:Name="Position" Style="{DynamicResource ProfilePreview.Entry.2}"/>
                     </ComboBoxItem>
+                    <ComboBoxItem IsEnabled="True">
+                        <Button x:Name="SwitchThemeButton" Style="{DynamicResource TransparentButton}" Content="Сменить тему" Click="SwitchThemeButton_Click" />
+                    </ComboBoxItem>
                     <ComboBoxItem>
                         <DockPanel HorizontalAlignment="Stretch">
                             <Rectangle Fill="{DynamicResource SeparatorBrush}" Height="2"  MinWidth="300" MaxWidth="500"/>
                         </DockPanel>
                     </ComboBoxItem>
-                    <ComboBoxItem IsEnabled="True">
-                        <Button x:Name="SwitchThemeButton" Content="Switch Theme" Click="SwitchThemeButton_Click" />
-                    </ComboBoxItem>
                     <ComboBoxItem>
                         <Button x:Name="SwitchUser" Style="{DynamicResource TransparentButton}" Click="SwitchUser_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
                                 <Label Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" FontFamily="Segoe Fluent Icons" FontSize="30" Content="&#xE748;"/>
-                                <Label VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" FontSize="30" Content="Выход"/>
+                                <Label VerticalAlignment="Center" FontFamily="./Resources/Fonts/#Mustica Pro" Foreground="{DynamicResource TextBrush}" FontSize="30" Content="Выход"/>
                             </StackPanel>
                         </Button>
                     </ComboBoxItem>
@@ -98,7 +98,7 @@
                     </Button.Content>
                 </Button>
                 <Popup x:Name="NotificationsPopUp" PlacementTarget="{Binding ElementName=Notifications}" Placement="Bottom" StaysOpen="False" >
-                    <ListView x:Name="NotificationsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="300">
+                    <ListView x:Name="NotificationsListView" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource ProfileComboBoxBackgroundBrush}"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="300">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Border LayoutTransform="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}}" BorderThickness="1" BorderBrush="{DynamicResource SeparatorBrush}" CornerRadius="0" MaxWidth="600" >
@@ -139,6 +139,7 @@
                                                 VerticalAlignment="Center"/>
                                         <TextBox Text="{Binding Path=Notification.Title}"
                                                 Grid.ColumnSpan="2"
+                                                Foreground="{DynamicResource TextBrush}"
                                                 Grid.Row="1"
                                                 TextWrapping="Wrap"
                                                 FontSize="15"
@@ -158,6 +159,7 @@
                                         <TextBox Text="{Binding Path=Notification.Text}"
                                                 Grid.ColumnSpan="4"
                                                 Grid.Row="2"
+                                                Foreground="{DynamicResource TextBrush}"
                                                 TextWrapping="Wrap"
                                                 HorizontalAlignment="Stretch"
                                                 FontSize="11"
@@ -183,10 +185,10 @@
                     </Button.Content>
                 </Button>
                 <Popup x:Name="StarredProcurementsPopUp" PlacementTarget="{Binding ElementName=StarredProcurements}" Placement="Bottom" StaysOpen="False" >
-                    <ListView x:Name="StarredProcurementsListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="600">
+                    <ListView x:Name="StarredProcurementsListView" Grid.Column="0"  Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="600">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="1" BorderBrush="{DynamicResource SeparatorBrush}" CornerRadius="0" MaxWidth="200" Height="45">
+                                <Border BorderThickness="1" BorderBrush="{DynamicResource SeparatorBrush}" Background="{DynamicResource ProfileComboBoxBackgroundBrush}" CornerRadius="0" MaxWidth="200" Height="45">
                                     <Grid HorizontalAlignment="Stretch" Margin="0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="85"/>

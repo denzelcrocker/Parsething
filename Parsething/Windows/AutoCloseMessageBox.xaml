@@ -9,10 +9,9 @@
         ResizeMode="NoResize"
         Style="{DynamicResource AutoCloseMessageWindow}"
         Title="AutoCloseMessageBox">
-    
-        
-    
-        <Grid>
+
+
+    <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
@@ -27,7 +26,7 @@
                 </DockPanel>
             </Border>
             <Grid Grid.Row="1">
-                <TextBlock Name="MessageTextBlock" TextWrapping="Wrap" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
+                <TextBlock Name="MessageTextBlock" TextWrapping="Wrap" Margin="10" FontSize="13" Style="{DynamicResource MainTextBlock}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
             </Grid>
         </Grid>
 </Window>
