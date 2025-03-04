@@ -110,7 +110,7 @@
                             </Button.Content>
                         </Button>
                         <Popup x:Name="HistoryPopUp" PlacementTarget="{Binding ElementName=History}" Placement="Bottom" StaysOpen="False">
-                            <ListView x:Name="HistoryListView" Grid.Column="0" Grid.ColumnSpan="2"  BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="300">
+                            <ListView x:Name="HistoryListView" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource MainTextBoxBackgroundBrush}" BorderThickness="0" Grid.Row="1" Style="{DynamicResource ListView.History}" MaxHeight="300">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Border>

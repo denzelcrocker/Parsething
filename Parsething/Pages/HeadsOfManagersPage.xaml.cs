@@ -156,6 +156,8 @@ namespace Parsething.Pages
 
             AWeekLater.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Через одну", GET.KindOf.ShipmentPlane));// Отгрузка через неделю
 
+            Shipped.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Отгружен", GET.KindOf.ProcurementState));// Отгружен
+
             Received.Text = Convert.ToString(GET.Aggregate.ProcurementsCountBy("Принят", StartDate));// Принят
 
             ApproveCalculatingYes.Text = GET.Aggregate.ProcurementsCountBy(true, KindOf.Calculating).ToString(); // Проверка расчета проведена

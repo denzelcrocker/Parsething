@@ -3,6 +3,7 @@ using Parsething.Classes;
 using Parsething.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,8 @@ namespace Parsething.Pages
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesCalculatorsGroupingsDrawUp { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsEmployeesSendingGroupings { get; set; }
         private List<GET.ProcurementsEmployeesGrouping>? ProcurementsMethodsGroupings { get; set; }
+        public ObservableCollection<RankingInfo> ProcurementRankingList { get; set; }
+        public ObservableCollection<RankingInfo> ComponentCalculationRankingList { get; set; }
 
         private DateTime StartDate = new DateTime();
 
@@ -39,6 +42,44 @@ namespace Parsething.Pages
         public HeadsOfCalculatorsPage()
         {
             InitializeComponent();
+            Task.Run(() =>
+            {
+                // Выполняем долгую операцию (например, получение рейтинга тендеров и позиций)
+                var rankingProcurementsData = GET.View.GetProcurementRanking(); // Список по тендерам
+                var rankingComponentCalculationsData = GET.View.GetProcurementRanking(); // Список по позициям
+
+                // Сортируем данные по тендерам (по количеству тендеров и сумме)
+                var sortedByProcurements = rankingProcurementsData
+                    .OrderByDescending(x => x.ProcurementCount) // Сортируем по количеству тендеров
+                    .ThenByDescending(x => x.TotalAmount) // Сортируем по общей сумме
+                    .ToList();
+
+                // Сортируем данные по компонентам (по количеству позиций)
+                var sortedByPositions = rankingComponentCalculationsData
+                    .OrderByDescending(x => x.ComponentCalculationCount) // Сортируем по количеству позиций
+                    .ThenByDescending(x => x.ProcurementCount) // Сортируем по количеству тендеров
+                    .ThenByDescending(x => x.TotalAmount) // Сортируем по сумме тендеров
+                    .ToList();
+
+                // Назначаем корону для первого сотрудника в списке тендеров
+                if (sortedByProcurements.Count > 0)
+                {
+                    sortedByProcurements[0].HasCrown = true; // Корона для сотрудника, который лучший по тендерам
+                }
+
+                // Назначаем корону для первого сотрудника в списке по позициям
+                if (sortedByPositions.Count > 0)
+                {
+                    sortedByPositions[0].HasCrown = true; // Корона для сотрудника, который лучший по позициям
+                }
+
+                // Обновляем UI с полученными данными (по завершению фоновой работы)
+                Dispatcher.Invoke(() =>
+                {
+                    ProcurementRankingListView.ItemsSource = sortedByProcurements;
+                    ComponentCalculationRankingListView.ItemsSource = sortedByPositions;
+                });
+            });
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {

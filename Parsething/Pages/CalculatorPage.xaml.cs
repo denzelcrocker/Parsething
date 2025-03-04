@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Parsething.Classes;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Media;
+using static DatabaseLibrary.Queries.GET;
 
 namespace Parsething.Pages;
 
@@ -11,6 +13,9 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
     SolidColorBrush buttonBrush = new SolidColorBrush();
+
+    public ObservableCollection<RankingInfo> ProcurementRankingList { get; set; }
+    public ObservableCollection<RankingInfo> ComponentCalculationRankingList { get; set; }
 
     protected virtual void OnPropertyChanged(string propertyName)
     {
@@ -20,10 +25,52 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
+
+        // Устанавливаем тему
         string theme = UserConfig.LoadTheme();
         Color defaultColor = (Color)ColorConverter.ConvertFromString(theme == "Dark" ? "#383838" : "#A9A9A9");
         buttonBrush = new SolidColorBrush(defaultColor);
         LoadPageData();
+
+        // Выполняем получение рейтинга в фоновом потоке
+        Task.Run(() =>
+        {
+            // Выполняем долгую операцию (например, получение рейтинга тендеров и позиций)
+            var rankingProcurementsData = GET.View.GetProcurementRanking(); // Список по тендерам
+            var rankingComponentCalculationsData = GET.View.GetProcurementRanking(); // Список по позициям
+
+            // Сортируем данные по тендерам (по количеству тендеров и сумме)
+            var sortedByProcurements = rankingProcurementsData
+                .OrderByDescending(x => x.ProcurementCount) // Сортируем по количеству тендеров
+                .ThenByDescending(x => x.TotalAmount) // Сортируем по общей сумме
+                .ToList();
+
+            // Сортируем данные по компонентам (по количеству позиций)
+            var sortedByPositions = rankingComponentCalculationsData
+                .OrderByDescending(x => x.ComponentCalculationCount) // Сортируем по количеству позиций
+                .ThenByDescending(x => x.ProcurementCount) // Сортируем по количеству тендеров
+                .ThenByDescending(x => x.TotalAmount) // Сортируем по сумме тендеров
+                .ToList();
+
+            // Назначаем корону для первого сотрудника в списке тендеров
+            if (sortedByProcurements.Count > 0)
+            {
+                sortedByProcurements[0].HasCrown = true; // Корона для сотрудника, который лучший по тендерам
+            }
+
+            // Назначаем корону для первого сотрудника в списке по позициям
+            if (sortedByPositions.Count > 0)
+            {
+                sortedByPositions[0].HasCrown = true; // Корона для сотрудника, который лучший по позициям
+            }
+
+            // Обновляем UI с полученными данными (по завершению фоновой работы)
+            Dispatcher.Invoke(() =>
+            {
+                ProcurementRankingListView.ItemsSource = sortedByProcurements;
+                ComponentCalculationRankingListView.ItemsSource = sortedByPositions;
+            });
+        });
     }
 
 
@@ -139,7 +186,7 @@ public partial class CalculatorPage : Page, INotifyPropertyChanged
         var employeeId = ((Employee)Application.Current.MainWindow.DataContext).Id;
 
         // Проверяем, больше ли 10 назначенных тендеров с состоянием "Новый"
-        if (GET.Entry.HasMoreThan10NewProcurementsAssigned(30))
+        if (GET.Entry.HasMoreThan10NewProcurementsAssigned(employeeId))
         {
             PUT.ProcurementsEmployeesBy(employeeId, "Appoint");
             LoadPageData();
